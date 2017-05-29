@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Pessoa;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -48,9 +48,11 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'nome' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:pessoas',
+            'senha' => 'required|string|confirmed',
+            'cpf' => 'nullable|cpf',
+            'dt_nascimento' => 'required|date'
         ]);
     }
 
@@ -62,10 +64,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
+        return Pessoa::create([
+            'nome' => $data['nome'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'senha' => bcrypt($data['senha']),
+            'cpf' => $data['cpf'],
+            'dt_nascimento' => $data['dt_nascimento'],
+            'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
         ]);
     }
 }
