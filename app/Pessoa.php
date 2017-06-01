@@ -2,17 +2,24 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Traits\SchemaObservable as SchemaObservable;
 
 class Pessoa extends Authenticatable {
-
+    use SchemaObservable;
     /**
      * The table associated with the model.
      *
      * @var string
      */
     protected $table = 'pessoas';
+    
+      /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $schema = 'public';
 
     /**
      * The attributes that are mass assignable.
