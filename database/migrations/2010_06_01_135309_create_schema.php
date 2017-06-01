@@ -12,17 +12,8 @@ class CreateSchema extends Migration
      * @return void
      */
     public function up()
-    {
-       /*
-        //dd(config('database.connections.pgsql.schema'));
-        $query = DB::statement('CREATE SCHEMA ' . env('DB_SCHEMA'));
-        //dd($query);
-        config(['database.connections.pgsql.schema' => env('DB_SCHEMA')]);
-        DB::statement("SET search_path = ".env('DB_SCHEMA'));
-        */
-        
-        $query = DB::statement('CREATE SCHEMA ' . env('DB_SCHEMA'));
-        config(['database.connections.pgsql.prefix' => env('DB_SCHEMA').'.']);
+    {     
+        $query = DB::statement('CREATE SCHEMA IF NOT EXISTS ' . env('DB_SCHEMA'));
     }
 
     /**

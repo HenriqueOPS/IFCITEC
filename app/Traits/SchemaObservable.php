@@ -10,10 +10,10 @@ trait SchemaObservable
     public static function bootSchemaObservable()
     {
         static::saving(function (Model $model) {
-            if (!isset($model->schema)  ){ //Verificando se model não possui Schema
-                DB::statement("SET search_path = ".env('DB_SCHEMA'));
-            }else{
+            if (isset($model->schema)  ){ //Se model possui atributo Schema
                 DB::statement("SET search_path = ".$model->schema);
+            }else{ //Se model não possui Schema
+                DB::statement("SET search_path = ".env('DB_SCHEMA'));
             }
         });
     }
