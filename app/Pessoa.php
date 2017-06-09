@@ -12,7 +12,7 @@ class Pessoa extends Authenticatable {
      *
      * @var string
      */
-    protected $table = 'pessoas';
+    protected $table = 'pessoa';
     
       /**
      * The table associated with the model.

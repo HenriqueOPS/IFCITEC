@@ -13,7 +13,7 @@ class CreateSchema extends Migration
      */
     public function up()
     {     
-        $query = DB::statement('CREATE SCHEMA IF NOT EXISTS ' . env('DB_SCHEMA'));
+        $query = DB::statement('CREATE SCHEMA ' . env('DB_SCHEMA'));
     }
 
     /**
