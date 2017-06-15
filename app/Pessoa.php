@@ -27,7 +27,7 @@ class Pessoa extends Authenticatable {
      * @var array
      */
     protected $fillable = [
-        'nome', 'email', 'senha', 'cpf', 'dt_nascimento', 'camisa',
+        'nome', 'email', 'senha', 'cpf', 'dtNascimento', 'camisa',
     ];
 
     /**
@@ -39,7 +39,7 @@ class Pessoa extends Authenticatable {
         'senha', 'remember_token',
     ];
 
-    public function getAuthPassword() { //Para sistema poder fazer login vinha atributo "password"
+    public function getAuthPassword() { //Para sistema poder fazer login via atributo "password"
         return $this->senha;
     }
 
