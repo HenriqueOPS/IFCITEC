@@ -2,12 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Traits\SchemaObservable as SchemaObservable;
+use App\Model;
 
 class Tarefa extends Model {
-
-    use SchemaObservable;
 
     /**
      * The table associated with the model.
@@ -24,5 +21,10 @@ class Tarefa extends Model {
     protected $fillable = [
         'tarefa', 'descricao',
     ];
+    
+    public function pessoas() {
+        return $this->belongsToMany('App\Pessoa');
+    }
+    
 
 }

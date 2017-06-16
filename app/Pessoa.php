@@ -27,7 +27,7 @@ class Pessoa extends Authenticatable {
      * @var array
      */
     protected $fillable = [
-        'nome', 'email', 'senha', 'cpf', 'dtNascimento', 'camisa',
+        'nome', 'email', 'senha', 'cpf', 'dt_nascimento', 'camisa',
     ];
 
     /**
@@ -42,5 +42,13 @@ class Pessoa extends Authenticatable {
     public function getAuthPassword() { //Para sistema poder fazer login via atributo "password"
         return $this->senha;
     }
-
+    
+    public function getTable(){
+        $schema = isset($this->schema)?$this->schema:env('DB_SCHEMA');
+        return $schema.'.'.$this->table;
+    }
+    
+    public function tarefas(){
+        return $this->belongsToMany('App\Tarefa');
+    }
 }
