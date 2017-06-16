@@ -2,12 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Traits\SchemaObservable as SchemaObservable;
+use App\Model;
 
 class Revisao extends Model {
-
-    use SchemaObservable;
 
     /**
      * The table associated with the model.

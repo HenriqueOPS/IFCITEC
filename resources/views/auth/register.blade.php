@@ -52,15 +52,15 @@
                             </div>
                         </div>
                         
-                           <div class="form-group{{ $errors->has('dt_nascimento') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Nascimento</label>
+                           <div class="form-group{{ $errors->has('dtNascimento') ? ' has-error' : '' }}">
+                            <label for="dtNascimento" class="col-md-4 control-label">Nascimento</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="date" class="form-control" name="dt_nascimento" value="{{ old('dt_nascimento') }}" required autofocus>
+                                <input id="dtNascimento" type="date" class="form-control" name="dtNascimento" value="{{ old('dtNascimento') }}" required autofocus>
 
-                                @if ($errors->has('dt_nascimento'))
+                                @if ($errors->has('dtNascimento'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('dt_nascimento') }}</strong>
+                                        <strong>{{ $errors->first('dtNascimento') }}</strong>
                                     </span>
                                 @endif
                             </div>
