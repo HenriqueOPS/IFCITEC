@@ -2,64 +2,60 @@
 
 namespace App\Services;
 
+use App\Strategies\Moodle\VersionStrategy;
+use App\Escola;
+use Illuminate\Http\Request;
+use GuzzleHttp\Client as GuzzleClient;
+use App\Exceptions\MoodleErrorException;
+
 class MoodleAuthService {
 
-    static function authToken(String $moodleLink, String $username, String $password) {
-        echo "Atenção: Paramêtro de Request será melhor para funcao authToken<br>";
-        $client = new \GuzzleHttp\Client();
+    private $guzzle;
 
-        $response = $client->post($moodleLink . '/login/token.php', [
+    public function __construct(GuzzleClient $client) {
+        $this->guzzle = $client;
+    }
+
+    public function autenticar(Escola $escola, Request $request) {
+        $token = $this->authToken($escola, $request);
+        $user = $this->getUser($escola, $token);
+        return $user;
+    }
+
+    private function authToken(Escola $escola, Request $request) {
+        $response = $this->guzzle->post($escola->moodleLink . '/login/token.php', [
             'form_params' => [
-                'username' => $username,
-                'password' => $password,
+                'username' => $request->username,
+                'password' => $request->password,
                 'service' => 'moodle_mobile_app',
             ],
         ]);
 
         $data = json_decode((string) $response->getBody(), true);
 
+        if (!isset($data['token'])) {
+            throw new MoodleErrorException($data['error']);
+        }
+
         return $data['token'];
     }
 
-    static function getUser(String $moodleLink, String $version, String $token, String $format = 'json') {
-        echo "Atenção: Paramêtro de Request será melhor para funcao getUser";
+    private function getUser(Escola $escola, String $token, String $format = 'json') {
+        $versionStrategy = new VersionStrategy($escola, $token, $format);
 
-        $client = new \GuzzleHttp\Client();
-
-        $response = $client->post($moodleLink . '/webservice/rest/server.php', [
-            'form_params' => [
-                'wsfunction' => config('moodle.siteInfo.' . $version),
-                'wstoken' => $token,
-                'moodlewsrestformat' => $format,
-            ],
+        $response = $this->guzzle->post($escola->moodleLink . '/webservice/rest/server.php', [
+            'form_params' => $versionStrategy->getParamsForUserId(),
         ]);
 
+        $data = json_decode((string) $response->getBody(), true);
+
+        $response = $this->guzzle->post($escola->moodleLink . '/webservice/rest/server.php', [
+            'form_params' => $versionStrategy->getParams($data),
+        ]);
 
         $data = json_decode((string) $response->getBody(), true);
 
-        $params = [
-            'form_params' => [
-                'wsfunction' => config('moodle.user.' . $version),
-                'wstoken' => $token,
-                'moodlewsrestformat' => $format,
-            ],
-        ];
-        switch ($version) {
-            case '2-6':
-                $params['form_params']['userids'] = [$data['userid']];
-                //$params['form_params']['userids'] = [666];
-                break;
-            case '3-2':
-                $params['form_params']['field'] = 'id';
-                $params['form_params']['values[0]'] = $data['userid'];
-                //$params['form_params']['values[0]'] = '666';
-                break;
-        }
-        
-        $response = $client->post($moodleLink . '/webservice/rest/server.php', $params);
-
-        $data = json_decode((string) $response->getBody(), true);
-
-        return $data;
+        return collect($data[0]);
     }
+
 }
