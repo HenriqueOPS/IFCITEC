@@ -49,10 +49,10 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'nome' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:pessoa',
+            'email' => 'required|string|email|max:255|unique:pgsql.pessoa',
             'senha' => 'required|string|confirmed',
             'cpf' => 'nullable|cpf',
-            'dt_nascimento' => 'required|date'
+            'dtNascimento' => 'required|date'
         ]);
     }
 
@@ -69,7 +69,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'senha' => bcrypt($data['senha']),
             'cpf' => $data['cpf'],
-            'dt_nascimento' => $data['dt_nascimento'],
+            'dt_nascimento' => $data['dtNascimento'],
             'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
         ]);
     }
