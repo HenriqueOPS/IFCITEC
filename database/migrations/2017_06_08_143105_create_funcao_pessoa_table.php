@@ -12,7 +12,7 @@ class CreatePessoaFuncaoTable extends Migration
      * @return void
      */
     public function up() {
-        Schema::create(env('DB_SCHEMA').'.pessoa_funcao', function (Blueprint $table) {
+        Schema::create(env('DB_SCHEMA').'.funcao_pessoa', function (Blueprint $table) {
             $table->integer('pessoa_id')->unsigned();
             $table->integer('funcao_id')->unsigned();
             //Foreign Keys Constraints
@@ -30,7 +30,7 @@ class CreatePessoaFuncaoTable extends Migration
      * @return void
      */
     public function down() {
-        Schema::dropIfExists(env('DB_SCHEMA').'.pessoa_funcao');
+        Schema::dropIfExists(env('DB_SCHEMA').'.funcao_pessoa');
     }
 
 }
