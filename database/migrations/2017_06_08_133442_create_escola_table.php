@@ -19,7 +19,7 @@ class CreateEscolaTable extends Migration
             $table->string('nome_curto')->unique();
             $table->string('email')->unique();
             $table->string('moodle_link')->nullable();
-            $table->string('versao')->nullable();
+            $table->string('moodle_versao')->nullable();
             $table->timestamps();	
          });
     }

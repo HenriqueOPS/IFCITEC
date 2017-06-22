@@ -1,18 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
-class CreateSchema extends Migration
-{
+
+class CreateSchema extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {     
+    public function up() {
         $query = DB::statement('CREATE SCHEMA ' . env('DB_SCHEMA'));
     }
 
@@ -21,8 +19,8 @@ class CreateSchema extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
     }
+
 }

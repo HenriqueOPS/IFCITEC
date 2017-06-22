@@ -17,6 +17,7 @@ class CreateProjetoTable extends Migration
             $table->increments('id');
             $table->string('titulo');
             $table->text('resumo');
+            $table->binary('relatorio')->nullable();
             $table->timestamps();	
             $table->integer('area_id')->unsigned();
             $table->integer('nivel_id')->unsigned();
