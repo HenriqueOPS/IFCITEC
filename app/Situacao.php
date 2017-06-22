@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Model;
+use App\Mods\Model;
 
 class Situacao extends Model {
 
@@ -21,4 +21,8 @@ class Situacao extends Model {
     protected $fillable = [
         'situacao', 'descricao',
     ];
+    
+    public function revisoes(){
+        return $this->hasMany('App\Revisao');
+    }
 }
