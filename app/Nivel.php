@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Model;
+use App\Mods\Model;
 
 class Nivel extends Model {
 
@@ -21,4 +21,8 @@ class Nivel extends Model {
     protected $fillable = [
         'nivel', 'descricao',
     ];
+    
+    public function projetos() {
+        return $this->hasMany('App\Projeto');
+    }
 }

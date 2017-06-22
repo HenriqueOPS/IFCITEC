@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Model;
+use App\Mods\Model;
 
 class PalavraChave extends Model {
 
@@ -21,4 +21,8 @@ class PalavraChave extends Model {
     protected $fillable = [
         'palavra', 
     ];
+    
+    public function projetos() {
+        return $this->belongsToMany('App\Projeto');
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Model;
+use App\Mods\Model;
 
 class Avaliacao extends Model {
 
@@ -21,4 +21,12 @@ class Avaliacao extends Model {
     protected $fillable = [
         'notaFinal', 'observacao', 
     ];
+    
+    public function projeto(){
+        return $this->belongsTo('App\Projeto');
+    }
+    
+    public function pessoa(){
+        return $this->belongsTo('App\Pessoa');
+    }
 }

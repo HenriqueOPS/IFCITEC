@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Model;
+use App\Mods\Model;
 
 class Revisao extends Model {
 
@@ -19,6 +19,19 @@ class Revisao extends Model {
      * @var array
      */
     protected $fillable = [
-        'observacao', 
+        'observacao',
     ];
+
+    public function projeto() {
+        return $this->belongsTo('App\Projeto');
+    }
+
+    public function pessoa() {
+        return $this->belongsTo('App\Pessoa');
+    }
+    
+    public function situacao() {
+        return $this->belongsTo('App\Situacao');
+    }
+
 }

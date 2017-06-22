@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Model;
+use App\Mods\Model;
 
 class AreaConhecimento extends Model {
 
@@ -19,6 +19,10 @@ class AreaConhecimento extends Model {
      * @var array
      */
     protected $fillable = [
-        'areaConhecimento', 'descricao',
+        'area_conhecimento', 'descricao',
     ];
+    
+    public function projetos() {
+        return $this->hasMany('App\Projeto');
+    }
 }
