@@ -23,7 +23,7 @@ class Escola extends Model {
      * @var array
      */
     protected $fillable = [
-        'nomeCompleto', 'nomeCurto', 'email', 'moodleLink', 'moodleVersao'
+        'nome_completo', 'nome_curto', 'email', 'moodle_link', 'moodle_versao'
     ];
 
     public function getPessoas() {
@@ -65,6 +65,10 @@ class Escola extends Model {
     
     public function projetos(){
          return $this->belongsToMany('App\Projeto', 'escola_funcao_pessoa_projeto');
+    }
+    
+    public function scopeTemMoodle($query){
+        return $query->where('moodle_link','<>',null);
     }
 
 }

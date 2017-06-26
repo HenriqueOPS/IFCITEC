@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\MoodleAuthService;
-use App\Exceptions\MoodleErrorException;
 use App\Escola;
 use App\Projeto;
 use App\Pessoa;
-
 class PessoaController extends Controller {
 
     private $moodleService;
@@ -23,7 +20,7 @@ class PessoaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        //
+        
     }
 
     /**
@@ -84,16 +81,6 @@ class PessoaController extends Controller {
      */
     public function destroy($id) {
         //
-    }
-
-    public function autenticar(Request $request) {
-        // TODO: Implementar acesso de parametros via Request
-        try {
-            $user = $this->moodleService->autenticar($escola, $request);
-            dd($user);
-        } catch (MoodleErrorException $e) {
-            dd($e->message);
-        }
     }
 
 }
