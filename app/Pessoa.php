@@ -70,5 +70,9 @@ class Pessoa extends Authenticatable {
         return $this->hasMany('App\Revisao');
     }
     
+    static function findByEmail($email){
+        return Pessoa::where('email',$email)->first();
+    }
+    
 
 }

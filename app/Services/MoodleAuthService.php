@@ -23,16 +23,17 @@ class MoodleAuthService {
     }
 
     private function authToken(Escola $escola, Request $request) {
-        $response = $this->guzzle->post($escola->moodleLink . '/login/token.php', [
+       
+        $response = $this->guzzle->post($escola->moodle_link . '/login/token.php', [
             'form_params' => [
                 'username' => $request->username,
                 'password' => $request->password,
                 'service' => 'moodle_mobile_app',
             ],
         ]);
-
+  
         $data = json_decode((string) $response->getBody(), true);
-
+     
         if (!isset($data['token'])) {
             throw new MoodleErrorException($data['error']);
         }
@@ -42,14 +43,14 @@ class MoodleAuthService {
 
     private function getUser(Escola $escola, String $token, String $format = 'json') {
         $versionStrategy = new VersionStrategy($escola, $token, $format);
-
-        $response = $this->guzzle->post($escola->moodleLink . '/webservice/rest/server.php', [
+        
+        $response = $this->guzzle->post($escola->moodle_link  . '/webservice/rest/server.php', [
             'form_params' => $versionStrategy->getParamsForUserId(),
         ]);
 
         $data = json_decode((string) $response->getBody(), true);
 
-        $response = $this->guzzle->post($escola->moodleLink . '/webservice/rest/server.php', [
+        $response = $this->guzzle->post($escola->moodle_link  . '/webservice/rest/server.php', [
             'form_params' => $versionStrategy->getParams($data),
         ]);
 

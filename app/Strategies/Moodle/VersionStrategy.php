@@ -16,7 +16,8 @@ class VersionStrategy {
     public function __construct(Escola $escola, String $token = null, String $format = null) {
         $this->token = $token;
         $this->format = $format;
-        switch ($escola->version) {
+        
+        switch ($escola->moodle_versao) {
             case '2-6':
                 $this->strategy = new Moodle26Strategy();
                 break;
