@@ -16,7 +16,7 @@ class CreateFuncaoTable extends Migration
            Schema::create(env('DB_SCHEMA').'.funcao', function (Blueprint $table) {
             $table->increments('id');
             $table->string('funcao')->unique();
-            $table->string('descricao')->nullable();
+            $table->text('descricao')->nullable();
             $table->timestamps();	
          });
     }

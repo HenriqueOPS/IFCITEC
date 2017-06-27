@@ -25,4 +25,8 @@ class Nivel extends Model {
     public function projetos() {
         return $this->hasMany('App\Projeto');
     }
+    
+    public function areas_conhecimento(){
+        return $this->belongsToMany('App\AreaConhecimento','area_nivel','nivel_id','area_id');
+    }
 }
