@@ -16,7 +16,7 @@ class CreateAreaConhecimentoTable extends Migration
            Schema::create(env('DB_SCHEMA').'.area_conhecimento', function (Blueprint $table) {
             $table->increments('id');
             $table->string('area_conhecimento')->unique();
-            $table->string('descricao')->nullable();
+            $table->text('descricao')->nullable();
             $table->timestamps();	
          });
     }

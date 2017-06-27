@@ -16,7 +16,7 @@ class CreateNivelTable extends Migration
            Schema::create(env('DB_SCHEMA').'.nivel', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nivel')->unique();
-            $table->string('descricao')->nullable();
+            $table->text('descricao')->nullable();
             $table->timestamps();	
          });
     }
