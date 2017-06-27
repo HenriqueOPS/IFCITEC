@@ -20,6 +20,19 @@
                     </div>
                 </div>
                 <p class="text-divider">Login via Moodle:</p>
+                @if($errors->has('moodleError'))
+                    <div class="alert alert-danger">
+                        <div class="container-fluid text-center">
+                            <div class="alert-icon">
+                                <i class="material-icons">error_outline</i>
+                            </div>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true"><i class="material-icons">clear</i></span>
+                            </button>
+                            <b>Erro: </b>{{ $errors->first('moodleError') }}
+                        </div>
+                    </div>
+                @endif
                 <form class="form" method="POST" action="{{ route('moodleLoginPost') }}">
                     <div class="content">
                         {{ csrf_field() }}
@@ -39,7 +52,7 @@
                             </span>
                             @endif
                         </div>
-                        
+
 
                         <div class="input-group{{ $errors->has('username') ? ' has-error' : '' }}">
                             <span class="input-group-addon">

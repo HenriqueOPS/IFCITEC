@@ -43,41 +43,26 @@ class MoodleAuthController extends Controller {
     public function autenticar(Request $request) {
         $escola = Escola::find($request->escola);
 
-        // TODO: Implementar acesso de parametros via Request
         try {
             $user = $this->moodleService->autenticar($escola, $request);
-            
+
             $pessoa = Pessoa::findByEmail($user['email']);
-            
-            if (is_null($pessoa)) {
-                $pessoa = Pessoa::create([
-                            'nome' => $user['fullname'],
-                            'email' => $user['email'],
-                            'senha' => bcrypt(null),
-                            'dt_nascimento' => '01/01/1998',
-                ]);
-                return view('auth.moodle.register')->withPessoa($pessoa);
-            } else {
-               return $this->fazerLogin($pessoa);
+
+            if (is_null($pessoa)) { //Se é necessário cadastrar pessoa
+                session(['email' => $user['email']]);
+                session(['nome' => $user['fullname']]);
+
+                return view('auth.moodle.register')->withEmail($user['email'])->withNome($user['fullname']);
+            } else {//Se ela já existe no sistema
+                return $this->fazerLogin($pessoa);
             }
-        } catch (MoodleErrorException $e) {
-            dd($e->message);
+        } catch (MoodleErrorException $e) { //Se o webservice retornou alguma mensagem de erro
+            return back()->withErrors(["moodleError" => $e->message]);
         }
     }
 
-    public function registrar(Request $request) {
-        $pessoa = Pessoa::findByEmail($request->email);
-
-        $pessoa->cpf = $request->cpf;
-        $pessoa->dt_nascimento = $request->dt_nascimento;
-        $pessoa->camisa = isset($request->camisa) ? $request->camisa : null;
-        $pessoa->save();
-
-        return $this->fazerLogin($pessoa);
-    }
-    
-    private function fazerLogin(Pessoa $pessoa){
-         if (Auth::attempt(['email' => $pessoa->email, 'password' => null])) {
+    private function fazerLogin(Pessoa $pessoa) {
+        if (Auth::attempt(['email' => $pessoa->email, 'password' => $pessoa->email])) {
             return redirect('home');
         }
     }
