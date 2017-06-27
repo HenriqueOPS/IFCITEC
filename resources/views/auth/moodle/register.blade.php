@@ -7,14 +7,14 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Completando o Cadastro..</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('moodleRegistrar') }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{  route('register') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('nome') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">Nome</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="nome" value="{{ $pessoa->nome }}" disabled>
+                                <input id="name" type="text" class="form-control" name="nome" value="{{ $nome }}" disabled>
                             </div>
                         </div>
 
@@ -22,7 +22,7 @@
                             <label for="email" class="col-md-4 control-label">E-Mail</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ $pessoa->email }}" required>
+                                <input id="email" type="email" class="form-control" name="email" value="{{ $email }}" disabled required>
                             </div>
                         </div>
 

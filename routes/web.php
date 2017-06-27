@@ -22,7 +22,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::prefix('moodle')->group(function () {
     Route::get('login', 'Auth\MoodleAuthController@index')->name('moodleLogin');
     Route::post('login', 'Auth\MoodleAuthController@autenticar')->name('moodleLoginPost');
-    Route::post('registrar', 'Auth\MoodleAuthController@registrar')->name('moodleRegistrar');
     
 });
 

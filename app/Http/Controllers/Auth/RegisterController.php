@@ -7,20 +7,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
-class RegisterController extends Controller
-{
+class RegisterController extends Controller {
     /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
+      |--------------------------------------------------------------------------
+      | Register Controller
+      |--------------------------------------------------------------------------
+      |
+      | This controller handles the registration of new users as well as their
+      | validation and creation. By default this controller uses a trait to
+      | provide this functionality without requiring any additional code.
+      |
+     */
 
-    use RegistersUsers;
+use RegistersUsers;
 
     /**
      * Where to redirect users after registration.
@@ -34,8 +33,7 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('guest');
     }
 
@@ -45,14 +43,17 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
-    {
+    protected function validator(array $data) {
+        if (session()->has('email')) {
+            $data = $this->setSessionValues($data);
+        }
+        
         return Validator::make($data, [
-            'nome' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:pgsql.pessoa',
-            'senha' => 'required|string|confirmed',
-            'cpf' => 'nullable|cpf',
-            'dt_nascimento' => 'required|date'
+                    'nome' => 'required|string|max:255',
+                    'email' => 'required|string|email|max:255|unique:pgsql.pessoa',
+                    'senha' => 'required|string|confirmed',
+                    'cpf' => 'nullable|cpf',
+                    'dt_nascimento' => 'required|date'
         ]);
     }
 
@@ -62,15 +63,28 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return User
      */
-    protected function create(array $data)
-    {
+    protected function create(array $data) {
+        if (session()->has('email')) {
+            $data = $this->setSessionValues($data);
+            session()->flush();
+        }
+
         return Pessoa::create([
-            'nome' => $data['nome'],
-            'email' => $data['email'],
-            'senha' => bcrypt($data['senha']),
-            'cpf' => $data['cpf'],
-            'dt_nascimento' => $data['dt_nascimento'],
-            'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
+                    'nome' => $data['nome'],
+                    'email' => $data['email'],
+                    'senha' => bcrypt($data['senha']),
+                    'cpf' => $data['cpf'],
+                    'dt_nascimento' => $data['dt_nascimento'],
+                    'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
         ]);
     }
+
+    private function setSessionValues($data) {
+        $data['email'] = session('email');
+        $data['nome'] = session('nome');
+        $data['senha'] = session('email');
+        $data['senha_confirmation'] = session('email');
+        return $data;
+    }
+
 }
