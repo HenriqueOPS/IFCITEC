@@ -44,6 +44,7 @@ use RegistersUsers;
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data) {
+
         if (session()->has('email')) {
             $data = $this->setSessionValues($data);
         }
@@ -52,8 +53,7 @@ use RegistersUsers;
                     'nome' => 'required|string|max:255',
                     'email' => 'required|string|email|max:255|unique:pgsql.pessoa',
                     'senha' => 'required|string|confirmed',
-                    'cpf' => 'nullable|cpf',
-                    'dt_nascimento' => 'required|date'
+                    'dt_nascimento' => 'required|date_format:d/m/Y|before:today|after:01/01/1950'
         ]);
     }
 
@@ -73,7 +73,6 @@ use RegistersUsers;
                     'nome' => $data['nome'],
                     'email' => $data['email'],
                     'senha' => bcrypt($data['senha']),
-                    'cpf' => $data['cpf'],
                     'dt_nascimento' => $data['dt_nascimento'],
                     'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
         ]);
