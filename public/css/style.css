@@ -12,3 +12,36 @@ and open the template in the editor.
     font-size: 35px !important;
     width: auto !important;
 }
+
+.main-raised {
+    margin: 0px 30px 50px !important;
+    padding-bottom: 30px;
+}
+
+h2{
+    border-bottom: 1px solid lightgray !important;
+}
+
+body{
+    background-image: url("../img/fundo.png");
+    background-size: 100%;
+}
+
+.moodle-icon{
+  width: 48px;
+  height: 48px;
+  display: inline-block;
+  -webkit-mask: url('../img/moodleIcon.svg') no-repeat 50% 50%;
+  mask: url('../img/moodleIcon.svg') no-repeat 50% 50%;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  vertical-align: middle;
+}
+
+.icon-white{
+    background-color: white;
+}
+
+.icon-gray{
+   background-color: #555555;
+}

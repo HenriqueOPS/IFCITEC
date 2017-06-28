@@ -1,143 +1,134 @@
 @extends('layouts.app')
 
 @section('css')
-<link href="{{ asset('css/register.css') }}" rel="stylesheet">
+<link href="{{ asset('css/datepicker/bootstrap-datepicker.standdalone.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
-
-<div class="wrapper">
-    <div class="container" style="width: 700px; height: 750px; background-color: #eeeeee; border-radius: 10px 20px;">
-        <div class="row">
-            <div class="col-md-12 col-lg-12">
-                <center><h2>Cadastro de Participante</h2></center>
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-lg-10 col-lg-offset-1">
-                @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    <div class="container-fluid">
-                        <div class="alert-icon">
-                            <i class="material-icons">error_outline</i>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 col-sm-12">
+            <div class="main main-raised">
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <h2>Cadastro de Participante</h2>
+                    </div>
+                </div>
+                <form method="POST" action="{{route('register')}}">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-info text-center">
+                                <div class="container-fluid">
+                                    <div class="alert-icon">
+                                        <i class="material-icons">info_outline</i>
+                                    </div>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true"><i class="material-icons">clear</i></span>
+                                    </button>
+                                    <b>ATENÇÃO: </b>É de total resposabilidade do usuário a veracidade dos dados aqui informados, pois estes serão utilizados para a emissão de certificados
+                                </div>
+                            </div>
                         </div>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true"><i class="material-icons">clear</i></span>
-                        </button>
-                        <b>Ops! </b> Há erros em seu cadastro:
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            @endif
-            <div class="alert alert-warning">
-                <div class="container-fluid">
-                    <div class="alert-icon">
-                        <i class="material-icons">warning</i>
-                    </div>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true"><i class="material-icons">clear</i></span>
-                    </button>
-                    <b>ATENÇÃO: </b>É de total resposabilidade do usuário a veracidade dos dados aqui informados, pois estes serão utilizados para a emissão de certificados
-                </div>
-            </div>
-            <form class="form-horizontal" role="form" method="POST" action="{{ url('/auth/register') }}">
-                <div class="content">
+                        <div class="col-md-12 text-center">
+                            <p><b>Faça a inscrição via:</b><br> <a href="{{route('moodleLogin')}}"><i class="moodle-icon icon-gray"></i></a></p>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1">
+
                             {{ csrf_field() }}
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                            <i class="material-icons">face</i>
-                        </span>
-                        
-                        <input type="text" id="name" class="form-control" name="name" value="{{ old('name') }}" placeholder=" Nome">
-                    </div>
+                            <div class="input-group{{ $errors->has('nome') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">face</i>
+                                </span>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Nome</label>
+                                    <input type="text" class="form-control" name="nome" value="{{old('nome')}}" required>
+                                </div>
+                                @if ($errors->has('nome'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('nome') }}</strong>
+                                </span>
+                                @endif
+                            </div>
 
-                    <br>
-                    <div class="col-md-12 col-md-offset-1">
-                        <div class="input-group">
-                            <span class="input-group-addon">
-                                <i class="material-icons">credit_card</i>
-                            </span>
-                            <input type="cpf" id="cpf" maxlength="14" OnKeyPress="formatar('###.###.###-##', this)" class="form-control" name="cpf" value="{{ old('cpf') }}" placeholder=" CPF">
-                            Caso você não possua um, deixe em branco
+                            <div class="input-group{{ $errors->has('dt_nascimento') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">today</i>
+                                </span>
+                                <div class="form-group ">
+                                    <label class="control-label">Data Nascimento</label>
+                                    <input type="text" class="form-control datepicker" name="dt_nascimento" value="{{ old('dt_nascimento') }}"  required>
+                                </div>
+                                @if ($errors->has('dt_nascimento'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('dt_nascimento') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+
+                            <div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">email</i>
+                                </span>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Email</label>
+                                    <input type="text" class="form-control" name="email" value="{{ old('email') }}" required>
+                                </div>
+                                @if ($errors->has('email'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">lock_outline</i>
+                                </span>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Senha</label>
+                                    <input type="password" class="form-control" name="senha" required>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">done</i>
+                                </span>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Confirme a Senha</label>
+                                    <input type="password" class="form-control" name="senha_confirmation" required>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <br>
-                    <div class="col-md-12 col-md-offset-1">
-                        <div class="input-group">
-                            <span class="input-group-addon">
-                                <i class="material-icons">insert_invitation</i>
-                            </span>
-                            <input type="text" id="exemplo" class="form-control">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3 text-center">
+                            <button class="btn btn-primary">Inscrever</button>
+
                         </div>
                     </div>
-                    <br>
-                    <div class="col-md-12 col-md-offset-1">
-                        <div class="input-group">
-                            <span class="input-group-addon">
-                                <i class="material-icons">email</i>
-                            </span>
-                            <input type="email" id="email" class="form-control" name="email" value="{{ old('email') }}" placeholder=" Email">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="col-md-12 col-md-offset-1">
-                        <div class="input-group">
-                            <span class="input-group-addon">
-                                <i class="material-icons">lock_outline</i>
-                            </span>
-                            <input type="password" id="password" class="form-control" name="password" value="{{ old('password') }}" placeholder=" Senha">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="col-md-12 col-md-offset-1">
-                        <div class="input-group">
-                            <span class="input-group-addon">
-                                <i class="material-icons">done</i>
-                            </span>
-                            <input type="password" id="password_confirmation" class="form-control" name="password_confirmation" value="{{ old('password_confirmation') }}" placeholder=" Confirme a senha">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="col-lg-offset-6">
-                        <input type="submit" class="btn btn-primary" value="REGISTRAR"><br>
-                        <br>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </div>
-<script>
-    function formatar(mascara, documento) {
-        var i = documento.value.length;
-        var saida = mascara.substring(0, 1);
-        var texto = mascara.substring(i)
 
-        if (texto.substring(0, 1) != saida) {
-            documento.value += texto.substring(0, 1);
-        }
-
-    }
-</script>
-</body>
 @endsection
 
-@section('javascript')
+@section('js')
+<script type="text/javascript" src="{{asset('js/datepicker/bootstrap-datepicker.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/datepicker/locales/bootstrap-datepicker.pt-BR.js')}}"></script>
+<script type="text/javascript">
 
-<script>
-    $(document).ready(function () {
-        $('#exemplo').datepicker({
-            format: "DD/MM/yy",
-            language: "pt-BR",
-            minViewMode: 0;
-                    orientation: auto
-        });
-    });
+
+$('.datepicker').datepicker({
+    format: 'dd/mm/yyyy',
+    language: 'pt-BR',
+    templates: {
+        leftArrow: '&lsaquo;',
+        rightArrow: '&rsaquo;'
+    },
+});
+
 </script>
 @endsection
