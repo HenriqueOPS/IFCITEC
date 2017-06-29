@@ -18,9 +18,9 @@ class CreatePessoaTable extends Migration
             $table->string('nome');
             $table->string('email')->unique();
             $table->string('senha');
-            $table->string('cpf')->nullable()->unique();
             $table->date('dt_nascimento');
             $table->string('camisa')->nullable();
+            $table->boolean('moodle');
             $table->rememberToken();
             $table->timestamps();
          });
