@@ -88,6 +88,7 @@ class ProjetoController extends Controller {
      */
     public function show($id) {
         //
+        dd("MOSTRAR ID: ".$id);
     }
 
     /**
