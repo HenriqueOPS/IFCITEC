@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ProjetoRequest;
 //
 use App\Nivel;
@@ -11,7 +13,6 @@ use App\Funcao;
 use App\Escola;
 use App\Projeto;
 use App\PalavraChave;
-
 
 class ProjetoController extends Controller {
 
@@ -52,22 +53,31 @@ class ProjetoController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(ProjetoRequest $request) {
-       $projeto = new Projeto();
-       $projeto->fill($request->toArray());
-       //
-       $areaConhecimento = AreaConhecimento::find($request->area);
-       $nivel = Nivel::find($request->nivel);
-       $projeto->areaConhecimento()->associate($areaConhecimento);
-       $projeto->nivel()->associate($nivel);
-       //
-       $projeto->save();
-       //
-       $palavrasChaves = explode(",", $request->palavras_chaves);
-       foreach ($palavrasChaves as $palavra){
-           $projeto->palavrasChaves()->attach(PalavraChave::create(['palavra' => $palavra]));
-       }
-       //
-       return redirect()->route('home');
+        $projeto = new Projeto();
+        $projeto->fill($request->toArray());
+        //
+        $areaConhecimento = AreaConhecimento::find($request->area);
+        $nivel = Nivel::find($request->nivel);
+        $projeto->areaConhecimento()->associate($areaConhecimento);
+        $projeto->nivel()->associate($nivel);
+        //
+        $projeto->save();
+        //--Inicio Attachment de Palavras Chaves. Tabela: palavra_projeto
+        $palavrasChaves = explode(",", $request->palavras_chaves);
+        foreach ($palavrasChaves as $palavra) {
+            $projeto->palavrasChaves()->attach(PalavraChave::create(['palavra' => $palavra]));
+        }
+        //--Inicio Attachment de Participante. Tabela: escola_funcao_pessoa_projeto
+        //Insert via DB pois o Laravel não está preparado para um tabela de 4 relacionamentos
+        DB::table('escola_funcao_pessoa_projeto')->insert(
+                ['escola_id' => $request->escola,
+                    'funcao_id' => $request->funcao,
+                    'pessoa_id' => Auth::id(),
+                    'projeto_id' => $projeto->id
+                ]
+        );
+        //
+        return redirect()->route('home');
     }
 
     /**
@@ -110,5 +120,5 @@ class ProjetoController extends Controller {
     public function destroy($id) {
         //
     }
- 
+
 }
