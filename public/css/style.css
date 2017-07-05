@@ -14,7 +14,7 @@ and open the template in the editor.
 }
 
 .main-raised {
-    margin: 0px 30px 50px !important;
+    margin: 0px 0px 50px !important;
     padding-bottom: 30px;
 }
 
@@ -28,14 +28,14 @@ body{
 }
 
 .moodle-icon{
-  width: 48px;
-  height: 48px;
-  display: inline-block;
-  -webkit-mask: url('../img/moodleIcon.svg') no-repeat 50% 50%;
-  mask: url('../img/moodleIcon.svg') no-repeat 50% 50%;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  vertical-align: middle;
+    width: 48px;
+    height: 48px;
+    display: inline-block;
+    -webkit-mask: url('../img/moodleIcon.svg') no-repeat 50% 50%;
+    mask: url('../img/moodleIcon.svg') no-repeat 50% 50%;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    vertical-align: middle;
 }
 
 .icon-white{
@@ -43,5 +43,29 @@ body{
 }
 
 .icon-gray{
-   background-color: #555555;
+    background-color: #555555;
+}
+
+.list-projects{
+    margin-top: 15px;
+}
+
+.list-projects .project{
+    border-bottom: 1px solid #eee;
+    padding: 10px 0 10px 16px;
+}
+
+.list-projects .project .project-title{
+    font-weight: 600;
+}
+
+.list-projects .project .project-title a{
+    color: rgba(0,0,0,0.85);
+}
+
+.list-projects .function{
+    font-size: 25px;
+    color: #4c59dc;
+    display: inline-block;
+    margin-top: 25px;
 }
