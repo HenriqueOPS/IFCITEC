@@ -29,7 +29,7 @@ class Pessoa extends Authenticatable {
      * @var array
      */
     protected $fillable = [
-        'nome', 'email', 'senha', 'dt_nascimento', 'camisa','moodle',
+        'nome', 'email', 'senha', 'dt_nascimento', 'camisa', 'moodle',
     ];
 
     /**
@@ -57,22 +57,21 @@ class Pessoa extends Authenticatable {
     public function funcoes() {
         return $this->belongsToMany('App\Funcao');
     }
-   
+
     public function projetos() {
-        return $this->belongsToMany('App\Projeto','escola_funcao_pessoa_projeto')->withPivot('escola_id','funcao_id');
+        return $this->belongsToMany('App\Projeto', 'escola_funcao_pessoa_projeto')->withPivot('escola_id', 'funcao_id');
     }
-    
+
     public function avaliacoes() {
         return $this->hasMany('App\Avaliacao');
     }
-    
+
     public function revisoes() {
         return $this->hasMany('App\Revisao');
     }
-    
-    static function findByEmail($email){
-        return Pessoa::where('email',$email)->first();
+
+    static function findByEmail($email) {
+        return Pessoa::where('email', $email)->first();
     }
-    
 
 }

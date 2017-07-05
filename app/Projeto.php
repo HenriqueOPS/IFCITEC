@@ -23,7 +23,7 @@ class Projeto extends Model {
     ];
 
     public function pessoas() {
-        return $this->belongsToMany('App\Pessoa');
+        return $this->belongsToMany('App\Pessoa','escola_funcao_pessoa_projeto');
     }
 
     public function avaliacoes() {
@@ -35,7 +35,7 @@ class Projeto extends Model {
     }
 
     public function areaConhecimento() {
-        return $this->belongsTo('App\AreaConhecimento');
+        return $this->belongsTo('App\AreaConhecimento','area_id');
     }
     
     public function nivel() {
@@ -43,7 +43,7 @@ class Projeto extends Model {
     }
     
     public function palavrasChaves() {
-        return $this->belongsToMany('App\PalavraChave');
+        return $this->belongsToMany('App\PalavraChave','palavra_projeto','projeto_id','palavra_id');
     }
 
 }

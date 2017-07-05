@@ -21,7 +21,12 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('moodle')->group(function () {
     Route::get('login', 'Auth\MoodleAuthController@index')->name('moodleLogin');
-    Route::post('login', 'Auth\MoodleAuthController@autenticar')->name('moodleLoginPost');
-    
+    Route::post('login', 'Auth\MoodleAuthController@autenticar')->name('moodleLoginPost'); 
 });
+
+Route::prefix('nivel')->group(function () {
+    Route::get('areasConhecimento/{id}', 'NivelController@areasConhecimento');
+});
+
+Route::resource('projeto', 'ProjetoController');
 
