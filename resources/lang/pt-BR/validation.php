@@ -84,7 +84,7 @@ return [
     ],
     'string'               => ':attribute deve ser uma string.',
     'timezone'             => ':attribute deve ser uma zona válida.',
-    'unique'               => ':attribute já foi usado.',
+    'unique'               => ':attribute já está sendo utilizado.',
     'uploaded'             => ':attribute falhou ao carregar.',
     'url'                  => 'O formato de :attribute é inválido.',
 

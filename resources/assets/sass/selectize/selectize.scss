@@ -6,7 +6,7 @@ $selectize-font-smoothing: inherit !default;
 $selectize-font-size: 13px !default;
 $selectize-line-height: 18px !default;
 
-$selectize-color-text: #303030 !default;
+$selectize-color-text: #000000 !default;
 $selectize-color-border: #d0d0d0 !default;
 $selectize-color-highlight: rgba(125,168,208,0.2) !default;
 $selectize-color-input: white !default;
@@ -14,7 +14,7 @@ $selectize-color-input-full: $selectize-color-input !default;
 $selectize-color-disabled: #fafafa !default;
 $selectize-color-item: #f2f2f2 !default;
 $selectize-color-item-text: $selectize-color-text !default;
-$selectize-color-item-border: #d0d0d0 !default;
+$selectize-color-item-border: #0073bb !default;
 $selectize-color-item-active: #e8e8e8 !default;
 $selectize-color-item-active-text: $selectize-color-text !default;
 $selectize-color-item-active-border: #cacaca !default;
@@ -38,7 +38,7 @@ $selectize-border: 1px solid $selectize-color-border !default;
 $selectize-dropdown-border: 1px solid $selectize-color-dropdown-border !default;
 $selectize-border-radius: 3px !default;
 
-$selectize-width-item-border: 0 !default;
+$selectize-width-item-border: 1px !default;
 $selectize-max-height-dropdown: 200px !default;
 
 $selectize-padding-x: 8px !default;
@@ -109,14 +109,14 @@ $selectize-caret-margin-rtl: 0 4px 0 -2px !default;
 
 .selectize-input, .selectize-control.single .selectize-input.input-active {
     //Editado pelos Programadores
-        //background: $selectize-color-input;
+    //background: $selectize-color-input;
     //
     cursor: text;
     display: inline-block;
 }
 
 .selectize-input {
-   // border: $selectize-border;
+    // border: $selectize-border;
     padding: $selectize-padding-y $selectize-padding-x;
     display: inline-block;
     width: 100%;
@@ -129,7 +129,7 @@ $selectize-caret-margin-rtl: 0 4px 0 -2px !default;
     //Editado pelos Programadores
     float: right !important;
     //
-    
+
     .selectize-control.multi &.has-items {
         $padding-x: $selectize-padding-x;
         $padding-top: $selectize-padding-y - $selectize-padding-item-y - $selectize-width-item-border;
@@ -161,14 +161,17 @@ $selectize-caret-margin-rtl: 0 4px 0 -2px !default;
         cursor: pointer;
         margin: 0 $selectize-margin-item-x $selectize-margin-item-y 0;
         padding: $selectize-padding-item-y $selectize-padding-item-x;
-        background: $selectize-color-item;
         color: $selectize-color-item-text;
         border: $selectize-width-item-border solid $selectize-color-item-border;
-
+        //Editado pelos Programadores
+        border-radius: 13px;
+        -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), inset 0 1px rgba(255, 255, 255, 0.03);
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), inset 0 1px rgba(255, 255, 255, 0.03);
+        //
         &.active {
+            border: $selectize-width-item-border solid $selectize-color-item-border;
             background: $selectize-color-item-active;
             color: $selectize-color-item-active-text;
-            border: $selectize-width-item-border solid $selectize-color-item-active-border;
         }
     }
     .selectize-control.multi &.disabled > div {
@@ -209,7 +212,7 @@ $selectize-caret-margin-rtl: 0 4px 0 -2px !default;
     display: block;
     position: absolute;
     //Editado pelos Programadores
-        //background: $selectize-color-dropdown-border-top;
+    //background: $selectize-color-dropdown-border-top;
     height: 1px;
     bottom: 0;
     left: 0;
@@ -262,6 +265,7 @@ $selectize-caret-margin-rtl: 0 4px 0 -2px !default;
     }
     .create {
         color: $selectize-color-dropdown-item-create-text;
+        padding-left: 10px;
     }
 }
 
@@ -269,6 +273,7 @@ $selectize-caret-margin-rtl: 0 4px 0 -2px !default;
     overflow-y: auto;
     overflow-x: hidden;
     max-height: $selectize-max-height-dropdown;
+    
 }
 
 .selectize-control.single .selectize-input {
