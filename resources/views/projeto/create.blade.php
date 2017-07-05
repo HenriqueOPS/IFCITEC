@@ -35,7 +35,6 @@
                         <div class="col-md-10 col-md-offset-1">
 
                             {{ csrf_field() }}
-                            {{var_dump($errors)}}
                             <div class="input-group{{ $errors->has('titulo') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">title</i>
