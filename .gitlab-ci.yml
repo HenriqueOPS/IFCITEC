@@ -23,8 +23,11 @@ job2:
     - mysql:latest
     #- postgres:latest
   variables:
-    MYSQL_DATABASE: homestead
-    MYSQL_ROOT_PASSWORD: secret
+    #MYSQL_DATABASE: homestead
+    #MYSQL_ROOT_PASSWORD: secret
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: secret
+    POSTGRES_DB: ifcitec
   before_script:
     - apt-get update -yqq
     #- apt-get install -y libpq-dev 
