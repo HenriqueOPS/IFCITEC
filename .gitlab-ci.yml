@@ -26,7 +26,7 @@ job2:
     MYSQL_ROOT_PASSWORD: secret
   before_script:
     - apt-get update -yqq
-    - docker-php-ext-install pdo_mysql
+    - docker-php-ext-install pdo_mysql pdo_pgsql
   script:
     - cp .env.example .env
     - php artisan key:generate
