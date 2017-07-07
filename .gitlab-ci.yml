@@ -20,8 +20,8 @@ job2:
   stage: test
   image: php:7-apache
   services: 
-    - mysql:latest
-    #- postgres:latest
+    #- mysql:latest
+    - postgres:latest
   variables:
     #MYSQL_DATABASE: homestead
     #MYSQL_ROOT_PASSWORD: secret
