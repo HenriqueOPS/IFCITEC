@@ -20,13 +20,17 @@ job2:
   stage: test
   image: php:7-apache
   services: 
-    - mysql:latest
+    #- mysql:latest
+    - postgres:latest
   variables:
     MYSQL_DATABASE: homestead
     MYSQL_ROOT_PASSWORD: secret
   before_script:
     - apt-get update -yqq
-    - docker-php-ext-install pdo_mysql pdo_pgsql
+    - apt-get install -y libpq-dev 
+    - docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
+    - docker-php-ext-install pdo pdo_pgsql pgsql
+    #- docker-php-ext-install pdo_mysql
   script:
     - cp .env.example .env
     - php artisan key:generate
