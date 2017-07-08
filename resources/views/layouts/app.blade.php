@@ -16,7 +16,6 @@
        
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/style.css') }}" rel="stylesheet">
         <link href="{{ asset('css/material-kit.css') }}" rel="stylesheet">
         @yield('css')
     </head>

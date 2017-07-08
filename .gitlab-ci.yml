@@ -1,0 +1,62 @@
+stages:
+  - build
+  - test
+  - stage
+  - deploy
+
+cache:
+  paths:
+  - vendor/
+
+job1:
+  stage: build
+  services:
+    - docker:dind
+  image: docker:latest
+  script:
+    - docker run --rm -v $PWD:/app composer:1.4 install
+
+job2:
+  stage: test
+  image: php:7-apache
+  services: 
+    #- mysql:latest
+    - postgres:latest
+  variables:
+    #MYSQL_DATABASE: homestead
+    #MYSQL_ROOT_PASSWORD: secret
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: secret
+    POSTGRES_DB: ifcitec
+  before_script:
+    - apt-get update -yqq
+    - apt-get install -y libpq-dev 
+    - docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
+    - docker-php-ext-install pdo pdo_pgsql pgsql
+    #- docker-php-ext-install pdo_mysql
+  script:
+    - cp .env.example .env
+    - php artisan key:generate
+    - php artisan config:cache
+    #- php artisan migrate
+    #- php artisan db:seed
+
+job3:
+  stage: stage
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - export IMAGE_TAG=$(echo -en $CI_COMMIT_REF_NAME | tr -c '[:alnum:]_.-' '-')
+    - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" -f ./Dockerfile-dev .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+
+
+job4:
+  stage: deploy
+  #image: docker:latest
+  script:
+    - ls -lha
+  #before_script:
+  #  - apt-get update -yqq

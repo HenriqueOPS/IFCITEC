@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+  web:
+    image: registry.gitlab.com/vinicius_raupp/laravel:master
+    ports:
+      - '80'
+    links:
+      - mysql
+  mysql:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=homestead
+    ports:
+      - '3306'
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+    - PMA_HOST=mysql
+    - PMA_PASSWORD=secret
+    - PMA_USER=root
+    ports:
+      - '80'
