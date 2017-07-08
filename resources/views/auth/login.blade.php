@@ -13,9 +13,9 @@
                 <div class="header header-primary text-center" id="cardLoginHeader">
                     <h4>Faça login via:</h4>
                     <div class="social-line">
-                        <a href="{{route('moodleLogin')}}" id="moodleAuth" class="btn btn-simple btn-just-icon">
+                        <button id="moodleAuth" class="btn btn-simple btn-just-icon">
                             <img src="{{ asset('img/moodleIcon.png') }}" alt="Moodle Login" title="Moodle" height=30px" />
-                        </a>
+                        </button>
                     </div>
                 </div>
                 <p class="text-divider">Ou simplesmente:</p>
@@ -59,6 +59,5 @@
         </div>
     </div>
 </div>
+</div>
 @endsection
-
-
