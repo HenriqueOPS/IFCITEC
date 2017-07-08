@@ -14,9 +14,9 @@ services:
   postgres:
     image: postgres
     environment:
-      - POSTGRES_USER: postgres
-      - POSTGRES_PASSWORD: secret
-      - POSTGRES_DB: ifcitec
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=ifcitec
     ports:
       - '5432:5432'
   #phppgadmin:
