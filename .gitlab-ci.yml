@@ -33,13 +33,13 @@ job2:
     - apt-get install -y libpq-dev 
     - docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
     - docker-php-ext-install pdo pdo_pgsql pgsql
-    - docker-php-ext-install pdo_mysql
+    #- docker-php-ext-install pdo_mysql
   script:
     - cp .env.example .env
     - php artisan key:generate
     - php artisan config:cache
-    - php artisan migrate
-    - php artisan db:seed
+    #- php artisan migrate
+    #- php artisan db:seed
 
 job3:
   stage: stage
