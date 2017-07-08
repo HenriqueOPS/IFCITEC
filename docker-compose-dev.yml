@@ -25,5 +25,6 @@ services:
     environment:
     - POSTGRES_HOST=postgres
     - POSTGRES_PORT=5432
+    - APACHE_SERVERNAME=pwd10-0-9-3-80.host2.labs.play-with-docker.com
     ports:
       - '8080:80'
