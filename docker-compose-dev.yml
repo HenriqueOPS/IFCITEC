@@ -10,20 +10,21 @@ services:
     ports:
       - '80:80'
     links:
-      - mysql
-  mysql:
-    image: mysql
+      - postgres
+  postgres:
+    image: postgres
     environment:
-      - MYSQL_ROOT_PASSWORD=secret
-      - MYSQL_DATABASE=homestead
+      - POSTGRES_USER: postgres
+      - POSTGRES_PASSWORD: secret
+      - POSTGRES_DB: ifcitec
     ports:
-      - '3306:3306'
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+      - '5432:5432'
+  #phppgadmin:
+  #  image: phpmyadmin/phpmyadmin
 
-    environment:
-    - PMA_HOST=mysql
-    - PMA_PASSWORD=secret
-    - PMA_USER=root
-    ports:
-      - '8080:80'
+  #  environment:
+  #  - PMA_HOST=mysql
+  #  - PMA_PASSWORD=secret
+  #  - PMA_USER=root
+  #  ports:
+  #    - '8080:80'
