@@ -6,14 +6,8 @@ use Illuminate\Http\Request;
 use App\Escola;
 use App\Projeto;
 use App\Pessoa;
+
 class PessoaController extends Controller {
-
-    private $moodleService;
-
-    public function __construct(MoodleAuthService $moodleService) {
-        $this->moodleService = $moodleService;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -50,6 +44,22 @@ class PessoaController extends Controller {
      */
     public function show($id) {
         //
+    }
+
+    /**
+     * Display the specified Pessoa searching by email.
+     *
+     * @param  string  $email
+     * @return \Illuminate\Http\Response
+     */
+    public function showByEmail($email) {
+        //
+        $pessoa = Pessoa::findByEmail($email);
+        if (!($pessoa instanceof Pessoa)) {
+            return response()->json("A pessoa não está inscrita no sistema!", 204);
+        }
+
+        return response()->json($pessoa, 200);
     }
 
     /**

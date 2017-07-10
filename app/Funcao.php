@@ -22,7 +22,7 @@ class Funcao extends Model {
      * @var array
      */
     protected $fillable = [
-        'funcao', 'descricao',
+        'funcao', 'descricao', 'sistema', 'integrante', 'projeto'
     ];
 
     public function pessoas() {
@@ -47,6 +47,10 @@ class Funcao extends Model {
         return $eloquent->get();
 
         // return $this->belongsToMany('App\Pessoa','escola_funcao_pessoa_projeto');
+    }
+    
+    static function getByCategory($category){
+        return Funcao::where($category, true)->get();
     }
 
 }

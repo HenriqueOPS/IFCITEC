@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Mods\Model;
+//
+use Illuminate\Support\Facades\DB;
 
 class Projeto extends Model {
 
@@ -23,7 +25,7 @@ class Projeto extends Model {
     ];
 
     public function pessoas() {
-        return $this->belongsToMany('App\Pessoa','escola_funcao_pessoa_projeto');
+        return $this->belongsToMany('App\Pessoa', 'escola_funcao_pessoa_projeto');
     }
 
     public function avaliacoes() {
@@ -35,15 +37,26 @@ class Projeto extends Model {
     }
 
     public function areaConhecimento() {
-        return $this->belongsTo('App\AreaConhecimento','area_id');
+        return $this->belongsTo('App\AreaConhecimento', 'area_id');
     }
-    
+
     public function nivel() {
         return $this->belongsTo('App\Nivel');
     }
-    
+
     public function palavrasChaves() {
-        return $this->belongsToMany('App\PalavraChave','palavra_projeto','projeto_id','palavra_id');
+        return $this->belongsToMany('App\PalavraChave', 'palavra_projeto', 'projeto_id', 'palavra_id');
+    }
+
+    public function getStatus() {
+        return "Não Revisado";
+    }
+
+    public function getTotalFuncoes($funcoes) {
+        foreach ($funcoes as $funcao) {
+            $totalFuncoes[$funcao->funcao] = (DB::table('escola_funcao_pessoa_projeto')->where([['projeto_id', $this->id], ['funcao_id', $funcao->id]])->count('funcao_id'));
+        }
+        return $totalFuncoes;
     }
 
 }

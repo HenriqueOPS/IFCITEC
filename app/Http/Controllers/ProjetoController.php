@@ -12,6 +12,7 @@ use App\AreaConhecimento;
 use App\Funcao;
 use App\Escola;
 use App\Projeto;
+use App\Pessoa;
 use App\PalavraChave;
 
 class ProjetoController extends Controller {
@@ -41,7 +42,7 @@ class ProjetoController extends Controller {
      */
     public function create() {
         $niveis = Nivel::all();
-        $funcoes = Funcao::all();
+        $funcoes = Funcao::getByCategory('integrante');
         $escolas = Escola::all();
         return view('projeto.create')->withNiveis($niveis)->withFuncoes($funcoes)->withEscolas($escolas);
     }
@@ -77,7 +78,7 @@ class ProjetoController extends Controller {
                 ]
         );
         //
-        return redirect()->route('home');
+        return redirect()->route('projeto.show', ['projeto' => $projeto->id]);
     }
 
     /**
@@ -88,7 +89,11 @@ class ProjetoController extends Controller {
      */
     public function show($id) {
         //
-        dd("MOSTRAR ID: ".$id);
+        $projeto = Projeto::find($id);
+        if (!($projeto instanceof Projeto)) {
+            abort(404);
+        }
+        return view('projeto.show')->withProjeto($projeto);
     }
 
     /**
@@ -122,4 +127,56 @@ class ProjetoController extends Controller {
         //
     }
 
+    public function showFormVinculaIntegrante($id) {
+        $projeto = Projeto::find($id);
+        //É necessário um refact neste bloco:
+        //Bloqueando roles no projeto conforme regulamento
+        $funcoes = Funcao::getByCategory('integrante');
+        $totalFuncoes = $projeto->getTotalFuncoes($funcoes);
+        if($totalFuncoes['Autor'] >= 3){
+            unset($funcoes[0]);
+        }
+         if($totalFuncoes['Coorientador'] >= 2){
+            unset($funcoes[1]);
+        }
+         if($totalFuncoes['Orientador'] >= 1){
+            unset($funcoes[2]);
+        }
+        
+        //Fim do refact necessário
+        $escolas = Escola::all();
+        if (!($projeto instanceof Projeto)) {
+            abort(404);
+        }
+        return view('projeto.vinculaIntegrante')->withProjeto($projeto)->withFuncoes($funcoes)->withEscolas($escolas);
+    }
+    
+    public function searchPessoaByEmail($id, $email){
+
+        $pessoa = Pessoa::findByEmail($email);
+        if (!($pessoa instanceof Pessoa)) {
+            return response()->json(['error' => "A pessoa não está inscrita no sistema!"], 200);
+        }
+        
+        $projeto = Projeto::find($id);
+        $integrantes = $projeto->pessoas;
+        if($integrantes->contains($pessoa)){
+            return response()->json(['error' => "Esta pessoa já está vinculada ao projeto"], 200);
+        }
+        return response()->json($pessoa, 200);
+    }
+
+    public function vinculaIntegrante(Request $request) {
+        //Insert via DB pois o Laravel não está preparado para um tabela de 4 relacionamentos
+        DB::table('escola_funcao_pessoa_projeto')->insert(
+                ['escola_id' => $request->escola,
+                    'funcao_id' => $request->funcao,
+                    'pessoa_id' => $request->pessoa,
+                    'projeto_id' => $request->projeto
+                ]
+        );
+        
+        return redirect()->route('projeto.show', ['projeto' =>$request->projeto]);
+    }
+    
 }
