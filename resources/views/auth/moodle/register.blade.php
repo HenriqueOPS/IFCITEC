@@ -3,70 +3,91 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Completando o Cadastro..</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{  route('register') }}">
-                        {{ csrf_field() }}
+        <div class="col-md-8 col-md-offset-2 col-sm-12">
+            <div class="main main-raised">
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <h2>Cadastro de Participante</h2>
+                    </div>
+                </div>
+                <form method="POST" action="{{route('register')}}">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
 
-                        <div class="form-group{{ $errors->has('nome') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Nome</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="nome" value="{{ $nome }}" disabled>
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ $email }}" disabled required>
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('cpf') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">CPF</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="cpf" value="{{ old('cpf') }}" required autofocus>
-
-                                @if ($errors->has('cpf'))
+                            {{ csrf_field() }}
+                            <div class="input-group{{ $errors->has('nome') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">face</i>
+                                </span>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Nome Completo</label>
+                                    <input type="text" class="form-control" name="nome" value="{{ $nome }}" disabled>
+                                </div>
+                                @if ($errors->has('nome'))
                                 <span class="help-block">
-                                    <strong>{{ $errors->first('cpf') }}</strong>
+                                    <strong>{{ $errors->first('nome') }}</strong>
                                 </span>
                                 @endif
                             </div>
-                        </div>
 
-                        <div class="form-group{{ $errors->has('dt_nascimento') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Nascimento</label>
+                            <div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">email</i>
+                                </span>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Email</label>
+                                    <input type="text" class="form-control" name="email" value="{{ $email }}" disabled>
+                                </div>
+                                @if ($errors->has('email'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </span>
+                                @endif
+                            </div>
 
-                            <div class="col-md-6">
-                                <input id="name" type="date" class="form-control" name="dt_nascimento" value="{{ old('dt_nascimento') }}" required autofocus>
-
+                            <div class="input-group{{ $errors->has('dt_nascimento') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">today</i>
+                                </span>
+                                <div class="form-group ">
+                                    <label class="control-label">Data Nascimento</label>
+                                    <input type="text" class="form-control datepicker" name="dt_nascimento" value="{{ old('dt_nascimento') }}"  required>
+                                </div>
                                 @if ($errors->has('dt_nascimento'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('dt_nascimento') }}</strong>
                                 </span>
                                 @endif
                             </div>
+
                         </div>
-
-                </div>
-
-                <div class="form-group">
-                    <div class="col-md-6 col-md-offset-4">
-                        <button type="submit" class="btn btn-primary">
-                            Inscrever
-                        </button>
                     </div>
-                </div>
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3 text-center">
+                            <button class="btn btn-primary">Inscrever</button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-</div>
+@endsection
+
+@section('js')
+<script type="text/javascript" src="{{asset('js/datepicker/bootstrap-datepicker.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/datepicker/locales/bootstrap-datepicker.pt-BR.js')}}"></script>
+<script type="text/javascript">
+
+
+$('.datepicker').datepicker({
+    format: 'dd/mm/yyyy',
+    language: 'pt-BR',
+    templates: {
+        leftArrow: '&lsaquo;',
+        rightArrow: '&rsaquo;'
+    },
+});
+
+</script>
 @endsection

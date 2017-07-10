@@ -33,11 +33,11 @@ class MoodleAuthService {
         ]);
   
         $data = json_decode((string) $response->getBody(), true);
-     
+        //dd($data);
         if (!isset($data['token'])) {
             throw new MoodleErrorException($data['error']);
         }
-
+        
         return $data['token'];
     }
 
@@ -47,15 +47,15 @@ class MoodleAuthService {
         $response = $this->guzzle->post($escola->moodle_link  . '/webservice/rest/server.php', [
             'form_params' => $versionStrategy->getParamsForUserId(),
         ]);
-
+        
         $data = json_decode((string) $response->getBody(), true);
-
+       
         $response = $this->guzzle->post($escola->moodle_link  . '/webservice/rest/server.php', [
             'form_params' => $versionStrategy->getParams($data),
         ]);
-
+        
         $data = json_decode((string) $response->getBody(), true);
-
+        
         return collect($data[0]);
     }
 

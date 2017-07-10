@@ -44,11 +44,11 @@ use RegistersUsers;
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data) {
-
+       
         if (session()->has('email')) {
             $data = $this->setSessionValues($data);
         }
-        
+      
         return Validator::make($data, [
                     'nome' => 'required|string|max:255',
                     'email' => 'required|string|email|max:255|unique:pgsql.pessoa',
@@ -75,6 +75,7 @@ use RegistersUsers;
                     'senha' => bcrypt($data['senha']),
                     'dt_nascimento' => $data['dt_nascimento'],
                     'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
+                    'moodle' => isset($data['moodle']) ? $data['moodle'] : false,
         ]);
     }
 
@@ -83,6 +84,7 @@ use RegistersUsers;
         $data['nome'] = session('nome');
         $data['senha'] = session('email');
         $data['senha_confirmation'] = session('email');
+        $data['moodle'] = true;
         return $data;
     }
 

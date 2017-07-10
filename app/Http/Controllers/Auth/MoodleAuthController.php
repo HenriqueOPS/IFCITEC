@@ -48,13 +48,12 @@ class MoodleAuthController extends Controller {
 
             $pessoa = Pessoa::findByEmail($user['email']);
 
-            if (is_null($pessoa)) { //Se é necessário cadastrar pessoa
-                session(['email' => $user['email']]);
-                session(['nome' => $user['fullname']]);
-
+            if ($pessoa instanceof Pessoa) { //Se ela já existe no sistema
+                return $this->verificaSeRegistroMoodle($pessoa);
+            } else {//Se é necessário cadastrar pessoa
+                session(['email' => $user['email'], 'nome' => $user['fullname']]);
+                //Fazer via rota, comparando se há um hash na seção
                 return view('auth.moodle.register')->withEmail($user['email'])->withNome($user['fullname']);
-            } else {//Se ela já existe no sistema
-                return $this->fazerLogin($pessoa);
             }
         } catch (MoodleErrorException $e) { //Se o webservice retornou alguma mensagem de erro
             return back()->withErrors(["moodleError" => $e->message]);
@@ -65,6 +64,14 @@ class MoodleAuthController extends Controller {
         if (Auth::attempt(['email' => $pessoa->email, 'password' => $pessoa->email])) {
             return redirect('home');
         }
+    }
+
+    private function verificaSeRegistroMoodle(Pessoa $pessoa) {
+        return ($pessoa->moodle)
+                //Caso esta pessoa existente tenha feito registro via moodle (Isso afeta na senha do auth)
+                ? $this->fazerLogin($pessoa)
+                //Caso esta pessoa existenta tenha feito registro padrão
+                : back()->withErrors(["moodleError" => "Este email já esta vinculado com outro usuário do sistema"]);
     }
 
 }
