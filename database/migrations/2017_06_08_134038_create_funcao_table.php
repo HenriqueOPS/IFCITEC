@@ -17,6 +17,9 @@ class CreateFuncaoTable extends Migration
             $table->increments('id');
             $table->string('funcao')->unique();
             $table->text('descricao')->nullable();
+            $table->boolean('sistema')->default(false);
+            $table->boolean('integrante')->default(false);
+            $table->boolean('projeto')->default(false);      
             $table->timestamps();	
          });
     }
