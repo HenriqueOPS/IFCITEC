@@ -20,7 +20,7 @@ class CreatePessoaTable extends Migration
             $table->string('senha');
             $table->date('dt_nascimento');
             $table->string('camisa')->nullable();
-            $table->boolean('moodle');
+            $table->boolean('moodle')->default(false);
             $table->rememberToken();
             $table->timestamps();
          });
