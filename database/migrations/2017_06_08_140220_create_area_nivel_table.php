@@ -12,7 +12,7 @@ class CreateAreaNivelTable extends Migration
      * @return void
      */
     public function up() {
-        Schema::create(env('DB_SCHEMA').'.area_conhecimento_nivel', function (Blueprint $table) {
+        Schema::create(env('DB_SCHEMA').'.area_nivel', function (Blueprint $table) {
             $table->integer('area_id')->unsigned();
             $table->integer('nivel_id')->unsigned();
             //Foreign Keys Constraints
