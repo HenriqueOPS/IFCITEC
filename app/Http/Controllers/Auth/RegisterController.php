@@ -6,6 +6,7 @@ use App\Pessoa;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Carbon\Carbon;
 
 class RegisterController extends Controller {
     /*
@@ -68,12 +69,12 @@ use RegistersUsers;
             $data = $this->setSessionValues($data);
             session()->flush();
         }
-
+        
         return Pessoa::create([
                     'nome' => $data['nome'],
                     'email' => $data['email'],
                     'senha' => bcrypt($data['senha']),
-                    'dt_nascimento' => $data['dt_nascimento'],
+                    'dt_nascimento' => Carbon::createFromFormat('d/m/Y', $data['dt_nascimento']),
                     'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
                     'moodle' => isset($data['moodle']) ? $data['moodle'] : false,
         ]);
