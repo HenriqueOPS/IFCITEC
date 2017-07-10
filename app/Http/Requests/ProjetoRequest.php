@@ -58,10 +58,10 @@ class ProjetoRequest extends FormRequest {
     public function withValidator($validator) {
         switch ($validator->getData()['nivel']) {
             case 1:
-                //$validator->addRules(['resumo' => 'required|between:800,1500']);
+                $validator->addRules(['resumo' => 'required|between:800,1500']);
                 break;
             default:
-            // $validator->addRules(['resumo' => 'required|between:1500,2000']);
+                $validator->addRules(['resumo' => 'required|between:1500,2000']);
         }
 
         $validator->after(function ($validator) {

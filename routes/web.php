@@ -24,9 +24,16 @@ Route::prefix('moodle')->group(function () {
     Route::post('login', 'Auth\MoodleAuthController@autenticar')->name('moodleLoginPost'); 
 });
 
+Route::resource('projeto', 'ProjetoController');
+
+Route::prefix('projeto')->group(function () {
+    Route::get('{projeto}/vincula-integrante', 'ProjetoController@showFormVinculaIntegrante')->name('projeto.formVinculaIntegrante');
+    Route::post('vincula-integrante', 'ProjetoController@vinculaIntegrante')->name('projeto.vinculaIntegrante');
+    //AJAX
+    Route::get('{projeto}/vincula-integrante/{email}', 'ProjetoController@searchPessoaByEmail');
+});
+
+//AJAX
 Route::prefix('nivel')->group(function () {
     Route::get('areasConhecimento/{id}', 'NivelController@areasConhecimento');
 });
-
-Route::resource('projeto', 'ProjetoController');
-
