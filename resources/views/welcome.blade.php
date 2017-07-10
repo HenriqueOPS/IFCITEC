@@ -11,6 +11,8 @@
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
         <!-- Styles -->
+
+        <link href="{{ asset('css/material-kit.css') }}" rel="stylesheet">
         <style>
             html, body {
                 background-color: #fff;
@@ -19,6 +21,9 @@
                 font-weight: 100;
                 height: 100vh;
                 margin: 0;
+
+                background-image: url("{{asset('img/fundo.png')}}");
+                background-size: 100%;
             }
 
             .full-height {
@@ -50,9 +55,6 @@
             }
 
             .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
                 font-weight: 600;
                 letter-spacing: .1rem;
                 text-decoration: none;
@@ -66,30 +68,27 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @if (Auth::check())
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
-                    @endif
-                </div>
-            @endif
 
             <div class="content">
-                <div class="title m-b-md">
-                    Laravel
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <img src="{{asset('img/IFCITEC-logo.png')}}" class="img-responsive" width="70%">
+                    </div>
                 </div>
 
+
                 <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    <br>
+                    <a href="{{ url('/register') }}" class="btn btn-primary btn-round">Inscrever-se</a>
+                    <br>
+                    <br>
+                    <a href="{{ url('/login') }}" class="btn btn-primary btn-simple">Login</a>
+                    <br>
+                    <br>
+                    <a href="http://ifcitec.canoas.ifrs.edu.br" class="btn btn-primary btn-simple">Mais Informações</a>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+</body>
 </html>
