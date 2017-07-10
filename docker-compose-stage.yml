@@ -15,9 +15,7 @@ services:
     networks:
       - net-web
       - net-db
-
-#   restart: always
-
+    
   postgres:
     image: postgres
     environment:
@@ -28,13 +26,17 @@ services:
       - '5432'
     networks:
       - net-db
-#  phppgadmin:
-#    image: tozd/phppgadmin
-#    environment:
-#      - PHPPGADMIN_HOST=postgres
-#      - PHPPGADMIN_PORT=5432
-#    expose:
-#      - '80'
+
+  phppgadmin:
+    image: tozd/phppgadmin
+    environment:
+      - PHPPGADMIN_HOST=postgres
+      - PHPPGADMIN_PORT=5432
+    ports:
+      - '980:80'
+    networks:
+      - net-web
+      - net-db
 
 networks:
     net-web:
