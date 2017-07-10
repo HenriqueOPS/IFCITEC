@@ -25,7 +25,7 @@
   position: absolute;
   right: 8px;
   top: 50%;
-  color: #303030;
+  color: #000000;
   opacity: 0.4;
   margin-top: -12px;
   line-height: 20px;
@@ -67,7 +67,7 @@
   vertical-align: middle;
   display: inline-block;
   padding: 2px 0 0 0;
-  border-left: 1px solid #d0d0d0;
+  border-left: 1px solid #0073bb;
   -webkit-border-radius: 0 2px 2px 0;
   -moz-border-radius: 0 2px 2px 0;
   border-radius: 0 2px 2px 0;
@@ -81,7 +81,7 @@
 .selectize-control.plugin-remove_button .disabled [data-value] .remove:hover {
   background: none; }
 .selectize-control.plugin-remove_button .disabled [data-value] .remove {
-  border-left-color: white; }
+  border-left-color: #aaaaaa; }
 .selectize-control.plugin-remove_button .remove-single {
   position: absolute;
   right: 28px;
@@ -117,7 +117,7 @@
   border-radius: 3px;
   float: right !important; }
   .selectize-control.multi .selectize-input.has-items {
-    padding: 6px 8px 3px; }
+    padding: 5px 8px 2px; }
   .selectize-input.full {
     background-color: white; }
   .selectize-input.disabled, .selectize-input.disabled * {
@@ -136,17 +136,19 @@
     cursor: pointer;
     margin: 0 3px 3px 0;
     padding: 2px 6px;
-    background: #f2f2f2;
-    color: #303030;
-    border: 0 solid #d0d0d0; }
+    color: #000000;
+    border: 1px solid #0073bb;
+    border-radius: 13px;
+    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), inset 0 1px rgba(255, 255, 255, 0.03);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), inset 0 1px rgba(255, 255, 255, 0.03); }
     .selectize-control.multi .selectize-input > div.active {
+      border: 1px solid #0073bb;
       background: #e8e8e8;
-      color: #303030;
-      border: 0 solid #cacaca; }
+      color: #000000; }
   .selectize-control.multi .selectize-input.disabled > div, .selectize-control.multi .selectize-input.disabled > div.active {
-    color: #7d7d7d;
+    color: #4d4d4d;
     background: white;
-    border: 0 solid white; }
+    border: 1px solid #aaaaaa; }
   .selectize-input > input {
     display: inline-block !important;
     padding: 0 !important;
@@ -213,7 +215,7 @@
   .selectize-dropdown .optgroup:first-child .optgroup-header {
     border-top: 0 none; }
   .selectize-dropdown .optgroup-header {
-    color: #303030;
+    color: #000000;
     background: white;
     cursor: default; }
   .selectize-dropdown .active {
@@ -222,7 +224,8 @@
     .selectize-dropdown .active.create {
       color: white; }
   .selectize-dropdown .create {
-    color: rgba(48, 48, 48, 0.5); }
+    color: rgba(0, 0, 0, 0.5);
+    padding-left: 10px; }
 
 .selectize-dropdown-content {
   overflow-y: auto;

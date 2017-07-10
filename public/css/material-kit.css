@@ -2687,15 +2687,16 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px; }
-  .datepicker > div {
-    display: none; }
   .datepicker table {
     width: 100%;
     margin: 0; }
+  .datepicker .datepicker-days td,
+  .datepicker .datepicker-days th {
+    width: 20px; }
   .datepicker td,
   .datepicker th {
     text-align: center;
-    width: 20px;
+    width: 63px;
     height: 20px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -2719,7 +2720,7 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
   .datepicker .prev p,
   .datepicker .next p {
     font-size: 1.825em; }
-  .datepicker p:hover {
+  .datepicker td:hover {
     background: #eeeeee; }
   .datepicker .day.disabled {
     color: #eeeeee; }
@@ -2727,8 +2728,8 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
   .datepicker td.new {
     color: #999999;
     border-top: 0; }
-  .datepicker td.active p,
-  .datepicker td.active:hover p {
+  .datepicker td.active,
+  .datepicker td.active:hover {
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
     color: #ffffff;
     background-color: #1a237e; }
@@ -2799,15 +2800,11 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
     -o-transition: all 150ms linear;
     -ms-transition: all 150ms linear;
     transition: all 150ms linear;
-    margin-top: -20px;
-    opacity: 0;
-    visibility: hidden; }
+    margin-top: -20px; }
   .datepicker.dropdown-menu.open {
     opacity: 1;
     visibility: visible;
     margin-top: 1px; }
-  .datepicker .table-condensed > tbody > tr > td {
-    padding: 2px; }
   .datepicker .table-condensed > thead > tr > th {
     padding: 0; }
 
