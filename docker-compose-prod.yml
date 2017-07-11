@@ -1,0 +1,45 @@
+version: '2'
+
+services:
+  web:
+    container_name: ifcitecweb
+    image: registry.gitlab.com/oliveira-filipe/ifcitec:dev
+   # expose:
+    ports:
+      - '980:80'
+    links:
+      - postgres
+    networks:
+      - net-web
+      - net-db
+    
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=ifcitec
+    expose:
+      - '5432'
+    networks:
+      - net-db
+
+  phppgadmin:
+    image: tozd/phppgadmin
+    environment:
+      - PHPPGADMIN_HOST=postgres
+      - PHPPGADMIN_PORT=5432
+    expose:
+      - '80'
+    networks:
+      - net-web
+      - net-db
+
+networks:
+    net-web:
+     external:
+      name: net-web
+    net-db:
+     external:
+      name: net-db
+
