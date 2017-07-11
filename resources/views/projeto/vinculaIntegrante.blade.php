@@ -133,7 +133,7 @@ $(document).ready(function () {
         //
         var email = $('#email').val();
         var projeto = $("input[name='projeto']").val();
-        $.get("http://localhost/ifcitec/public/projeto/" + projeto + "/vincula-integrante/" + email, function (data) {
+        $.get("projeto/" + projeto + "/vincula-integrante/" + email, function (data) {
             if (typeof data.error !== 'undefined') {
                 $('#error-message').html(data.error);
                 $('#error').show();
