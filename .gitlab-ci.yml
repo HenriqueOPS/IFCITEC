@@ -15,28 +15,31 @@ job-composer:
     - docker:dind
   image: docker:latest
   script:
-    - docker run --rm -v $PWD:/app composer:1.4 install
+    - docker run --rm -v $PWD:/app composer:1.4 update
 
 # Testa conexão com banco e realiza o migrate
 job-test-db-migrate:
   stage: test
-  image: php:7-apache
+  image: php:7.1.7-apache
   services: 
     - postgres:latest
   variables:
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: secret
     POSTGRES_DB: ifcitec
-  before_script:
+  #before_script:
+  script:
     - apt-get update -yqq
     - apt-get install -y libpq-dev 
     - docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
     - docker-php-ext-install pdo pdo_pgsql pgsql
-  script:
+  #script:
     - cp .env.example .env
     - php artisan key:generate
-    - php artisan config:cache
-    - php artisan migrate
+    #- php artisan config:cache
+    #- php artisan migrate
+    - php artisan env
+    - php artisan --env=local migrate
     - php artisan db:seed
 
 # Cria um container de test, disponível no menu Registry
@@ -46,6 +49,11 @@ job-make-container:
   services:
     - docker:dind
   script:
+    - echo "COPY ./ /var/www/html/" >> ./Dockerfile-dev
+    - echo "RUN chmod 777 -R storage/ bootstrap/cache/" >> ./Dockerfile-dev
+    - echo "RUN cp .env.example .env" >> ./Dockerfile-dev
+    - echo "RUN php artisan key:generate" >> ./Dockerfile-dev
+    - cat Dockerfile-dev
     - export IMAGE_TAG=$(echo -en $CI_COMMIT_REF_NAME | tr -c '[:alnum:]_.-' '-')
     - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" -f ./Dockerfile-dev .
@@ -57,4 +65,3 @@ job-deploy-on-server:
   #image: docker:latest
   script:
     - echo 1
-
