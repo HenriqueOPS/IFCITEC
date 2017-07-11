@@ -3,13 +3,10 @@ version: '2'
 services:
   web:
     container_name: ifcitecweb
-    build:
-      context: .
-      dockerfile: Dockerfile-dev
-    volumes:
-      - ./:/var/www/html/
-    expose:
-      - '80'
+    image: registry.gitlab.com/oliveira-filipe/ifcitec:dev
+   # expose:
+    ports:
+      - '980:80'
     links:
       - postgres
     networks:
@@ -32,8 +29,8 @@ services:
     environment:
       - PHPPGADMIN_HOST=postgres
       - PHPPGADMIN_PORT=5432
-    ports:
-      - '980:80'
+    expose:
+      - '80'
     networks:
       - net-web
       - net-db
