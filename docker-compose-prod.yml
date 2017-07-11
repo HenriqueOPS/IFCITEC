@@ -3,15 +3,16 @@ version: '2'
 services:
   web:
     container_name: ifcitecweb
-    image: registry.gitlab.com/oliveira-filipe/ifcitec:dev
-   # expose:
-    ports:
-      - '980:80'
+    image: registry.gitlab.com/oliveira-filipe/ifcitec:ifcitec2017
+    expose:
+      - '80'
     links:
       - postgres
     networks:
       - net-web
       - net-db
+    volumes:
+      - ./.env:/var/www/html/.env
     
   postgres:
     image: postgres:9.6.3
