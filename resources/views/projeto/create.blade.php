@@ -279,17 +279,7 @@ $(document).ready(function () {
             areaSelect.disable();
             areaSelect.clearOptions();
             areaSelect.load(function (callback) {
-                xhr && xhr.abort();
-                xhr = $.ajax({
-                    url: 'http://localhost/ifcitec/public/nivel/areasConhecimento/' + value,
-                    success: function (results) {
-                        areaSelect.enable();
-                        callback(results);
-                    },
-                    error: function () {
-                        callback();
-                    }
-                })
+                realizaAjax(callback, value);
             });
         }
     });
@@ -297,6 +287,20 @@ $(document).ready(function () {
 
     nivelSelect = $nivelSelect[0].selectize;
 
+    function realizaAjax(callback, value) {
+        xhr && xhr.abort();
+        xhr = $.ajax({
+            url: 'nivel/areasConhecimento/' + value,
+            success: function (results) {
+                areaSelect.enable();
+                console.log(results);
+                callback(results);
+            },
+            error: function (xhr, textStatus) {
+                callback();
+            }
+        });
+    }
 
 });
 </script>

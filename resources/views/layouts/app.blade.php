@@ -7,7 +7,8 @@
 
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
+        
+        <base href="http://ifcitec2.canoas.ifrs.edu.br/">
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts and icons -->
