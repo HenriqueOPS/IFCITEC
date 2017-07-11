@@ -14,16 +14,10 @@ class AreaConhecimentoTableSeeder extends Seeder
     public function run() {
         $areas = [
             [
-                'area_conhecimento' => 'Matemática e suas tecnologias',
+                'area_conhecimento' => 'Matemática e suas tecnologias/Ciências da Natureza e suas tecnologias',
             ],
             [
-                'area_conhecimento' => 'Ciências da Natureza e suas tecnologias',
-            ],
-            [
-                'area_conhecimento' => 'Ciências Humanas e suas tecnologias',
-            ],
-            [
-                'area_conhecimento' => 'Linguagens, códigos e suas tecnologias',
+                'area_conhecimento' => 'Ciências Humanas e suas tecnologias/Linguagens, códigos e suas tecnologias',
             ],
             [
                 'area_conhecimento' => 'Ciências Exatas e Biológicas',
