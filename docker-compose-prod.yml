@@ -4,9 +4,8 @@ services:
   web:
     container_name: ifcitecweb
     image: registry.gitlab.com/oliveira-filipe/ifcitec:dev
-   # expose:
-    ports:
-      - '980:80'
+    expose:
+      - '80'
     links:
       - postgres
     networks:
