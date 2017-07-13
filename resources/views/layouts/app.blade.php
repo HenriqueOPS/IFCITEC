@@ -8,7 +8,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
         
-        <base href="http://ifcitec2.canoas.ifrs.edu.br/">
+        <base href="{{env('APP_URL')}}">
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts and icons -->
@@ -23,7 +23,7 @@
     </head>
     <body>
         <div id="app">
-            <nav class="navbar navbar-default navbar-static-top"-->
+            <nav class="navbar navbar-default navbar-static-top">
                 <div class="container">
                     <div class="navbar-header">
 
