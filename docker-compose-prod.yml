@@ -1,40 +1,45 @@
-version: '2'
+version: "3"
 
 services:
   web:
     container_name: ifcitecweb
-    image: registry.gitlab.com/oliveira-filipe/ifcitec:ifcitec2017
+    image: ifrscanoas/ifcitec:latest
     expose:
-      - '80'
-    links:
-      - postgres
+      - "80"
     networks:
       - net-web
       - net-db
-    volumes:
-      - ./.env:/var/www/html/.env
-    
+#    volumes:
+#      - ./.env:/var/www/html/.env
+    env_file:
+      - .env
+
   postgres:
     image: postgres:9.6.3
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=secret
-      - POSTGRES_DB=ifcitec
+    env_file:
+      - .env
     expose:
-      - '5432'
+      - "5432"
+    volumes:
+      - vol-ifcitec-inscricao/:/var/lib/postgresql/data:rw
     networks:
       - net-db
 
-  phppgadmin:
-    image: tozd/phppgadmin
-    environment:
-      - PHPPGADMIN_HOST=postgres
-      - PHPPGADMIN_PORT=5432
-    expose:
-      - '80'
-    networks:
-      - net-web
-      - net-db
+#  phppgadmin:
+#    image: tozd/phppgadmin
+#    environment:
+#      - PHPPGADMIN_HOST=postgres
+#      - PHPPGADMIN_PORT=5432
+    #expose:
+#    ports:
+#      - '980:80'
+    #  - '80'
+#    networks:
+#      - net-web
+#      - net-db
+volumes:
+  vol-ifcitec-inscricao:
+    external: true
 
 networks:
     net-web:
@@ -43,4 +48,3 @@ networks:
     net-db:
      external:
       name: net-db
-
