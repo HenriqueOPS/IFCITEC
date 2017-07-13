@@ -3,6 +3,8 @@
 @section('css')
 <link href="{{ asset('css/login.css') }}" rel="stylesheet">
 <link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 @endsection
 
 @section('content')
@@ -21,17 +23,17 @@
                 </div>
                 <p class="text-divider">Login via Moodle:</p>
                 @if($errors->has('moodleError'))
-                    <div class="alert alert-danger">
-                        <div class="container-fluid text-center">
-                            <div class="alert-icon">
-                                <i class="material-icons">error_outline</i>
-                            </div>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true"><i class="material-icons">clear</i></span>
-                            </button>
-                            <b>Erro: </b>{{ $errors->first('moodleError') }}
+                <div class="alert alert-danger">
+                    <div class="container-fluid text-center">
+                        <div class="alert-icon">
+                            <i class="material-icons">error_outline</i>
                         </div>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"><i class="material-icons">clear</i></span>
+                        </button>
+                        <b>Erro: </b>{{ $errors->first('moodleError') }}
                     </div>
+                </div>
                 @endif
                 <form class="form" method="POST" action="{{ route('moodleLoginPost') }}">
                     <div class="content">
@@ -82,11 +84,22 @@
                     </div>
                     <div class="footer text-center">
                         <input type="submit" class="btn btn-primary" value="Entrar"><br>
-                        <a class="link" href="{{ url('/register') }}" >NÃO ENCONTROU SUA ESCOLA?</a><br>
-                        <a class="link" href="{{ route('password.request') }}"> ESQUECEU SUA SENHA?
-                        </a><br><br>
                     </div>
                 </form>
+                <div class="footer text-center">
+                    <button id="moodleInfo" class="btn btn-primary btn-simple btn-link">NÃO ENCONTROU SUA ESCOLA?</button>
+                    <div class="info-animate fadeInDown">
+                        Entre em contato via email, informando o nome de sua 
+                        escola e o link do Moodle utilizado por ela. 
+                        Você poderá fazer seu login normalmente por aqui: <br>
+                        <a class="link" href="{{ url('/login') }}" >Login Clássico</a>
+                    </div>
+                    <button id="senhaInfo" class="btn btn-primary btn-simple btn-link"> ESQUECEU SUA SENHA?</button>
+                    <div class="info-animate fadeInDown">
+                        Sua senha deverá ser recuperada através do sistema de Moodle de sua instituição.
+                    </div>
+                    <br><br>
+                </div>
             </div>
         </div>
     </div>
@@ -98,12 +111,26 @@
 <script type="text/javascript" src="{{asset('js/selectize.min.js')}}"></script>
 
 <script type="text/javascript">
+$('.info-animate').hide();
+    
 $('#escola-select').selectize({
     placeholder: 'Escola/Instituição...',
     onInitialize: function () {
         $('.selectize-control').addClass('form-group');
         $('.selectize-input').addClass('form-control');
     },
+});
+
+$('#moodleInfo').click(function (e) {
+    $('.info-animate').hide();
+    $('#moodleInfo + .info-animate').show();
+    $('#moodleInfo + .info-animate').addClass('animated');
+});
+
+$('#senhaInfo').click(function (e) {
+    $('.info-animate').hide();
+    $('#senhaInfo + .info-animate').show();
+    $('#senhaInfo + .info-animate').addClass('animated');
 });
 </script>
 @endsection
