@@ -18,7 +18,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
+//
+Route::get('/avaliacao', function(){
+    return view('avaliador');
+});
+//
 Route::prefix('moodle')->group(function () {
     Route::get('login', 'Auth\MoodleAuthController@index')->name('moodleLogin');
     Route::post('login', 'Auth\MoodleAuthController@autenticar')->name('moodleLoginPost'); 

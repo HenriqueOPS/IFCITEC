@@ -3,11 +3,8 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Traits\SchemaObservable as SchemaObservable;
 
 class Pessoa extends Authenticatable {
-
-    use SchemaObservable;
 
     /**
      * The table associated with the model.
@@ -30,6 +27,9 @@ class Pessoa extends Authenticatable {
      */
     protected $fillable = [
         'nome', 'email', 'senha', 'dt_nascimento', 'camisa', 'moodle',
+        //Referentes a comição Avaliadora, necessário um estudo mais aprofundado
+        //desta característica no sistema issue #40
+        'titulacao', 'lattes', 'profissao', 'instituicao', 'cpf', 'telefone',
     ];
 
     /**
@@ -70,8 +70,23 @@ class Pessoa extends Authenticatable {
         return $this->hasMany('App\Revisao');
     }
 
+    public function endereco() {
+        return $this->hasOne('App\Endereco');
+    }
+
     static function findByEmail($email) {
         return Pessoa::where('email', $email)->first();
+    }
+    
+    /**
+     * Verifica se pessoa possui a função passada por parâmetro
+     * como Autor, Coordenador ou Coorientador.
+     * @access public
+     * @param String $check Uma string contento o nome da Role
+     * @return boolean
+     */
+    public function temFuncao($check) {
+        return in_array($check, array_pluck($this->funcoes->toArray(), 'funcao'));
     }
 
 }
