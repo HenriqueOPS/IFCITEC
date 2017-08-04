@@ -31,6 +31,7 @@
                         <div class="col-md-10 col-md-offset-1">
 
                             {{ csrf_field() }}
+                            <input type="hidden" name="inscricao" value="user">
                             <div class="input-group{{ $errors->has('nome') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">face</i>

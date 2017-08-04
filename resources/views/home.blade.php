@@ -4,18 +4,24 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3" >
-            <a href="{{route('projeto.create')}}" class="btn btn-success">
-                Novo Projeto
-            </a>
+            @if (!Auth::user()->temFuncao("Avaliador"))
+                    <a href="{{route('projeto.create')}}" class="btn btn-success">
+                        Novo Projeto
+                    </a>
+            @endif
         </div>
         <div class="col-md-9 main main-raised">
             <div class="list-projects">
                 @if($funcoes->isEmpty())
                 <div class="text-center">
-                    <span class="function">Você não possui nenhum projeto inscrito</span><br>
+                    @if (!Auth::user()->temFuncao("Avaliador"))
+                    <span class="function">Você não possui nenhum projeto</span><br>
                     <a href="{{route('projeto.create')}}" class="btn btn-success">
                         Novo Projeto
                     </a>
+                    @else
+                     <span class="function">Você não possui nenhum projeto para homologar/revisar</span><br>
+                    @endif
                 </div>
                 @else
                     @foreach($funcoes as $funcao => $projetos)

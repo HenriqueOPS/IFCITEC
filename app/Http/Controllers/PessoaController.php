@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Escola;
-use App\Projeto;
 use App\Pessoa;
 
 class PessoaController extends Controller {
