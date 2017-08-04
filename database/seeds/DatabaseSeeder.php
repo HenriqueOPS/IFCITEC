@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder {
         //a feature de link na página de organização estiver feita
         for ($nivel = 1; $nivel < 2; $nivel++) {
             for ($area = 1; $area < 3; $area++) {
-                DB::table('area_nivel')->insert(
+                DB::table(env('DB_SCHEMA') . '.area_nivel')->insert(
                         ['area_id' => $area, 'nivel_id' => $nivel]
                 );
             }
@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder {
         
         for ($nivel = 2; $nivel < 5; $nivel++) {
             for ($area = 3; $area < 9; $area++) {
-                DB::table('area_nivel')->insert(
+                DB::table(env('DB_SCHEMA') . '.area_nivel')->insert(
                         ['area_id' => $area, 'nivel_id' => $nivel]
                 );
             }
