@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+//
+use App\Endereco;
 
 class RegisterController extends Controller {
     /*
@@ -125,6 +127,13 @@ use RegistersUsers;
             $pessoa->funcoes()->attach(1);
         }
         $pessoa->save();
+        //COMECO do código que necessitará um refact issue #40
+        $endereco = new Endereco();
+        $endereco->fill($request->all());
+       // dd($endereco);
+        $endereco->pessoa()->associate($pessoa);
+        $endereco->save();
+        //FIM do código que necessitará um refact issue #40
     }
 
 }
