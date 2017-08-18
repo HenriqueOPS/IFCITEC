@@ -123,17 +123,17 @@ use RegistersUsers;
     protected function registered(Request $request, $pessoa) {
         if ($request->inscricao == "avaliacao") {
             $pessoa->funcoes()->attach($request->funcao);
+            //COMECO do código que necessitará um refact issue #40
+            $endereco = new Endereco();
+            $endereco->fill($request->all());
+            // dd($endereco);
+            $endereco->pessoa()->associate($pessoa);
+            $endereco->save();
+            //FIM do código que necessitará um refact issue #40
         } else {
             $pessoa->funcoes()->attach(1);
         }
         $pessoa->save();
-        //COMECO do código que necessitará um refact issue #40
-        $endereco = new Endereco();
-        $endereco->fill($request->all());
-       // dd($endereco);
-        $endereco->pessoa()->associate($pessoa);
-        $endereco->save();
-        //FIM do código que necessitará um refact issue #40
     }
 
 }
