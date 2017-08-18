@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Illuminate\Notifications\Notifiable as Notifiable;
 class Pessoa extends Authenticatable {
 
+    use Notifiable;
+    
     /**
      * The table associated with the model.
      *
