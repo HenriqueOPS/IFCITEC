@@ -57,6 +57,7 @@ class ProjetoController extends Controller {
     public function store(ProjetoRequest $request) {
         $projeto = new Projeto();
         $projeto->fill($request->toArray());
+        $projeto->titulo = strtoupper($request->titulo);
         //
         $areaConhecimento = AreaConhecimento::find($request->area);
         $nivel = Nivel::find($request->nivel);

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('css')
+    <link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -117,6 +121,26 @@
                                     <strong>{{ $errors->first('instituicao') }}</strong>
                                 </span>
                                 @endif
+                            </div>
+
+                            <div class="input-group{{ $errors->has('area') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">school</i>
+                                </span>
+                                <div class="form-group">
+                                    <label class="control-label">Área do Conhecimento</label>
+                                    <select id="area-select" name="area" value="{{old('area')}}" required>
+                                        <option></option>
+                                        @foreach ($areas as $area)
+                                            <option value="{{$area->id}}">{{$area->area_conhecimento}}</option>
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('area'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('area') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
                             </div>
 
 
@@ -328,17 +352,29 @@
 @section('js')
 <script type="text/javascript" src="{{asset('js/datepicker/bootstrap-datepicker.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/datepicker/locales/bootstrap-datepicker.pt-BR.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/selectize.min.js')}}"></script>
 <script type="text/javascript">
+    $(document).ready(function () {
+        var oldArea = $('#area-select').attr("value");
+
+        $nivelSelect = $('#area-select').selectize({
+            placeholder: 'Escolha a Área...',
+            preload: true,
+            onInitialize: function () {
+                this.setValue(oldArea, false);
+                $('.selectize-input').addClass('form-control');
+            },
+        });
 
 
-$('.datepicker').datepicker({
-    format: 'dd/mm/yyyy',
-    language: 'pt-BR',
-    templates: {
-        leftArrow: '&lsaquo;',
-        rightArrow: '&rsaquo;'
-    },
-});
-
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+            language: 'pt-BR',
+            templates: {
+                leftArrow: '&lsaquo;',
+                rightArrow: '&rsaquo;'
+            },
+        });
+    });
 </script>
 @endsection

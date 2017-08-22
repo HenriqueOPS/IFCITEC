@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Funcao;
+use App\Projeto;
 
 class HomeController extends Controller {
 
@@ -23,9 +24,14 @@ class HomeController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $projetos = (Auth::user()->projetos);
-        $funcoes = $this->groupProjetosPorFuncao($projetos);
-        return view('home')->withFuncoes($funcoes);
+        if(Auth::user()->temFuncao('Organizador')){
+            $projetos = $this->groupProjetosPorSituacao(Projeto::all());
+            return view('organizacao.home')->withSituacoes($projetos);
+        }else {
+            $projetos = (Auth::user()->projetos);
+            $funcoes = $this->groupProjetosPorFuncao($projetos);
+            return view('home')->withFuncoes($funcoes);
+        }
     }
 
     protected function groupProjetosPorFuncao($projetos) {
@@ -39,6 +45,29 @@ class HomeController extends Controller {
             }
         }
         return collect($projetosAgrupados);
+    }
+
+    protected function groupProjetosPorSituacao($projetos){
+        $projetosAgrupados = array();
+        foreach ($projetos as $projeto) {
+            $situacao = 0;
+            switch ($projeto->getStatus()){
+                case "Não Revisado":
+                    $situacao = 0;
+                    break;
+                case "Homologado":
+                    $situacao = 1;
+                    break;
+                case "Homologado com Revisão":
+                    $situacao = 2;
+                    break;
+                case "Reprovado":
+                    $situacao = 3;
+                    break;
+            }
+            $projetosAgrupados[$situacao][] = $projeto;
+        }
+        return (collect($projetosAgrupados));
     }
 
 }
