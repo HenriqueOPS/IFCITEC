@@ -22,6 +22,7 @@ class CreateEnderecoTable extends Migration {
             $table->string('cep');
             $table->text('complemento')->nullable();
             $table->integer('pessoa_id')->unsigned();
+            $table->timestamps();
             //Foreign Keys Constraints
             $table->foreign('pessoa_id')->references('id')->on('pessoa');
         });

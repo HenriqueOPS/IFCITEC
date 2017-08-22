@@ -49,7 +49,13 @@ class Projeto extends Model {
     }
 
     public function getStatus() {
-        return "Não Revisado";
+        $situacao = DB::table('situacao_projeto')->select('situacao')->where('id', '=', $this->id)->orderBy('count', 'desc')->first();
+        if(is_null($situacao)){
+            return "Não Revisado";
+        }else{
+            return $situacao->situacao;
+        }
+
     }
 
     public function getTotalFuncoes($funcoes) {

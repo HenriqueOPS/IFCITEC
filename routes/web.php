@@ -20,7 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 //
 Route::get('/avaliacao', function(){
-    return view('avaliador');
+    return view('avaliador')->withAreas(App\AreaConhecimento::all());
 });
 //
 Route::prefix('moodle')->group(function () {
