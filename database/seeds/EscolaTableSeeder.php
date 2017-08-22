@@ -683,6 +683,41 @@ class EscolaTableSeeder extends Seeder {
                 'moodle_link' => null,
                 'moodle_versao' => null,
             ],
+            [
+                'nome_completo' => 'Colégio La Salle Canoas',
+                'nome_curto' => 'La Salle Canoas',
+                'email' => 'secretaria.canoas@lasalle.org.br',
+                'moodle_link' => null,
+                'moodle_versao' => null,
+            ],
+            [
+                'nome_completo' => 'Colégio La Salle Niterói',
+                'nome_curto' => 'La Salle Niterói',
+                'email' => 'atendimento.niteroi@lasalle.org.br',
+                'moodle_link' => null,
+                'moodle_versao' => null,
+            ],
+            [
+                'nome_completo' => 'Colégio Espírito Santo',
+                'nome_curto' => 'Espírito Santo',
+                'email' => 'secretaria@ces.g12.br',
+                'moodle_link' => null,
+                'moodle_versao' => null,
+            ],
+            [
+                'nome_completo' => 'Colégio Maria Auxiliadora',
+                'nome_curto' => 'Auxiliadora',
+                'email' => 'auxiliadora@auxiliadora.net',
+                'moodle_link' => null,
+                'moodle_versao' => null,
+            ],
+            [
+                'nome_completo' => 'Colégio ULBRA Cristo Redentor',
+                'nome_curto' => 'Cristo Redentor',
+                'email' => 'ulbracristoredentor@ulbra.br',
+                'moodle_link' => null,
+                'moodle_versao' => null,
+            ],
         ];
         
          foreach ($escolas as $escola){
