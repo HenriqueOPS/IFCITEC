@@ -25,7 +25,7 @@ class Projeto extends Model {
     ];
 
     public function pessoas() {
-        return $this->belongsToMany('App\Pessoa', 'escola_funcao_pessoa_projeto');
+        return $this->belongsToMany('App\Pessoa', 'escola_funcao_pessoa_projeto')->withPivot('funcao_id');
     }
 
     public function avaliacoes() {
