@@ -354,6 +354,14 @@
 <script type="text/javascript" src="{{asset('js/datepicker/locales/bootstrap-datepicker.pt-BR.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/selectize.min.js')}}"></script>
 <script type="text/javascript">
+    $('.datepicker').datepicker({
+        format: 'dd/mm/yyyy',
+        language: 'pt-BR',
+        templates: {
+            leftArrow: '&lsaquo;',
+            rightArrow: '&rsaquo;'
+        },
+    });
     $(document).ready(function () {
         var oldArea = $('#area-select').attr("value");
 
@@ -363,16 +371,6 @@
             onInitialize: function () {
                 this.setValue(oldArea, false);
                 $('.selectize-input').addClass('form-control');
-            },
-        });
-
-
-        $('.datepicker').datepicker({
-            format: 'dd/mm/yyyy',
-            language: 'pt-BR',
-            templates: {
-                leftArrow: '&lsaquo;',
-                rightArrow: '&rsaquo;'
             },
         });
     });
