@@ -29,8 +29,9 @@
                                 Novo Integrante
                             </a><br>
                             <b> <i class="material-icons">group</i> Integrantes:</b><br>
+
                             @foreach($projeto->pessoas as $pessoa)
-                                {{$pessoa->nome}}<br>
+                                <b>{{App\Funcao::find($pessoa->pivot->funcao_id)->funcao}}: </b>{{$pessoa->nome}}<br>
                             @endforeach
                             <hr>
                             <b><i class="material-icons">school</i> Nível:</b><br>
