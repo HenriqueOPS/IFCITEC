@@ -21,7 +21,7 @@
                             <hr>
                             <b>Palavras-Chaves:</b> 
                             @foreach($projeto->palavrasChaves as $palavra)
-                            {{$palavra->palavra}};
+                                {{$palavra->palavra}};
                             @endforeach
                         </div>
                         <div class="col-md-3">

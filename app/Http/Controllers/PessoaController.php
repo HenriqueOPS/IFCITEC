@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Pessoa;
 
+use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\Auth;
+
 class PessoaController extends Controller {
     /**
      * Display a listing of the resource.
@@ -89,6 +92,34 @@ class PessoaController extends Controller {
      */
     public function destroy($id) {
         //
+    }
+
+    public function relatorio(){
+        if(Auth::user()->temFuncao('Organizador')) {
+            $usuarios = \Illuminate\Support\Facades\DB::table('public.pessoa')
+                ->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
+                ->join('funcao_pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+                ->groupBy('pessoa.id', 'pessoa.nome', 'pessoa.email')
+                ->havingRaw('count(pessoa.id) = 1')
+                ->get();
+
+            $avaliadores = \Illuminate\Support\Facades\DB::table('public.pessoa')
+                ->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
+                ->join('funcao_pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+                ->where('funcao_id', '=', '3')
+                ->get();
+
+            $revisores = \Illuminate\Support\Facades\DB::table('public.pessoa')
+                ->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
+                ->join('funcao_pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+                ->where('funcao_id', '=', '4')
+                ->get();
+
+            $pdf = PDF:: loadView('organizacao.relatorio', ['usuarios' => $usuarios, 'avaliadores' => $avaliadores, 'revisores' => $revisores]);
+            return $pdf->download('relatorio_pessoas.pdf');
+        }else{
+            return redirect('home');
+        }
     }
 
 }

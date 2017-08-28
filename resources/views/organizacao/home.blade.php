@@ -8,7 +8,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-offset-4">
+        <div class="col-md-12">
             <ul class="nav nav-pills nav-pills-primary" role="tablist">
                 <li class="active">
                     <a href="dashboard" id="0" class="tab" role="tab" data-toggle="tab">
@@ -32,6 +32,12 @@
                     <a href="dashboard" id="3" class="tab" role="tab" data-toggle="tab">
                         <i class="material-icons red-icon">error</i>
                         Reprovados
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('relatorio')}}" >
+                        <i class="material-icons blue-icon">description</i>
+                        Relatório
                     </a>
                 </li>
             </ul>
