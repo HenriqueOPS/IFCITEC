@@ -39,6 +39,9 @@ Route::prefix('projeto')->group(function () {
 
 Route::get('/relatorio','PessoaController@relatorio')->name('relatorio');
 
+Route::get('/projeto/2/vinculaHomologador/',function(){
+    return view('organizacao.vinculaHomologador');
+});
 
 //AJAX
 Route::prefix('nivel')->group(function () {
