@@ -92,3 +92,59 @@ body{
     margin: 10px;
     padding: 5px;
 }
+
+.material-icons {
+  vertical-align: middle;
+}
+
+/* Drag n' Drop styles*/
+.gu-mirror {
+  cursor: -webkit-grabbing;
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  filter: alpha(opacity=80);
+}
+.gu-hide {
+  display: none !important;
+}
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+}
+.no-select {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; 
+}
+
+/* vinculaHomologador styles */
+.drop-area {
+  min-width: 100%;
+  min-height: 250px;
+  padding: 8px;
+  border: 2px rgba(0,0,0,0) dashed;
+  transition: border 0.2s ease-in; 
+}
+
+.drop-area > * {
+  margin: 8px 0px;
+}
+
+.drop-area.active {
+  border: 2px rgba(0,0,0,0.2) dashed;
+}
+
+.material-icons.small {
+  font-size: 16px;
+}
+
