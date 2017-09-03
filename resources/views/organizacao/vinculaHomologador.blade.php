@@ -94,17 +94,33 @@
 @section('js')
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js"></script>
     <script type="text/javascript">
+        // Pre initialized by Backend
+        var selectedCount = 0;
+        var maxSelectedCards = 1;
+
         var cardsList = document.querySelector('#list');
         var selectedCardsList = document.querySelector('#selected');
 
         var formHomologadorID = document.querySelector('#homologadorID');
         formHomologadorID.value = '';
 
-        var drag = dragula([cardsList, selectedCardsList]);
 
-        drag.on('drag', function() {
+        var drag = dragula([cardsList, selectedCardsList], {
+            accepts: function (el, target) {
+                if (target.id == 'selected') {
+                    return selectedCount < maxSelectedCards;
+                }
+                return true;
+            }
+        });
+
+        drag.on('drag', function(el, source) {
             cardsList.classList.add('active');
             selectedCardsList.classList.add('active');
+            selectedCardsList.style.borderColor = '';
+
+            if (source.id != 'selected' && selectedCount >= maxSelectedCards)
+                selectedCardsList.style.borderColor = 'red';
         });
 
         drag.on('dragend', function() {
@@ -114,16 +130,23 @@
 
         drag.on('drop', function(el, target) {
             var id = el.getAttribute('data-id');
+
             if (target.id === 'selected') {
                 var value = formHomologadorID.value;
 
                 if (value.length > 0) value = value.concat(',');
                 formHomologadorID.value = value.concat(id);
+                selectedCount++;
             } else {
                 var values = formHomologadorID.value.split(',');
                 values.splice(values.indexOf(id), 1);
                 formHomologadorID.value = values.join(',');
+                selectedCount--;
             }
+        });
+
+        drag.on('dragend', function(){
+            selectedCardsList.style.borderColor = '';
         });
     </script>
 @endsection
