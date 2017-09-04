@@ -26,6 +26,7 @@ class ProjetoController extends Controller {
     public function __construct() {
         $this->middleware('auth');
         $this->middleware('checkAuthorship', ['only' => 'show']);
+        $this->middleware('isOrganizacao', ['only' => 'create']);
     }
 
     /**
