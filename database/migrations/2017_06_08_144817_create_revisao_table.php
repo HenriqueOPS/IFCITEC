@@ -20,7 +20,7 @@ class CreateRevisaoTable extends Migration {
             $table->integer('situacao_id')->unsigned();
             //Foreign Keys Constraints
             $table->foreign('projeto_id')->references('id')->on(env('DB_SCHEMA').'.projeto')->onDelete('cascade');
-            $table->foreign('pessoa_id')->references('id')->on(env('DB_SCHEMA').'.projeto');
+            $table->foreign('pessoa_id')->references('id')->on(env('DB_SCHEMA').'.pessoa');
             $table->foreign('situacao_id')->references('id')->on(env('DB_SCHEMA').'.situacao');
         });
     }

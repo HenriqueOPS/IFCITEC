@@ -22,6 +22,8 @@ class Revisao extends Model {
         'observacao',
     ];
 
+    public $timestamps = false;
+
     public function projeto() {
         return $this->belongsTo('App\Projeto');
     }

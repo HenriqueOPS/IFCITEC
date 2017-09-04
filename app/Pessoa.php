@@ -4,6 +4,9 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable as Notifiable;
+//
+use Illuminate\Support\Facades\DB;
+
 class Pessoa extends Authenticatable {
 
     use Notifiable;
@@ -89,6 +92,23 @@ class Pessoa extends Authenticatable {
      */
     public function temFuncao($check) {
         return in_array($check, array_pluck($this->funcoes->toArray(), 'funcao'));
+    }
+
+    public function scopeWhereFuncao($query, $funcao){
+        return $query
+            ->join('funcao_pessoa','funcao_pessoa.pessoa_id','=','public.pessoa.id')
+            ->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+            ->where('funcao.funcao','=',$funcao);
+    }
+
+    public function getTotalRevisoes(){
+        $total = DB::table('revisao')
+            ->select(DB::raw('count(*) as total'))
+            ->join('public.pessoa','revisao.pessoa_id','=','public.pessoa.id')
+            ->where('public.pessoa.id','=',$this->id)
+            ->first();
+
+        return $total->total;
     }
 
 }

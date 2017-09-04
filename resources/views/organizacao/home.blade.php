@@ -55,7 +55,8 @@
                             <th class="text-center">#</th>
                             <th>Integrantes</th>
                             <th>Título</th>
-                            <th class="text-right">Visualizar</th>
+                            <th>Revisor</th>
+                            <th class="text-right">Ações</th>
                         </tr>
                     </thead>
                     @foreach($situacoes as $situacao=>$projetos)
@@ -69,8 +70,14 @@
                                     @endforeach
                                 </td>
                                 <td>{{$projeto->titulo}}</td>
+                                <td>
+                                    @if($projeto->revisoes->isNotEmpty())
+                                        {{$projeto->revisoes[0]->pessoa->nome}}
+                                    @endif
+                                </td>
                                 <td class="td-actions text-right">
-                                    <a href="{{route('projeto.show', ['projeto' => $projeto->id])}}"><i class="material-icons blue-icon">description</i></a>
+                                    <a href="{{route('projeto.show', ['projeto' => $projeto->id])}}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                    <a href="{{route('vinculaRevisor', ['id' => $projeto->id])}}"><i class="material-icons blue-icon">check_circle</i></a>
                                 </td>
                             <tr>
                         @endforeach

@@ -14,6 +14,7 @@ use App\Escola;
 use App\Projeto;
 use App\Pessoa;
 use App\PalavraChave;
+use App\Revisao;
 
 class ProjetoController extends Controller {
 
@@ -152,21 +153,6 @@ class ProjetoController extends Controller {
         }
         return view('projeto.vinculaIntegrante')->withProjeto($projeto)->withFuncoes($funcoes)->withEscolas($escolas);
     }
-    
-    public function searchPessoaByEmail($id, $email){
-
-        $pessoa = Pessoa::findByEmail($email);
-        if (!($pessoa instanceof Pessoa)) {
-            return response()->json(['error' => "A pessoa não está inscrita no sistema!"], 200);
-        }
-        
-        $projeto = Projeto::find($id);
-        $integrantes = $projeto->pessoas;
-        if($integrantes->contains($pessoa)){
-            return response()->json(['error' => "Esta pessoa já está vinculada ao projeto"], 200);
-        }
-        return response()->json($pessoa, 200);
-    }
 
     public function vinculaIntegrante(Request $request) {
         //Insert via DB pois o Laravel não está preparado para um tabela de 4 relacionamentos
@@ -180,5 +166,43 @@ class ProjetoController extends Controller {
         
         return redirect()->route('projeto.show', ['projeto' =>$request->projeto]);
     }
-    
+
+    public function showFormVinculaRevisor($id){
+        $projeto = Projeto::find($id);
+        if (!($projeto instanceof Projeto)) {
+            abort(404);
+        }
+
+        $revisores = (Pessoa::whereFuncao('Revisor')->orderBy('titulacao')->get());
+
+        return view('organizacao.vinculaRevisor')
+            ->withRevisores($revisores)
+            ->withProjeto($projeto);
+    }
+
+    public function vinculaRevisor(Request $request){
+        $revisao = new Revisao();
+        $revisao->projeto_id = $request->projeto_id;
+        $revisao->pessoa_id =  $request->revisor_id;
+        $revisao->situacao_id =  4;
+        $revisao->save();
+
+        return redirect('home');
+    }
+
+    public function searchPessoaByEmail($id, $email){
+
+        $pessoa = Pessoa::findByEmail($email);
+        if (!($pessoa instanceof Pessoa)) {
+            return response()->json(['error' => "A pessoa não está inscrita no sistema!"], 200);
+        }
+
+        $projeto = Projeto::find($id);
+        $integrantes = $projeto->pessoas;
+        if($integrantes->contains($pessoa)){
+            return response()->json(['error' => "Esta pessoa já está vinculada ao projeto"], 200);
+        }
+        return response()->json($pessoa, 200);
+    }
+
 }
