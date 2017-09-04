@@ -15,7 +15,7 @@
                         <div class="col-md-3 col-md-offset-1">
                            <div id="list" class="drop-area" style="max-height: 60vh;overflow: auto;">
                                @foreach($revisores as $revisor)
-                                   <div class="card no-select" data-id="{{$revisor->pessoa_id}}">
+                                   <div class="card no-select" data-id="{{$revisor->id}}">
                                        <div class="content">
                                            <span class="font-weight-bold">
                                                <b><i class="material-icons">person</i></b>
@@ -28,7 +28,7 @@
                                                </div>
                                                <div>
                                                    <b><i class="material-icons small">settings</i></b>
-                                                   {{$revisor->getTotalRevisoes()}} projetos
+                                                   {{$revisor->tot_revisoes}} projetos
                                                </div>
                                            </div>
                                        </div>
