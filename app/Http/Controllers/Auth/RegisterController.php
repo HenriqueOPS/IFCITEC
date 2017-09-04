@@ -96,7 +96,7 @@ use RegistersUsers;
                     'moodle' => isset($data['moodle']) ? $data['moodle'] : false,
                     //COMECO do código que necessitará um refact issue #40
                     'cpf' => isset($data['cpf']) ? $data['cpf'] : null,
-                    'titulação' => isset($data['titulacao']) ? $data['titulacao'] : null,
+                    'titulacao' => isset($data['titulacao']) ? $data['titulacao'] : null,
                     'lattes' => isset($data['lattes']) ? $data['lattes'] : null,
                     'profissao' => isset($data['profissao']) ? $data['profissao'] : null,
                     'instituicao' => isset($data['instituicao']) ? $data['instituicao'] : null
