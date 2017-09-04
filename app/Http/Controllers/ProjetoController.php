@@ -173,8 +173,8 @@ class ProjetoController extends Controller {
         if (!($projeto instanceof Projeto)) {
             abort(404);
         }
-
-        $revisores = (Pessoa::whereFuncao('Revisor')->orderBy('titulacao')->get());
+        $revisores = (DB::table('revisoresview')->select('*')->orderBy('titulacao')->get());
+       // $revisores = (Pessoa::whereFuncao('Revisor')->orderBy('titulacao')->get());
 
         return view('organizacao.vinculaRevisor')
             ->withRevisores($revisores)
