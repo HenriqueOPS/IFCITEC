@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3" >
-            @if (!Auth::user()->temFuncao("Avaliador"))
+            @if (!Auth::user()->temFuncao("Avaliador") && false)
                     <a href="{{route('projeto.create')}}" class="btn btn-success">
                         Novo Projeto
                     </a>
@@ -16,9 +16,11 @@
                 <div class="text-center">
                     @if (!Auth::user()->temFuncao("Avaliador"))
                     <span class="function">Você não possui nenhum projeto</span><br>
-                    <a href="{{route('projeto.create')}}" class="btn btn-success">
+                    @if(false)
+                        <a href="{{route('projeto.create')}}" class="btn btn-success">
                         Novo Projeto
                     </a>
+                        @endif
                     @else
                      <span class="function">Você não possui nenhum projeto para homologar/revisar</span><br>
                     @endif
