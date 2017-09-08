@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Funcao;
 use App\Projeto;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller {
 
@@ -27,7 +29,16 @@ class HomeController extends Controller {
         if(Auth::user()->temFuncao('Organizador')){
             $projetos = $this->groupProjetosPorSituacao(Projeto::all());
             return view('organizacao.home')->withSituacoes($projetos);
-        }else {
+        }else if((Auth::user()->temFuncao('Avaliador'))) {
+            $query = DB::table('projeto')->select('projeto.*')
+                ->join('revisao', 'revisao.projeto_id', '=', 'projeto.id')
+                ->where('pessoa_id','=', Auth::user()->id);
+
+            $eloquent = new Builder($query);
+            $eloquent->setModel(new Projeto);
+            $projetos = $eloquent->get();
+            return view('home')->withFuncoes(collect(["Homologação" => $projetos]));
+        }else{
             $projetos = (Auth::user()->projetos);
             $funcoes = $this->groupProjetosPorFuncao($projetos);
             return view('home')->withFuncoes($funcoes);

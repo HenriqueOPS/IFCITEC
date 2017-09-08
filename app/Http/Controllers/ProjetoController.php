@@ -182,6 +182,7 @@ class ProjetoController extends Controller {
     }
 
     public function vinculaRevisor(Request $request){
+        DB::table('revisao')->where('projeto_id', '=', $request->projeto_id)->delete();
         $revisao = new Revisao();
         $revisao->projeto_id = $request->projeto_id;
         $revisao->pessoa_id =  $request->revisor_id;

@@ -25,9 +25,17 @@
                             @endforeach
                         </div>
                         <div class="col-md-3">
-                            <a href="{{route('projeto.formVinculaIntegrante', ['projeto' => $projeto->id])}}" id="novo-integrante" class="btn btn-success">
-                                Novo Integrante
-                            </a><br>
+                            @if(Auth::user()->temFuncao('Avaliador'))
+                                <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfJ2vBH_yxepfVWyXbWzz0TSm5J8l4lokH7AHoYw2GTxKobpg/viewform?usp=pp_url&entry.894880044={{Auth::user()->nome}}&entry.235768732={{Auth::user()->email}}&entry.744006932={{$projeto->titulo}}&entry.1427707485={{$projeto->id}}&entry.2022768098" id="novo-integrante" class="btn btn-success">
+                                    Avaliar
+                                </a>
+                            @else
+                                <a href="{{route('projeto.formVinculaIntegrante', ['projeto' => $projeto->id])}}" id="novo-integrante" class="btn btn-success">
+                                    Novo Integrante
+                                </a>
+                            @endif
+
+                            <br>
                             <b> <i class="material-icons">group</i> Integrantes:</b><br>
 
                             @foreach($projeto->pessoas as $pessoa)
