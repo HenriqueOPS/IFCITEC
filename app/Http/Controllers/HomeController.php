@@ -29,7 +29,7 @@ class HomeController extends Controller {
         if(Auth::user()->temFuncao('Organizador')){
             $projetos = $this->groupProjetosPorSituacao(Projeto::all());
             return view('organizacao.home')->withSituacoes($projetos);
-        }else if((Auth::user()->temFuncao('Avaliador'))) {
+        }else if((Auth::user()->temFuncao('Avaliador') || Auth::user()->temFuncao('Revisor'))) {
             $query = DB::table('projeto')->select('projeto.*')
                 ->join('revisao', 'revisao.projeto_id', '=', 'projeto.id')
                 ->where('pessoa_id','=', Auth::user()->id);
