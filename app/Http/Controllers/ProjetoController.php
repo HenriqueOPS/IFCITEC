@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ProjetoRequest;
+use Illuminate\Support\Facades\Response;
 //
 use App\Nivel;
 use App\AreaConhecimento;
@@ -205,6 +206,30 @@ class ProjetoController extends Controller {
             return response()->json(['error' => "Esta pessoa já está vinculada ao projeto"], 200);
         }
         return response()->json($pessoa, 200);
+    }
+
+    public function relatorio($id){
+        if($id==1) {
+            $resultados = DB::table('public.geral_projetos')->select('*')->get();
+            $filename = "GeralProjetos.csv";
+        }else{
+            $resultados = DB::table('public.geralprojetosnotgrouped')->select('*')->get();
+            $filename = "GeralProjetosNAOAgrupados.csv";
+        }
+        $handle = fopen($filename, 'w+');
+        fputcsv($handle, array('ID', 'Titulo', 'Nomes', 'Email','Escola','Situacao'));
+
+        foreach($resultados as $row) {
+            fputcsv($handle, array($row->id, $row->titulo, $row->nomes, $row->email, $row->nome_curto, $row->situacao));
+        }
+
+        fclose($handle);
+
+        $headers = array(
+            'Content-Type' => 'text/csv',
+        );
+
+        return Response::download($filename, $filename, $headers);
     }
 
 }

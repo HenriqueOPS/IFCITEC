@@ -23,22 +23,14 @@
                     </a>
                 </li>
                 <li>
-                    <a href="dashboard" id="2" class="tab" role="tab" data-toggle="tab">
-                        <i class="material-icons gold-icon">warning</i>
-                        Homologados com Revisão
-                    </a>
-                </li>
-                <li>
                     <a href="dashboard" id="3" class="tab" role="tab" data-toggle="tab">
                         <i class="material-icons red-icon">error</i>
                         Reprovados
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('relatorio')}}" >
-                        <i class="material-icons blue-icon">description</i>
-                        Relatório
-                    </a>
+                    <a href="{{route('relatorio',['id' => 1])}}" >Projetos Integrantes Agrupados</a>
+                    <a href="{{route('relatorio',['id' => 2])}}" >Projetos Integrantes Não Agrupados</a>
                 </li>
             </ul>
         </div>
@@ -106,7 +98,6 @@ $(document).ready(function () {
 function hideBodys(){
     $('tbody[id=0]').hide();
     $('tbody[id=1]').hide();
-    $('tbody[id=2]').hide();
     $('tbody[id=3]').hide();
 }
 </script>
