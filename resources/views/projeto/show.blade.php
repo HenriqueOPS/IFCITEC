@@ -15,7 +15,15 @@
                     <div id="projeto-show">
                         <div class="col-md-7 col-md-offset-1">
                             <div id="status">
-                                <span class="label label-info">{{$projeto->getStatus()}}</span>
+                                @if($projeto->getStatus() == "Não Revisado")
+                                    <span class="label label-info">{{$projeto->getStatus()}}</span>
+                                @elseif ($projeto->getStatus() == "Homologado")
+                                    <span class="label label-success">{{$projeto->getStatus()}}</span>
+                                @elseif ($projeto->getStatus() == "Reprovado")
+                                    <span class="label label-danger">{{$projeto->getStatus()}}</span>
+                                @else
+                                    <span class="label label-default">{{$projeto->getStatus()}}</span>
+                                @endif
                             </div>
                             <p class="resumo">{{$projeto->resumo}}</p>
                             <hr>
@@ -23,6 +31,13 @@
                             @foreach($projeto->palavrasChaves as $palavra)
                                 {{$palavra->palavra}};
                             @endforeach
+                            @if($projeto->revisoes->isNotEmpty())
+                                @if ($projeto->getStatus() == "Reprovado")
+                                    <hr>
+                                    <b>Comentário da Homologação:</b><br>
+                                    {{($projeto->revisoes[0]->observacao)}}
+                                @endif
+                            @endif
                         </div>
                         <div class="col-md-3">
                             @if(Auth::user()->temFuncao('Avaliador') || Auth::user()->temFuncao('Revisor'))
