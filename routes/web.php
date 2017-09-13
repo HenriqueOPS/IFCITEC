@@ -37,7 +37,7 @@ Route::prefix('projeto')->group(function () {
     Route::get('{projeto}/vincula-integrante/{email}', 'ProjetoController@searchPessoaByEmail');
 });
 
-Route::get('/relatorio','PessoaController@relatorio')->name('relatorio');
+Route::get('/relatorio/{id}','ProjetoController@relatorio')->name('relatorio');
 
 Route::get('/projeto/{id}/vinculaRevisor/', 'ProjetoController@showFormVinculaRevisor')->name('vinculaRevisor');
 Route::post('/projeto/vinculaRevisor/', 'ProjetoController@vinculaRevisor')->name('vinculaRevisorPost');
