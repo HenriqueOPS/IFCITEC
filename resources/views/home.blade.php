@@ -38,7 +38,15 @@
                                 @foreach($projeto->pessoas as $pessoa)
                                     {{explode(" ", $pessoa->nome)[0]}}. 
                                 @endforeach
-                                <span class="label label-info">{{$projeto->getStatus()}}</span>
+                                    @if($projeto->getStatus() == "Não Revisado")
+                                        <span class="label label-info">{{$projeto->getStatus()}}</span>
+                                    @elseif ($projeto->getStatus() == "Homologado")
+                                        <span class="label label-success">{{$projeto->getStatus()}}</span>
+                                    @elseif ($projeto->getStatus() == "Reprovado")
+                                        <span class="label label-danger">{{$projeto->getStatus()}}</span>
+                                    @else
+                                        <span class="label label-default">{{$projeto->getStatus()}}</span>
+                                    @endif
                             </div>
                         </div>
                         @endforeach
