@@ -69,7 +69,7 @@
                                 </td>
                                 <td class="td-actions text-right">
                                     <a href="{{route('projeto.show', ['projeto' => $projeto->id])}}"><i class="material-icons blue-icon">remove_red_eye</i></a>
-                                    <a href="{{route('vinculaRevisor', ['id' => $projeto->id])}}"><i class="material-icons blue-icon">check_circle</i></a>
+                                    <a href="{{route('vinculaAvaliador', ['id' => $projeto->id])}}"><i class="material-icons blue-icon">check_circle</i></a>
                                 </td>
                             <tr>
                         @endforeach
