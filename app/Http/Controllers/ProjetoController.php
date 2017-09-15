@@ -217,10 +217,10 @@ class ProjetoController extends Controller {
             $filename = "GeralProjetosNAOAgrupados.csv";
         }
         $handle = fopen($filename, 'w+');
-        fputcsv($handle, array('ID', 'Titulo', 'Nomes', 'Email','Escola','Situacao'));
+        fputcsv($handle, array('ID', 'Titulo', 'Area Conhecimento', 'Nível', 'Nomes', 'Email','Escola','Situacao'));
 
         foreach($resultados as $row) {
-            fputcsv($handle, array($row->id, $row->titulo, $row->nomes, $row->email, $row->nome_curto, $row->situacao));
+            fputcsv($handle, array($row->id, $row->titulo, $row->area_conhecimento, $row->nivel, $row->nomes, $row->email, $row->nome_curto, $row->situacao));
         }
 
         fclose($handle);
