@@ -16,6 +16,7 @@ use App\Projeto;
 use App\Pessoa;
 use App\PalavraChave;
 use App\Revisao;
+use App\Avaliacao;
 
 class ProjetoController extends Controller {
 
@@ -189,6 +190,45 @@ class ProjetoController extends Controller {
         $revisao->pessoa_id =  $request->revisor_id;
         $revisao->situacao_id =  4;
         $revisao->save();
+
+        return redirect('home');
+    }
+
+    public function showFormVinculaAvaliador($id)
+    {
+        $projeto = Projeto::find($id);
+        if (!($projeto instanceof Projeto)) {
+            abort(404);
+        }
+        $avaliadores = (DB::table('avaliadoresview')->select('*')->get());
+        // $revisores = (Pessoa::whereFuncao('Revisor')->orderBy('titulacao')->get());
+
+        $avaliadoresDoProjeto = DB::table('avaliacao')->select('pessoa_id')->where('projeto_id', '=', $id)->get();
+
+        $avaliadoresValue = "";
+        foreach ($avaliadoresDoProjeto as $avaliador) {
+            //dd($avaliador);
+            $avaliadoresValue .= ',' . $avaliador->pessoa_id;
+        }
+        $avaliadoresValue = ltrim($avaliadoresValue, ',');
+
+        return view('organizacao.vinculaAvaliador')
+            ->with(["avaliadores" => $avaliadores,
+                "avaliadoresValue" => $avaliadoresValue,
+                "projeto" => $projeto,
+            ]);
+    }
+
+    public function vinculaAvaliador(Request $request){
+        DB::table('avaliacao')->where('projeto_id', '=', $request->projeto_id)->delete();
+        $avaliadores = explode(',',$request->avaliadores_id);
+        foreach ($avaliadores as $avaliador){
+            $avaliacao = new Avaliacao();
+            $avaliacao->pessoa_id = $avaliador;
+            $avaliacao->projeto_id = $request->projeto_id;
+            $avaliacao->nota_final = 0;
+            $avaliacao->save();
+        }
 
         return redirect('home');
     }

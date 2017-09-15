@@ -111,4 +111,14 @@ class Pessoa extends Authenticatable {
         return $total->total;
     }
 
+    public function getTotalAvaliacoes(){
+        $total = DB::table('avaliacao')
+            ->select(DB::raw('count(*) as total'))
+            ->join('public.pessoa','avaliacao.pessoa_id','=','public.pessoa.id')
+            ->where('public.pessoa.id','=',$this->id)
+            ->first();
+
+        return $total->total;
+    }
+
 }
