@@ -38,7 +38,7 @@
                            </div>
                         </div>
                         <div class="col-md-4">
-                            <center><span>Arraste o Revisor para este local</span></center>
+                            <center><span>Arraste os Avaliador (max. 2) para este local</span></center>
                             <div id="selected" class="drop-area">
                                 @if($projeto->avaliacoes->isNotEmpty())
                                     @foreach($projeto->avaliacoes as $avaliacao)
