@@ -10,13 +10,13 @@
     <div class="row">
         <div class="col-md-12">
             <ul class="nav nav-pills nav-pills-primary" role="tablist">
-                <li class="active">
+                <li>
                     <a href="dashboard" id="0" class="tab" role="tab" data-toggle="tab">
                         <i class="material-icons">adjust</i>
                         Não Revisados
                     </a>
                 </li>
-                <li>
+                <li class="active">
                     <a href="dashboard" id="1" class="tab" role="tab" data-toggle="tab">
                         <i class="material-icons green-icon">done</i>
                         Homologados
@@ -31,6 +31,7 @@
                 <li>
                     <a href="{{route('relatorio',['id' => 1])}}" >Projetos Integrantes Agrupados</a>
                     <a href="{{route('relatorio',['id' => 2])}}" >Projetos Integrantes Não Agrupados</a>
+                    <a href="{{route('relatorio',['id' => 3])}}" >Avaliadores</a>
                 </li>
             </ul>
         </div>
@@ -47,7 +48,7 @@
                             <th class="text-center">#</th>
                             <th>Integrantes</th>
                             <th>Título</th>
-                            <th>Revisor</th>
+                            <th>Avaliadores</th>
                             <th class="text-right">Ações</th>
                         </tr>
                     </thead>
@@ -63,8 +64,10 @@
                                 </td>
                                 <td>{{$projeto->titulo}}</td>
                                 <td>
-                                    @if($projeto->revisoes->isNotEmpty())
-                                        {{$projeto->revisoes[0]->pessoa->nome}}
+                                    @if($projeto->avaliacoes->isNotEmpty())
+                                        @foreach($projeto->avaliacoes as $avaliacao)
+                                            {{$avaliacao->pessoa->nome." "}}
+                                        @endforeach
                                     @endif
                                 </td>
                                 <td class="td-actions text-right">
@@ -87,7 +90,7 @@
 <script type="application/javascript">
 $(document).ready(function () {
     hideBodys();
-    $('tbody[id=0]').show();
+    $('tbody[id=1]').show();
     $('.tab').click(function (e) {
         var target = $(this)[0];
         hideBodys();

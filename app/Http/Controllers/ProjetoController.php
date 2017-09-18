@@ -252,9 +252,26 @@ class ProjetoController extends Controller {
         if($id==1) {
             $resultados = DB::table('public.geral_projetos')->select('*')->get();
             $filename = "GeralProjetos.csv";
-        }else{
+        }else if($id==2){
             $resultados = DB::table('public.geralprojetosnotgrouped')->select('*')->get();
             $filename = "GeralProjetosNAOAgrupados.csv";
+        }else{
+            $resultados = DB::table('public.relatorioavaliadores')->select('*')->get();
+            $filename = "Avaliadores.csv";
+            $handle = fopen($filename, 'w+');
+            fputcsv($handle, array('ID', 'Nome', 'Email', 'Titulacao', 'Lattes', 'Profissao','Instituicao','CPF','Revisor','Avaliador'));
+
+            foreach($resultados as $row) {
+                fputcsv($handle, array($row->id, $row->nome, $row->email, $row->titulacao, $row->lattes, $row->profissao, $row->instituicao, $row->cpf, $row->revisor, $row->avaliador));
+            }
+
+            fclose($handle);
+
+            $headers = array(
+                'Content-Type' => 'text/csv',
+            );
+
+            return Response::download($filename, $filename, $headers);
         }
         $handle = fopen($filename, 'w+');
         fputcsv($handle, array('ID', 'Titulo', 'Area Conhecimento', 'Nível', 'Nomes', 'Email','Escola','Situacao'));

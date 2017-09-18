@@ -16,10 +16,10 @@
                 <div class="text-center">
                     @if (!Auth::user()->temFuncao("Avaliador") && !Auth::user()->temFuncao("Revisor"))
                     <span class="function">Você não possui nenhum projeto</span><br>
-                    @if(false)
-                        <a href="{{route('projeto.create')}}" class="btn btn-success">
-                        Novo Projeto
-                    </a>
+                        @if(false)
+                            <a href="{{route('projeto.create')}}" class="btn btn-success">
+                            Novo Projeto
+                        </a>
                         @endif
                     @else
                      <span class="function">Você não possui nenhum projeto para homologar/revisar</span><br>

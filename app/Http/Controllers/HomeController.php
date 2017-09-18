@@ -31,13 +31,13 @@ class HomeController extends Controller {
             return view('organizacao.home')->withSituacoes($projetos);
         }else if((Auth::user()->temFuncao('Avaliador') || Auth::user()->temFuncao('Revisor'))) {
             $query = DB::table('projeto')->select('projeto.*')
-                ->join('revisao', 'revisao.projeto_id', '=', 'projeto.id')
+                ->join('avaliacao', 'avaliacao.projeto_id', '=', 'projeto.id')
                 ->where('pessoa_id','=', Auth::user()->id);
 
             $eloquent = new Builder($query);
             $eloquent->setModel(new Projeto);
             $projetos = $eloquent->get();
-            return view('home')->withFuncoes(collect(["Homologação" => $projetos]));
+            return view('home')->withFuncoes(collect(["Avaliação" => $projetos]));
         }else{
             $projetos = (Auth::user()->projetos);
             $funcoes = $this->groupProjetosPorFuncao($projetos);
