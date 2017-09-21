@@ -41,15 +41,17 @@
                         </div>
                         <div class="col-md-3">
                             @if(Auth::user()->temFuncao('Avaliador') || Auth::user()->temFuncao('Revisor'))
-                                @if($projeto->nivel->nivel == "Ensino Fundamental")
+                                @if($projeto->getStatus() != "Avaliado")
+                                    @if($projeto->nivel->nivel == "Ensino Fundamental")
 
-                                <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfCKdqjM1bo837QpS_yedl-NoLANx7A5sYUyKeCe9apVmSgpA/viewform?usp=pp_url&entry.750613590={{Auth::user()->nome}}&entry.120758124={{Auth::user()->email}}&entry.206285557={{Auth::user()->cpf}}&entry.1202356846={{$projeto->titulo}}&entry.1094928288={{$projeto->id}}&entry.1177766823={{$projeto->areaConhecimento->area_conhecimento}}&entry.1397554886" id="novo-integrante" class="btn btn-success">
-                                    Avaliar
-                                </a>
-                                @else
-                                <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScLFxQtDdtnOc2TMBPabNIRRlsk28AGMLOpeOrEDBmz0slg8g/viewform?usp=pp_url&entry.1142594772={{Auth::user()->nome}}&entry.1360361282={{Auth::user()->email}}&entry.1378712210={{Auth::user()->cpf}}&entry.2040078585={{$projeto->titulo}}&entry.1001736854={{$projeto->id}}&entry.442913637={{$projeto->areaConhecimento->area_conhecimento}}&entry.529425973" id="novo-integrante" class="btn btn-success">
-                                    Avaliar
-                                </a>
+                                    <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfCKdqjM1bo837QpS_yedl-NoLANx7A5sYUyKeCe9apVmSgpA/viewform?usp=pp_url&entry.750613590={{Auth::user()->nome}}&entry.120758124={{Auth::user()->email}}&entry.206285557={{Auth::user()->cpf}}&entry.1202356846={{$projeto->titulo}}&entry.1094928288={{$projeto->id}}&entry.1177766823={{$projeto->areaConhecimento->area_conhecimento}}&entry.1397554886" id="novo-integrante" class="btn btn-success">
+                                        Avaliar
+                                    </a>
+                                    @else
+                                    <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScLFxQtDdtnOc2TMBPabNIRRlsk28AGMLOpeOrEDBmz0slg8g/viewform?usp=pp_url&entry.1142594772={{Auth::user()->nome}}&entry.1360361282={{Auth::user()->email}}&entry.1378712210={{Auth::user()->cpf}}&entry.2040078585={{$projeto->titulo}}&entry.1001736854={{$projeto->id}}&entry.442913637={{$projeto->areaConhecimento->area_conhecimento}}&entry.529425973" id="novo-integrante" class="btn btn-success">
+                                        Avaliar
+                                    </a>
+                                    @endif
                                 @endif
                             @else
                                 <a href="{{route('projeto.formVinculaIntegrante', ['projeto' => $projeto->id])}}" id="novo-integrante" class="btn btn-success">
