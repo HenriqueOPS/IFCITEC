@@ -29,6 +29,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="dashboard" id="5" class="tab" role="tab" data-toggle="tab">
+                        <i class="material-icons blue-icon">done</i>
+                        Avaliados
+                    </a>
+                </li>
+                <li>
                     <a href="{{route('relatorio',['id' => 1])}}" >Projetos Integrantes Agrupados</a>
                     <a href="{{route('relatorio',['id' => 2])}}" >Projetos Integrantes Não Agrupados</a>
                     <a href="{{route('relatorio',['id' => 3])}}" >Avaliadores</a>
@@ -53,6 +59,7 @@
                         </tr>
                     </thead>
                     @foreach($situacoes as $situacao=>$projetos)
+
                         <tbody id="{{$situacao}}">
                         @foreach($projetos as $projeto)
                             <tr>
@@ -72,7 +79,8 @@
                                 </td>
                                 <td class="td-actions text-right">
                                     <a href="{{route('projeto.show', ['projeto' => $projeto->id])}}"><i class="material-icons blue-icon">remove_red_eye</i></a>
-                                    <a href="{{route('vinculaAvaliador', ['id' => $projeto->id])}}"><i class="material-icons blue-icon">check_circle</i></a>
+                                    <a href="{{route('vinculaAvaliador', ['id' => $projeto->id])}}"><i class="material-icons">assignment_ind</i></a>
+                                    <a href="{{route('projeto.setAvaliado', ['id' => $projeto->id])}}" class="setAvaliado"><i class="material-icons blue-icon">check_circle</i></a>
                                 </td>
                             <tr>
                         @endforeach
@@ -96,12 +104,24 @@ $(document).ready(function () {
         hideBodys();
         $('tbody[id='+target.id+']').show();
     });
+
+    $('.setAvaliado').bind('click',function(e) {
+        e.preventDefault();
+        var r = confirm("Definir projeto como avaliado?");
+        if (r == true) {
+            var target = $(this)[0];
+            document.location.href = target.getAttribute('href');
+        } else {
+
+        }
+    });
 });
 
 function hideBodys(){
     $('tbody[id=0]').hide();
     $('tbody[id=1]').hide();
     $('tbody[id=3]').hide();
+    $('tbody[id=5]').hide();
 }
 </script>
 @endsection
