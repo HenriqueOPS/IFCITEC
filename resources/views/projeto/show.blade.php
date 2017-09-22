@@ -40,7 +40,7 @@
                             @endif
                         </div>
                         <div class="col-md-3">
-                            @if(Auth::user()->temFuncao('Avaliador') || Auth::user()->temFuncao('Revisor'))
+                            @if(Auth::user()->temFuncao('Avaliador'))// || Auth::user()->temFuncao('Revisor'))
                                 @if($projeto->getStatus() != "Avaliado")
                                     @if($projeto->nivel->nivel == "Ensino Fundamental")
 

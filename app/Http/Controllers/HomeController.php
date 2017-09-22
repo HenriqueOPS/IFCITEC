@@ -78,6 +78,9 @@ class HomeController extends Controller {
                 case "Avaliado":
                     $situacao = 5;
                     break;
+                case "Não Compareceu":
+                    $situacao = 6;
+                    break;
             }
             $projetosAgrupados[$situacao][] = $projeto;
         }
