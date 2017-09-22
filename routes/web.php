@@ -45,7 +45,7 @@ Route::post('/projeto/vinculaRevisor/', 'ProjetoController@vinculaRevisor')->nam
 Route::get('/projeto/{id}/vinculaAvaliador/', 'ProjetoController@showFormVinculaAvaliador')->name('vinculaAvaliador');
 Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')->name('vinculaAvaliadorPost');
 //
-Route::get('/projeto/{id}/setAvaliado/', 'ProjetoController@setAvaliado')->name('projeto.setAvaliado');
+Route::get('/projeto/{id}/setSituacao/{situacao}', 'ProjetoController@setSituacao')->name('projeto.setSituacao');
 //AJAX
 Route::prefix('nivel')->group(function () {
     Route::get('areasConhecimento/{id}', 'NivelController@areasConhecimento');

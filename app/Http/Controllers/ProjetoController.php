@@ -289,18 +289,17 @@ class ProjetoController extends Controller {
         return Response::download($filename, $filename, $headers);
     }
 
-    public function setAvaliado($id){
+    public function setSituacao($id, $situacao){
         $projeto = Projeto::find($id);
         if (!($projeto instanceof Projeto)) {
             return redirect('home');
         }
 
         foreach ($projeto->revisoes as $revisao){
-            $revisao->situacao_id = 5;
+            $revisao->situacao_id = $situacao;
             $revisao->save();
         }
 
         return redirect('home');
-
     }
 }
