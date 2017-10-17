@@ -19,6 +19,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 //
+Route::get('/cadastro/nivel', 'NivelController@index')->name('cadastroNivel');
+Route::get('/cadastro/area', 'AreaController@index')->name('cadastroArea');
+Route::get('/cadastro/escola', 'EscolaController@index')->name('cadastroEscola');
+Route::get('/cadastro/edicao', 'EdicaoController@index')->name('cadastroEdicao');
+//
 Route::get('/avaliacao', function(){
     return view('avaliador')->withAreas(App\AreaConhecimento::all());
 });
