@@ -24,7 +24,13 @@
 
                 background-image: url("{{asset('img/fundo.png')}}");
                 background-size: 100%;
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: 0 0;
+                background-attachment: fixed;            
+
             }
+
 
             .full-height {
                 height: 100vh;
@@ -72,7 +78,7 @@
             <div class="content">
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <img src="{{asset('img/IFCITEC-logo.png')}}" class="img-responsive" width="70%">
+                        <img src="{{asset('img/IFCITEC-logo.png')}}" class="img-responsive" width="50%">
                     </div>
                 </div>
 

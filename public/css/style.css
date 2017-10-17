@@ -24,7 +24,11 @@ h2{
 
 body{
     background-image: url("../img/fundo.png");
-    background-size: 100%;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 0;
+    background-attachment: fixed;
 }
 
 .moodle-icon{
