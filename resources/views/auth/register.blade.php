@@ -1,16 +1,22 @@
 @extends('layouts.app')
 
+@section('css')
+<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
+<link href="{{ asset('css/datepicker/bootstrap-datepicker.standdalone.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2 col-sm-12">
             <div class="main main-raised">
                 <div class="row">
-                    <div class="col-md-10 col-md-offset-1">
+                    <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
                         <h2>Cadastro de Participante</h2>
                     </div>
+
                 </div>
-                <form method="POST" action="{{route('register')}}">
+                <form name="f1" method="POST" action="{{route('register')}}">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="alert alert-info text-center">
@@ -21,17 +27,20 @@
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true"><i class="material-icons">clear</i></span>
                                     </button>
-                                    <b>ATENÇÃO: </b>É de total resposabilidade do usuário a veracidade dos dados aqui informados, pois estes serão utilizados para a emissão de certificados
+                                    <b>ATENÇÃO: </b>É de total resposabilidade do usuário a veracidade dos dados informados, pois será utilizado para a emissão de certificados
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 text-center">
-                            <p><b>Faça a inscrição via:</b><br> <a href="{{route('moodleLogin')}}"><i class="moodle-icon icon-gray"></i></a></p>
+                            <div class="social-line">
+                                <a class="btn btn-simple btn-just-icon">
+                                    <img src="{{ asset('img/logo.png') }}" title="IFCITEC" height=100px" />
+                                </a>
+                            </div>
                         </div>
-                        <div class="col-md-10 col-md-offset-1">
+                        <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
 
                             {{ csrf_field() }}
-                            <input type="hidden" name="inscricao" value="user">
                             <div class="input-group{{ $errors->has('nome') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">face</i>
@@ -45,6 +54,30 @@
                                     <strong>{{ $errors->first('nome') }}</strong>
                                 </span>
                                 @endif
+                            </div>
+
+                            <div class="input-group{{ $errors->has('cpf') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">call_to_action</i>
+                                </span>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">CPF</label>
+                                    <input type="text" OnKeyPress="formatar('###.###.###-##', this)" maxlength="14" class="form-control" name="cpf" value="{{old('cpf')}}" required>
+                                </div>
+                                @if ($errors->has('cpf'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('cpf') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                            
+                            <div class="col-md-offset-2">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="optionsCheckboxes" checked>
+                                    Estou ciente que a falta de CPF, não permitirá a emissão de certificado
+                                </label>
+                            </div>
                             </div>
 
                             <div class="input-group{{ $errors->has('dt_nascimento') ? ' has-error' : '' }}">
@@ -118,14 +151,23 @@
 <script type="text/javascript">
 
 
-$('.datepicker').datepicker({
-    format: 'dd/mm/yyyy',
-    language: 'pt-BR',
-    templates: {
-        leftArrow: '&lsaquo;',
-        rightArrow: '&rsaquo;'
-    },
-});
+                                        $('.datepicker').datepicker({
+                                            format: 'dd/mm/yyyy',
+                                            language: 'pt-BR',
+                                            templates: {
+                                                leftArrow: '&lsaquo;',
+                                                rightArrow: '&rsaquo;'
+                                            },
+                                        });
 
+                                        function formatar(mascara, documento) {
+                                            var i = documento.value.length;
+                                            var saida = mascara.substring(0, 1);
+                                            var texto = mascara.substring(i)
+
+                                            if (texto.substring(0, 1) != saida) {
+                                                documento.value += texto.substring(0, 1);
+                                            }
+                                        }
 </script>
 @endsection

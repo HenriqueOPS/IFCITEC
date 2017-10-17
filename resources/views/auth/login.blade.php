@@ -1,24 +1,23 @@
 @extends('layouts.app')
 
 @section('css')
-<link href="{{ asset('css/login.css') }}" rel="stylesheet">
+<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+        <div class="col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1">
             <br><br>
             <div class="card card-signup">
                 <div class="header header-primary text-center" id="cardLoginHeader">
-                    <h4>Faça login via:</h4>
+                    <h4>Faça seu login:</h4>
                     <div class="social-line">
-                        <a href="{{route('moodleLogin')}}" id="moodleAuth" class="btn btn-simple btn-just-icon">
-                            <img src="{{ asset('img/moodleIcon.png') }}" alt="Moodle Login" title="Moodle" height=30px" />
+                        <a class="btn btn-simple btn-just-icon">
+                            <img src="{{ asset('img/logonormal.png') }}" title="IFCITEC" height=100px" />
                         </a>
                     </div>
                 </div>
-                <p class="text-divider">Ou simplesmente:</p>
                 <form class="form" method="POST" action="{{ route('login') }}">
                     <div class="content">
                         {{ csrf_field() }}
