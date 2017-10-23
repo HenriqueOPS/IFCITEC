@@ -1,10 +1,10 @@
 # IFCITEC #
 
-##Reuniões TODAS as terças em algum auditório às 10h
+## Reuniões TODAS as terças em algum auditório às 10h
 
-####Não deixe de ler o [Tutorial de navegação do Gitlab](https://about.gitlab.com/2016/03/08/gitlab-tutorial-its-all-connected/)
+#### Não deixe de ler o [Tutorial de navegação do Gitlab](https://about.gitlab.com/2016/03/08/gitlab-tutorial-its-all-connected/)
 
-##Regras de Commit
+## Regras de Commit
 
 Se possível (e quando necessário), o commit deve manter um corpo estrutural padronizado.
 Utilizaremos o padrão utilizado em alguns projetos do Google (simplificado)
@@ -13,7 +13,7 @@ Utilizaremos o padrão utilizado em alguns projetos do Google (simplificado)
 
 O `TARGET` é o alvo de modificações do commit. Pode ser um arquivo, ou um módulo da aplicação.
 
-###Types Permitidos
+### Types Permitidos
 
 * FEAT: Commits com adição de funcionalidade (Seja ela pronta ou em progresso);
 * FIX: Um bugfix. Se houver uma Issue relacionada, deve-se fechá-la;
@@ -31,5 +31,7 @@ O `TARGET` é o alvo de modificações do commit. Pode ser um arquivo, ou um mó
 ## Links úteis
 
 [phppgadmin](http://webacademico.canoas.ifrs.edu.br/phppgadmin/)
+
 [Laravel Documentation](https://laravel.com/docs/5.5/)
+
 [Docker Documentation](https://docs.docker.com/)
