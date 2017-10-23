@@ -11,10 +11,12 @@ class DatabaseSeeder extends Seeder {
      * @return void
      */
     public function run() {
+        
         $this->call(EscolaTableSeeder::class);
-        $this->call(NivelTableSeeder::class);
-        $this->call(AreaConhecimentoTableSeeder::class);
+        //$this->call(NivelTableSeeder::class);
+        //$this->call(AreaConhecimentoTableSeeder::class);
         $this->call(FuncaoTableSeeder::class);
+        /*
         //Inserções Manualmente - Temporário, deverá ser retirada quando
         //a feature de link na página de organização estiver feita
         for ($nivel = 1; $nivel < 2; $nivel++) {
@@ -32,7 +34,7 @@ class DatabaseSeeder extends Seeder {
                 );
             }
         }
-        
+        */
     }
 
 }

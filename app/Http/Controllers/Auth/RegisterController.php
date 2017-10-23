@@ -59,18 +59,9 @@ use RegistersUsers;
                     'senha' => 'required|string|confirmed',
                     'dt_nascimento' => 'required|date_format:d/m/Y|before:today|after:01/01/1950',
                     //COMECO do código que necessitará um refact issue #40
-                    'titulacao' => 'required_if:inscricao,avaliacao|string',
-                    'lattes' => 'required_if:inscricao,avaliacao|string',
-                    'profissao' => 'required_if:inscricao,avaliacao|string',
-                    'instituicao' => 'required_if:inscricao,avaliacao|string',
+                    //'lattes' => 'required_if:inscricao,avaliacao|string',
                     'cpf' => 'required_if:inscricao,avaliacao|cpf|unique:pgsql.pessoa',
-                    'titulacao' => 'required_if:inscricao,avaliacao|string',
-                    'numero' => 'required_if:inscricao,avaliacao|integer',
-                    'bairro' => 'required_if:inscricao,avaliacao|string',
-                    'cidade' => 'required_if:inscricao,avaliacao|string',
-                    'estado' => 'required_if:inscricao,avaliacao|string',
-                    'cep' => 'required_if:inscricao,avaliacao',
-                        //FIM do código que necessitará um refact issue #40
+                    //FIM do código que necessitará um refact issue #40
         ]);
     }
 
@@ -92,14 +83,10 @@ use RegistersUsers;
                     'email' => $data['email'],
                     'senha' => bcrypt($data['senha']),
                     'dt_nascimento' => Carbon::createFromFormat('d/m/Y', $data['dt_nascimento']),
-                    'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
-                    'moodle' => isset($data['moodle']) ? $data['moodle'] : false,
+                    //'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
                     //COMECO do código que necessitará um refact issue #40
                     'cpf' => isset($data['cpf']) ? $data['cpf'] : null,
-                    'titulacao' => isset($data['titulacao']) ? $data['titulacao'] : null,
-                    'lattes' => isset($data['lattes']) ? $data['lattes'] : null,
-                    'profissao' => isset($data['profissao']) ? $data['profissao'] : null,
-                    'instituicao' => isset($data['instituicao']) ? $data['instituicao'] : null
+                    //'lattes' => isset($data['lattes']) ? $data['lattes'] : null,
                     //FIM do código que necessitará um refact issue #40
         ]);
     }
@@ -109,7 +96,6 @@ use RegistersUsers;
         $data['nome'] = session('nome');
         $data['senha'] = session('email');
         $data['senha_confirmation'] = session('email');
-        $data['moodle'] = true;
         return $data;
     }
 

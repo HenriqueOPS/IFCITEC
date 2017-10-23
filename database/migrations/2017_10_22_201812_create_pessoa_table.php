@@ -13,17 +13,18 @@ class CreatePessoaTable extends Migration
      */
     public function up()
     {
-         Schema::create('pessoa', function (Blueprint $table) {
+        Schema::create('pessoa', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome');
             $table->string('email')->unique();
             $table->string('senha');
+            $table->string('cpf');
             $table->date('dt_nascimento');
             $table->string('camisa')->nullable();
-            $table->boolean('moodle')->default(false);
+            $table->string('lattes')->nullable();
             $table->rememberToken();
             $table->timestamps();
-         });
+        });
     }
 
     /**
@@ -33,6 +34,6 @@ class CreatePessoaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pessoa');
+        Schema::dropIfExists(env('DB_SCHEMA').'.pessoa');
     }
 }

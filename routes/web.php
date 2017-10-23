@@ -27,11 +27,6 @@ Route::get('/cadastro/edicao', 'EdicaoController@index')->name('cadastroEdicao')
 Route::get('/avaliacao', function(){
     return view('avaliador')->withAreas(App\AreaConhecimento::all());
 });
-//
-Route::prefix('moodle')->group(function () {
-    Route::get('login', 'Auth\MoodleAuthController@index')->name('moodleLogin');
-    Route::post('login', 'Auth\MoodleAuthController@autenticar')->name('moodleLoginPost'); 
-});
 
 Route::resource('projeto', 'ProjetoController');
 
