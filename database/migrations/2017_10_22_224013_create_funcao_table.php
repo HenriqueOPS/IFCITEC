@@ -11,17 +11,17 @@ class CreateFuncaoTable extends Migration
      *
      * @return void
      */
-  public function up()
+    public function up()
     {
-           Schema::create(env('DB_SCHEMA').'.funcao', function (Blueprint $table) {
+        Schema::create(env('DB_SCHEMA').'.funcao', function (Blueprint $table) {
             $table->increments('id');
             $table->string('funcao')->unique();
             $table->text('descricao')->nullable();
             $table->boolean('sistema')->default(false);
             $table->boolean('integrante')->default(false);
             $table->boolean('projeto')->default(false);      
-            $table->timestamps();	
-         });
+            $table->timestamps();
+        });
     }
 
     /**

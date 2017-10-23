@@ -4,21 +4,21 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTarefaTable extends Migration
+class CreateSituacaoTable extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-  public function up()
+    public function up()
     {
-           Schema::create(env('DB_SCHEMA').'.tarefa', function (Blueprint $table) {
+        Schema::create(env('DB_SCHEMA').'.situacao', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('tarefa')->unique();
-            $table->string('descricao');
-            $table->timestamps();	
-         });
+            $table->string('situacao')->unique();
+            $table->string('descricao')->nullable();
+            $table->timestamps();   
+        });
     }
 
     /**
@@ -28,6 +28,6 @@ class CreateTarefaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(env('DB_SCHEMA').'.tarefa');
+        Schema::dropIfExists(env('DB_SCHEMA').'.situacao');
     }
 }

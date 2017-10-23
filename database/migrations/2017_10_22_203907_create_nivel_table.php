@@ -13,12 +13,15 @@ class CreateNivelTable extends Migration
      */
     public function up()
     {
-           Schema::create(env('DB_SCHEMA').'.nivel', function (Blueprint $table) {
+        Schema::create(env('DB_SCHEMA').'.nivel', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nivel')->unique();
-            $table->text('descricao')->nullable();
-            $table->timestamps();	
-         });
+            $table->string('nivel');
+            $table->text('descricao');
+            $table->integer('edicao_id')->unsigned();
+            $table->timestamps();
+            //Foreign Keys Constraints
+            $table->foreign('edicao_id')->references('id')->on(env('DB_SCHEMA').'.edicao');
+        });
     }
 
     /**

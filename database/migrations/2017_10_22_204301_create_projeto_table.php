@@ -13,18 +13,19 @@ class CreateProjetoTable extends Migration
      */
     public function up()
     {
-           Schema::create(env('DB_SCHEMA').'.projeto', function (Blueprint $table) {
+        Schema::create(env('DB_SCHEMA').'.projeto', function (Blueprint $table) {
             $table->increments('id');
             $table->string('titulo');
             $table->text('resumo');
-            $table->binary('relatorio')->nullable();
-            $table->timestamps();	
+            $table->timestamps();   
             $table->integer('area_id')->unsigned();
             $table->integer('nivel_id')->unsigned();
+            $table->integer('edicao_id')->unsigned();
             //Foreign Keys Constraints
             $table->foreign('area_id')->references('id')->on(env('DB_SCHEMA').'.area_conhecimento');
             $table->foreign('nivel_id')->references('id')->on(env('DB_SCHEMA').'.nivel');
-         });
+            $table->foreign('edicao_id')->references('id')->on(env('DB_SCHEMA').'.edicao');
+        });
     }
 
     /**

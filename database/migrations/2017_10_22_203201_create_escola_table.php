@@ -11,17 +11,17 @@ class CreateEscolaTable extends Migration
      *
      * @return void
      */
-   public function up()
+    public function up()
     {
-           Schema::create(env('DB_SCHEMA').'.escola', function (Blueprint $table) {
+        Schema::create(env('DB_SCHEMA').'.escola', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome_completo')->unique();
             $table->string('nome_curto')->unique();
             $table->string('email')->unique()->nullable();
             $table->string('moodle_link')->nullable();
             $table->string('moodle_versao')->nullable();
-            $table->timestamps();	
-         });
+            $table->timestamps();   
+        });
     }
 
     /**

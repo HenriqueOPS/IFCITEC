@@ -11,13 +11,13 @@ class CreatePalavraChaveTable extends Migration
      *
      * @return void
      */
-     public function up()
+    public function up()
     {
-           Schema::create(env('DB_SCHEMA').'.palavra_chave', function (Blueprint $table) {
+        Schema::create(env('DB_SCHEMA').'.palavra_chave', function (Blueprint $table) {
             $table->increments('id');
             $table->string('palavra');
-            $table->timestamps();	
-         });
+            $table->timestamps();   
+        });
     }
 
     /**

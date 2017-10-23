@@ -11,8 +11,9 @@ class CreateAvaliacaoTable extends Migration
      *
      * @return void
      */
-    public function up(){
-       Schema::create(env('DB_SCHEMA').'.avaliacao', function (Blueprint $table) {
+    public function up()
+    {
+        Schema::create(env('DB_SCHEMA').'.avaliacao', function (Blueprint $table) {
             $table->increments('id');
             $table->text('observacao')->nullable();
             $table->integer('nota_final')->unsigned();
@@ -29,7 +30,8 @@ class CreateAvaliacaoTable extends Migration
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::dropIfExists(env('DB_SCHEMA').'.avaliacao');
     }
 }
