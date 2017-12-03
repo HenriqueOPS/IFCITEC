@@ -14,7 +14,7 @@
                     <h4>Faça seu login:</h4>
                     <div class="social-line">
                         <a class="btn btn-simple btn-just-icon">
-                            <img src="{{ asset('img/logonormal.png') }}" title="IFCITEC" height=100px" />
+                            <img src="{{ asset('img/logonormal.png') }}" title="IFCITEC" height="100" />
                         </a>
                     </div>
                 </div>

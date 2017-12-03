@@ -20,7 +20,7 @@ class CreatePessoaFuncaoTable extends Migration
             //Foreign Keys Constraints
             $table->foreign('pessoa_id')->references('id')->on(env('DB_SCHEMA').'.pessoa');
             $table->foreign('funcao_id')->references('id')->on(env('DB_SCHEMA').'.funcao');
-            $table->foreign('edicao_id')->references('id')->on(env('DB_SCHEMA').'.funcao');
+            $table->foreign('edicao_id')->references('id')->on(env('DB_SCHEMA').'.edicao');
             //Other Constraints
             $table->primary(['pessoa_id', 'funcao_id', 'edicao_id']);
             $table->unique(['pessoa_id', 'funcao_id', 'edicao_id']);

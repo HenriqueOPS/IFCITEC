@@ -40,6 +40,28 @@
                         </div>
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
 
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <img src="{{ asset('img/account-card-details.svg') }}"  />
+                                </span>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">RG</label>
+                                    <input type="text" class="form-control" name="rg" required>
+                                </div>
+                                <span class="help-block">
+                                    <strong></strong>
+                                </span>
+                            </div>
+                            
+                            <div class="col-md-offset-2">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="optionsCheckboxes" checked>
+                                    Estou ciente que o RG informado é de total veracidade e servirá para emissão de certificados
+                                </label>
+                            </div>
+                            </div>
+                            
                             {{ csrf_field() }}
                             <div class="input-group{{ $errors->has('nome') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
@@ -69,15 +91,6 @@
                                     <strong>{{ $errors->first('cpf') }}</strong>
                                 </span>
                                 @endif
-                            </div>
-                            
-                            <div class="col-md-offset-2">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="optionsCheckboxes" checked>
-                                    Estou ciente que a falta de CPF, não permitirá a emissão de certificado
-                                </label>
-                            </div>
                             </div>
 
                             <div class="input-group{{ $errors->has('dt_nascimento') ? ' has-error' : '' }}">
@@ -110,6 +123,24 @@
                                 @endif
                             </div>
 
+                            
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <img src="{{ asset('img/tshirt-crew.svg') }}"  />
+                                </span>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Camiseta</label>
+                                    <select class="form-control" id="">
+                                        <option>P</option>
+                                        <option>M</option>
+                                        <option>G</option>
+                                        <option>GG</option>
+                                        <option>EXG</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">lock_outline</i>
