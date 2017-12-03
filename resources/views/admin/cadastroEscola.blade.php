@@ -14,7 +14,7 @@
                         <h2>Cadastro de Escola</h2>
                     </div>
                 </div>
-                <form name="f1" method="POST" action="{{ route('cadastroEscola')}}">
+                <form name="f1" method="GET" action="{{ route('cadastroSucesso')}}">
 
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">

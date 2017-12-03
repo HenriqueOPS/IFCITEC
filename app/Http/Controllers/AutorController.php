@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class EdicaoController extends Controller
+class AutorController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -23,6 +23,6 @@ class EdicaoController extends Controller
      */
     public function index()
     {
-        return view('cadastroEdicao');
+        return view('admin.home');
     }
 }

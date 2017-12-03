@@ -26,7 +26,7 @@ class Funcao extends Model {
     ];
 
     public function pessoas() {
-        return $this->belongsToMany('App\Pessoa', 'pessoa_funcao');
+        return $this->belongsToMany('App\Pessoa', 'funcao_pessoa');
     }
 
     public function getPessoasProjeto() {

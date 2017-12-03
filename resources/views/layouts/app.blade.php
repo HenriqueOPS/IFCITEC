@@ -7,8 +7,7 @@
 
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        
-        <base href="{{env('APP_URL')}}">
+
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts and icons -->
@@ -23,7 +22,7 @@
     </head>
     <body>
         <div id="app">
-            <nav class="navbar navbar-default navbar-static-top">
+            <nav class="navbar navbar-default navbar-static-top"-->
                 <div class="container">
                     <div class="navbar-header">
 
@@ -36,11 +35,7 @@
                         </button>
 
                         <!-- Branding Image -->
-                         @if (Auth::guest())
-                         <a class="navbar-brand" href="{{ url('/') }}">
-                         @else
-                         <a class="navbar-brand" href="{{ url('/home') }}">
-                         @endif
+                        <a class="navbar-brand" href="{{ url('/') }}">
                             {{ config('app.name', 'Laravel') }}
                         </a>
                     </div>
@@ -58,6 +53,49 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Inscrição</a></li>
                             @else
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Função <span class="caret"></span></a>
+
+                                <ul class="dropdown-menu" role="menu">
+                                    @if (Auth::user()->temFuncao('Administrador'))
+                                    <li><a href="{{ route('administrador') }}">Administrador</a></li>
+                                    @endif
+
+                                    @if (Auth::user()->temFuncao('Organizador'))
+                                    <li><a href="{{ route('organizador') }}">Organizador</a></li>
+                                    @endif
+
+                                    @if (Auth::user()->temFuncao('Recepção'))
+                                    <li><a href="{{ route('administrador') }}">Recepção</a></li>
+                                    @endif
+
+                                    @if (Auth::user()->temFuncao('Usuário'))
+                                    <li><a href="{{ route('administrador') }}">Usuário</a></li>
+                                    @endif
+
+                                    @if (Auth::user()->temFuncao('Avaliador'))
+                                    <li><a href="{{ route('administrador') }}">Avaliador</a></li>
+                                    @endif
+
+                                    @if (Auth::user()->temFuncao('Revisor'))
+                                    <li><a href="{{ route('administrador') }}">Revisor</a></li>
+                                    @endif
+
+                                    @if (Auth::user()->temFuncao('Autor'))
+                                    <li><a href="{{ route('autor') }}">Autor</a></li>
+                                    @endif
+
+                                    @if (Auth::user()->temFuncao('Orientador'))
+                                    <li><a href="{{ route('administrador') }}">Orientador</a></li>
+                                    @endif
+
+                                    @if (Auth::user()->temFuncao('Coorientador'))
+                                    <li><a href="{{ route('administrador') }}">Coorientador</a></li>
+                                    @endif
+                                </ul>
+                            </li>
+
+
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->nome }} <span class="caret"></span>
