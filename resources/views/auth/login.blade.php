@@ -8,7 +8,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1">
-            <br><br>
+            <br><br><br><br><br>
             <div class="card card-signup">
                 <div class="header header-primary text-center" id="cardLoginHeader">
                     <h4>Faça seu login:</h4>
