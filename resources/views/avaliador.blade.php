@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
-    <link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -33,35 +33,6 @@
 
                             {{ csrf_field() }}
                             <input type="hidden" name="inscricao" value="avaliacao">
-                            <div class="input-group{{ $errors->has('nome') ? ' has-error' : '' }}">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">face</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Nome</label>
-                                    <input type="text" class="form-control" name="nome" value="{{old('nome')}}" required>
-                                </div>
-                                @if ($errors->has('nome'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('nome') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-
-                            <div class="input-group{{ $errors->has('cpf') ? ' has-error' : '' }}">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">fingerprint</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">CPF</label>
-                                    <input type="text" class="form-control" name="cpf" value="{{old('cpf')}}" required>
-                                </div>
-                                @if ($errors->has('cpf'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('cpf') }}</strong>
-                                </span>
-                                @endif
-                            </div>
 
                             <div class="input-group{{ $errors->has('titulacao') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
@@ -275,49 +246,9 @@
                             
                         </div>
                     </div>
+                    <br>
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
-                            <h2>Login</h2>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-
-                            <div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">email</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Email</label>
-                                    <input type="text" class="form-control" name="email" value="{{ old('email') }}" required>
-                                </div>
-                                @if ($errors->has('email'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('email') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-
-
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">lock_outline</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Senha</label>
-                                    <input type="password" class="form-control" name="senha" required>
-                                </div>
-                            </div>
-
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">done</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Confirme a Senha</label>
-                                    <input type="password" class="form-control" name="senha_confirmation" required>
-                                </div>
-                            </div>
                             <p>Você pode escolher varios:</p>
                             <div class="checkbox">
                                 <label>

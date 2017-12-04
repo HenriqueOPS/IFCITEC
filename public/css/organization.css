@@ -20,4 +20,22 @@ and open the template in the editor.
     color:gold;
 }
 
+.botao{
+float:right
+}
+
+#page_footer_links {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.nav {
+    
+}
+
+.navbar .navbar-collapse {
+    text-align: center;
+}
+
+
 
