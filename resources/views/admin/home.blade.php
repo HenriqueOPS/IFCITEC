@@ -66,7 +66,7 @@
                             <td>2017-05-05 21:00 - 2017-06-06 00:00</td>
                             <td>2017-05-05 21:00 - 2017-06-06 00:00</td>
                             <td class="td-actions text-right">
-                                <a href="#"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a href="administrador/edicao/1"><i class="material-icons blue-icon">remove_red_eye</i></a>
                                 <a href="#"><i class="material-icons">edit</i></a>
                             </td>
                         <tr>

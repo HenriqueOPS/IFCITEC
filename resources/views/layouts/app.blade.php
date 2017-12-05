@@ -50,7 +50,7 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Administrar <span class="caret"></span></a>
 
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="">Usuários</a></li>
+                                    <li><a href="{{ route('administrarUsuarios') }}">Usuários</a></li>
                                     <li><a href="">Logs</a></li>
                                 </ul>
                             </li>
@@ -111,7 +111,7 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a>
+                                        <a href="{{ route('editarCadastro') }}">
                                             Editar Cadastro
                                         </a>
                                     </li>
