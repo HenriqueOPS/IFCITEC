@@ -66,10 +66,8 @@
                             <td>2017-05-05 21:00 - 2017-06-06 00:00</td>
                             <td>2017-05-05 21:00 - 2017-06-06 00:00</td>
                             <td class="td-actions text-right">
-                                <a href="./administrador/edicao/1"><i class="material-icons blue-icon">remove_red_eye</i></a>
-                                <a href="#"><i class="material-icons">assignment_ind</i></a>
-                                <a href="#" class="setAvaliado"><i class="material-icons blue-icon">check_circle</i></a>
-                                <a href="#" class="setNaoCompareceu"><i class="material-icons">help</i></a>
+                                <a href="#"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a href="#"><i class="material-icons">edit</i></a>
                             </td>
                         <tr>
 
@@ -81,9 +79,7 @@
                             <td>2017-05-05 21:00 - 2017-06-06 00:00</td>
                             <td class="td-actions text-right">
                                 <a href="#"><i class="material-icons blue-icon">remove_red_eye</i></a>
-                                <a href="#"><i class="material-icons">assignment_ind</i></a>
-                                <a href="#" class="setAvaliado"><i class="material-icons blue-icon">check_circle</i></a>
-                                <a href="#" class="setNaoCompareceu"><i class="material-icons">help</i></a>
+                                <a href="#"><i class="material-icons">edit</i></a>
                             </td>
                         <tr>
 
@@ -118,9 +114,7 @@
                             <td>(51) 3051-1234</td>
                             <td class="td-actions text-right">
                                 <a href="#"><i class="material-icons blue-icon">remove_red_eye</i></a>
-                                <a href="#"><i class="material-icons">assignment_ind</i></a>
-                                <a href="#" class="setAvaliado"><i class="material-icons blue-icon">check_circle</i></a>
-                                <a href="#" class="setNaoCompareceu"><i class="material-icons">help</i></a>
+                                <a href="#"><i class="material-icons">edit</i></a>
                             </td>
                         <tr>
 

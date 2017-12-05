@@ -18,6 +18,8 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link href="{{ asset('css/style.css') }}" rel="stylesheet">
         <link href="{{ asset('css/material-kit.css') }}" rel="stylesheet">
+        <link  href="{{ asset('css/font-awesome.css') }}" rel="stylesheet">
+        <link  href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
         @yield('css')
     </head>
     <body>
@@ -41,6 +43,19 @@
                             &nbsp;
                         </ul>
 
+                        <!-- Right Side Of Navbar -->
+                        <ul class="nav navbar-nav">
+                            <!-- Authentication Links -->
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Administrar <span class="caret"></span></a>
+
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="">Usuários</a></li>
+                                    <li><a href="">Logs</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        
                         <!-- Right Side Of Navbar -->
                         <ul class="nav navbar-nav navbar-right">
                             <!-- Authentication Links -->
@@ -85,6 +100,8 @@
                                     @endif
                                 </ul>
                             </li>
+                            
+                            
 
 
                             <li class="dropdown">
