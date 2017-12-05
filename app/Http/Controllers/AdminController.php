@@ -52,4 +52,8 @@ class AdminController extends Controller
     {
         return view('admin.cadastroEdicao');
     }
+    public function administrarUsuarios()
+    {
+        return view('admin.administrarUsuarios');
+    }
 }

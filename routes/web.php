@@ -18,6 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+//Usuario
+Route::get('/editar/cadastro', 'PessoaController@editarCadastro')->name('editarCadastro');
 
 //Autor 
 Route::get('/autor', 'AutorController@index')->name('autor');
@@ -29,6 +31,7 @@ Route::get('/administrador/cadastro/nivel', 'AdminController@cadastroNivel')->na
 Route::get('/administrador/cadastro/area', 'AdminController@cadastroArea')->name('cadastroArea');
 Route::get('/administrador/cadastro/escola', 'AdminController@cadastroEscola')->name('cadastroEscola');
 Route::get('/administrador/cadastro/edicao', 'AdminController@cadastroEdicao')->name('cadastroEdicao');
+Route::get('/administrador/usuarios', 'AdminController@administrarUsuarios')->name('administrarUsuarios');
 
 
 //Organizador

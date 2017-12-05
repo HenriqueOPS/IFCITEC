@@ -121,5 +121,10 @@ class PessoaController extends Controller {
             return redirect('home');
         }
     }
+    
+    public function editarCadastro()
+    {
+        return view('editarCadastro');
+    }
 
 }
