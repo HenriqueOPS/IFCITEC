@@ -1,8 +1,5 @@
-@extends('layouts.app')
-
 @section('css')
 <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
-<link href="{{ asset('css/organization.css') }}" rel="stylesheet">
 <link href="{{ asset('css/datepicker/bootstrap-datepicker.standdalone.css') }}" rel="stylesheet">
 @endsection
 
@@ -13,33 +10,17 @@
             <div class="main main-raised">
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                        <h2>Cadastro de Participante</h2>
+                        <h2>Editar Cadastro</h2>
                     </div>
 
                 </div>
                 <form name="f1" method="POST" action="{{route('register')}}">
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="alert alert-info text-center">
-                                <div class="container-fluid">
-                                    <div class="alert-icon">
-                                        <i class="material-icons">info_outline</i>
-                                    </div>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true"><i class="material-icons">clear</i></span>
-                                    </button>
-                                    <b>ATENÇÃO: </b>É de total resposabilidade do usuário a veracidade dos dados informados, pois será utilizado para a emissão de certificados
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 text-center">
-                            <div class="social-line">
-                                <a class="btn btn-simple btn-just-icon">
-                                    <img src="{{ asset('img/logo.png') }}" title="IFCITEC" height=100px" />
-                                </a>
-                            </div>
-                        </div>
+
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
+                            <div class="col-md-12 text-center">
+                                <h3>Meus Dados</h3>
+                            </div>
 
                             <div class="input-group">
                                 <span class="input-group-addon">
@@ -53,16 +34,6 @@
                                     <strong></strong>
                                 </span>
                             </div>
-                            
-                            <div class="col-md-offset-2">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="optionsCheckboxes" checked>
-                                    Estou ciente que o RG informado é de total veracidade e servirá para emissão de certificados
-                                </label>
-                            </div>
-                            </div>
-                            
                             {{ csrf_field() }}
                             <div class="input-group{{ $errors->has('nome') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
@@ -124,7 +95,7 @@
                                 @endif
                             </div>
 
-                            
+
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <img src="{{ asset('img/tshirt-crew.svg') }}"  />
@@ -140,32 +111,14 @@
                                     </select>
                                 </div>
                             </div>
-                            
-                            
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">lock_outline</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Senha</label>
-                                    <input type="password" class="form-control" name="senha" required>
-                                </div>
-                            </div>
 
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">done</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Confirme a Senha</label>
-                                    <input type="password" class="form-control" name="senha_confirmation" required>
-                                </div>
-                            </div>
+
+
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">
-                            <button class="btn btn-primary">Inscrever</button>
+                            <button class="btn btn-primary">Salvar Alterações</button>
 
                         </div>
                     </div>
@@ -203,3 +156,4 @@
                                         }
 </script>
 @endsection
+
