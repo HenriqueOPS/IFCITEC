@@ -31,6 +31,11 @@ Route::get('/administrador/cadastro/nivel', 'AdminController@cadastroNivel')->na
 Route::get('/administrador/cadastro/area', 'AdminController@cadastroArea')->name('cadastroArea');
 Route::get('/administrador/cadastro/escola', 'AdminController@cadastroEscola')->name('cadastroEscola');
 Route::get('/administrador/cadastro/edicao', 'AdminController@cadastroEdicao')->name('cadastroEdicao');
+Route::get('/administrador/editar/area', 'AdminController@editarArea')->name('editarArea');
+Route::get('/administrador/editar/edicao', 'AdminController@editarEdicao')->name('editarEdicao');
+Route::get('/administrador/editar/escola', 'AdminController@editarEscola')->name('editarEscola');
+Route::get('/administrador/editar/nivel', 'AdminController@editarNivel')->name('editarNivel');
+Route::get('/administrador/mostrar/edicao', 'AdminController@mostrarEdicao')->name('mostrarEdicao');
 Route::get('/administrador/usuarios', 'AdminController@administrarUsuarios')->name('administrarUsuarios');
 
 
@@ -46,6 +51,7 @@ Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 //
 
 Route::get('/cadastro/sucess', 'SucessoCadastroController@index')->name('cadastroSucesso');
+Route::get('/editar/sucess', 'SucessoEdicaoController@index')->name('editarSucesso');
 Route::get('/cadastro/homologacao', 'HomologacaoController
   @index')->name('cadastroFichaHomologacao');
 

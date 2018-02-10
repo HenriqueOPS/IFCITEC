@@ -52,6 +52,32 @@ class AdminController extends Controller
     {
         return view('admin.cadastroEdicao');
     }
+    
+    public function editarArea()
+    {
+        return view('admin.editarArea');
+    }
+    
+    public function editarEdicao()
+    {
+        return view('admin.editarEdicao');
+    }
+    
+    public function editarEscola()
+    {
+        return view('admin.editarEscola');
+    }
+    
+    public function editarNivel()
+    {
+        return view('admin.editarNivel');
+    }
+    
+    public function mostrarEdicao()
+    {
+        return view('admin.showEdicao');
+    }
+    
     public function administrarUsuarios()
     {
         return view('admin.administrarUsuarios');

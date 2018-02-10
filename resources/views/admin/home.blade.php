@@ -41,7 +41,7 @@
                     <thead id="0">
                     <div id="0">
                         <div class="col-md-12">
-                            <a href="./administrador/cadastro/edicao" class="btn btn-primary btn-round">
+                            <a href="{{ route('cadastroEdicao') }}" class="btn btn-primary btn-round">
                                 <i class="material-icons">add</i> Adicionar Edição
                             </a>
                         </div>
@@ -66,8 +66,8 @@
                             <td>2017-05-05 21:00 - 2017-06-06 00:00</td>
                             <td>2017-05-05 21:00 - 2017-06-06 00:00</td>
                             <td class="td-actions text-right">
-                                <a href="administrador/edicao/1"><i class="material-icons blue-icon">remove_red_eye</i></a>
-                                <a href="#"><i class="material-icons">edit</i></a>
+                                <a href="{{ route('mostrarEdicao') }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a href=""><i class="material-icons">content_paste</i></a>
                             </td>
                         <tr>
 
@@ -79,7 +79,7 @@
                             <td>2017-05-05 21:00 - 2017-06-06 00:00</td>
                             <td class="td-actions text-right">
                                 <a href="#"><i class="material-icons blue-icon">remove_red_eye</i></a>
-                                <a href="#"><i class="material-icons">edit</i></a>
+                                <a href="#"><i class="material-icons">content_paste</i></a>
                             </td>
                         <tr>
 
@@ -88,7 +88,7 @@
                     <thead id="1">
                     <div id="1">
                         <div class="col-md-3">
-                            <a href="./administrador/cadastro/escola" class="btn btn-primary btn-round">
+                            <a href="{{ route('cadastroEscola') }}" class="btn btn-primary btn-round">
                                 <i class="material-icons">add</i> Adicionar Escola
                             </a>
                         </div>
@@ -113,8 +113,7 @@
                             <td>contato@canoas.ifrs.edu.br</td>
                             <td>(51) 3051-1234</td>
                             <td class="td-actions text-right">
-                                <a href="#"><i class="material-icons blue-icon">remove_red_eye</i></a>
-                                <a href="#"><i class="material-icons">edit</i></a>
+                                <a href="{{ route('editarEscola') }}"><i class="material-icons">edit</i></a>
                             </td>
                         <tr>
 
