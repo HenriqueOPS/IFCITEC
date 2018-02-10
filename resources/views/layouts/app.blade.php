@@ -30,7 +30,7 @@
                 <div class="container">
                     
                     <div class="navbar-header">
-                        <a class="navbar-brand" href="#">
+                        <a class="navbar-brand" href="home">
                             <img src="{{ asset('img/logo.png') }}" width="100" alt="IFCITEC">
                         </a>
 

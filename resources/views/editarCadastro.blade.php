@@ -1,3 +1,5 @@
+@extends('layouts.app')
+
 @section('css')
 <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 <link href="{{ asset('css/datepicker/bootstrap-datepicker.standdalone.css') }}" rel="stylesheet">
@@ -28,7 +30,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">RG</label>
-                                    <input type="text" class="form-control" name="rg" required>
+                                    <input type="text" class="form-control" name="rg" id="rg" required>
                                 </div>
                                 <span class="help-block">
                                     <strong></strong>

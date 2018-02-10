@@ -72,7 +72,7 @@
                     <thead id="1">
                     <div id="1">
                         <div class="col-md-3">
-                            <a href="cadastroArea" class="btn btn-primary btn-round">
+                            <a href="{{ route('cadastroArea') }}" class="btn btn-primary btn-round">
                                 <i class="material-icons">add</i> Adicionar Áreas
                             </a>
                         </div>
@@ -94,8 +94,7 @@
                             <td>Fundamental</td>
                             <td>10</td>
                             <td class="td-actions text-right">
-                                <a href="#"><i class="material-icons blue-icon">remove_red_eye</i></a>
-                                <a href="#"><i class="material-icons">edit</i></a>
+                                <a href="{{ route('editarArea') }}"><i class="material-icons">edit</i></a>
                             </td>
                         <tr>
 
@@ -104,7 +103,7 @@
                     <thead id="2">
                     <div id="2">
                         <div class="col-md-3">
-                            <a href="cadastroNivel" class="btn btn-primary btn-round">
+                            <a href="{{ route('cadastroNivel') }}" class="btn btn-primary btn-round">
                                 <i class="material-icons">add</i> Adicionar Níveis
                             </a>
                         </div>
@@ -126,8 +125,7 @@
                             <td>5</td>
                             <td>10</td>
                             <td class="td-actions text-right">
-                                <a href="#"><i class="material-icons blue-icon">remove_red_eye</i></a>
-                                <a href="#"><i class="material-icons">edit</i></a>
+                                <a href="{{ route('editarNivel') }}"><i class="material-icons">edit</i></a>
                             </td>
                         <tr>
 
