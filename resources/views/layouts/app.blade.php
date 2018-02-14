@@ -33,6 +33,8 @@
                         <a class="navbar-brand" href="{{ route('home') }}">
                             <img src="{{ asset('img/logo.png') }}" width="100" alt="IFCITEC">
                         </a>
+
+                        
                     </div>
 
                     <div class="collapse navbar-collapse" id="app-navbar-collapse">
@@ -52,11 +54,11 @@
                                     <li><a href="">Logs</a></li>
                                 </ul>
                             </li>
-                        </ul> -->
+                        </ul>
                         
                         <!-- Right Side Of Navbar -->
                         <ul class="nav navbar-nav navbar-right">
-                            <!-- Authentication Links 
+                            <!-- Authentication Links
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Função <span class="caret"></span></a>
 
