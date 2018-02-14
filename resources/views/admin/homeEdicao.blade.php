@@ -72,7 +72,7 @@
                     <thead id="1">
                     <div id="1">
                         <div class="col-md-3">
-                            <a href="cadastroArea" class="btn btn-primary btn-round">
+                            <a href="{{ route('cadastroArea') }}" class="btn btn-primary btn-round">
                                 <i class="material-icons">add</i> Adicionar Áreas
                             </a>
                         </div>
@@ -143,41 +143,40 @@
 
 @section('js')
 <script type="application/javascript">
-$(document).ready(function () {
+    $(document).ready(function () {
     hideBodys();
     hideHeads();
     $('tbody[id=0]').show();
     $('thead[id=0]').show();
     $('div[id=0]').show();
-
     $('.tab').click(function (e) {
-        var target = $(this)[0];
-        hideBodys();
-        hideHeads();
-        $('tbody[id='+target.id+']').show();
-        $('thead[id='+target.id+']').show();
-        $('div[id='+target.id+']').show();
+    var target = $(this)[0];
+    hideBodys();
+    hideHeads();
+    $('tbody[id='+target.id+']').show();
+    $('thead[id='+target.id+']').show();
+    $('div[id='+target.id+']').show();
     });
 
-});
 
-function hideBodys(){
+    });
+
+    function hideBodys(){
     $('tbody[id=0]').hide();
     $('tbody[id=1]').hide();
     $('tbody[id=2]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
-}
-
-function hideHeads(){
+    }
+    function hideHeads(){
     $('thead[id=0]').hide();
     $('thead[id=1]').hide();
     $('thead[id=2]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
-}
+    }
 </script>
 @endsection
 

@@ -46,7 +46,6 @@ class AdminController extends Controller
 
     }
 
-
     public function cadastroEscola()
     {
         return view('admin.cadastroEscola');
