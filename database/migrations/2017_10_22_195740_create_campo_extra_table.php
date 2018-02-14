@@ -31,6 +31,8 @@ class CreateCampoExtraTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists(env('DB_SCHEMA').'.dado_campo_extra');
+        Schema::dropIfExists(env('DB_SCHEMA').'.valor_campo_extra');
         Schema::dropIfExists(env('DB_SCHEMA').'.campo_extra');
     }
 }

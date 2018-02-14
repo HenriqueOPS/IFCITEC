@@ -26,7 +26,7 @@ O `TARGET` é o alvo de modificações do commit. Pode ser um arquivo, ou um mó
 * @rafaellabueno - Rafaella Bueno
 * @sandro.silva - Sandro Silva
 * @vinicius_raupp - Vinícius Raupp
-* @vinicius_raupp - Victor Beroncello
+* @vitor_bertoncello - Victor Beroncello
 
 ## Links úteis
 

@@ -31,10 +31,12 @@ class Pessoa extends Authenticatable {
      * @var array
      */
     protected $fillable = [
-        'nome', 'email', 'senha', 'dt_nascimento', 'camisa', 'moodle',
+        'nome', 'email', 'senha', 'cpf', 'rg', 'dt_nascimento',
+        'camisa', 'lattes', 'telefone',
+
         //Referentes a comição Avaliadora, necessário um estudo mais aprofundado
         //desta característica no sistema issue #40
-        'titulacao', 'lattes', 'profissao', 'instituicao', 'cpf', 'telefone',
+        'titulacao', 'lattes', 'profissao', 'instituicao',
     ];
 
     /**

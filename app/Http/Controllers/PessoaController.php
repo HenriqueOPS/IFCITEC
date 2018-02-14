@@ -8,6 +8,7 @@ use App\Pessoa;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Auth;
 
+
 class PessoaController extends Controller {
     /**
      * Display a listing of the resource.
@@ -81,7 +82,9 @@ class PessoaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        //
+
+
+
     }
 
     /**
@@ -121,10 +124,48 @@ class PessoaController extends Controller {
             return redirect('home');
         }
     }
+
+
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator(array $data) {
+
+        if (session()->has('email')) {
+            $data = $this->setSessionValues($data);
+        }
+
+        return Validator::make($data, [
+            'nome' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:pgsql.pessoa',
+            'senha' => 'required|string|confirmed',
+            'dt_nascimento' => 'required|date_format:d/m/Y|before:today|after:01/01/1900',
+            'rg' => 'required|string|unique:pgsql.pessoa',
+            'telefone' => 'string|min:8|max:15',
+            'cpf' => 'string|unique:pgsql.pessoa|min:11|max:14',
+            'confirmacaoRg' => 'required'
+        ]);
+    }
     
     public function editarCadastro()
     {
-        return view('editarCadastro');
+        $dados = Pessoa::find(Auth::id());
+        return view('editaCadastro',compact('dados'));
     }
+
+    public function editaCadastro(Request $data)
+    {
+
+        $data = $data->all();
+
+        Pessoa::find(Auth::id())->update($data);
+
+        return redirect()->route('editarCadastro');
+
+    }
+
 
 }

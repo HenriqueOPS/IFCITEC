@@ -14,7 +14,9 @@
                         <h2>Cadastro de Escola</h2>
                     </div>
                 </div>
-                <form name="f1" method="GET" action="{{ route('cadastroSucesso')}}">
+                <form name="f1" method="post" action="{{ route('cadastroEscola') }}">
+
+                    {{ csrf_field() }}
 
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">

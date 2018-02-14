@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Funcao;
+use App\Edicao;
 use App\Projeto;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
