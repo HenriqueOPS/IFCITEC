@@ -17,20 +17,48 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// Cria as rotas de autenticação no braço e em Português
+Route::get('cadastro', [
+  'as' => 'cadastro',
+  'uses' => 'Auth\RegisterController@showRegistrationForm'
+]);
+Route::post('cadastro', [
+  'as' => '',
+  'uses' => 'Auth\RegisterController@register'
+]);
+
+
+
 Route::get('/home', 'HomeController@index')->name('home');
-//Usuario
-Route::get('/editar/cadastro', 'PessoaController@editarCadastro')->name('editarCadastro');
+
+Route::get('/editar-cadastro', 'PessoaController@editarCadastro')->name('editarCadastro');
+Route::post('/editar-cadastro', 'PessoaController@editaCadastro')->name('editaCadastro');
+
 
 //Autor 
 Route::get('/autor', 'AutorController@index')->name('autor');
 
-//Administrador
+
+// Administrador
 Route::get('/administrador', 'AdminController@index')->name('administrador');
-Route::get('/administrador/edicao/{id}', 'AdminController@edicao')->name('edicao');
-Route::get('/administrador/cadastro/nivel', 'AdminController@cadastroNivel')->name('cadastroNivel');
+
+// Edicao
+Route::get('/edicao/{id}', 'EdicaoController@edicao')->name('edicao');
+Route::get('/edicao/cadastrar', 'EdicaoController@cadastroEdicao')->name('cadastroEdicao');
+
+// Nivel
+Route::get('/nivel/cadastrar', 'AdminController@cadastroNivel')->name('cadastroNivel');
+
+// Area
 Route::get('/administrador/cadastro/area', 'AdminController@cadastroArea')->name('cadastroArea');
-Route::get('/administrador/cadastro/escola', 'AdminController@cadastroEscola')->name('cadastroEscola');
-Route::get('/administrador/cadastro/edicao', 'AdminController@cadastroEdicao')->name('cadastroEdicao');
+
+// Escola
+Route::get('/escola/cadastrar', 'AdminController@cadastroEscola')->name('cadastroEscola');
+Route::post('/escola/cadastrar', 'AdminController@cadastraEscola')->name('cadastroEscola');
+Route::get('/escola/{id}', 'AdminController@editarEscola')->name('escola');
+
+
+
 Route::get('/administrador/usuarios', 'AdminController@administrarUsuarios')->name('administrarUsuarios');
 
 
@@ -46,14 +74,14 @@ Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 //
 
 Route::get('/cadastro/sucess', 'SucessoCadastroController@index')->name('cadastroSucesso');
-Route::get('/cadastro/homologacao', 'HomologacaoController
-  @index')->name('cadastroFichaHomologacao');
+//Route::get('/cadastro/homologacao', 'HomologacaoController@index')->name('cadastroFichaHomologacao');
 
 
 //
 Route::get('/avaliacao', function(){
     return view('avaliador')->withAreas(App\AreaConhecimento::all());
 });
+
 
 Route::resource('projeto', 'ProjetoController');
 

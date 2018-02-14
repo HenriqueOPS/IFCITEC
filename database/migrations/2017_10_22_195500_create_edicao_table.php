@@ -16,18 +16,22 @@ class CreateEdicaoTable extends Migration
         Schema::create(env('DB_SCHEMA').'.edicao', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('ano');   
-            $table->integer('periodo_inscricao')->unsigned();
-            $table->integer('periodo_homologacao')->unsigned();
-            $table->integer('periodo_avaliacao')->unsigned();
-            $table->integer('periodo_credenciamento')->unsigned();
-            $table->integer('periodo_voluntario')->unsigned();
+            //Periodo de Inscricao
+            $table->dateTime('inscricao_abertura');
+            $table->dateTime('inscricao_fechamento');
+            //Periodo de Homologacao
+            $table->dateTime('homologacao_abertura');
+            $table->dateTime('homologacao_fechamento');
+            //Periodo de Avaliação
+            $table->dateTime('avaliacao_abertura');
+            $table->dateTime('avaliacao_fechamento');
+            //Periodo de Credenciamento
+            $table->dateTime('credenciamento_abertura');
+            $table->dateTime('credenciamento_fechamento');
+            //Periodo de Inscrição para Voluntarios
+            $table->dateTime('voluntario_abertura');
+            $table->dateTime('voluntario_fechamento');
             $table->timestamps();
-            //Foreign Keys Constraints
-            $table->foreign('periodo_inscricao')->references('id')->on(env('DB_SCHEMA').'.periodo');
-            $table->foreign('periodo_homologacao')->references('id')->on(env('DB_SCHEMA').'.periodo');
-            $table->foreign('periodo_avaliacao')->references('id')->on(env('DB_SCHEMA').'.periodo');
-            $table->foreign('periodo_credenciamento')->references('id')->on(env('DB_SCHEMA').'.periodo');
-            $table->foreign('periodo_voluntario')->references('id')->on(env('DB_SCHEMA').'.periodo');
         });
     }
 

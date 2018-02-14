@@ -30,11 +30,9 @@
                 <div class="container">
                     
                     <div class="navbar-header">
-                        <a class="navbar-brand" href="#">
+                        <a class="navbar-brand" href="{{ route('home') }}">
                             <img src="{{ asset('img/logo.png') }}" width="100" alt="IFCITEC">
                         </a>
-
-                        
                     </div>
 
                     <div class="collapse navbar-collapse" id="app-navbar-collapse">
@@ -43,9 +41,9 @@
                             &nbsp;
                         </ul>
 
-                        <!-- Right Side Of Navbar -->
+                        <!-- Right Side Of Navbar
                         <ul class="nav navbar-nav">
-                            <!-- Authentication Links -->
+
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Administrar <span class="caret"></span></a>
 
@@ -54,11 +52,11 @@
                                     <li><a href="">Logs</a></li>
                                 </ul>
                             </li>
-                        </ul>
+                        </ul> -->
                         
                         <!-- Right Side Of Navbar -->
                         <ul class="nav navbar-nav navbar-right">
-                            <!-- Authentication Links -->
+                            <!-- Authentication Links 
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Função <span class="caret"></span></a>
 
@@ -100,8 +98,7 @@
                                     @endif
                                 </ul>
                             </li>
-                            
-                            
+                            -->
 
 
                             <li class="dropdown">
@@ -111,7 +108,7 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="{{ route('editarCadastro') }}">
+                                        <a href="{{ route('editaCadastro') }}">
                                             Editar Cadastro
                                         </a>
                                     </li>

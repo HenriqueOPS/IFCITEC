@@ -49,7 +49,7 @@
                     </div>
                     <div class="footer text-center">
                         <input type="submit" class="btn btn-primary" value="Entrar"><br>
-                        <a class="link" href="{{ url('/register') }}" >REGISTRE-SE</a><br>
+                        <a class="link" href="{{ url('/cadastro') }}" >REGISTRE-SE</a><br>
                         <a class="link" href="{{ route('password.request') }}"> ESQUECEU SUA SENHA?
                         </a><br><br>
                     </div>

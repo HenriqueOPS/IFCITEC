@@ -66,9 +66,5 @@ class Escola extends Model {
     public function projetos(){
          return $this->belongsToMany('App\Projeto', 'escola_funcao_pessoa_projeto');
     }
-    
-    public function scopeTemMoodle($query){
-        return $query->where('moodle_link','<>',null);
-    }
 
 }

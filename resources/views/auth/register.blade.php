@@ -18,6 +18,9 @@
 
                 </div>
                 <form name="f1" method="POST" action="{{route('register')}}">
+
+                    {{ csrf_field() }}
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="alert alert-info text-center">
@@ -41,29 +44,35 @@
                         </div>
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
 
-                            <div class="input-group">
+                            <div class="input-group{{ $errors->has('rg') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <img class="gray-icon" src="{{ asset('img/account-card-details.svg') }}"  />
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">RG</label>
-                                    <input type="text" class="form-control" name="rg" required>
+                                    <input type="text" class="form-control" name="rg" value="{{old('rg')}}" maxlength="10" required>
                                 </div>
+                                @if ($errors->has('rg'))
                                 <span class="help-block">
-                                    <strong></strong>
+                                    <strong>{{ $errors->first('rg') }}</strong>
                                 </span>
+                                @endif
                             </div>
                             
                             <div class="col-md-offset-2">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="optionsCheckboxes" checked>
+                                    <input type="checkbox" name="confirmacaoRg" value="true" checked>
                                     Estou ciente que o RG informado é de total veracidade e servirá para emissão de certificados
                                 </label>
                             </div>
+                            @if ($errors->has('confirmacaoRg'))
+                                <span class="help-block">
+                                    <strong>É necessário estar ciente que o RG informado é de total veracidade e servirá para emissão de certificados</strong>
+                                </span>
+                                @endif
                             </div>
-                            
-                            {{ csrf_field() }}
+
                             <div class="input-group{{ $errors->has('nome') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">face</i>
@@ -85,7 +94,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">CPF</label>
-                                    <input type="text" OnKeyPress="formatar('###.###.###-##', this)" maxlength="14" class="form-control" name="cpf" value="{{old('cpf')}}" required>
+                                    <input type="text" OnKeyPress="formatar('###.###.###-##', this)" maxlength="14" class="form-control" name="cpf" value="{{old('cpf')}}">
                                 </div>
                                 @if ($errors->has('cpf'))
                                 <span class="help-block">
@@ -142,7 +151,7 @@
                             </div>
                             
                             
-                            <div class="input-group">
+                            <div class="input-group{{ $errors->has('senha') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">lock_outline</i>
                                 </span>
@@ -150,9 +159,14 @@
                                     <label class="control-label">Senha</label>
                                     <input type="password" class="form-control" name="senha" required>
                                 </div>
+                                @if ($errors->has('senha'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('senha') }}</strong>
+                                </span>
+                                @endif
                             </div>
 
-                            <div class="input-group">
+                            <div class="input-group{{ $errors->has('senha') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">done</i>
                                 </span>
@@ -182,24 +196,25 @@
 <script type="text/javascript" src="{{asset('js/datepicker/locales/bootstrap-datepicker.pt-BR.js')}}"></script>
 <script type="text/javascript">
 
+$('.datepicker').datepicker({
+    format: 'dd/mm/yyyy',
+    language: 'pt-BR',
+    templates: {
+        leftArrow: '&lsaquo;',
+        rightArrow: '&rsaquo;'
+    },
+});
 
-                                        $('.datepicker').datepicker({
-                                            format: 'dd/mm/yyyy',
-                                            language: 'pt-BR',
-                                            templates: {
-                                                leftArrow: '&lsaquo;',
-                                                rightArrow: '&rsaquo;'
-                                            },
-                                        });
+function formatar(mascara, documento) {
+    
+    var i = documento.value.length;
+    var saida = mascara.substring(0, 1);
+    var texto = mascara.substring(i)
 
-                                        function formatar(mascara, documento) {
-                                            var i = documento.value.length;
-                                            var saida = mascara.substring(0, 1);
-                                            var texto = mascara.substring(i)
+    if (texto.substring(0, 1) != saida) {
+        documento.value += texto.substring(0, 1);
+    }
+}
 
-                                            if (texto.substring(0, 1) != saida) {
-                                                documento.value += texto.substring(0, 1);
-                                            }
-                                        }
 </script>
 @endsection

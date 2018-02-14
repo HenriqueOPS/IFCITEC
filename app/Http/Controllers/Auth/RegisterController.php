@@ -57,10 +57,15 @@ use RegistersUsers;
                     'nome' => 'required|string|max:255',
                     'email' => 'required|string|email|max:255|unique:pgsql.pessoa',
                     'senha' => 'required|string|confirmed',
-                    'dt_nascimento' => 'required|date_format:d/m/Y|before:today|after:01/01/1950',
+                    'dt_nascimento' => 'required|date_format:d/m/Y|before:today|after:01/01/1900',
+                    'rg' => 'required|string|unique:pgsql.pessoa',
+                    'telefone' => 'string|min:8|max:15',
+                    'cpf' => 'string|unique:pgsql.pessoa|min:11|max:14',
+                    'confirmacaoRg' => 'required'
+
                     //COMECO do código que necessitará um refact issue #40
                     //'lattes' => 'required_if:inscricao,avaliacao|string',
-                    'cpf' => 'required_if:inscricao,avaliacao|cpf|unique:pgsql.pessoa',
+                    //'cpf' => 'required_if:inscricao,avaliacao|cpf|unique:pgsql.pessoa',
                     //FIM do código que necessitará um refact issue #40
         ]);
     }
@@ -72,23 +77,28 @@ use RegistersUsers;
      * @return User
      */
     protected function create(array $data) {
-
+    
         if (session()->has('email')) {
             $data = $this->setSessionValues($data);
             session()->flush();
         }
+        
+       // print_r($data);
 
         return Pessoa::create([
                     'nome' => $data['nome'],
                     'email' => $data['email'],
                     'senha' => bcrypt($data['senha']),
                     'dt_nascimento' => Carbon::createFromFormat('d/m/Y', $data['dt_nascimento']),
-                    //'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
-                    //COMECO do código que necessitará um refact issue #40
+                    'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
                     'cpf' => isset($data['cpf']) ? $data['cpf'] : null,
+                    'rg' => isset($data['rg']) ? $data['rg'] : null
+                    //COMECO do código que necessitará um refact issue #40
+                    //'cpf' => isset($data['cpf']) ? $data['cpf'] : null,
                     //'lattes' => isset($data['lattes']) ? $data['lattes'] : null,
                     //FIM do código que necessitará um refact issue #40
         ]);
+    
     }
 
     private function setSessionValues($data) {
@@ -107,6 +117,8 @@ use RegistersUsers;
      * @return mixed
      */
     protected function registered(Request $request, $pessoa) {
+        
+        /*
         if ($request->inscricao == "avaliacao") {
             $pessoa->funcoes()->attach($request->funcao);
             //COMECO do código que necessitará um refact issue #40
@@ -120,6 +132,8 @@ use RegistersUsers;
             $pessoa->funcoes()->attach(1);
         }
         $pessoa->save();
+        */
+        
     }
 
 }

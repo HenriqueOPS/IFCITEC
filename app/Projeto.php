@@ -49,7 +49,11 @@ class Projeto extends Model {
     }
 
     public function getStatus() {
-        $situacao = DB::table('situacao_projeto')->select('situacao')->where('id', '=', $this->id)->orderBy('count', 'desc')->first();
+        
+        return "Não Revisado"; // XGH
+
+
+        $situacao = DB::table('situacao')->select('situacao')->where('id', '=', $this->id)->orderBy('count', 'desc')->first();
         if(is_null($situacao)){
             return "Não Revisado";
         }else{
