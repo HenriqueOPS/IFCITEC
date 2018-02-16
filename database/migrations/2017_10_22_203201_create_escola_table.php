@@ -18,9 +18,14 @@ class CreateEscolaTable extends Migration
             $table->string('nome_completo')->unique();
             $table->string('nome_curto')->unique();
             $table->string('email')->unique()->nullable();
-            $table->string('telefone')->nullable();
-            $table->string('endereco')->nullable();
-            $table->string('municipio')->nullable();
+            $table->string('telefone',15)->nullable();
+            $table->string('cep',10);
+            $table->string('endereco',100)->nullable();
+            $table->string('bairro',40)->nullable();
+            $table->string('municipio',40)->nullable();
+            $table->string('uf',20)->nullable();
+            $table->string('numero',20)->nullable();
+
             $table->timestamps();   
         });
     }

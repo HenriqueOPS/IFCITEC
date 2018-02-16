@@ -14,7 +14,7 @@
                         <h2>Cadastro de Escola</h2>
                     </div>
                 </div>
-                <form name="f1" method="post" action="{{ route('cadastroEscola') }}">
+                <form method="post" action="{{ route('cadastroEscola') }}">
 
                     {{ csrf_field() }}
 
@@ -25,10 +25,21 @@
                                     <i class="material-icons">account_balance</i>
                                 </span>
                                 <div class="form-group label-floating">
-                                    <label class="control-label">Nome da Escola</label>
-                                    <input type="text" class="form-control" name="name" required>
+                                    <label class="control-label">Nome Completo</label>
+                                    <input type="text" class="form-control" name="nome_completo" required>
                                 </div>
                             </div>
+
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">account_balance</i>
+                                </span>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Nome Curto</label>
+                                    <input type="text" class="form-control" name="nome_curto" required>
+                                </div>
+                            </div>
+
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">mail</i>
@@ -62,7 +73,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Rua</label>
-                                    <input type="text" class="form-control" name="rua" id="rua" required>
+                                    <input type="text" class="form-control" name="endereco" id="rua" required>
                                 </div>
                             </div>
                             <div class="input-group">
@@ -80,7 +91,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Cidade</label>
-                                    <input type="text" class="form-control" name="cidade" id="cidade" required>
+                                    <input type="text" class="form-control" name="municipio" id="cidade" required>
                                 </div>
                             </div>
                             <div class="input-group">
@@ -98,7 +109,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Número</label>
-                                    <input type="text" class="form-control" name="name" required>
+                                    <input type="text" class="form-control" name="numero" required>
                                 </div>
                             </div>
                         </div>
@@ -118,77 +129,74 @@
 @endsection
 
 @section('js')
-<!-- Adicionando JQuery -->
-    <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
 
-    <!-- Adicionando Javascript -->
-    <script type="text/javascript" >
+<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" >
 
-        $(document).ready(function() {
+    $(document).ready(function() {
 
-            function limpa_formulário_cep() {
-                // Limpa valores do formulário de cep.
-                $("#rua").val("");
-                $("#bairro").val("");
-                $("#cidade").val("");
-                $("#uf").val("");
-                $("#ibge").val("");
-            }
-            
-            //Quando o campo cep perde o foco.
-            $("#cep").blur(function() {
+        function limpa_formulário_cep() {
+            // Limpa valores do formulário de cep.
+            $("#rua").val("");
+            $("#bairro").val("");
+            $("#cidade").val("");
+            $("#uf").val("");
+        }
+        
+        //Quando o campo cep perde o foco.
+        $("#cep").blur(function() {
 
-                //Nova variável "cep" somente com dígitos.
-                var cep = $(this).val().replace(/\D/g, '');
+            //Nova variável "cep" somente com dígitos.
+            var cep = $(this).val().replace(/\D/g, '');
 
-                //Verifica se campo cep possui valor informado.
-                if (cep != "") {
+            //Verifica se campo cep possui valor informado.
+            if (cep != "") {
 
-                    //Expressão regular para validar o CEP.
-                    var validacep = /^[0-9]{8}$/;
+                //Expressão regular para validar o CEP.
+                var validacep = /^[0-9]{8}$/;
 
-                    //Valida o formato do CEP.
-                    if(validacep.test(cep)) {
+                //Valida o formato do CEP.
+                if(validacep.test(cep)) {
 
-                        //Preenche os campos com "..." enquanto consulta webservice.
-                        $("#rua").val("...");
-                        $("#bairro").val("...");
-                        $("#cidade").val("...");
-                        $("#uf").val("...");
-                        $("#ibge").val("...");
+                    //Preenche os campos com "..." enquanto consulta webservice.
+                    $("#rua").val("...");
+                    $("#bairro").val("...");
+                    $("#cidade").val("...");
+                    $("#uf").val("...");
+                    $("#ibge").val("...");
 
-                        //Consulta o webservice viacep.com.br/
-                        $.getJSON("//viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+                    //Consulta o webservice viacep.com.br/
+                    $.getJSON("//viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
 
-                            if (!("erro" in dados)) {
-                                //Atualiza os campos com os valores da consulta.
-                                $("#rua").val(dados.logradouro);
-                                $("#bairro").val(dados.bairro);
-                                $("#cidade").val(dados.localidade);
-                                $("#uf").val(dados.uf);
-                                $("#ibge").val(dados.ibge);
-                            } //end if.
-                            else {
-                                //CEP pesquisado não foi encontrado.
-                                limpa_formulário_cep();
-                                alert("CEP não encontrado.");
-                            }
-                        });
-                    } //end if.
-                    else {
-                        //cep é inválido.
-                        limpa_formulário_cep();
-                        alert("Formato de CEP inválido.");
-                    }
+                        if (!("erro" in dados)) {
+                            //Atualiza os campos com os valores da consulta.
+                            $("#rua").val(dados.logradouro);
+                            $("#bairro").val(dados.bairro);
+                            $("#cidade").val(dados.localidade);
+                            $("#uf").val(dados.uf);
+                            $("#ibge").val(dados.ibge);
+                        } //end if.
+                        else {
+                            //CEP pesquisado não foi encontrado.
+                            limpa_formulário_cep();
+                            alert("CEP não encontrado.");
+                        }
+                    });
                 } //end if.
                 else {
-                    //cep sem valor, limpa formulário.
+                    //cep é inválido.
                     limpa_formulário_cep();
+                    alert("Formato de CEP inválido.");
                 }
-            });
+            } //end if.
+            else {
+                //cep sem valor, limpa formulário.
+                limpa_formulário_cep();
+            }
         });
+    });
 
-    </script>
+</script>
 @endsection
 
 

@@ -43,8 +43,9 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 Route::get('/administrador', 'AdminController@index')->name('administrador');
 
 // Edicao
-Route::get('/edicao/{id}', 'EdicaoController@edicao')->name('edicao');
 Route::get('/edicao/cadastrar', 'EdicaoController@cadastroEdicao')->name('cadastroEdicao');
+Route::get('/edicao/{id}', 'EdicaoController@edicao')->name('edicao');
+
 
 // Nivel
 Route::get('/nivel/cadastrar', 'AdminController@cadastroNivel')->name('cadastroNivel');
@@ -55,7 +56,10 @@ Route::get('/administrador/cadastro/area', 'AdminController@cadastroArea')->name
 // Escola
 Route::get('/escola/cadastrar', 'AdminController@cadastroEscola')->name('cadastroEscola');
 Route::post('/escola/cadastrar', 'AdminController@cadastraEscola')->name('cadastroEscola');
+Route::get('/escola/dados-escola/{id}', 'AdminController@dadosEscola'); //Ajax
 Route::get('/escola/{id}', 'AdminController@editarEscola')->name('escola');
+Route::post('/escola/edita-escola', 'AdminController@editaEscola')->name('editaEscola');
+
 
 
 

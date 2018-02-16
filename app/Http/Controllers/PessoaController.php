@@ -156,10 +156,10 @@ class PessoaController extends Controller {
         return view('editaCadastro',compact('dados'));
     }
 
-    public function editaCadastro(Request $data)
+    public function editaCadastro(Request $req)
     {
 
-        $data = $data->all();
+        $data = $req->all();
 
         Pessoa::find(Auth::id())->update($data);
 
