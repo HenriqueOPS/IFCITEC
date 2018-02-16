@@ -23,7 +23,8 @@ class Escola extends Model {
      * @var array
      */
     protected $fillable = [
-        'nome_completo', 'nome_curto', 'email', 'moodle_link', 'moodle_versao'
+        'nome_completo', 'nome_curto', 'email', 'telefone',
+        'endereco', 'municipio', 'cep', 'uf', 'bairro', 'numero'
     ];
 
     public function getPessoas() {

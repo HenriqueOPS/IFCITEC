@@ -95,7 +95,6 @@
                     </tr>
                     </thead>
 
-
                     <tbody id="1">
 
                     @foreach($escolas as $i => $escola)
@@ -103,11 +102,14 @@
                         <tr>
                             <td class="text-center">{{ $i }}</td>
                             <td>{{ $escola->nome_curto }}</td>
-                            <td>MUNICIPIO</td>
+                            <td>{{ $escola->municipio }}</td>
                             <td>{{ $escola->email }}</td>
                             <td>{{ $escola->telefone }}</td>
                             <td class="td-actions text-right">
-                                <a href="#escola-{{ $escola->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+
+                                <a class="modalEscola" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+
+
                                 <a href="{{ route('escola', $escola->id) }}"><i class="material-icons">edit</i></a>
                             </td>
                         <tr>
@@ -116,10 +118,70 @@
 
                     </tbody>
 
-                    
-
                 </table>
             </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Dados da Escola -->
+<div id="myModal" class="modal fade bd-example-modal-lg" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="nome-curtoModal"></h5>
+        </div>
+        <div class="modal-body">
+
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">assignment</i>
+                </span>
+                <div class="form-group label-floating">
+                    <span id="nome-completoModal"></span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">mail</i>
+                </span>
+                <div class="form-group label-floating">
+                    <span id="emailModal"></span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">phone</i>
+                </span>
+                <div class="form-group label-floating">
+                    <span id="telefoneModal"></span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">location_on</i>
+                </span>
+                <div class="form-group label-floating">
+                    <span id="enderecoModal"></span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">markunread_mailbox</i>
+                </span>
+                <div class="form-group label-floating">
+                    <span id="cepModal"></span>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
@@ -127,24 +189,58 @@
 
 @section('js')
 <script type="application/javascript">
-    $(document).ready(function () {
+$('.modalEscola').click(function(){
+
+    //recupera o id da escola
+    var idEscola = $(this).attr('id-escola');
+
+    //monta a url de consulta
+    var urlConsulta = '/escola/dados-escola/'+idEscola;
+    //faz a consulta via Ajax
+    $.get(urlConsulta, function (data){
+
+        //monta a string do endereço
+        var endereco =  data.endereco+", "+
+                        data.numero+", "+
+                        data.bairro+", "+
+                        data.municipio+" - "+
+                        data.uf;
+
+
+        //altera o DOM
+        $("#nome-curtoModal").html(data.nome_curto);
+        $("#nome-completoModal").html(data.nome_completo);
+        $("#emailModal").html(data.email);
+        $("#telefoneModal").html(data.telefone);
+        $("#enderecoModal").html(endereco);
+        $("#cepModal").html(data.cep);
+
+        //abre a modal
+        $("#myModal").modal();
+
+    });
+
+})
+
+$(document).ready(function () {
+
     hideBodys();
     hideHeads();
     $('tbody[id=0]').show();
     $('thead[id=0]').show();
     $('div[id=0]').show();
-    $('.tab').click(function (e) {
-    var target = $(this)[0];
-    hideBodys();
-    hideHeads();
-    $('tbody[id='+target.id+']').show();
-    $('thead[id='+target.id+']').show();
-    $('div[id='+target.id+']').show();
-    });
+        $('.tab').click(function (e) {
+            var target = $(this)[0];
+            hideBodys();
+            hideHeads();
+            $('tbody[id='+target.id+']').show();
+            $('thead[id='+target.id+']').show();
+            $('div[id='+target.id+']').show();
+        });
 
-    });
+});
 
-    function hideBodys(){
+function hideBodys(){
     $('tbody[id=0]').hide();
     $('tbody[id=1]').hide();
     $('tbody[id=2]').hide();
@@ -153,8 +249,8 @@
     $('div[id=1]').hide();
     $('div[id=2]').hide();
     $('div[id=3]').hide();
-    }
-    function hideHeads(){
+}
+function hideHeads(){
     $('thead[id=0]').hide();
     $('thead[id=1]').hide();
     $('thead[id=2]').hide();
@@ -163,7 +259,7 @@
     $('div[id=1]').hide();
     $('div[id=2]').hide();
     $('div[id=3]').hide();
-    }
+}
 </script>
 @endsection
 

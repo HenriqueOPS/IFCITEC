@@ -63,30 +63,6 @@ class EdicaoController extends Controller {
         return view('admin.cadastroEdicao');
     }
 
-    //Retorna o id da edição caso exista uma edicao com o período de inscrição aberto
-    public function periodoInscricao(){
-
-        /*
-
-        SELECT e.id FROM public.edicao AS e
-        INNER JOIN public.periodo AS p ON e.periodo_inscricao = p.id
-        WHERE p.data_abertura <= (now() AT TIME ZONE 'America/Sao_Paulo')
-        AND p.data_fechamento >= (now() AT TIME ZONE 'America/Sao_Paulo')
-
-        */
-
-
-        $query = DB::table('edicao')->select('edicao.id')
-            ->join('periodo', 'edicao.periodo_inscricao', '=', 'periodo.id')
-            ->whereRaw('periodo.data_abertura <= (now() AT TIME ZONE \'America/Sao_Paulo\')')
-            ->whereRaw('periodo.data_fechamento >= (now() AT TIME ZONE \'America/Sao_Paulo\')')
-            ->limit(1);
-
-
-        return $query->get();
-
-    }
-
 }
 
 

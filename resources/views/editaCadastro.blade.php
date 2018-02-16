@@ -16,8 +16,10 @@
                     </div>
 
                 </div>
-                <form name="f1" method="POST" action="{{ route('editaCadastro') }}">
+                <form name="f1" method="post" action="{{ route('editaCadastro') }}">
+                   
                     {{ csrf_field() }}
+
                     <div class="row">
 
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
