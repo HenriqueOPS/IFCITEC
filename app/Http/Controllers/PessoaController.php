@@ -150,17 +150,14 @@ class PessoaController extends Controller {
         ]);
     }
     
-    public function editarCadastro()
-    {
+    public function editarCadastro() {
         $dados = Pessoa::find(Auth::id());
-        return view('editaCadastro',compact('dados'));
+        return view('editaCadastro', compact('dados'));
     }
 
-    public function editaCadastro(Request $req)
-    {
+    public function editaCadastro(Request $req) {
 
         $data = $req->all();
-
         Pessoa::find(Auth::id())->update($data);
 
         return redirect()->route('editarCadastro');

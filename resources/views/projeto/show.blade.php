@@ -1,16 +1,17 @@
 @extends('layouts.app')
 
-
 @section('content')
 <div class="container">
     <div class="row">
         <div class="col-md-12 col-sm-12">
             <div class="main main-raised">
+
                 <div class="row">
                     <div class="col-md-7 col-md-offset-1">
                         <h2>{{$projeto->titulo}}</h2>
                     </div>
                 </div>
+            
                 <div class="row">
                     <div id="projeto-show">
                         <div class="col-md-7 col-md-offset-1">
@@ -87,6 +88,3 @@
     </div>
 </div>
 @endsection
-
-
-

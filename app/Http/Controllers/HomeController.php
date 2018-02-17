@@ -50,6 +50,34 @@ class HomeController extends Controller {
 
     }
 
+
+    public function homeAvaliador(){
+        $query = DB::table('projeto')->select('projeto.*')
+                ->join('avaliacao', 'avaliacao.projeto_id', '=', 'projeto.id')
+                ->where('pessoa_id','=', Auth::user()->id);
+
+        $eloquent = new Builder($query);
+        $eloquent->setModel(new Projeto);
+        $projetos = $eloquent->get();
+        return view('avaliador')->withFuncoes(collect(["Avaliação" => $projetos]));
+
+    }
+
+     public function homeRevisor(){
+        $query = DB::table('projeto')->select('projeto.*')
+                ->join('avaliacao', 'avaliacao.projeto_id', '=', 'projeto.id')
+                ->where('pessoa_id','=', Auth::user()->id);
+
+        $eloquent = new Builder($query);
+        $eloquent->setModel(new Projeto);
+        $projetos = $eloquent->get();
+        return view('revisor')->withFuncoes(collect(["Revisão" => $projetos]));
+
+    }
+
+
+
+
     protected function groupProjetosPorFuncao($projetos) {
         $funcoes = Funcao::all();
         $projetosAgrupados = array();

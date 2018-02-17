@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Funcao;
 use App\Edicao;
 use App\Escola;
+use App\Nivel;
+use App\AreaConhecimento;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -38,20 +40,39 @@ class AdminController extends Controller
 
     }
 
-    public function dadosEscola($id){ //Ajax
-      $dados = Escola::find($id);
-      
+
+    public function dadosNivel($id) { //Ajax
+      $dados = Nivel::find($id);
       return $dados;
     }
 
-    public function editarEscola($id){
+    public function cadastroNivel() {
+        return view('admin.cadastroNivel');
+    }
+
+
+    public function dadosArea($id) { //Ajax
+      $dados = AreaConhecimento::find($id);
+      return $dados;
+    }
+
+    public function cadastroArea() {
+        return view('admin.cadastroArea');
+    }
+
+    
+    public function dadosEscola($id) { //Ajax
+      $dados = Escola::find($id);
+      return $dados;
+    }
+
+    public function editarEscola($id) {
         $dados = Escola::find($id);
 
         return view('admin.editarEscola', compact('dados'));
     }
 
-     public function editaEscola(Request $req)
-    {
+    public function editaEscola(Request $req) {
         $data = $req->all();
         
         Escola::find($data['id_escola'])->update($data);
@@ -59,14 +80,11 @@ class AdminController extends Controller
         return redirect()->route('administrador');
     }
 
-    public function cadastroEscola()
-    {
+    public function cadastroEscola() {
         return view('admin.cadastroEscola');
     }
 
-    public function cadastraEscola(Request $req)
-    {
-
+    public function cadastraEscola(Request $req){
         $data = $req->all();
 
         Escola::create([
@@ -85,15 +103,8 @@ class AdminController extends Controller
         return redirect()->route('administrador');
     }
 
-    public function cadastroArea()
-    {
-        return view('admin.cadastroArea');
-    }
 
-    public function cadastroNivel()
-    {
-        return view('admin.cadastroNivel');
-    }
+    
 
     public function administrarUsuarios()
     {

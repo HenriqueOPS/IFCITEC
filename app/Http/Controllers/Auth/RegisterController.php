@@ -82,8 +82,6 @@ use RegistersUsers;
             $data = $this->setSessionValues($data);
             session()->flush();
         }
-        
-       // print_r($data);
 
         return Pessoa::create([
                     'nome' => $data['nome'],

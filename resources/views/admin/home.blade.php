@@ -56,20 +56,19 @@
                     </tr>
                     </thead>
 
-
                     <tbody id="0">
 
-                        @foreach($edicoes as $edicao)
+                        @foreach($edicoes as $id => $edicao)
 
                         <tr>
-                            <td class="text-center">0</td>
+                            <td class="text-center">{{$id}}</td>
                             <td>{{$edicao->ano}}</td>
                             <td>{{$edicao->inscricao_abertura}} - {{$edicao->inscricao_fechamento}}</td>
                             <td>{{$edicao->homologacao_abertura}} - {{$edicao->homologacao_fechamento}}</td>
                             <td>{{$edicao->avaliacao_abertura}} - {{$edicao->avaliacao_fechamento}}</td>
                             <td class="td-actions text-right">
-                                <a href="{{route( 'edicao',$edicao->id) }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
-                                <a href="#{{$edicao->id}}"><i class="material-icons">edit</i></a>
+                                <a href="{{route('edicao',$edicao->id) }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a href="{{route('editarEdicao',$edicao->id)}}"><i class="material-icons">edit</i></a>
                             </td>
                         <tr>
 
@@ -107,8 +106,7 @@
                             <td>{{ $escola->telefone }}</td>
                             <td class="td-actions text-right">
 
-                                <a class="modalEscola" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
-
+                                <a href="javascript:void(0);" class="modalEscola" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
 
                                 <a href="{{ route('escola', $escola->id) }}"><i class="material-icons">edit</i></a>
                             </td>
@@ -124,8 +122,7 @@
     </div>
 </div>
 
-
-<!-- Dados da Escola -->
+<!-- Modal -->
 <div id="myModal" class="modal fade bd-example-modal-lg" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -181,10 +178,12 @@
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
         </div>
     </div>
 </div>
+<!-- Fim Modal -->
+
 @endsection
 
 @section('js')
@@ -200,12 +199,13 @@ $('.modalEscola').click(function(){
     $.get(urlConsulta, function (data){
 
         //monta a string do endereço
-        var endereco =  data.endereco+", "+
-                        data.numero+", "+
-                        data.bairro+", "+
-                        data.municipio+" - "+
-                        data.uf;
+        var endereco = '';
 
+        data.endereco ? endereco += data.endereco+", " : endereco += '';
+        data.numero ? endereco += data.numero+", " : endereco += '';
+        data.bairro ? endereco += data.bairro+", " : endereco += '';
+        data.municipio ? endereco += data.municipio+", " : endereco += '';
+        data.uf ? endereco += data.uf+", " : endereco += '';
 
         //altera o DOM
         $("#nome-curtoModal").html(data.nome_curto);
@@ -221,7 +221,9 @@ $('.modalEscola').click(function(){
     });
 
 })
+</script>
 
+<script type="application/javascript">
 $(document).ready(function () {
 
     hideBodys();
@@ -229,14 +231,14 @@ $(document).ready(function () {
     $('tbody[id=0]').show();
     $('thead[id=0]').show();
     $('div[id=0]').show();
-        $('.tab').click(function (e) {
-            var target = $(this)[0];
-            hideBodys();
-            hideHeads();
-            $('tbody[id='+target.id+']').show();
-            $('thead[id='+target.id+']').show();
-            $('div[id='+target.id+']').show();
-        });
+    $('.tab').click(function (e) {
+        var target = $(this)[0];
+        hideBodys();
+        hideHeads();
+        $('tbody[id='+target.id+']').show();
+        $('thead[id='+target.id+']').show();
+        $('div[id='+target.id+']').show();
+    });
 
 });
 
