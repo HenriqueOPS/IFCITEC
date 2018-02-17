@@ -48,11 +48,11 @@
                         <th class="text-center">#</th>
                         <th>Integrantes</th>
                         <th>Título</th>
+                        <th>Status</th>
                         <th>Avaliadores</th>
                         <th class="text-right">Ações</th>
                     </tr>
                     </thead>
-
 
                     <tbody id="0">
 
@@ -60,9 +60,10 @@
                             <td class="text-center">0</td>
                             <td>Érico Kemper, Eu</td>
                             <td>Projeto só pra ganhar nota em física</td>
+                            <th><span class="badge badge-success">Avaliado</span></th>
                             <td>Fulano, Ciclano</td>
                             <td class="td-actions text-right">
-                                <a href="#"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a class="modalPagina" id-projeto=""><i class="material-icons blue-icon">remove_red_eye</i></a>
                                 <a href="#"><i class="material-icons">edit</i></a>
                             </td>
                         <tr>
@@ -94,10 +95,11 @@
                             <td>Fundamental</td>
                             <td>10</td>
                             <td class="td-actions text-right">
-                                <a href="#"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a class="modalPagina" id-area=""><i class="material-icons blue-icon">remove_red_eye</i></a>
                                 <a href="#"><i class="material-icons">edit</i></a>
                             </td>
                         <tr>
+
 
                     </tbody>
 
@@ -120,16 +122,20 @@
 
                     <tbody id="2">
 
-                        <tr>
-                            <td class="text-center">0</td>
-                            <td>Ciências da terra e da natureza</td>
-                            <td>5</td>
-                            <td>10</td>
-                            <td class="td-actions text-right">
-                                <a href="#"><i class="material-icons blue-icon">remove_red_eye</i></a>
-                                <a href="#"><i class="material-icons">edit</i></a>
-                            </td>
-                        <tr>
+                        @foreach ($niveis as $id => $nivel)
+
+                            <tr>
+                                <td class="text-center">{{$id}}</td>
+                                <td>{{$nivel->nivel}}</td>
+                                <td>n/d</td>
+                                <td>n/d</td>
+                                <td class="td-actions text-right">
+                                    <a class="modalPagina" id-nivel="{{$nivel->id}}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                    <a href="#"><i class="material-icons">edit</i></a>
+                                </td>
+                            <tr>
+
+                        @endforeach
 
                     </tbody>
 
@@ -139,44 +145,146 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade bd-example-modal-lg" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="tituloModal"></h5>
+        </div>
+        <div class="modal-body">
+
+        <!-- dados do nível -->
+        <div id="content-nivel">
+            <p id="descricao-nivelModal"></p>
+        </div>
+
+        <!-- dados da área -->
+        <div id="content-area">
+            AREA
+        </div>
+
+        <!-- dados do projeto -->
+        <div id="content-projeto">
+            PROJETO
+        </div>
+
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+    </div>
+</div>
+<!-- Fim Modal -->
+
 @endsection
 
 @section('js')
 <script type="application/javascript">
-    $(document).ready(function () {
+$('.modalPagina').click(function(){
+
+    //recupera o id do Projeto
+    var idProjeto = $(this).attr('id-projeto');
+    //recupera o id do Nivel
+    var idNivel = $(this).attr('id-nivel');
+    //recupera o id da Area
+    var idArea = $(this).attr('id-area');
+
+    if(idProjeto){  //Projeto
+
+        //monta a url de consulta
+        var urlConsulta = '/edicao/dados-edicao/'+idProjeto;
+        //faz a consulta via Ajax
+        $.get(urlConsulta, function (data){
+
+            $("#content-area").hide();
+            $("#content-projeto").show();
+            $("#content-nivel").hide();  
+
+
+
+            //abre a modal
+            $("#myModal").modal();
+
+        });
+
+    }else if(idNivel){ //Nível
+
+        //monta a url de consulta
+        var urlConsulta = '/nivel/dados-nivel/'+idNivel;
+        //faz a consulta via Ajax
+        $.get(urlConsulta, function (data){
+
+            $("#content-area").hide();
+            $("#content-projeto").hide();
+            $("#content-nivel").show();
+
+            $("#tituloModal").html(data.nivel);
+            $("#descricao-nivelModal").html(data.descricao);
+
+            //abre a modal
+            $("#myModal").modal();
+
+        });
+
+    }else if(idArea){ //Área
+
+        //monta a url de consulta
+        var urlConsulta = ''+idArea;
+        //faz a consulta via Ajax
+        $.get(urlConsulta, function (data){
+
+            $("#content-area").show();
+            $("#content-projeto").hide();
+            $("#content-nivel").hide();  
+
+            //abre a modal
+            $("#myModal").modal();
+
+        });
+
+    }
+
+})
+</script>
+
+<script type="application/javascript">
+$(document).ready(function () {
+
     hideBodys();
     hideHeads();
     $('tbody[id=0]').show();
     $('thead[id=0]').show();
     $('div[id=0]').show();
     $('.tab').click(function (e) {
-    var target = $(this)[0];
-    hideBodys();
-    hideHeads();
-    $('tbody[id='+target.id+']').show();
-    $('thead[id='+target.id+']').show();
-    $('div[id='+target.id+']').show();
+        var target = $(this)[0];
+        hideBodys();
+        hideHeads();
+        $('tbody[id='+target.id+']').show();
+        $('thead[id='+target.id+']').show();
+        $('div[id='+target.id+']').show();
     });
 
+});
 
-    });
-
-    function hideBodys(){
+function hideBodys(){
     $('tbody[id=0]').hide();
     $('tbody[id=1]').hide();
     $('tbody[id=2]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
-    }
-    function hideHeads(){
+}
+function hideHeads(){
     $('thead[id=0]').hide();
     $('thead[id=1]').hide();
     $('thead[id=2]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
-    }
+}
 </script>
 @endsection
 

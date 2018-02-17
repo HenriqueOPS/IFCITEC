@@ -31,6 +31,12 @@ class CreateEdicaoTable extends Migration
             //Periodo de Inscrição para Voluntarios
             $table->dateTime('voluntario_abertura');
             $table->dateTime('voluntario_fechamento');
+            //Periodo de Inscrição para Avaliador/Homologador
+            $table->dateTime('comissao_abertura');
+            $table->dateTime('comissao_fechamento');
+            //Periodo de Submissão Relatório Final
+            $table->dateTime('relatorio_abertura');
+            $table->dateTime('relatorio_fechamento');
             $table->timestamps();
         });
     }

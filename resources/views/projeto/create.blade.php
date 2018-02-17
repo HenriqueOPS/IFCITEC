@@ -9,12 +9,17 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2 col-sm-12">
             <div class="main main-raised">
+
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1">
                         <h2>Novo Projeto</h2>
                     </div>
                 </div>
-                <form method="POST" action="{{route('projeto.store')}}">
+
+                <form method="post" action="{{route('projeto.store')}}">
+
+                    {{ csrf_field() }}
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="alert alert-info text-center">
@@ -32,9 +37,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-10 col-md-offset-1">
 
-                            {{ csrf_field() }}
+                        <div class="col-md-10 col-md-offset-1">
                             <div class="input-group{{ $errors->has('titulo') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">title</i>
@@ -121,11 +125,13 @@
 
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
                             <h2>Vínculo</h2>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
                             <div class="input-group{{ $errors->has('funcao') ? ' has-error' : '' }}">
@@ -167,13 +173,16 @@
                                     @endif
                                 </div>
                             </div>
+
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">
-                            <button class="btn btn-primary">Inscrever</button>
+                            <button class="btn btn-primary">Submeter Projeto</button>
                         </div>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -237,7 +246,6 @@ $(document).ready(function () {
             $('.selectize-input').addClass('form-control');
         },
     });
-
 
 
     var xhr;

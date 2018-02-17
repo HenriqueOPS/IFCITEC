@@ -14,242 +14,252 @@
                         <h2>Cadastro de Edição</h2>
                     </div>
                 </div>
-                <form method="post" action="">
+                <form method="post" action="{{route('cadastraEdicao')}}">
 
                     {{ csrf_field() }}
 
+                    <!-- Período de Inscrição -->
                     <div class="row">
-                        <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="row">
-                                <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                                    <h3>Período da Feira</h3>
-                                </div>
-                                <div class="col-md-4 col-xs-9">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">today</i>
-                                        </span>
-                                        <div class="form-group ">
-                                            <label class="control-label">Início</label>
-                                            <input type="datetime-local" class="form-control datepicker" name="name" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-md-offset-2 col-xs-9">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">today</i>
-                                        </span>
-                                        <div class="form-group ">
-                                            <label class="control-label">Fim</label>
-                                            <input type="datetime-local" class="form-control datepicker" name="name" required>
-                                        </div>
-                                    </div>
+                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+                            <h3>Período de Inscrição</h3>
+                            <span>Durante esse período será possivel submeter projetos</span>
+                        </div>
+
+                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">today</i>
+                                </span>
+                                <div class="form-group ">
+                                    <label class="control-label">Início</label>
+                                    <input type="datetime-local" class="form-control datepicker" name="inscricao_abertura" required>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="row">
-                                <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                                    <h3>Período das inscrições de projetos</h3>
-                                </div>
-                                <div class="col-md-4 col-xs-9">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">today</i>
-                                        </span>
-                                        <div class="form-group ">
-                                            <label class="control-label">Início</label>
-                                            <input type="datetime-local" class="form-control datepicker" name="name"  required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-md-offset-2 col-xs-9">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">today</i>
-                                        </span>
-                                        <div class="form-group ">
-                                            <label class="control-label">Fim</label>
-                                            <input type="datetime-local" class="form-control datepicker" name="name"  required>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                                    <h3>Período das inscrições de homologadores</h3>
-                                </div>
-                                <div class="col-md-4 col-xs-9">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">today</i>
-                                        </span>
-                                        <div class="form-group ">
-                                            <label class="control-label">Início</label>
-                                            <input type="datetime-local" class="form-control datepicker" name="name"  required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-md-offset-2 col-xs-9">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">today</i>
-                                        </span>
-                                        <div class="form-group ">
-                                            <label class="control-label">Fim</label>
-                                            <input type="datetime-local" class="form-control datepicker" name="name"  required>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                                    <h3>Período das inscrições de avaliadores</h3>
-                                </div>
-                                <div class="col-md-4 col-xs-9">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">today</i>
-                                        </span>
-                                        <div class="form-group ">
-                                            <label class="control-label">Início</label>
-                                            <input type="datetime-local" class="form-control datepicker" name="name"  required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-md-offset-2 col-xs-9">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">today</i>
-                                        </span>
-                                        <div class="form-group ">
-                                            <label class="control-label">Fim</label>
-                                            <input type="datetime-local" class="form-control datepicker" name="name"  required>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                                    <h3>Período das inscrições de voluntários</h3>
-                                </div>
-                                <div class="col-md-4 col-xs-9">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">today</i>
-                                        </span>
-                                        <div class="form-group ">
-                                            <label class="control-label">Início</label>
-                                            <input type="datetime-local" class="form-control datepicker" name="name"  required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-md-offset-2 col-xs-9">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">today</i>
-                                        </span>
-                                        <div class="form-group ">
-                                            <label class="control-label">Fim</label>
-                                            <input type="datetime-local" class="form-control datepicker" name="name"  required>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                                    <h3>Período das homologações</h3>
-                                </div>
-                                <div class="col-md-4 col-xs-9">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">today</i>
-                                        </span>
-                                        <div class="form-group ">
-                                            <label class="control-label">Início</label>
-                                            <input type="datetime-local" class="form-control datepicker" name="name"  required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-md-offset-2 col-xs-9">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">today</i>
-                                        </span>
-                                        <div class="form-group ">
-                                            <label class="control-label">Fim</label>
-                                            <input type="datetime-local" class="form-control datepicker" name="name"  required>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                                    <h3>Período das avaliações</h3>
-                                </div>
-                                <div class="col-md-4 col-xs-9">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">today</i>
-                                        </span>
-                                        <div class="form-group ">
-                                            <label class="control-label">Início</label>
-                                            <input type="datetime-local" class="form-control datepicker" name="name"  required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-md-offset-2 col-xs-9">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">today</i>
-                                        </span>
-                                        <div class="form-group ">
-                                            <label class="control-label">Fim</label>
-                                            <input type="datetime-local" class="form-control datepicker" name="name"  required>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                                    <h3>Período da entrega do Relatório Final</h3>
-                                </div>
-                                <div class="col-md-4 col-xs-9">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">today</i>
-                                        </span>
-                                        <div class="form-group ">
-                                            <label class="control-label">Início</label>
-                                            <input type="datetime-local" class="form-control datepicker" name="name"  required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-md-offset-2 col-xs-9">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">today</i>
-                                        </span>
-                                        <div class="form-group ">
-                                            <label class="control-label">Fim</label>
-                                            <input type="datetime-local" class="form-control datepicker" name="name"  required>
-                                        </div>
-                                    </div>
+                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">today</i>
+                                </span>
+                                <div class="form-group ">
+                                    <label class="control-label">Fim</label>
+                                    <input type="datetime-local" class="form-control datepicker" name="inscricao_fechamento" required>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Período de Homologação -->
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+                            <h3>Período de Homologação</h3>
+                            <span>Durante esse período será possivel homologar os projetos recebidos</span>
+                        </div>
+
+                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">today</i>
+                                </span>
+                                <div class="form-group ">
+                                    <label class="control-label">Início</label>
+                                    <input type="datetime-local" class="form-control datepicker" name="homologacao_abertura" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">today</i>
+                                </span>
+                                <div class="form-group ">
+                                    <label class="control-label">Fim</label>
+                                    <input type="datetime-local" class="form-control datepicker" name="homologacao_fechamento"  required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Período de Avaliação -->
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+                            <h3>Período de Avaliação</h3>
+                            <span>Durante esse período será possivel avaliar os projetos homologados (Dia da Feira)</span>
+                        </div>
+
+                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">today</i>
+                                </span>
+                                <div class="form-group ">
+                                    <label class="control-label">Início</label>
+                                    <input type="datetime-local" class="form-control datepicker" name="avaliacao_abertura" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">today</i>
+                                </span>
+                                <div class="form-group ">
+                                    <label class="control-label">Fim</label>
+                                    <input type="datetime-local" class="form-control datepicker" name="avaliacao_fechamento" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Período de Credenciamento -->
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+                            <h3>Período de Credenciamento</h3>
+                            <span>Durante esse período será possivel realizar o credenciamento no evento (Dia da Feira)</span>
+                        </div>
+
+                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">today</i>
+                                </span>
+                                <div class="form-group ">
+                                    <label class="control-label">Início</label>
+                                    <input type="datetime-local" class="form-control datepicker" name="credenciamento_abertura" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">today</i>
+                                </span>
+                                <div class="form-group ">
+                                    <label class="control-label">Fim</label>
+                                    <input type="datetime-local" class="form-control datepicker" name="credenciamento_fechamento" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Período de Voluntário -->
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+                            <h3>Período de Inscrição para Voluntário</h3>
+                            <span>Durante esse período será possivel se inscrever para atuar como voluntário durante a feira</span>
+                        </div>
+
+                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">today</i>
+                                </span>
+                                <div class="form-group ">
+                                    <label class="control-label">Início</label>
+                                    <input type="datetime-local" class="form-control datepicker" name="voluntario_abertura" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">today</i>
+                                </span>
+                                <div class="form-group ">
+                                    <label class="control-label">Fim</label>
+                                    <input type="datetime-local" class="form-control datepicker" name="voluntario_fechamento" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Período de Inscrição para Avaliador/Homologador -->
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+                            <h3>Período de Inscrição para Avaliador/Homologador</h3>
+                            <span>Durante esse período será possivel se inscrever para atuar como voluntário durante a feira</span>
+                        </div>
+
+                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">today</i>
+                                </span>
+                                <div class="form-group ">
+                                    <label class="control-label">Início</label>
+                                    <input type="datetime-local" class="form-control datepicker" name="comissao_abertura" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">today</i>
+                                </span>
+                                <div class="form-group ">
+                                    <label class="control-label">Fim</label>
+                                    <input type="datetime-local" class="form-control datepicker" name="comissao_fechamento" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Período de Relatório -->
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+                            <h3>Período de Submissão do Relatório Final</h3>
+                            <span>Durante esse período será possivel submeter o relatório final</span>
+                        </div>
+
+                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">today</i>
+                                </span>
+                                <div class="form-group ">
+                                    <label class="control-label">Início</label>
+                                    <input type="datetime-local" class="form-control datepicker" name="relatorio_abertura" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">today</i>
+                                </span>
+                                <div class="form-group ">
+                                    <label class="control-label">Fim</label>
+                                    <input type="datetime-local" class="form-control datepicker" name="relatorio_fechamento" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campos Extras -->
+                    <!--
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+                            <h3>Campos Extras</h3>
+                            <span>Estes campos irão aparecer no formulário que o autor irá cadastrar o projeto</span>
+                        </div>
+
+
+                    </div>
+                    -->
+
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">
                             <button class="btn btn-primary">Cadastrar</button>
                         </div>
                     </div>
+
                 </form>
             </div>
         </div>

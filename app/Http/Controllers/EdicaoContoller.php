@@ -38,15 +38,37 @@ class EdicaoController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function cadastraEdicao(Request $req) {
 
+        //Busca o ano da ultima edição cadastrada no banco
+        $query = DB::table('edicao')->select('edicao.ano')
+            ->orderBy('id','desc')
+            ->limit(1)
+            ->get();
+        //Incrementa o ano
+        $ano = ++$query[0]->ano;
+
+        $data = $req->all();
+        $data['ano'] = $ano;
+
+        //dd($data);
+
+        Edicao::create($data);
+
+        return redirect()->route('administrador');
+        
     }
 
-    /**
-     * Busca pela edição atual
-     *
-     */
+    public function editarEdicao($id) {
 
+        $dados = Edicao::find($id);
+
+        return view('admin.editarEdicao',compact('dados'));
+        
+    }
+
+
+    //Retorna os dados de uma determinada edição
     public function edicao($id)
     {
 
@@ -55,7 +77,18 @@ class EdicaoController extends Controller {
             ->get();
         $ano = $query[0]->ano;
 
-        return view('admin.homeEdicao', collect(['ano' => $ano, 'id' => $id, 'projetos' => '', 'areas' => '', 'niveis' => '']));
+        $niveis = DB::table('nivel')->select('nivel.*')
+            ->where('edicao_id','=',$id)
+            ->get();
+
+
+        return view('admin.homeEdicao', collect([
+                                                'ano' => $ano, 
+                                                'id' => $id, 
+                                                'projetos' => '', 
+                                                'areas' => '', 
+                                                'niveis' => $niveis
+                                                ]));
     }
 
     public function cadastroEdicao()

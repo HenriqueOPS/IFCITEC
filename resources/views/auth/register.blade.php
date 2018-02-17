@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="container">
+<div class="container" style="margin-top: 30px;">
     <div class="row">
         <div class="col-md-8 col-md-offset-2 col-sm-12">
             <div class="main main-raised">
@@ -38,7 +38,7 @@
                         <div class="col-md-12 text-center">
                             <div class="social-line">
                                 <a class="btn btn-simple btn-just-icon">
-                                    <img src="{{ asset('img/logo.png') }}" title="IFCITEC" height=100px" />
+                                    <img src="{{ asset('img/logo.png') }}" title="IFCITEC" height="100" />
                                 </a>
                             </div>
                         </div>

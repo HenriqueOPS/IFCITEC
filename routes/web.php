@@ -12,12 +12,15 @@
  */
 
 Route::get('/', function () {
-    return view('welcome');
+  if(Auth::check())
+    return redirect()->route('home');
+
+  return redirect()->route('login');
 });
 
 Auth::routes();
 
-// Cria as rotas de autenticação no braço e em Português
+// Cria as rotas de cadastro no braço e em Português
 Route::get('cadastro', [
   'as' => 'cadastro',
   'uses' => 'Auth\RegisterController@showRegistrationForm'
@@ -27,12 +30,20 @@ Route::post('cadastro', [
   'uses' => 'Auth\RegisterController@register'
 ]);
 
-
-
 Route::get('/home', 'HomeController@index')->name('home');
 
+//Edição dos dados pessoais
 Route::get('/editar-cadastro', 'PessoaController@editarCadastro')->name('editarCadastro');
 Route::post('/editar-cadastro', 'PessoaController@editaCadastro')->name('editaCadastro');
+
+// Escola
+Route::get('/escola/cadastrar', 'AdminController@cadastroEscola')->name('cadastroEscola');
+Route::post('/escola/cadastrar', 'AdminController@cadastraEscola')->name('cadastroEscola');
+Route::get('/escola/editar/{id}', 'AdminController@editarEscola')->name('escola');
+Route::post('/escola/edita-escola', 'AdminController@editaEscola')->name('editaEscola');
+
+Route::get('/escola/dados-escola/{id}', 'AdminController@dadosEscola'); //Ajax
+
 
 
 //Autor 
@@ -44,47 +55,41 @@ Route::get('/administrador', 'AdminController@index')->name('administrador');
 
 // Edicao
 Route::get('/edicao/cadastrar', 'EdicaoController@cadastroEdicao')->name('cadastroEdicao');
+Route::post('/edicao/cadastrar', 'EdicaoController@cadastraEdicao')->name('cadastraEdicao');
+Route::get('/edicao/editar/{id}', 'EdicaoController@editarEdicao')->name('editarEdicao');
 Route::get('/edicao/{id}', 'EdicaoController@edicao')->name('edicao');
 
 
 // Nivel
 Route::get('/nivel/cadastrar', 'AdminController@cadastroNivel')->name('cadastroNivel');
+Route::get('/nivel/dados-nivel/{id}', 'AdminController@dadosNivel'); //Ajax
 
 // Area
 Route::get('/administrador/cadastro/area', 'AdminController@cadastroArea')->name('cadastroArea');
 
-// Escola
-Route::get('/escola/cadastrar', 'AdminController@cadastroEscola')->name('cadastroEscola');
-Route::post('/escola/cadastrar', 'AdminController@cadastraEscola')->name('cadastroEscola');
-Route::get('/escola/dados-escola/{id}', 'AdminController@dadosEscola'); //Ajax
-Route::get('/escola/{id}', 'AdminController@editarEscola')->name('escola');
-Route::post('/escola/edita-escola', 'AdminController@editaEscola')->name('editaEscola');
 
-
-
-
-Route::get('/administrador/usuarios', 'AdminController@administrarUsuarios')->name('administrarUsuarios');
-
+// Avaliador/Revisor
+Route::get('/avaliador', 'HomeController@homeAvaliador')->name('avaliador');
+Route::get('/revisor', 'HomeController@homeRevisor')->name('revisor');
 
 //Organizador
 Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 
 
+Route::get('/administrador/usuarios', 'AdminController@administrarUsuarios')->name('administrarUsuarios');
 
 
 
 
 
-//
 
-Route::get('/cadastro/sucess', 'SucessoCadastroController@index')->name('cadastroSucesso');
 //Route::get('/cadastro/homologacao', 'HomologacaoController@index')->name('cadastroFichaHomologacao');
 
 
 //
-Route::get('/avaliacao', function(){
-    return view('avaliador')->withAreas(App\AreaConhecimento::all());
-});
+Route::get('/inscricao-comissao-avaliadora', function(){
+    return view('cadastroAvaliador')->withAreas(App\AreaConhecimento::all());
+})->name('comissaoAvaliadora');
 
 
 Route::resource('projeto', 'ProjetoController');

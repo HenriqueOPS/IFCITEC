@@ -12,11 +12,12 @@
 	</div>
 
 	<ul class="nav nav-pills nav-stacked" style="width: 250px">
-		<li><a href="{{ route('administrador') }}">Administrador</a></li>
-		<li><a href="#">Menu 1</a></li>
-		<li><a href="#">Menu 2</a></li>
-		<li><a href="#">Menu 3</a></li>
+		<li><a href="{{route('administrador')}}">Administrador</a></li>
+		<li><a href="{{route('comissaoAvaliadora')}}">Cadastro Avaliador / Revisor</a></li>
+		<li><a href="{{route('avaliador')}}">Avaliador</a></li>
+		<li><a href="{{route('revisor')}}">Revisor</a></li>
 	</ul>
+
 
 
 </div>

@@ -5,7 +5,6 @@
     <div class="row">
         <div class="col-md-9 main main-raised">
             <div class="list-projects">
-                {{ dd($funcoes['Avaliação']) }}
                 @if($funcoes->isEmpty())
                 <div class="text-center">
                      <span class="function">Você não possui nenhum projeto para homologar/revisar</span><br>
