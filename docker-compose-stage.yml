@@ -2,12 +2,8 @@ version: '2'
 
 services:
   web:
-    container_name: ifcitecweb
-    build:
-      context: .
-      dockerfile: Dockerfile-dev
-    volumes:
-      - ./:/var/www/html/
+    container_name: stage-ifcitec
+    image: registry.gitlab.com/ifrscanoas/ifcitec:stage
     expose:
       - '80'
     links:
@@ -33,7 +29,7 @@ services:
       - PHPPGADMIN_HOST=postgres
       - PHPPGADMIN_PORT=5432
     ports:
-      - '980:80'
+      - '80'
     networks:
       - net-web
       - net-db
