@@ -17,11 +17,11 @@ job-composer:
   script:
     - docker run --rm -v $PWD:/app ifrscanoas/composer update
 
-jod-code-test:
-  stage: test
-  script:
+#jod-code-test:
+#  stage: test
+#  script:
   # run laravel tests
-  - php vendor/bin/phpunit --coverage-text --colors=never 
+  #- php vendor/bin/phpunit --coverage-text --colors=never 
 
 # Testa conexão com banco e realiza o migrate
 job-db-generate:
