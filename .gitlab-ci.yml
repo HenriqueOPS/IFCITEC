@@ -17,8 +17,14 @@ job-composer:
   script:
     - docker run --rm -v $PWD:/app ifrscanoas/composer update
 
+jod-code-test:
+  stage: test
+  script:
+  # run laravel tests
+  - php vendor/bin/phpunit --coverage-text --colors=never 
+
 # Testa conexão com banco e realiza o migrate
-job-test-db-migrate:
+job-db-generate:
   stage: test
   image: php:7.1.7-apache
   services: 
@@ -38,8 +44,8 @@ job-test-db-migrate:
     - php artisan --env=local migrate
     - php artisan db:seed
 
-# Cria um container para produção, disponível no menu Registry
-job-make-container:
+# Cria um container para stage, disponível no menu Registry
+job-stage-container:
   stage: stage
   image: docker:latest
   services:
@@ -49,6 +55,8 @@ job-make-container:
     - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" -f ./Dockerfile-prod .
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+  only:
+    - stage
 
 # Sobe a aplicação no servidor
 job-deploy-on-server:
@@ -56,3 +64,5 @@ job-deploy-on-server:
   #image: docker:latest
   script:
     - echo 1
+  only:
+    - master
