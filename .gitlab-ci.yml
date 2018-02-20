@@ -1,0 +1,68 @@
+stages:
+  - build
+  - test
+  - stage
+  - deploy
+
+cache:
+  paths:
+  - vendor/
+
+# Compila o projeto e baixa dependências
+job-composer:
+  stage: build
+  services:
+    - docker:dind
+  image: docker:latest
+  script:
+    - docker run --rm -v $PWD:/app ifrscanoas/composer update
+
+#jod-code-test:
+#  stage: test
+#  script:
+  # run laravel tests
+  #- php vendor/bin/phpunit --coverage-text --colors=never 
+
+# Testa conexão com banco e realiza o migrate
+job-db-generate:
+  stage: test
+  image: php:7.1.7-apache
+  services: 
+    - postgres:latest
+  variables:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: secret
+    POSTGRES_DB: ifcitec
+  script:
+    - apt-get update -yqq
+    - apt-get install -y libpq-dev 
+    - docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
+    - docker-php-ext-install pdo pdo_pgsql pgsql
+    - cp .env.example .env
+    - php artisan key:generate
+    - php artisan env
+    - php artisan --env=local migrate
+    - php artisan db:seed
+
+# Cria um container para stage, disponível no menu Registry
+job-stage-container:
+  stage: stage
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - export IMAGE_TAG=$(echo -en $CI_COMMIT_REF_NAME | tr -c '[:alnum:]_.-' '-')
+    - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" -f ./Dockerfile-prod .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+  only:
+    - stage
+
+# Sobe a aplicação no servidor
+job-deploy-on-server:
+  stage: deploy
+  #image: docker:latest
+  script:
+    - echo 1
+  only:
+    - master
