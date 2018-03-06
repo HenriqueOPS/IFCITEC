@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePalavraChaveTable extends Migration
+class TarefaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreatePalavraChaveTable extends Migration
      */
     public function up()
     {
-        Schema::create(env('DB_SCHEMA').'.palavra_chave', function (Blueprint $table) {
+        Schema::create(env('DB_SCHEMA').'.tarefa', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('palavra');
+            $table->string('tarefa')->unique();
+            $table->string('descricao')->nullable();
             $table->timestamps();   
         });
     }
@@ -27,6 +28,6 @@ class CreatePalavraChaveTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(env('DB_SCHEMA').'.palavra_chave');
+        Schema::dropIfExists(env('DB_SCHEMA').'.tarefa');
     }
 }

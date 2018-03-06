@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProjetoTable extends Migration
+class ProjetoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -17,13 +17,15 @@ class CreateProjetoTable extends Migration
             $table->increments('id');
             $table->string('titulo');
             $table->text('resumo');
+            $table->boolean('tomada')->nullable();
+            $table->boolean('banner')->nullable();
             $table->timestamps();   
             $table->integer('area_id')->unsigned();
             $table->integer('nivel_id')->unsigned();
             $table->integer('edicao_id')->unsigned();
             //Foreign Keys Constraints
-            $table->foreign('area_id')->references('id')->on(env('DB_SCHEMA').'.area_conhecimento');
-            $table->foreign('nivel_id')->references('id')->on(env('DB_SCHEMA').'.nivel');
+            $table->foreign('area_id')->references('id')->on(env('DB_SCHEMA').'.area_edicao');
+            $table->foreign('nivel_id')->references('id')->on(env('DB_SCHEMA').'.nivel_edicao');
             $table->foreign('edicao_id')->references('id')->on(env('DB_SCHEMA').'.edicao');
         });
     }
