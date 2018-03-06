@@ -115,22 +115,6 @@
                                 @endif
                             </div>
 
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <img src="{{ asset('img/tshirt-crew.svg') }}"  />
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Camiseta</label>
-                                    <select class="form-control" name="camisa">
-                                        <option value="p" {{($dados->camisa == 'p') ? 'selected' : ''}}>P</option>
-                                        <option value="m" {{($dados->camisa == 'm') ? 'selected' : ''}}>M</option>
-                                        <option value="g" {{($dados->camisa == 'g') ? 'selected' : ''}}>G</option>
-                                        <option value="gg" {{($dados->camisa == 'gg') ? 'selected' : ''}}>GG</option>
-                                    </select>
-                                </div>
-                            </div>
-
-
                         </div>
                     </div>
                     <div class="row">
@@ -151,26 +135,24 @@
 <script type="text/javascript" src="{{asset('js/datepicker/bootstrap-datepicker.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/datepicker/locales/bootstrap-datepicker.pt-BR.js')}}"></script>
 <script type="text/javascript">
+$('.datepicker').datepicker({
+    format: 'dd/mm/yyyy',
+    language: 'pt-BR',
+    templates: {
+        leftArrow: '&lsaquo;',
+        rightArrow: '&rsaquo;'
+    },
+});
 
+function formatar(mascara, documento) {
+    var i = documento.value.length;
+    var saida = mascara.substring(0, 1);
+    var texto = mascara.substring(i)
 
-                                        $('.datepicker').datepicker({
-                                            format: 'dd/mm/yyyy',
-                                            language: 'pt-BR',
-                                            templates: {
-                                                leftArrow: '&lsaquo;',
-                                                rightArrow: '&rsaquo;'
-                                            },
-                                        });
-
-                                        function formatar(mascara, documento) {
-                                            var i = documento.value.length;
-                                            var saida = mascara.substring(0, 1);
-                                            var texto = mascara.substring(i)
-
-                                            if (texto.substring(0, 1) != saida) {
-                                                documento.value += texto.substring(0, 1);
-                                            }
-                                        }
+    if (texto.substring(0, 1) != saida) {
+        documento.value += texto.substring(0, 1);
+    }
+}
 </script>
 @endsection
 

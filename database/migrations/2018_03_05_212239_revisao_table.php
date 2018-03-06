@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRevisaoTable extends Migration
+class RevisaoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -33,6 +33,6 @@ class CreateRevisaoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(env('DB_SCHEMA').'.revisao');
+        Schema::dropIfExists(env('DB_SCHEMA').'.revisao'); 
     }
 }
