@@ -19,6 +19,8 @@
                     {{ csrf_field() }}
 
                     <input type="hidden" name="id_escola" value="{{ $dados->id }}">
+                    <input type="hidden" name="id_endereco" value="{{ $data->id }}">
+                    
 
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
@@ -66,7 +68,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">CEP</label>
-                                    <input type="text" class="form-control" name="cep" id="cep" value="{{isset($dados->cep) ? $dados->cep : ''}}"  required>
+                                    <input type="text" class="form-control" name="cep" id="cep" value="{{isset($data->cep) ? $data->cep : ''}}"  required>
                                 </div>
                             </div>
                             <div class="input-group">
@@ -75,7 +77,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Rua</label>
-                                    <input type="text" class="form-control" name="endereco" id="rua" value="{{isset($dados->endereco) ? $dados->endereco : ''}}"  required>
+                                    <input type="text" class="form-control" name="endereco" id="rua" value="{{isset($data->endereco) ? $data->endereco : ''}}"  required>
                                 </div>
                             </div>
                             <div class="input-group">
@@ -84,7 +86,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Bairro</label>
-                                    <input type="text" class="form-control" name="bairro" id="bairro" value="{{isset($dados->bairro) ? $dados->bairro : ''}}" required>
+                                    <input type="text" class="form-control" name="bairro" id="bairro" value="{{isset($data->bairro) ? $data->bairro : ''}}" required>
                                 </div>
                             </div>
                             <div class="input-group">
@@ -93,7 +95,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Cidade</label>
-                                    <input type="text" class="form-control" name="municipio" id="cidade" value="{{isset($dados->municipio) ? $dados->municipio : ''}}" required>
+                                    <input type="text" class="form-control" name="municipio" id="cidade" value="{{isset($data->municipio) ? $data->municipio : ''}}" required>
                                 </div>
                             </div>
                             <div class="input-group">
@@ -102,7 +104,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Estado</label>
-                                    <input type="text" class="form-control" name="uf" id="uf" value="{{isset($dados->uf) ? $dados->uf : ''}}" required>
+                                    <input type="text" class="form-control" name="uf" id="uf" value="{{isset($data->uf) ? $data->uf : ''}}" required>
                                 </div>
                             </div>
                             <div class="input-group">
@@ -111,7 +113,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Número</label>
-                                    <input type="text" class="form-control" name="numero" value="{{isset($dados->numero) ? $dados->numero : ''}}" required>
+                                    <input type="text" class="form-control" name="numero" value="{{isset($data->numero) ? $data->numero : ''}}" required>
                                 </div>
                             </div>
                         </div>

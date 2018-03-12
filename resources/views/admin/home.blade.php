@@ -12,7 +12,7 @@
             <h2>Painel administrativo</h2>
         </div>
 
-        <div class="col-md-3" >
+        <div class="col-md-9 " >
             <ul class="nav nav-pills nav-pills-primary"  role="tablist">
                 <li class="active">
                     <a href="dashboard" id="0" class="tab" role="tab" data-toggle="tab">
@@ -24,6 +24,18 @@
                     <a href="dashboard" id="1" class="tab" role="tab" data-toggle="tab">
                         <i class="material-icons">account_balance</i>
                         Escolas
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard" id="2" class="tab" role="tab" data-toggle="tab">
+                        <i class="material-icons">school</i>
+                        Níveis
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard" id="3" class="tab" role="tab" data-toggle="tab">
+                        <i class="material-icons">brightness_auto</i>
+                        Áreas
                     </a>
                 </li>
             </ul>
@@ -104,17 +116,22 @@
                             <td>{{ $escola->municipio }}</td>
                             <td>{{ $escola->email }}</td>
                             <td>{{ $escola->telefone }}</td>
+
+
+
                             <td class="td-actions text-right">
 
                                 <a href="javascript:void(0);" class="modalEscola" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
 
                                 <a href="{{ route('escola', $escola->id) }}"><i class="material-icons">edit</i></a>
+
+                                <a href="javascript:void(0);" class="exclusao" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">close</i></a>
                             </td>
                         <tr>
 
                     @endforeach
 
-                    </tbody>
+                    
 
                 </table>
             </div>
@@ -122,8 +139,33 @@
     </div>
 </div>
 
+<!-- Modal Delete -->
+<div id="ModalDelete" class="modal fade bd-example-modal-lg" role="dialog1" aria-labelledby="ModalDelete">
+    <div class="modal-dialog" role="document1">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Deletar Escola</h5>
+            </div>
+
+            <div class="modal-body">
+                <span>Para deletar a escola, confirme sua senha.</span>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">lock_outline</i>
+                    </span>
+                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>              
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary excluir" data-dismiss="modal">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fim Modal -->
+
 <!-- Modal -->
-<div id="myModal" class="modal fade bd-example-modal-lg" role="dialog">
+<div id="myModal" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="ModalEscola">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
@@ -178,11 +220,13 @@
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
         </div>
     </div>
 </div>
 <!-- Fim Modal -->
+
+
 
 @endsection
 
@@ -194,26 +238,27 @@ $('.modalEscola').click(function(){
     var idEscola = $(this).attr('id-escola');
 
     //monta a url de consulta
-    var urlConsulta = '/escola/dados-escola/'+idEscola;
+    var urlConsulta = './escola/dados-escola/'+idEscola;
     //faz a consulta via Ajax
-    $.get(urlConsulta, function (data){
+    $.get(urlConsulta, function (res){
 
+        console.log(res);
         //monta a string do endereço
         var endereco = '';
 
-        data.endereco ? endereco += data.endereco+", " : endereco += '';
-        data.numero ? endereco += data.numero+", " : endereco += '';
-        data.bairro ? endereco += data.bairro+", " : endereco += '';
-        data.municipio ? endereco += data.municipio+", " : endereco += '';
-        data.uf ? endereco += data.uf+", " : endereco += '';
+        res.data.endereco ? endereco += res.data.endereco+", " : endereco += '';
+        res.data.numero ? endereco += res.data.numero+", " : endereco += '';
+        res.data.bairro ? endereco += res.data.bairro+", " : endereco += '';
+        res.data.municipio ? endereco += res.data.municipio+", " : endereco += '';
+        res.data.uf ? endereco += res.data.uf+", " : endereco += '';
 
         //altera o DOM
-        $("#nome-curtoModal").html(data.nome_curto);
-        $("#nome-completoModal").html(data.nome_completo);
-        $("#emailModal").html(data.email);
-        $("#telefoneModal").html(data.telefone);
+        $("#nome-curtoModal").html(res.dados.nome_curto);
+        $("#nome-completoModal").html(res.dados.nome_completo);
+        $("#emailModal").html(res.dados.email);
+        $("#telefoneModal").html(res.dados.telefone);
         $("#enderecoModal").html(endereco);
-        $("#cepModal").html(data.cep);
+        $("#cepModal").html(res.data.cep);
 
         //abre a modal
         $("#myModal").modal();
@@ -262,6 +307,27 @@ function hideHeads(){
     $('div[id=2]').hide();
     $('div[id=3]').hide();
 }
+</script>
+<script type="application/javascript">
+$('.exclusao').click(function(){
+    var idEscola = $(this).attr('id-escola');
+
+    $("#ModalDelete").modal();
+
+    $('.excluir').click(function(){
+        var urlConsulta = './escola/exclui-escola/'+idEscola+'/'+$('#password').val();
+        $.get(urlConsulta, function (res){
+            if(res == 'true'){
+                alert("Escola excluida");
+                location.href = './administrador';
+            }else{
+                alert("Senha incorreta");
+            }
+
+        });
+    });
+
+});
 </script>
 @endsection
 
