@@ -23,7 +23,7 @@ class Escola extends Model {
      * @var array
      */
     protected $fillable = [
-        'nome_completo', 'nome_curto', 'email', 'telefone',
+        'nome_completo', 'nome_curto', 'email', 'telefone', 'endereco_id',
         'endereco', 'municipio', 'cep', 'uf', 'bairro', 'numero'
     ];
 
@@ -66,6 +66,10 @@ class Escola extends Model {
     
     public function projetos(){
          return $this->belongsToMany('App\Projeto', 'escola_funcao_pessoa_projeto');
+    }
+
+    public function enderecos() {
+        return $this->hasOne('App\Endereco','');
     }
 
 }

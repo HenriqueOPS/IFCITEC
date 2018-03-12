@@ -42,7 +42,9 @@ Route::post('/escola/cadastrar', 'AdminController@cadastraEscola')->name('cadast
 Route::get('/escola/editar/{id}', 'AdminController@editarEscola')->name('escola');
 Route::post('/escola/edita-escola', 'AdminController@editaEscola')->name('editaEscola');
 
+
 Route::get('/escola/dados-escola/{id}', 'AdminController@dadosEscola'); //Ajax
+Route::get('/escola/exclui-escola/{id}/{s}', 'AdminController@excluiEscola'); //Ajax
 
 
 
