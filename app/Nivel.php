@@ -19,7 +19,7 @@ class Nivel extends Model {
      * @var array
      */
     protected $fillable = [
-        'nivel', 'descricao',
+        'nivel', 'descricao', 'max_ch', 'min_ch',
     ];
     
     public function projetos() {

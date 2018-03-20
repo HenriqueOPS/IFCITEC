@@ -33,8 +33,14 @@ class AdminController extends Controller
     public function index()
     {
         $edicoes = DB::table('edicao')->select('edicao.*')->get();
-        $enderecos = DB::table('endereco')->select('endereco.id', 'endereco', 'numero', 'bairro', 
-                                      'municipio', 'uf', 'cep')
+        $niveis = DB::table('nivel')->select('nivel.*')
+                                    ->orderBy('nivel', 'asc')
+                                    ->get();
+        $areas = DB::table('area_conhecimento')->join('nivel', 'area_conhecimento.nivel_id',                            '=', 'nivel.id')
+                                      ->select('area_conhecimento.id', 'area_conhecimento', 'area_conhecimento.descricao')              
+                                      ->orderBy('area_conhecimento', 'asc')
+                                      ->get();
+        $enderecos = DB::table('endereco')->select('endereco.id', 'endereco', 'numero', 'bairro', 'municipio', 'uf', 'cep')
                                       ->orderBy('id', 'asc')
                                       ->get();
         $escolas = DB::table('escola')->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
@@ -43,18 +49,66 @@ class AdminController extends Controller
                                       ->orderBy('nome_curto', 'asc')
                                       ->get();
 
-        return view('admin.home', collect(['edicoes' => $edicoes, 'enderecos' => $enderecos, 'escolas' => $escolas]));
+
+        return view('admin.home', collect(['edicoes' => $edicoes, 'enderecos' => $enderecos, 'escolas' => $escolas, 'niveis' => $niveis, 'areas' => $areas]));
 
     }
 
 
     public function dadosNivel($id) { //Ajax
       $dados = Nivel::find($id);
-      return $dados;
+      return compact('dados');
     }
 
     public function cadastroNivel() {
         return view('admin.cadastroNivel');
+    }
+
+
+    public function cadastraNivel(Request $req){
+        $data = $req->all();     
+        Nivel::create([
+                    'nivel' => $data['nivel'],
+                    'descricao' => $data['descricao'],
+                    'max_ch' => $data['max_ch'],
+                    'min_ch' => $data['min_ch'],
+                  ]);
+                   
+        return redirect()->route('administrador');
+        
+    }
+
+    public function editarNivel($id) {
+     
+       
+        $dados = Nivel::find($id);
+
+        return view('admin.editarNivel', compact('dados'));
+    }
+
+    public function editaNivel(Request $req) {
+
+        $id = $req->all()['id_nivel'];
+        Nivel::where('id',$id)->update(['nivel'=>$req->all()['nivel'],
+                                          'max_ch'=>$req->all()['max_ch'],
+                                         'min_ch'=>$req->all()['min_ch'],
+                                         'descricao'=>$req->all()['descricao'],
+      ]);
+
+        return redirect()->route('administrador');
+    }
+
+    public function excluiNivel($id, $s){
+     /* print_r(Auth::user()['attributes']['senha']);
+      echo '<br>';
+      print_r(bcrypt($s));
+      dd($s);*/
+      if(password_verify($s, Auth::user()['attributes']['senha'])){
+          Escola::find($id)->delete();
+          return 'true';
+      }
+
+      return 'false';
     }
 
 
@@ -64,10 +118,47 @@ class AdminController extends Controller
     }
 
     public function cadastroArea() {
-        return view('admin.cadastroArea');
+        return view('admin.cadastroArea'); //,hasMany
     }
 
-    
+    public function cadastraArea(Request $req){
+        $data = $req->all();
+
+      
+
+        Escola::create([
+                    'nome_completo' => $data['nome_completo'],
+                    'nome_curto' => $data['nome_curto'],
+                    'email' => $data['email'],
+                    'telefone' => $data['telefone'],
+                    'endereco_id' => $idEndereco['original']['id']
+                  ]);
+
+        
+
+        return redirect()->route('administrador');
+        
+    }
+
+    public function editarArea($id) {
+     
+       
+        $dados = AreaConhecimento::find($id);
+
+        return view('admin.editarArea', compact('dados'));
+    }
+
+    public function editaArea(Request $req) {
+
+        $id = $req->all()['id_area'];
+        AreaConhecimento::where('id',$id)->update(['area_conhecimento'=>$req->all()[
+                                          'area_conhecimento'],
+                                          'descricao'=>$req->all()['descricao'],
+      ]);
+
+        return redirect()->route('administrador');
+    }
+
     public function dadosEscola($id) { //Ajax
       $dados = Escola::find($id);
       $data = Endereco::find($dados->endereco_id);

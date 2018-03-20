@@ -14,7 +14,9 @@
                         <h2>Cadastro de Nível</h2>
                     </div>
                 </div>
-                <form name="f1" method="GET" action="{{ route('cadastroSucesso')}}">
+                <form name="f1" method="post" action="{{route('cadastroNivel')}}">
+
+                    {{ csrf_field() }}
 
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
@@ -24,24 +26,39 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Nome do Nível</label>
-                                    <input type="text" class="form-control" name="name" required>
+                                    <input type="text" class="form-control" name="nivel" required>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">text_fields</i>
+                                </span>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Caracteres máximos para resumo</label>
+                                    <input type="number" class="form-control" name="max_ch" required>
                                 </div>
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <i class="material-icons">event_note</i>
+                                    <i class="material-icons">text_fields</i>
                                 </span>
                                 <div class="form-group label-floating">
-                                    <label class="control-label">Edição</label>
-                                    <select class="form-control" id="">
-                                        <option>Edição 2015</option>
-                                        <option>Edição 2016</option>
-                                        <option>Edição 2017</option>
-                                        <option>Edição 2018</option>
-                                    </select>
+                                    <label class="control-label">Caracteres mínimos para resumo</label>
+                                    <input type="number" class="form-control" name="min_ch" required>
+                                </div>
+                            </div>
+                            
+                           
+                            <div class="form-group">
+                                <div class="form-group label-floating">
+                                    <i class="material-icons">description</i>
+                                    <label for="exampleFormControlTextarea1">Descrição</label>
+                                    <textarea class="form-control" rows="3" name="descricao" required></textarea>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">

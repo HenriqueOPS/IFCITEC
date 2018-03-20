@@ -14,7 +14,11 @@
                         <h2>Editar Área</h2>
                     </div>
                 </div>
-                <form name="f1" method="GET" action="{{ route('editarSucesso') }}">
+                <form method="post" action="{{ route('editaArea') }}">
+
+                    {{ csrf_field() }}
+
+                    <input type="hidden" name="id_area" value="{{ $dados->id }}">
 
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
@@ -24,9 +28,10 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Nível</label>
-                                    <select class="form-control" id="">
-                                        <option>Fundamental</option>
-                                        <option>Ensino Médio</option>
+                                    <select class="form-control" id="nivel_id" value="{{isset($dados->nivel_id) ? $dados->nivel_id : ''}}" required>
+                                        foreach () {
+                                        <option></option>
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -36,14 +41,21 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Nome da Área</label>
-                                    <input type="text" class="form-control" name="name" required>
+                                    <input type="text" class="form-control" name="area_conhecimento" value="{{isset($dados->area_conhecimento) ? $dados->area_conhecimento : ''}}" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group label-floating">
+                                    <i class="material-icons">description</i>
+                                    <label for="exampleFormControlTextarea1">Descrição</label>
+                                    <textarea class="form-control" rows="3" name="descricao" value="{{isset($dados->descricao) ? $dados->descricao : ''}}" required></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">
-                            <button class="btn btn-primary">Salvar Alterações</button>
+                            <button class="btn btn-primary">Cadastrar</button>
 
                         </div>
                     </div>
