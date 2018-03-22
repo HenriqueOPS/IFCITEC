@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateValorCampoExtraTable extends Migration
+class RootTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateValorCampoExtraTable extends Migration
      */
     public function up()
     {
-        Schema::create(env('DB_SCHEMA').'.valor_campo_extra', function (Blueprint $table) {
-            $table->increments('id');  
-            $table->integer('campo_id')->unsigned();
-            $table->string('valor');
+        Schema::create(env('DB_SCHEMA').'.root', function (Blueprint $table) {
+            $table->integer('pessoa_id')->unsigned();
             $table->timestamps();
             //Foreign Keys Constraints
-            $table->foreign('campo_id')->references('id')->on(env('DB_SCHEMA').'.campo_extra');
+             $table->foreign('pessoa_id')->references('id')->on(env('DB_SCHEMA').'.pessoa');
         });
     }
 
@@ -30,6 +28,6 @@ class CreateValorCampoExtraTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(env('DB_SCHEMA').'.valor_campo_extra');
+        Schema::dropIfExists(env('DB_SCHEMA').'.root');
     }
 }

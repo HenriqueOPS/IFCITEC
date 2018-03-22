@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEdicaoTable extends Migration
+class EdicaoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -34,9 +34,6 @@ class CreateEdicaoTable extends Migration
             //Periodo de Inscrição para Avaliador/Homologador
             $table->dateTime('comissao_abertura');
             $table->dateTime('comissao_fechamento');
-            //Periodo de Submissão Relatório Final
-            $table->dateTime('relatorio_abertura');
-            $table->dateTime('relatorio_fechamento');
             $table->timestamps();
         });
     }

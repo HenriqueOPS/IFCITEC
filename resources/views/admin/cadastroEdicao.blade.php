@@ -210,37 +210,7 @@
                         </div>
                     </div>
 
-                    <!-- Período de Relatório -->
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                            <h3>Período de Submissão do Relatório Final</h3>
-                            <span>Durante esse período será possivel submeter o relatório final</span>
-                        </div>
-
-                        <div class="col-md-4 col-md-offset-1 col-xs-9">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">today</i>
-                                </span>
-                                <div class="form-group ">
-                                    <label class="control-label">Início</label>
-                                    <input type="datetime-local" class="form-control datepicker" name="relatorio_abertura" required>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4 col-md-offset-1 col-xs-9">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">today</i>
-                                </span>
-                                <div class="form-group ">
-                                    <label class="control-label">Fim</label>
-                                    <input type="datetime-local" class="form-control datepicker" name="relatorio_fechamento" required>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                   
 
                     <!-- Campos Extras -->
                     <!--

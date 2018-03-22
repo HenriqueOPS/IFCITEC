@@ -42,7 +42,9 @@ Route::post('/escola/cadastrar', 'AdminController@cadastraEscola')->name('cadast
 Route::get('/escola/editar/{id}', 'AdminController@editarEscola')->name('escola');
 Route::post('/escola/edita-escola', 'AdminController@editaEscola')->name('editaEscola');
 
+
 Route::get('/escola/dados-escola/{id}', 'AdminController@dadosEscola'); //Ajax
+Route::get('/escola/exclui-escola/{id}/{s}', 'AdminController@excluiEscola'); //Ajax
 
 
 
@@ -62,10 +64,18 @@ Route::get('/edicao/{id}', 'EdicaoController@edicao')->name('edicao');
 
 // Nivel
 Route::get('/nivel/cadastrar', 'AdminController@cadastroNivel')->name('cadastroNivel');
+Route::post('/nivel/cadastrar', 'AdminController@cadastraNivel')->name('cadastroNivel');
+Route::get('/nivel/editar/{id}', 'AdminController@editarNivel')->name('nivel');
+Route::post('/nivel/edita-nivel', 'AdminController@editaNivel')->name('editaNivel');
 Route::get('/nivel/dados-nivel/{id}', 'AdminController@dadosNivel'); //Ajax
+Route::get('/nivel/exclui-nivel/{id}/{s}', 'AdminController@excluiNivel'); //Ajax
 
 // Area
-Route::get('/administrador/cadastro/area', 'AdminController@cadastroArea')->name('cadastroArea');
+Route::get('/area/cadastrar', 'AdminController@cadastroArea')->name('cadastroArea');
+Route::post('/area/cadastrar', 'AdminController@cadastraArea')->name('cadastroArea');
+Route::get('/area/editar/{id}', 'AdminController@editarArea')->name('area');
+Route::post('/area/edita-area', 'AdminController@editaArea')->name('editaArea');
+Route::get('/area/dados-area/{id}', 'AdminController@dadosArea'); //Ajax
 
 
 // Avaliador/Revisor
