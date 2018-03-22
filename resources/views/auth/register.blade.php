@@ -132,23 +132,6 @@
                                 </span>
                                 @endif
                             </div>
-
-                            
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <img src="{{ asset('img/tshirt-crew.svg') }}"  />
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Camiseta</label>
-                                    <select class="form-control" id="">
-                                        <option>P</option>
-                                        <option>M</option>
-                                        <option>G</option>
-                                        <option>GG</option>
-                                        <option>EXG</option>
-                                    </select>
-                                </div>
-                            </div>
                             
                             
                             <div class="input-group{{ $errors->has('senha') ? ' has-error' : '' }}">

@@ -240,6 +240,8 @@ $('.modalPagina').click(function(){
             $("#content-projeto").hide();
             $("#content-nivel").hide();  
 
+
+
             //abre a modal
             $("#myModal").modal();
 

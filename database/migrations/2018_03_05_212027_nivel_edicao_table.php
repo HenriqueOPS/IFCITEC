@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAreaConhecimentoTable extends Migration
+class NivelEdicaoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,15 @@ class CreateAreaConhecimentoTable extends Migration
      */
     public function up()
     {
-        Schema::create(env('DB_SCHEMA').'.area_conhecimento', function (Blueprint $table) {
+        Schema::create(env('DB_SCHEMA').'.nivel_edicao', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('area_conhecimento');
-            $table->text('descricao')->nullable();
             $table->integer('nivel_id')->unsigned();
-            $table->timestamps();
+            $table->integer('edicao_id')->unsigned();
             //Foreign Keys Constraints
             $table->foreign('nivel_id')->references('id')->on(env('DB_SCHEMA').'.nivel');
+            $table->foreign('edicao_id')->references('id')->on(env('DB_SCHEMA').'.edicao');
+            //Other Constraints
+            $table->unique(['nivel_id', 'edicao_id']);
         });
     }
 
@@ -31,6 +32,6 @@ class CreateAreaConhecimentoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(env('DB_SCHEMA').'.area_conhecimento');
+        Schema::dropIfExists(env('DB_SCHEMA').'.nivel_edicao');
     }
 }

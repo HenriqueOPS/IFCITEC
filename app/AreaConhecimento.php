@@ -19,7 +19,7 @@ class AreaConhecimento extends Model {
      * @var array
      */
     protected $fillable = [
-        'area_conhecimento', 'descricao',
+        'area_conhecimento', 'descricao', 'nivel_id'
     ];
     
     public function projetos() {

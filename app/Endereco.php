@@ -19,12 +19,17 @@ class Endereco extends Model {
      * @var array
      */
     protected $fillable = [
-        'rua', 'numero', 'bairro', 'cidade', 'estado', 'cep', 'complemento',
+        'endereco', 'numero', 'bairro', 'municipio', 'uf', 'cep', 'complemento',
     ];
     
      public function pessoa()
     {
         return $this->belongsTo('App\Pessoa');
+    }
+
+    public function escolas()
+    {
+        return $this->belongsTo('App\Escola');
     }
 
 }
