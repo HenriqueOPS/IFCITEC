@@ -8,7 +8,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Ifcitec') }}</title>
 
         <!-- Fonts and icons -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
@@ -28,13 +28,13 @@
             @else
             <nav class="navbar navbar-default navbar-static-top"-->
                 <div class="container">
-                    
+
                     <div class="navbar-header">
                         <a class="navbar-brand" href="{{ route('home') }}">
                             <img src="{{ asset('img/logo.png') }}" width="100" alt="IFCITEC">
                         </a>
 
-                        
+
                     </div>
 
                     <div class="collapse navbar-collapse" id="app-navbar-collapse">
@@ -55,7 +55,7 @@
                                 </ul>
                             </li>
                         </ul>
-                        
+
                         <!-- Right Side Of Navbar -->
                         <ul class="nav navbar-nav navbar-right">
                             <!-- Authentication Links

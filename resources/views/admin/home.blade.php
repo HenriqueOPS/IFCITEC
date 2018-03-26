@@ -218,8 +218,72 @@
 </div>
 
 
+
+
+<!-- Modal -->
+<div id="myModal" class="modal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="nome-curtoModal"></h5>
+			</div>
+			<div class="modal-body">
+
+				<div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">assignment</i>
+                </span>
+					<div class="form-group label-floating">
+						<span id="nome-completoModal"></span>
+					</div>
+				</div>
+
+				<div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">mail</i>
+                </span>
+					<div class="form-group label-floating">
+						<span id="emailModal"></span>
+					</div>
+				</div>
+
+				<div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">phone</i>
+                </span>
+					<div class="form-group label-floating">
+						<span id="telefoneModal"></span>
+					</div>
+				</div>
+
+				<div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">location_on</i>
+                </span>
+					<div class="form-group label-floating">
+						<span id="enderecoModal"></span>
+					</div>
+				</div>
+
+				<div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">markunread_mailbox</i>
+                </span>
+					<div class="form-group label-floating">
+						<span id="cepModal"></span>
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+			</div>
+		</div>
+	</div>
+	<!-- Fim Modal -->
+
 <!-- Modal Delete Escola -->
-<div id="ModalDelete" class="modal fade bd-example-modal-lg" role="dialog1" aria-labelledby="ModalDelete">
+<div id="ModalDelete" class="modal">
     <div class="modal-dialog" role="document1">
         <div class="modal-content">
             <div class="modal-header">
@@ -232,7 +296,7 @@
                     <span class="input-group-addon">
                         <i class="material-icons">lock_outline</i>
                     </span>
-                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>              
+                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>
                 </div>
             </div>
             <div class="modal-footer">
@@ -244,7 +308,7 @@
 <!-- Fim Modal -->
 
 <!-- Modal Nível -->
-<div id="nivelModal" class="modal fade bd-example-modal-lg" role="dialog2" aria-labelledby="nivelModal">
+<div id="nivelModal" class="modal">
   <div class="modal-dialog" role="document2">
     <div class="modal-content">
         <div class="modal-header">
@@ -288,7 +352,7 @@
 <!-- Fim Modal Nível -->
 
 <!-- Modal Delete Nível -->
-<div id="ModalDeleteNivel" class="modal fade bd-example-modal-lg" role="dialog3" aria-labelledby="ModalDeleteNivel">
+<div id="ModalDeleteNivel" class="modal">
     <div class="modal-dialog" role="document3">
         <div class="modal-content">
             <div class="modal-header">
@@ -301,7 +365,7 @@
                     <span class="input-group-addon">
                         <i class="material-icons">lock_outline</i>
                     </span>
-                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>              
+                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>
                 </div>
             </div>
             <div class="modal-footer">
@@ -312,67 +376,7 @@
 </div>
 <!-- Fim Modal -->
 
-<!-- Modal -->
-<div id="myModal" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="ModalEscola">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="nome-curtoModal"></h5>
-        </div>
-        <div class="modal-body">
 
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">assignment</i>
-                </span>
-                <div class="form-group label-floating">
-                    <span id="nome-completoModal"></span>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">mail</i>
-                </span>
-                <div class="form-group label-floating">
-                    <span id="emailModal"></span>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">phone</i>
-                </span>
-                <div class="form-group label-floating">
-                    <span id="telefoneModal"></span>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">location_on</i>
-                </span>
-                <div class="form-group label-floating">
-                    <span id="enderecoModal"></span>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">markunread_mailbox</i>
-                </span>
-                <div class="form-group label-floating">
-                    <span id="cepModal"></span>
-                </div>
-            </div>
-
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
-        </div>
-    </div>
-</div>
-<!-- Fim Modal -->
 
 
 
