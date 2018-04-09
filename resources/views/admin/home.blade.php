@@ -113,11 +113,9 @@
                         <tr>
                             <td class="text-center">{{ $i }}</td>
                             <td>{{ $escola->nome_curto }}</td>
-                            <td>{{ $escola->municipio }}</td>
+                            <td></td>
                             <td>{{ $escola->email }}</td>
                             <td>{{ $escola->telefone }}</td>
-
-
 
                             <td class="td-actions text-right">
 
@@ -353,7 +351,7 @@
 
 <!-- Modal Delete Nível -->
 <div id="ModalDeleteNivel" class="modal">
-    <div class="modal-dialog" role="document3">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Deletar Nível</h5>
@@ -384,6 +382,49 @@
 @endsection
 
 @section('js')
+<script type="application/javascript">
+	$('.exclusao').click(function(){
+		var idEscola = $(this).attr('id-escola');
+
+		$("#ModalDelete").modal();
+
+		$('.excluir').click(function(){
+			var urlConsulta = './escola/exclui-escola/'+idEscola+'/'+$('#password').val();
+			$.get(urlConsulta, function (res){
+				if(res == 'true'){
+					alert("Escola excluida");
+					location.href = './administrador';
+				}else{
+					alert("Senha incorreta");
+				}
+
+			});
+		});
+
+	});
+</script>
+<script type="application/javascript">
+	$('.exclusaoNivel').click(function(){
+		var idNivel= $(this).attr('id-nivel');
+
+		$("#ModalDeleteNivel").modal();
+
+		$('.excluir').click(function(){
+			var urlConsulta = './nivel/exclui-nivel/'+idNivel+'/'+$('#password').val();
+			$.get(urlConsulta, function (res){
+				if(res == 'true'){
+					alert("Nível excluido");
+					location.href = './administrador';
+				}else{
+					alert("Senha incorreta");
+				}
+
+			});
+		});
+
+	});
+</script>
+
 <script type="application/javascript">
 $('.modalEscola').click(function(){
 
@@ -487,47 +528,6 @@ function hideHeads(){
     $('div[id=3]').hide();
 }
 </script>
-<script type="application/javascript">
-$('.exclusao').click(function(){
-    var idEscola = $(this).attr('id-escola');
 
-    $("#ModalDelete").modal();
-
-    $('.excluir').click(function(){
-        var urlConsulta = './escola/exclui-escola/'+idEscola+'/'+$('#password').val();
-        $.get(urlConsulta, function (res){
-            if(res == 'true'){
-                alert("Escola excluida");
-                location.href = './administrador';
-            }else{
-                alert("Senha incorreta");
-            }
-
-        });
-    });
-
-});
-</script>
-<script type="application/javascript">
-$('.exclusaoNivel').click(function(){
-    var idNivel= $(this).attr('id-nivel');
-
-    $("#ModalDeleteNivel").modal();
-
-    $('.excluir').click(function(){
-        var urlConsulta = './nivel/exclui-nivel/'+idNivel+'/'+$('#password').val();
-        $.get(urlConsulta, function (res){
-            if(res == 'true'){
-                alert("Nível excluido");
-                location.href = './administrador';
-            }else{
-                alert("Senha incorreta");
-            }
-
-        });
-    });
-
-});
-</script>
 @endsection
 
