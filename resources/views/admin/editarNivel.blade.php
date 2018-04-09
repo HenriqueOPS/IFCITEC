@@ -20,7 +20,7 @@
 
                     <input type="hidden" name="id_nivel" value="{{ $dados->id }}">
 
-                    <div class="row">
+                    <div class="row"> 
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="input-group">
                                 <span class="input-group-addon">
