@@ -43,10 +43,9 @@ class AdminController extends Controller
         $enderecos = DB::table('endereco')->select('endereco.id', 'endereco', 'numero', 'bairro', 'municipio', 'uf', 'cep')
                                       ->orderBy('id', 'asc')
                                       ->get();
-        $escolas = DB::table('escola')->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
-                                      ->select('escola.id', 'nome_completo', 'nome_curto', 'email', 
-                                      'telefone', 'municipio')              
-                                      ->orderBy('nome_curto', 'asc')
+        $escolas = DB::table('escola')
+                                      ->select('escola.id', 'escola.nome_completo', 'escola.nome_curto', 'escola.email',
+                                      'escola.telefone')
                                       ->get();
 
 
@@ -169,31 +168,59 @@ class AdminController extends Controller
      
        
         $dados = Escola::find($id);
-        $data = Endereco::find($dados->endereco_id);
+        $endereco = 0;
 
-        return view('admin.editarEscola', compact('dados','data'));
+        if($dados->endereco_id != null){
+            $data = Endereco::find($dados->endereco_id);
+            $endereco = 1;
+        }
+
+        return view('admin.editarEscola', compact('dados','data', 'endereco'));
     }
 
     public function editaEscola(Request $req) {
 
         $id = $req->all()['id_escola'];
-        Escola::where('id',$id)->update(['nome_completo'=>$req->all()['nome_completo'],
-                                         'nome_curto'=>$req->all()['nome_curto'],
-                                         'email'=>$req->all()['email'],
-                                         'telefone'=>$req->all()['telefone'],
-                                         
 
-      ]);
-        $data = $req->all()['id_endereco'];
-        Endereco::where('id',$data)->update(['cep'=>$req->all()['cep'],
-                                         'endereco'=>$req->all()['endereco'],
-                                         'bairro'=>$req->all()['bairro'],
-                                         'municipio'=>$req->all()['municipio'],
-                                         'uf'=>$req->all()['uf'],
-                                         'numero'=>$req->all()['numero'],
+        $dados = Escola::find($id);
+
+        if($dados->endereco_id != null){ //existe um endereço
+
+            Endereco::where('id',$dados->endereco_id)->update(['cep'=>$req->all()['cep'],
+                'endereco'=>$req->all()['endereco'],
+                'bairro'=>$req->all()['bairro'],
+                'municipio'=>$req->all()['municipio'],
+                'uf'=>$req->all()['uf'],
+                'numero'=>$req->all()['numero'],
+            ]);
+
+            Escola::where('id',$id)->update(['nome_completo'=>$req->all()['nome_completo'],
+                'nome_curto'=>$req->all()['nome_curto'],
+                'email'=>$req->all()['email'],
+                'telefone'=>$req->all()['telefone'],
+            ]);
+
+        }else{ //nao existe um endereço
+
+            $idEndereco = Endereco::create(['cep'=>$req->all()['cep'],
+                'endereco'=>$req->all()['endereco'],
+                'bairro'=>$req->all()['bairro'],
+                'municipio'=>$req->all()['municipio'],
+                'uf'=>$req->all()['uf'],
+                'numero'=>$req->all()['numero'],
+            ]);
+
+            Escola::where('id',$id)->update(['nome_completo'=>$req->all()['nome_completo'],
+                'nome_curto'=>$req->all()['nome_curto'],
+                'email'=>$req->all()['email'],
+                'telefone'=>$req->all()['telefone'],
+                'endereco_id' => $idEndereco['original']['id']
+            ]);
+
+        }
 
 
-      ]);
+
 
         return redirect()->route('administrador');
     }
