@@ -37,7 +37,7 @@ class AdminController extends Controller
                                     ->orderBy('nivel', 'asc')
                                     ->get();
         $areas = DB::table('area_conhecimento')->join('nivel', 'area_conhecimento.nivel_id',                            '=', 'nivel.id')
-                                      ->select('area_conhecimento.id', 'area_conhecimento', 'area_conhecimento.descricao')              
+                                      ->select('area_conhecimento.id', 'area_conhecimento', 'area_conhecimento.descricao','nivel_id')              
                                       ->orderBy('area_conhecimento', 'asc')
                                       ->get();
         $enderecos = DB::table('endereco')->select('endereco.id', 'endereco', 'numero', 'bairro', 'municipio', 'uf', 'cep')
@@ -99,12 +99,8 @@ class AdminController extends Controller
     }
 
     public function excluiNivel($id, $s){
-     /* print_r(Auth::user()['attributes']['senha']);
-      echo '<br>';
-      print_r(bcrypt($s));
-      dd($s);*/
       if(password_verify($s, Auth::user()['attributes']['senha'])){
-          Escola::find($id)->delete();
+          Nivel::find($id)->delete();
           return 'true';
       }
 
@@ -114,11 +110,16 @@ class AdminController extends Controller
 
     public function dadosArea($id) { //Ajax
       $dados = AreaConhecimento::find($id);
-      return $dados;
+      $data = Nivel::find($dados->nivel_id);
+      return compact('dados','data');
     }
 
     public function cadastroArea() {
-        return view('admin.cadastroArea'); //,hasMany
+        //$niveis = AreaConhecimento::with('niveis')->get();
+        $niveis = DB::table('nivel')->select('id','nivel')->get();
+         
+        return view('admin.cadastroArea', array(
+      'niveis' => $niveis));
     }
 
     public function cadastraArea(Request $req){
@@ -126,12 +127,10 @@ class AdminController extends Controller
 
       
 
-        Escola::create([
-                    'nome_completo' => $data['nome_completo'],
-                    'nome_curto' => $data['nome_curto'],
-                    'email' => $data['email'],
-                    'telefone' => $data['telefone'],
-                    'endereco_id' => $idEndereco['original']['id']
+        AreaConhecimento::create([
+                    'nivel_id' => $data['nivel_id'],
+                    'area_conhecimento' => $data['area_conhecimento'],
+                    'descricao' => $data['descricao'],
                   ]);
 
         
@@ -141,22 +140,31 @@ class AdminController extends Controller
     }
 
     public function editarArea($id) {
-     
-       
+        $niveis = DB::table('nivel')->select('id','nivel')->get();
         $dados = AreaConhecimento::find($id);
 
-        return view('admin.editarArea', compact('dados'));
+        return view('admin.editarArea', array('niveis' => $niveis), compact('dados'));
     }
 
     public function editaArea(Request $req) {
 
         $id = $req->all()['id_area'];
-        AreaConhecimento::where('id',$id)->update(['area_conhecimento'=>$req->all()[
-                                          'area_conhecimento'],
+        AreaConhecimento::where('id',$id)->update(['nivel_id'=>$req->all()['nivel_id'],
+                                           'area_conhecimento'=>$req->all()['area_conhecimento'],
                                           'descricao'=>$req->all()['descricao'],
+                                          
       ]);
 
         return redirect()->route('administrador');
+    }
+
+    public function excluiArea($id, $s){
+      if(password_verify($s, Auth::user()['attributes']['senha'])){
+          AreaConhecimento::find($id)->delete();
+          return 'true';
+      }
+
+      return 'false';
     }
 
     public function dadosEscola($id) { //Ajax

@@ -14,7 +14,7 @@
                         <h2>Cadastro de Fichas de Homologação dos resumos</h2>
                     </div>
                 </div>
-                <form name="f1" method="GET" action="{{ route('cadastroSucesso')}}">
+                <form name="f1" method="GET" action="">
 
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
@@ -25,12 +25,11 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Edição</label>
+                                    @foreach()
                                     <select class="form-control" id="">
                                         <option>Edição 2015</option>
-                                        <option>Edição 2016</option>
-                                        <option>Edição 2017</option>
-                                        <option>Edição 2018</option>
                                     </select>
+                                    @endforeach
                                 </div>
                             </div>
                             <hr><br>

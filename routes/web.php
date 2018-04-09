@@ -41,8 +41,6 @@ Route::get('/escola/cadastrar', 'AdminController@cadastroEscola')->name('cadastr
 Route::post('/escola/cadastrar', 'AdminController@cadastraEscola')->name('cadastroEscola');
 Route::get('/escola/editar/{id}', 'AdminController@editarEscola')->name('escola');
 Route::post('/escola/edita-escola', 'AdminController@editaEscola')->name('editaEscola');
-
-
 Route::get('/escola/dados-escola/{id}', 'AdminController@dadosEscola'); //Ajax
 Route::get('/escola/exclui-escola/{id}/{s}', 'AdminController@excluiEscola'); //Ajax
 
@@ -59,8 +57,9 @@ Route::get('/administrador', 'AdminController@index')->name('administrador');
 Route::get('/edicao/cadastrar', 'EdicaoController@cadastroEdicao')->name('cadastroEdicao');
 Route::post('/edicao/cadastrar', 'EdicaoController@cadastraEdicao')->name('cadastraEdicao');
 Route::get('/edicao/editar/{id}', 'EdicaoController@editarEdicao')->name('editarEdicao');
-Route::get('/edicao/{id}', 'EdicaoController@edicao')->name('edicao');
-
+Route::post('/edicao/edita-edicao', 'EdicaoController@editaEdicao')->name('edicao');
+Route::get('/edicao/dados-edicao/{id}', 'EdicaoController@dadosEdicao'); //Ajax
+Route::get('/edicao/exclui-edicao/{id}/{s}', 'EdicaoController@excluiEdicao'); //Ajax
 
 // Nivel
 Route::get('/nivel/cadastrar', 'AdminController@cadastroNivel')->name('cadastroNivel');
@@ -76,7 +75,7 @@ Route::post('/area/cadastrar', 'AdminController@cadastraArea')->name('cadastroAr
 Route::get('/area/editar/{id}', 'AdminController@editarArea')->name('area');
 Route::post('/area/edita-area', 'AdminController@editaArea')->name('editaArea');
 Route::get('/area/dados-area/{id}', 'AdminController@dadosArea'); //Ajax
-
+Route::get('/area/exclui-area/{id}/{s}', 'AdminController@excluiArea'); //Ajax
 
 // Avaliador/Revisor
 Route::get('/avaliador', 'HomeController@homeAvaliador')->name('avaliador');
@@ -93,7 +92,7 @@ Route::get('/administrador/usuarios', 'AdminController@administrarUsuarios')->na
 
 
 
-//Route::get('/cadastro/homologacao', 'HomologacaoController@index')->name('cadastroFichaHomologacao');
+Route::get('/cadastro/homologacao', 'FichaController@index')->name('cadastroFichaHomologacao');
 
 
 //

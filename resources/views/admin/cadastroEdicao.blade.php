@@ -210,7 +210,33 @@
                         </div>
                     </div>
 
-                   
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+                            <h3>Níveis e Áreas da edição</h3>
+                        </div>
+                    @foreach($niveis as $nivel)
+                    <div class="col-md-12 col-md-offset-1 col-xs-9">
+                        <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="{{$nivel->id}}" name='nivel_id[]' checked>
+                                    {{$nivel->nivel}}
+                                </label>
+                        </div>
+                        @foreach($areas as $area)
+                        @if($area->nivel_id == $nivel->id)
+                        <div class="col-md-10 col-md-offset-2 col-xs-9">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="{{$area->id}}" name='area_id[]' checked>
+                                    {{$area->area_conhecimento}}
+                                </label>
+                            </div>
+                        </div>
+                        @endif
+                        @endforeach
+                    </div>
+                    @endforeach  
+                    </div>
 
                     <!-- Campos Extras -->
                     <!--
@@ -235,5 +261,13 @@
         </div>
     </div>
 </div>
+
+@endsection
+
+@section('js')
+<script type="text/javascript">
+  
+
+</script>
 
 @endsection

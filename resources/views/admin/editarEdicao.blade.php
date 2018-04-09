@@ -14,11 +14,11 @@
                         <h2>Alterar Edição</h2>
                     </div>
                 </div>
-                <form method="post" action="{{route('cadastraEdicao')}}">
+                <form method="post" action="{{route('edicao')}}">
 
                     {{ csrf_field() }}
 
-                    <input type="hidden" name="idEdicao" value="{{ $dados->id }}">
+                    <input type="hidden" name="id_edicao" value="{{ $dados->id }}">
 
                     <!-- Período de Inscrição -->
                     <div class="row">
@@ -210,6 +210,56 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+                            <h3>Níveis e Áreas da edição</h3>
+                        </div>
+                    @foreach($n as $nivel)
+                    @foreach($nivelEdicao as $ni)
+                    <div class="col-md-12 col-md-offset-1 col-xs-9">
+                        @if($nivel->id == $ni->nivel_id && $dados->id == $ni->edicao_id)
+                        <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="{{isset($nivel->id) ? $nivel->id : ''}}" checked>
+                                    {{$nivel->nivel}}
+                                </label>
+                        </div>
+                        @elseif($nivel->id != $ni->nivel_id && $dados->id == $ni->edicao_id)
+                        <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="{{$nivel->id}}" name='nivel_id[]'>
+                                    {{$nivel->nivel}}
+                                </label>
+                        </div>
+                        @endif
+                        @foreach($areas as $area)
+                        @foreach($areaEdicao as $ai)
+                        @if($area->nivel_id == $nivel->id)
+                        <div class="col-md-10 col-md-offset-2 col-xs-9">
+                            @if($area->id == $ai->area_id && $dados->id == $ai->edicao_id)
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="{{isset($dados->area_conhecimento) ? $dados->area_conhecimento : ''}}" checked>
+                                    {{$area->area_conhecimento}}
+                                </label>
+                            </div>
+                            @elseif($nivel->id != $ni->nivel_id && $dados->id == $ni->edicao_id)
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="{{isset($dados->area_conhecimento) ? $dados->area_conhecimento : ''}}" checked>
+                                    {{$area->area_conhecimento}}
+                                </label>
+                            </div>
+                            @endif
+                        </div>
+                        @endif
+                        @endforeach
+                        @endforeach
+                    </div>
+                    @endforeach  
+                    @endforeach
                     </div>
 
                     <!-- Campos Extras -->

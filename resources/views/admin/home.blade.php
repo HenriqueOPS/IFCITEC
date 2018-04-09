@@ -73,14 +73,15 @@
                         @foreach($edicoes as $id => $edicao)
 
                         <tr>
-                            <td class="text-center">{{$id}}</td>
+                            <td class="text-center">{{$id+1}}</td>
                             <td>{{$edicao->ano}}</td>
                             <td>{{$edicao->inscricao_abertura}} - {{$edicao->inscricao_fechamento}}</td>
                             <td>{{$edicao->homologacao_abertura}} - {{$edicao->homologacao_fechamento}}</td>
                             <td>{{$edicao->avaliacao_abertura}} - {{$edicao->avaliacao_fechamento}}</td>
                             <td class="td-actions text-right">
-                                <a href="{{route('edicao',$edicao->id) }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a href="javascript:void(0);" class="modalEdicao"  data-toggle="modal" data-target="#modal3" id-edicao="{{ $edicao->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
                                 <a href="{{route('editarEdicao',$edicao->id)}}"><i class="material-icons">edit</i></a>
+                                <a href="javascript:void(0);" class="exclusaoEdicao" id-edicao="{{ $edicao->id }}"><i class="material-icons blue-icon">close</i></a>
                             </td>
                         <tr>
 
@@ -111,7 +112,7 @@
                     @foreach($escolas as $i => $escola)
 
                         <tr>
-                            <td class="text-center">{{ $i }}</td>
+                            <td class="text-center">{{ $i+1 }}</td>
                             <td>{{ $escola->nome_curto }}</td>
                             <td>{{ $escola->municipio }}</td>
                             <td>{{ $escola->email }}</td>
@@ -121,11 +122,11 @@
 
                             <td class="td-actions text-right">
 
-                                <a href="javascript:void(0);" class="modalEscola" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a href="javascript:void(0);" class="modalEscola"  data-toggle="modal" data-target="#modal0" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
 
                                 <a href="{{ route('escola', $escola->id) }}"><i class="material-icons">edit</i></a>
 
-                                <a href="javascript:void(0);" class="exclusao" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">close</i></a>
+                                <a href="javascript:void(0);" class="exclusao" data-toggle="modal" data-target="#ModalDelete" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">close</i></a>
                             </td>
                         <tr>
 
@@ -154,17 +155,17 @@
                     @foreach($niveis as $i => $nivel)
 
                         <tr>
-                            <td class="text-center">{{ $i }}</td>
+                            <td class="text-center">{{ $i+1 }}</td>
                             <td>{{ $nivel->nivel }}</td>
                             <td>{{ $nivel->descricao }}</td>
 
                             <td class="td-actions text-right">
 
-                                <a href="javascript:void(0);" class="modalNivel" id-nivel="{{ $nivel->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a href="javascript:void(0);" class="modalNivel" data-toggle="modal" data-target="#modal1" id-nivel="{{ $nivel->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
 
                                 <a href="{{ route('nivel', $nivel->id) }}"><i class="material-icons">edit</i></a>
 
-                                <a href="javascript:void(0);" class="exclusaoNivel" id-nivel="{{ $nivel->id }}"><i class="material-icons blue-icon">close</i></a>
+                                <a href="javascript:void(0);" class="exclusaoNivel" data-toggle="modal" data-target="#ModalDeleteNivel" id-nivel="{{ $nivel->id }}"><i class="material-icons blue-icon">close</i></a>
                             </td>
                         <tr>
 
@@ -183,27 +184,27 @@
                     <tr>
                         <th class="text-center">#</th>
                         <th>Área do Conhecimento</th>
-                        <th>Descrição</th>
+                        <th>Nível</th>
                         <th class="text-right">Ações</th>
                     </tr>
                     </thead>
 
-                    <tbody id="2">
+                    <tbody id="3">
 
                     @foreach($areas as $i => $area)
 
                         <tr>
-                            <td class="text-center">{{ $i }}</td>
+                            <td class="text-center">{{ $i+1 }}</td>
                             <td>{{ $area->area_conhecimento }}</td>
-                            <td>{{ $area->descricao }}</td>
+                            <td>{{ $area->nivel_id }}</td>
 
                             <td class="td-actions text-right">
 
-                                <a href="javascript:void(0);" class="modalArea" id-area="{{ $area->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a href="javascript:void(0);" class="modalArea" data-toggle="modal" data-target="#modal2" id-area="{{ $area->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
 
                                 <a href="{{ route('area', $area->id) }}"><i class="material-icons">edit</i></a>
 
-                                <a href="javascript:void(0);" class="exclusao" id-area=""><i class="material-icons blue-icon">close</i></a>
+                                <a href="javascript:void(0);" class="exclusaoArea" id-area="{{ $area->id }}"><i class="material-icons blue-icon">close</i></a>
                             </td>
                         <tr>
 
@@ -217,17 +218,16 @@
     </div>
 </div>
 
-
-<!-- Modal Delete Escola -->
-<div id="ModalDelete" class="modal fade bd-example-modal-lg" role="dialog1" aria-labelledby="ModalDelete">
-    <div class="modal-dialog" role="document1">
+<!-- Modal Delete Edição -->
+<div id="ModalDeleteEdicao" class="modal fade bd-example-modal-lg" role="dialog4" aria-labelledby="ModalDeleteEdicao">
+    <div class="modal-dialog" role="document4">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Deletar Escola</h5>
+                <h5 class="modal-title">Deletar Edição</h5>
             </div>
 
             <div class="modal-body">
-                <span>Para deletar a escola, confirme sua senha.</span>
+                <span>Para deletar a edição, confirme sua senha.</span>
                 <div class="input-group">
                     <span class="input-group-addon">
                         <i class="material-icons">lock_outline</i>
@@ -243,12 +243,12 @@
 </div>
 <!-- Fim Modal -->
 
-<!-- Modal Nível -->
-<div id="nivelModal" class="modal fade bd-example-modal-lg" role="dialog2" aria-labelledby="nivelModal">
-  <div class="modal-dialog" role="document2">
+<!-- Modal -->
+<div  id="modal3" class="modal fade bd-example-modal-lg"  role="dialog" aria-labelledby="modal3">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="nivelModal"></h5>
+            <h5 class="modal-title" id="anoModal"></h5>
         </div>
         <div class="modal-body">
 
@@ -257,35 +257,77 @@
                     <i class="material-icons">assignment</i>
                 </span>
                 <div class="form-group label-floating">
-                    <span id="max_chModal"></span>
+                    <span id="pinsModal"></span>
                 </div>
             </div>
 
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">mail</i>
-                </span>
-                <div class="form-group label-floating">
-                    <span id="min_chModal"></span>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">phone</i>
-                </span>
-                <div class="form-group label-floating">
-                    <span id="descricaoModal"></span>
-                </div>
-            </div>
-
+            
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
         </div>
     </div>
 </div>
-<!-- Fim Modal Nível -->
+<!-- Fim Modal -->
+
+<!-- Modal Delete Área -->
+<div id="ModalDeleteArea" class="modal fade bd-example-modal-lg" role="dialog3" aria-labelledby="ModalDeleteArea">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Deletar Área</h5>
+            </div>
+
+            <div class="modal-body">
+                <span>Para deletar a área, confirme sua senha.</span>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">lock_outline</i>
+                    </span>
+                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>              
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary excluir" data-dismiss="modal">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fim Modal -->
+
+<!-- Modal Área -->
+<div id="modal2" class="modal fade bd-example-modal-lg" role="dialog2" aria-labelledby=modal2>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="areaModal"></h5>
+        </div>
+        <div class="modal-body">
+
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">school</i>
+                </span>
+                <div class="form-group label-floating">
+                    <span id="nivelModal"></span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">description</i>
+                </span>
+                <div class="form-group label-floating">
+                    <span id="descricaoModal"></span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+        </div>
+    </div>
+</div>
+<!-- Fim Modal Área -->
 
 <!-- Modal Delete Nível -->
 <div id="ModalDeleteNivel" class="modal fade bd-example-modal-lg" role="dialog3" aria-labelledby="ModalDeleteNivel">
@@ -312,8 +354,52 @@
 </div>
 <!-- Fim Modal -->
 
+<!-- Modal Nível -->
+<div id="modal1" class="modal fade bd-example-modal-lg" role="dialog2" aria-labelledby="nivelModal">
+  <div class="modal-dialog" role="document2">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="nivelModal"></h5>
+        </div>
+        <div class="modal-body">
+
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">remove_circle</i>
+                </span>
+                <div class="form-group label-floating">
+                    <span id="min_chModal"></span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">add_box</i>
+                </span>
+                <div class="form-group label-floating">
+                    <span id="max_chModal"></span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">description</i>
+                </span>
+                <div class="form-group label-floating">
+                    <span id="descricaoModal"></span>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+        </div>
+    </div>
+</div>
+<!-- Fim Modal Nível -->
+
 <!-- Modal -->
-<div id="myModal" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="ModalEscola">
+<div  id="modal0" class="modal fade bd-example-modal-lg"  role="dialog" aria-labelledby="modal0">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
@@ -374,6 +460,34 @@
 </div>
 <!-- Fim Modal -->
 
+<!-- Modal Delete Escola -->
+<div id="ModalDelete" class="modal fade bd-example-modal-lg" role="dialog1" aria-labelledby="ModalDelete">
+    <div class="modal-dialog" role="document1">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Deletar Escola</h5>
+            </div>
+
+            <div class="modal-body">
+                <span>Para deletar a escola, confirme sua senha.</span>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">lock_outline</i>
+                    </span>
+                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>              
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary excluir" data-dismiss="modal">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fim Modal -->
+
+
+
+
 
 
 
@@ -410,7 +524,7 @@ $('.modalEscola').click(function(){
         $("#cepModal").html(res.data.cep);
 
         //abre a modal
-        $("#myModal").modal();
+        $("#modal0").modal();
 
     });
 
@@ -431,12 +545,63 @@ $('.modalNivel').click(function(){
 
         //altera o DOM
         $("#nivelModal").html(res.dados.nivel);
-        $("#max_chModal").html(res.dados.max_ch);
         $("#min_chModal").html(res.dados.min_ch);
+        $("#max_chModal").html(res.dados.max_ch);
         $("#descricaoModal").html(res.dados.descricao);
 
         //abre a modal
-        $("#nivelModal").modal();
+        $("#modal1").modal();
+
+    });
+
+})
+</script>
+
+<script type="application/javascript">
+$('.modalEdicao').click(function(){
+
+    var idEdicao = $(this).attr('id-edicao');
+
+    //monta a url de consulta
+    var urlConsulta = './edicao/dados-edicao/'+idEdicao;
+    //faz a consulta via Ajax
+    $.get(urlConsulta, function (res){
+
+        console.log(res);
+        
+        
+
+        //altera o DOM
+        $("#anoModal").html(res.dados.ano);
+
+        //abre a modal
+        $("#modal3").modal();
+
+    });
+
+})
+</script>
+
+<script type="application/javascript">
+$('.modalArea').click(function(){
+
+    //recupera o id da escola
+    var idArea = $(this).attr('id-area');
+
+    //monta a url de consulta
+    var urlConsulta = './area/dados-area/'+idArea;
+    //faz a consulta via Ajax
+    $.get(urlConsulta, function (res){
+
+        console.log(res);
+
+        //altera o DOM
+        $("#areaModal").html(res.dados.area_conhecimento);
+        $("#nivelModal").html(res.data.nivel);
+        $("#descricaoModal").html(res.dados.descricao);
+
+        //abre a modal
+        $("#modal2").modal();
 
     });
 
@@ -515,6 +680,48 @@ $('.exclusaoNivel').click(function(){
         $.get(urlConsulta, function (res){
             if(res == 'true'){
                 alert("Nível excluido");
+                location.href = './administrador';
+            }else{
+                alert("Senha incorreta");
+            }
+
+        });
+    });
+
+});
+</script>
+<script type="application/javascript">
+$('.exclusaoArea').click(function(){
+    var idArea= $(this).attr('id-area');
+
+    $("#ModalDeleteArea").modal();
+
+    $('.excluir').click(function(){
+        var urlConsulta = './area/exclui-area/'+idArea+'/'+$('#password').val();
+        $.get(urlConsulta, function (res){
+            if(res == 'true'){
+                alert("Área do Conhecimento excluida");
+                location.href = './administrador';
+            }else{
+                alert("Senha incorreta");
+            }
+
+        });
+    });
+
+});
+</script>
+<script type="application/javascript">
+$('.exclusaoEdicao').click(function(){
+    var idEdicao= $(this).attr('id-edicao');
+
+    $("#ModalDeleteEdicao").modal();
+
+    $('.excluir').click(function(){
+        var urlConsulta = './edicao/exclui-edicao/'+idEdicao+'/'+$('#password').val();
+        $.get(urlConsulta, function (res){
+            if(res == 'true'){
+                alert("Edição excluida");
                 location.href = './administrador';
             }else{
                 alert("Senha incorreta");
