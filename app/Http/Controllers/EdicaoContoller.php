@@ -80,8 +80,8 @@ class EdicaoController extends Controller {
         $ano = $query[0]->ano;
 
         $niveis = DB::table('nivel')->select('nivel.*')
-            ->where('edicao_id','=',$id)
-            ->get();
+			//->where('edicao_id','=',$id)
+			->get();
 
 
         return view('admin.homeEdicao', collect([

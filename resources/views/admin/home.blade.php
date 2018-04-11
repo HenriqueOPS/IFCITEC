@@ -218,67 +218,68 @@
 
 
 
-<!-- Modal -->
+<!-- Modal Escola -->
 <div id="myModal" class="modal">
 	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="nome-curtoModal"></h5>
-			</div>
-			<div class="modal-body">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nome-curtoModal"></h5>
+            </div>
+            <div class="modal-body">
 
-				<div class="input-group">
+                <div class="input-group">
                 <span class="input-group-addon">
                     <i class="material-icons">assignment</i>
                 </span>
-					<div class="form-group label-floating">
-						<span id="nome-completoModal"></span>
-					</div>
-				</div>
+                    <div class="form-group label-floating">
+                        <span id="nome-completoModal"></span>
+                    </div>
+                </div>
 
-				<div class="input-group">
+                <div class="input-group">
                 <span class="input-group-addon">
                     <i class="material-icons">mail</i>
                 </span>
-					<div class="form-group label-floating">
-						<span id="emailModal"></span>
-					</div>
-				</div>
+                    <div class="form-group label-floating">
+                        <span id="emailModal"></span>
+                    </div>
+                </div>
 
-				<div class="input-group">
+                <div class="input-group">
                 <span class="input-group-addon">
                     <i class="material-icons">phone</i>
                 </span>
-					<div class="form-group label-floating">
-						<span id="telefoneModal"></span>
-					</div>
-				</div>
+                    <div class="form-group label-floating">
+                        <span id="telefoneModal"></span>
+                    </div>
+                </div>
 
-				<div class="input-group">
+                <div class="input-group">
                 <span class="input-group-addon">
                     <i class="material-icons">location_on</i>
                 </span>
-					<div class="form-group label-floating">
-						<span id="enderecoModal"></span>
-					</div>
-				</div>
+                    <div class="form-group label-floating">
+                        <span id="enderecoModal"></span>
+                    </div>
+                </div>
 
-				<div class="input-group">
+                <div class="input-group">
                 <span class="input-group-addon">
                     <i class="material-icons">markunread_mailbox</i>
                 </span>
-					<div class="form-group label-floating">
-						<span id="cepModal"></span>
-					</div>
-				</div>
+                    <div class="form-group label-floating">
+                        <span id="cepModal"></span>
+                    </div>
+                </div>
 
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
-			</div>
-		</div>
-	</div>
-	<!-- Fim Modal -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fim Modal Escola -->
 
 <!-- Modal Delete Escola -->
 <div id="ModalDelete" class="modal">
@@ -303,14 +304,14 @@
         </div>
     </div>
 </div>
-<!-- Fim Modal -->
+<!-- Fim Modal Delete Escola -->
 
 <!-- Modal Nível -->
 <div id="nivelModal" class="modal">
   <div class="modal-dialog" role="document2">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="nivelModal"></h5>
+            <h5 class="modal-title" id="titleNivelModal"></h5>
         </div>
         <div class="modal-body">
 
@@ -346,6 +347,7 @@
             <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
         </div>
     </div>
+  </div>
 </div>
 <!-- Fim Modal Nível -->
 
@@ -372,162 +374,173 @@
         </div>
     </div>
 </div>
-<!-- Fim Modal -->
-
-
-
-
-
+<!-- Fim Modal Delete Nível -->
 
 @endsection
 
 @section('js')
-<script type="application/javascript">
-	$('.exclusao').click(function(){
-		var idEscola = $(this).attr('id-escola');
 
-		$("#ModalDelete").modal();
+    <!-- Modal Delete Escola -->
+    <script type="application/javascript">
+    $('.exclusao').click(function(){
+        var idEscola = $(this).attr('id-escola');
 
-		$('.excluir').click(function(){
-			var urlConsulta = './escola/exclui-escola/'+idEscola+'/'+$('#password').val();
-			$.get(urlConsulta, function (res){
-				if(res == 'true'){
-					alert("Escola excluida");
-					location.href = './administrador';
-				}else{
-					alert("Senha incorreta");
-				}
+        $("#ModalDelete").modal();
 
-			});
-		});
+        $('.excluir').click(function(){
+            var urlConsulta = './escola/exclui-escola/'+idEscola+'/'+$('#password').val();
+            $.get(urlConsulta, function (res){
+                if(res == 'true'){
+                    alert("Escola excluida");
+                    location.href = './administrador';
+                }else{
+                    alert("Senha incorreta");
+                }
 
-	});
-</script>
-<script type="application/javascript">
-	$('.exclusaoNivel').click(function(){
-		var idNivel= $(this).attr('id-nivel');
-
-		$("#ModalDeleteNivel").modal();
-
-		$('.excluir').click(function(){
-			var urlConsulta = './nivel/exclui-nivel/'+idNivel+'/'+$('#password').val();
-			$.get(urlConsulta, function (res){
-				if(res == 'true'){
-					alert("Nível excluido");
-					location.href = './administrador';
-				}else{
-					alert("Senha incorreta");
-				}
-
-			});
-		});
-
-	});
-</script>
-
-<script type="application/javascript">
-$('.modalEscola').click(function(){
-
-    //recupera o id da escola
-    var idEscola = $(this).attr('id-escola');
-
-    //monta a url de consulta
-    var urlConsulta = './escola/dados-escola/'+idEscola;
-    //faz a consulta via Ajax
-    $.get(urlConsulta, function (res){
-
-        console.log(res);
-        //monta a string do endereço
-        var endereco = '';
-
-        res.data.endereco ? endereco += res.data.endereco+", " : endereco += '';
-        res.data.numero ? endereco += res.data.numero+", " : endereco += '';
-        res.data.bairro ? endereco += res.data.bairro+", " : endereco += '';
-        res.data.municipio ? endereco += res.data.municipio+", " : endereco += '';
-        res.data.uf ? endereco += res.data.uf+", " : endereco += '';
-
-        //altera o DOM
-        $("#nome-curtoModal").html(res.dados.nome_curto);
-        $("#nome-completoModal").html(res.dados.nome_completo);
-        $("#emailModal").html(res.dados.email);
-        $("#telefoneModal").html(res.dados.telefone);
-        $("#enderecoModal").html(endereco);
-        $("#cepModal").html(res.data.cep);
-
-        //abre a modal
-        $("#myModal").modal();
+            });
+        });
 
     });
+    </script>
+    <!-- Fim Modal Delete Escola -->
 
-})
-</script>
+    <!-- Modal Delete Nível -->
+    <script type="application/javascript">
+    $('.exclusaoNivel').click(function(){
+        var idNivel= $(this).attr('id-nivel');
 
-<script type="application/javascript">
-$('.modalNivel').click(function(){
+        $("#ModalDeleteNivel").modal();
 
-    var idNivel = $(this).attr('id-nivel');
+        $('.excluir').click(function(){
+            var urlConsulta = './nivel/exclui-nivel/'+idNivel+'/'+$('#password').val();
+            $.get(urlConsulta, function (res){
+                if(res == 'true'){
+                    alert("Nível excluido");
+                    location.href = './administrador';
+                }else{
+                    alert("Senha incorreta");
+                }
 
-    //monta a url de consulta
-    var urlConsulta = './nivel/dados-nivel/'+idNivel;
-    //faz a consulta via Ajax
-    $.get(urlConsulta, function (res){
-
-        console.log(res);
-
-        //altera o DOM
-        $("#nivelModal").html(res.dados.nivel);
-        $("#max_chModal").html(res.dados.max_ch);
-        $("#min_chModal").html(res.dados.min_ch);
-        $("#descricaoModal").html(res.dados.descricao);
-
-        //abre a modal
-        $("#nivelModal").modal();
+            });
+        });
 
     });
+    </script>
+    <!-- Fim Modal Delete Nível -->
 
-})
-</script>
+    <!-- Modal Escola -->
+    <script type="application/javascript">
+    $('.modalEscola').click(function(){
 
-<script type="application/javascript">
-$(document).ready(function () {
+        //recupera o id da escola
+        var idEscola = $(this).attr('id-escola');
 
-    hideBodys();
-    hideHeads();
-    $('tbody[id=0]').show();
-    $('thead[id=0]').show();
-    $('div[id=0]').show();
-    $('.tab').click(function (e) {
-        var target = $(this)[0];
+        //monta a url de consulta
+        var urlConsulta = './escola/dados-escola/'+idEscola;
+        //faz a consulta via Ajax
+        $.get(urlConsulta, function (res){
+
+            console.log(res);
+            //monta a string do endereço
+            let endereco = '';
+
+            if(res.dados.endereco_id) {
+                res.data.endereco ? endereco += res.data.endereco + ", " : endereco += '';
+                res.data.numero ? endereco += res.data.numero + ", " : endereco += '';
+                res.data.bairro ? endereco += res.data.bairro + ", " : endereco += '';
+                res.data.municipio ? endereco += res.data.municipio + ", " : endereco += '';
+                res.data.uf ? endereco += res.data.uf + ", " : endereco += '';
+            }
+
+            //altera o DOM
+            $("#nome-curtoModal").html(res.dados.nome_curto);
+            $("#nome-completoModal").html(res.dados.nome_completo);
+            $("#emailModal").html(res.dados.email);
+            $("#telefoneModal").html(res.dados.telefone);
+            $("#enderecoModal").html(endereco);
+
+            if(res.data)
+                $("#cepModal").html(res.data.cep);
+
+            //abre a modal
+            $("#myModal").modal();
+
+        });
+
+    })
+    </script>
+    <!-- Fim Modal Escola -->
+
+    <!-- Modal Nível -->
+    <script type="application/javascript">
+    $('.modalNivel').click(function(){
+
+        var idNivel = $(this).attr('id-nivel');
+
+        //monta a url de consulta
+        var urlConsulta = './nivel/dados-nivel/'+idNivel;
+        //faz a consulta via Ajax
+        $.get(urlConsulta, function (res){
+
+            console.log(res);
+
+            //altera o DOM
+            $("#titleNivelModal").html(res.dados.nivel);
+            $("#max_chModal").html(res.dados.max_ch);
+            $("#min_chModal").html(res.dados.min_ch);
+            $("#descricaoModal").html(res.dados.descricao);
+
+            //abre a modal
+            $("#nivelModal").modal();
+
+        });
+
+    })
+    </script>
+    <!-- Fim Modal Nível -->
+
+    <!-- Table Nav -->
+    <script type="application/javascript">
+    $(document).ready(function () {
+
         hideBodys();
         hideHeads();
-        $('tbody[id='+target.id+']').show();
-        $('thead[id='+target.id+']').show();
-        $('div[id='+target.id+']').show();
+        $('tbody[id=0]').show();
+        $('thead[id=0]').show();
+        $('div[id=0]').show();
+        $('.tab').click(function (e) {
+            var target = $(this)[0];
+            hideBodys();
+            hideHeads();
+            $('tbody[id='+target.id+']').show();
+            $('thead[id='+target.id+']').show();
+            $('div[id='+target.id+']').show();
+        });
+
     });
 
-});
-
-function hideBodys(){
-    $('tbody[id=0]').hide();
-    $('tbody[id=1]').hide();
-    $('tbody[id=2]').hide();
-    $('tbody[id=3]').hide();
-    $('div[id=0]').hide();
-    $('div[id=1]').hide();
-    $('div[id=2]').hide();
-    $('div[id=3]').hide();
-}
-function hideHeads(){
-    $('thead[id=0]').hide();
-    $('thead[id=1]').hide();
-    $('thead[id=2]').hide();
-    $('thead[id=3]').hide();
-    $('div[id=0]').hide();
-    $('div[id=1]').hide();
-    $('div[id=2]').hide();
-    $('div[id=3]').hide();
-}
-</script>
+    function hideBodys(){
+        $('tbody[id=0]').hide();
+        $('tbody[id=1]').hide();
+        $('tbody[id=2]').hide();
+        $('tbody[id=3]').hide();
+        $('div[id=0]').hide();
+        $('div[id=1]').hide();
+        $('div[id=2]').hide();
+        $('div[id=3]').hide();
+    }
+    function hideHeads(){
+        $('thead[id=0]').hide();
+        $('thead[id=1]').hide();
+        $('thead[id=2]').hide();
+        $('thead[id=3]').hide();
+        $('div[id=0]').hide();
+        $('div[id=1]').hide();
+        $('div[id=2]').hide();
+        $('div[id=3]').hide();
+    }
+    </script>
+    <!-- Fim Table Nav -->
 
 @endsection
 
