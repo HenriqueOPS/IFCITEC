@@ -45,8 +45,10 @@ class EdicaoController extends Controller {
             ->orderBy('id','desc')
             ->limit(1)
             ->get();
+        $ano = 0;
         //Incrementa o ano
-        $ano = ++$query[0]->ano;
+		if($query->count() > 0)
+        	$ano = ++$query[0]->ano;
 
         $data = $req->all();
         $data['ano'] = $ano;
@@ -56,7 +58,7 @@ class EdicaoController extends Controller {
         Edicao::create($data);
 
         return redirect()->route('administrador');
-        
+
     }
 
     public function editarEdicao($id) {
@@ -64,7 +66,7 @@ class EdicaoController extends Controller {
         $dados = Edicao::find($id);
 
         return view('admin.editarEdicao',compact('dados'));
-        
+
     }
 
 
@@ -78,15 +80,15 @@ class EdicaoController extends Controller {
         $ano = $query[0]->ano;
 
         $niveis = DB::table('nivel')->select('nivel.*')
-            ->where('edicao_id','=',$id)
-            ->get();
+			//->where('edicao_id','=',$id)
+			->get();
 
 
         return view('admin.homeEdicao', collect([
-                                                'ano' => $ano, 
-                                                'id' => $id, 
-                                                'projetos' => '', 
-                                                'areas' => '', 
+                                                'ano' => $ano,
+                                                'id' => $id,
+                                                'projetos' => '',
+                                                'areas' => '',
                                                 'niveis' => $niveis
                                                 ]));
     }
