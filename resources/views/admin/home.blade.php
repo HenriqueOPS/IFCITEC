@@ -79,7 +79,7 @@
                             <td>{{$edicao->homologacao_abertura}} - {{$edicao->homologacao_fechamento}}</td>
                             <td>{{$edicao->avaliacao_abertura}} - {{$edicao->avaliacao_fechamento}}</td>
                             <td class="td-actions text-right">
-                                <a href="javascript:void(0);" class="modalEdicao"  data-toggle="modal" data-target="#modal3" id-edicao="{{ $edicao->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a href="javascript:void(0);" class="modalEdicao"  id-edicao="{{ $edicao->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
                                 <a href="{{route('editarEdicao',$edicao->id)}}"><i class="material-icons">edit</i></a>
                                 <a href="javascript:void(0);" class="exclusaoEdicao" id-edicao="{{ $edicao->id }}"><i class="material-icons blue-icon">close</i></a>
                             </td>
@@ -251,16 +251,62 @@
             <h5 class="modal-title" id="anoModal"></h5>
         </div>
         <div class="modal-body">
-
             <div class="input-group">
                 <span class="input-group-addon">
-                    <i class="material-icons">assignment</i>
+                    <i class="material-icons">today</i>
                 </span>
                 <div class="form-group label-floating">
                     <span id="pinsModal"></span>
                 </div>
             </div>
-
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">today</i>
+                </span>
+                <div class="form-group label-floating">
+                    <span id="phomModal"></span>
+                </div>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">today</i>
+                </span>
+                <div class="form-group label-floating">
+                    <span id="pcreModal"></span>
+                </div>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">today</i>
+                </span>
+                <div class="form-group label-floating">
+                    <span id="pavaModal"></span>
+                </div>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">today</i>
+                </span>
+                <div class="form-group label-floating">
+                    <span id="pvolModal"></span>
+                </div>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">today</i>
+                </span>
+                <div class="form-group label-floating">
+                    <span id="piahModal"></span>
+                </div>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">today</i>
+                </span>
+                <div class="form-group label-floating">
+                    <span id="testeModal"></span>
+                </div>
+            </div>
             
         </div>
         <div class="modal-footer">
@@ -568,11 +614,57 @@ $('.modalEdicao').click(function(){
     $.get(urlConsulta, function (res){
 
         console.log(res);
-        
-        
 
+        var pins = '';
+        var phom = '';
+        var pava = '';
+        var pvol = '';
+        var piah = '';
+        var pcre = '';
+        var teste = '';
+        pins += "Período de Inscrição: ";
+        res.dados.inscricao_abertura ? pins += res.dados.inscricao_abertura+" até " : pins += '';
+        res.dados.inscricao_fechamento ? pins += res.dados.inscricao_fechamento+" " : pins += '';
+
+        phom += "Período de Homologação: ";
+        res.dados.homologacao_abertura ? phom += res.dados.homologacao_abertura+" até " : phom += '';
+        res.dados.homologacao_fechamento ? phom += res.dados.homologacao_fechamento+" " : phom += '';
+
+        pava += "Período de Avaliação: ";
+        res.dados.avaliacao_abertura ? pava += res.dados.avaliacao_abertura+" até " : pava += '';
+        res.dados.avaliacao_fechamento ? pava += res.dados.avaliacao_fechamento+" " : pava += '';
+
+        pcre += "Período de Credenciamento: ";
+        res.dados.credenciamento_abertura ? pcre += res.dados.credenciamento_abertura+" até " : pcre += '';
+        res.dados.credenciamento_fechamento ? pcre += res.dados.credenciamento_fechamento+" " : pcre += '';
+
+        pvol += "Período de Inscrição para Voluntário: ";
+        res.dados.voluntario_abertura ? pvol += res.dados.voluntario_abertura+" até " : pvol += '';
+        res.dados.voluntario_fechamento ? pvol += res.dados.voluntario_fechamento+" " : pvol += '';
+
+        piah += "Período de Inscrição para Avaliador/Homologador: ";
+        res.dados.comissao_abertura ? piah += res.dados.comissao_abertura+" até " : piah += '';
+        res.dados.comissao_fechamento ? piah += res.dados.comissao_fechamento+" " : piah += '';
+
+        for(var i=0; i<res.nivelEdicao.length; i++) {
+        teste += "Nível ";
+        res.nivel[i].nivel ? teste += res.nivel[i].nivel+":<br>" : teste
+        teste += "      Áreas: ";
+        for(var a=0; a<res.areaEdicao.length; a++) {
+             if(res.nivel[i].id == res.area[a].nivel_id){
+        res.area[a].area_conhecimento ? teste += res.area[a].area_conhecimento+"<br>" : teste += '';
+        }
+        }
+        }
         //altera o DOM
         $("#anoModal").html(res.dados.ano);
+        $("#pinsModal").html(pins);
+        $("#phomModal").html(phom);
+        $("#pcreModal").html(pcre);
+        $("#pavaModal").html(pava);
+        $("#pvolModal").html(pvol);
+        $("#piahModal").html(piah);
+         $("#testeModal").html(teste);
 
         //abre a modal
         $("#modal3").modal();

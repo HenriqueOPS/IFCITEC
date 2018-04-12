@@ -216,39 +216,37 @@
                         <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
                             <h3>Níveis e Áreas da edição</h3>
                         </div>
-                    @foreach($n as $nivel)
-                    @foreach($nivelEdicao as $ni)
+                    @foreach($n as $key=>$nivel)
                     <div class="col-md-12 col-md-offset-1 col-xs-9">
-                        @if($nivel->id == $ni->nivel_id && $dados->id == $ni->edicao_id)
+                        @if(in_array($nivel->id, $nivelEdicao))
                         <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" value="{{isset($nivel->id) ? $nivel->id : ''}}" checked>
+                                    <input type="checkbox" value="{{isset($nivel->id) ? $nivel->id : ''}}" name="nivel_id[]" checked>
                                     {{$nivel->nivel}}
                                 </label>
                         </div>
-                        @elseif($nivel->id != $ni->nivel_id && $dados->id == $ni->edicao_id)
+                        @else
                         <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" value="{{$nivel->id}}" name='nivel_id[]'>
+                                    <input type="checkbox" value="{{isset($nivel->id) ? $nivel->id : ''}}" name="nivel_id[]">
                                     {{$nivel->nivel}}
                                 </label>
                         </div>
                         @endif
-                        @foreach($areas as $area)
-                        @foreach($areaEdicao as $ai)
+                        @foreach($areas as $key=>$area)
                         @if($area->nivel_id == $nivel->id)
                         <div class="col-md-10 col-md-offset-2 col-xs-9">
-                            @if($area->id == $ai->area_id && $dados->id == $ai->edicao_id)
+                            @if(in_array($area->id, $areaEdicao))
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" value="{{isset($dados->area_conhecimento) ? $dados->area_conhecimento : ''}}" checked>
+                                    <input type="checkbox" value="{{isset($area->id) ? $area->id : ''}}" name="area_id[]" checked>
                                     {{$area->area_conhecimento}}
                                 </label>
                             </div>
-                            @elseif($nivel->id != $ni->nivel_id && $dados->id == $ni->edicao_id)
+                            @else
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" value="{{isset($dados->area_conhecimento) ? $dados->area_conhecimento : ''}}" checked>
+                                    <input type="checkbox" value="{{isset($area->id) ? $area->id : ''}}" name="area_id[]">
                                     {{$area->area_conhecimento}}
                                 </label>
                             </div>
@@ -256,9 +254,7 @@
                         </div>
                         @endif
                         @endforeach
-                        @endforeach
                     </div>
-                    @endforeach  
                     @endforeach
                     </div>
 
