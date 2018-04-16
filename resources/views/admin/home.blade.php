@@ -191,12 +191,14 @@
 
                     <tbody id="3">
 
+                    @foreach($niveis as $nivel)
                     @foreach($areas as $i => $area)
-
+                    @if($area->nivel_id == $nivel->id)
                         <tr>
                             <td class="text-center">{{ $i+1 }}</td>
                             <td>{{ $area->area_conhecimento }}</td>
-                            <td>{{ $area->nivel_id }}</td>
+                            
+                            <td>{{ $nivel->nivel }}</td>
 
                             <td class="td-actions text-right">
 
@@ -206,8 +208,9 @@
 
                                 <a href="javascript:void(0);" class="exclusaoArea" id-area="{{ $area->id }}"><i class="material-icons blue-icon">close</i></a>
                             </td>
-                        <tr>
-
+                        </tr>
+                    @endif
+                    @endforeach
                     @endforeach
 
                     </tbody>
@@ -217,6 +220,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Modal Delete Edição -->
 <div id="ModalDeleteEdicao" class="modal fade bd-example-modal-lg" role="dialog4" aria-labelledby="ModalDeleteEdicao">
@@ -314,6 +318,7 @@
         </div>
     </div>
 </div>
+</div>
 <!-- Fim Modal -->
 
 <!-- Modal Delete Área -->
@@ -372,6 +377,7 @@
             <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
         </div>
     </div>
+</div>
 </div>
 <!-- Fim Modal Área -->
 
@@ -432,7 +438,7 @@
                     <i class="material-icons">description</i>
                 </span>
                 <div class="form-group label-floating">
-                    <span id="descricaoModal"></span>
+                    <span id="desModal"></span>
                 </div>
             </div>
 
@@ -441,6 +447,7 @@
             <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
         </div>
     </div>
+</div>
 </div>
 <!-- Fim Modal Nível -->
 
@@ -503,6 +510,7 @@
             <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
         </div>
     </div>
+</div>
 </div>
 <!-- Fim Modal -->
 
@@ -593,7 +601,7 @@ $('.modalNivel').click(function(){
         $("#nivelModal").html(res.dados.nivel);
         $("#min_chModal").html(res.dados.min_ch);
         $("#max_chModal").html(res.dados.max_ch);
-        $("#descricaoModal").html(res.dados.descricao);
+        $("#desModal").html(res.dados.descricao);
 
         //abre a modal
         $("#modal1").modal();

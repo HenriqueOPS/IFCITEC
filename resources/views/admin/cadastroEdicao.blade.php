@@ -218,7 +218,7 @@
                     <div class="col-md-12 col-md-offset-1 col-xs-9">
                         <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" value="{{$nivel->id}}" name='nivel_id[]' onclick="verificaStatus(this)" checked>
+                                    <input type="checkbox" value="{{$nivel->id}}" name='nivel_id[]' class="verificaStatus(this)" checked>
                                     {{$nivel->nivel}}
                                 </label>
                         </div>
@@ -266,30 +266,19 @@
 
 @section('js')
 <script type="text/javascript">
-function verificaStatus(nome){
-    if(nome.form.nivel_id[].checked == 0)
+$('.verificaStatus').click(function(nome){
+    for (i=0;i<nome.form.elements.length;i++){
+    if(nome.form.nivel_id[i].checked == 0)
         {
-            nome.form.nivel_id[].checked = 1;
-            marcarTodos(nome);
+            nome.form.area_id.checked = 1;
+           
         }
     else
         {
-            nome.form.nivel_id[].checked = 0;
-            desmarcarTodos(nome);
+            nome.form.area_id.checked = 0;
         }
-}
- 
-function marcarTodos(nome){
-   for (i=0;i<nome.form.elements.length;i++)
-      if(nome.form.elements[i].type == "checkbox")
-         nome.form.elements[i].checked=1
-}
- 
-function desmarcarTodos(nome){
-   for (i=0;i<nome.form.elements.length;i++)
-      if(nome.form.elements[i].type == "checkbox")
-         nome.form.elements[i].checked=0
-}
+    }
+});
 
 </script>
 

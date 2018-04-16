@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Funcao;
 
 class AutorController extends Controller
 {
@@ -23,6 +24,7 @@ class AutorController extends Controller
      */
     public function index()
     {
-        return view('admin.home');
+        $funcoes = Funcao::getByCategory('integrante');
+        return view('user.home')->withFuncoes($funcoes);
     }
 }

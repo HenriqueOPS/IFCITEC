@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FichaController extends Controller
 {
@@ -23,6 +24,12 @@ class FichaController extends Controller
      */
     public function index()
     {
-        return view('cadastroFichaHomologacao');
+    }
+
+    public function cadastroFichaHomologacao()
+    {
+         $edicoes = DB::table('edicao')->select('id','ano')->get();
+         
+         return view('cadastroFichaHomologacao',['edicoes' => $edicoes]);
     }
 }
