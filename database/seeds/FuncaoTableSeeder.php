@@ -51,6 +51,10 @@ class FuncaoTableSeeder extends Seeder {
                 'funcao' => 'Administrador',
                 'sistema' => true
             ],
+            [
+                'funcao' => 'Voluntário',
+                'sistema' => true
+            ],
         ];
 
         foreach ($funcoes as $funcao) {

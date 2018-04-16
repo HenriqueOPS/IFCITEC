@@ -84,6 +84,9 @@ Route::get('/revisor', 'HomeController@homeRevisor')->name('revisor');
 //Organizador
 Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 
+//Voluntario
+Route::get('/voluntario', 'VoluntarioController@index')->name('voluntario');
+Route::get('/voluntario/cadastrar/{s}', 'VoluntarioController@cadastrar'); //Ajax
 
 Route::get('/administrador/usuarios', 'AdminController@administrarUsuarios')->name('administrarUsuarios');
 
@@ -92,7 +95,7 @@ Route::get('/administrador/usuarios', 'AdminController@administrarUsuarios')->na
 
 
 
-Route::get('/cadastro/homologacao', 'FichaController@index')->name('cadastroFichaHomologacao');
+Route::get('/cadastro/homologacao', 'FichaController@cadastroFichaHomologacao')->name('cadastroFichaHomologacao');
 
 
 //
@@ -102,6 +105,7 @@ Route::get('/inscricao-comissao-avaliadora', function(){
 
 
 Route::resource('projeto', 'ProjetoController');
+Route::post('/integrantes','ProjetoController@integrantes')->name('projeto.integrantes');
 
 Route::prefix('projeto')->group(function () {
     Route::get('{projeto}/vincula-integrante', 'ProjetoController@showFormVinculaIntegrante')->name('projeto.formVinculaIntegrante');

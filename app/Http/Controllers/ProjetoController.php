@@ -47,9 +47,10 @@ class ProjetoController extends Controller {
      */
     public function create() {
         $niveis = Nivel::all();
+        $areas = AreaConhecimento::all();
         $funcoes = Funcao::getByCategory('integrante');
         $escolas = Escola::all();
-        return view('projeto.create')->withNiveis($niveis)->withFuncoes($funcoes)->withEscolas($escolas);
+        return view('projeto.create')->withNiveis($niveis)->withAreas($areas)->withFuncoes($funcoes)->withEscolas($escolas);
     }
 
     /**
@@ -301,5 +302,9 @@ class ProjetoController extends Controller {
         }
 
         return redirect('home');
+    }
+
+    public function integrantes(){
+        return view('projeto.integrantes');
     }
 }
