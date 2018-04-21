@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class VoluntarioController extends Controller
@@ -25,16 +27,18 @@ class VoluntarioController extends Controller
     {
         return view('voluntario');
     }
-    public function cadastrar($s,Request $req){
-    $data = $req->all();
+    public function cadastrarVoluntario($s){
       if(password_verify($s, Auth::user()['attributes']['senha'])){
+      	$id = DB::table('funcao')->where('funcao', 'Voluntário')->get();
+      	foreach($id as $i){
           DB::table('funcao_pessoa')->insert(
-                ['edicao_id' => 36,
-                    'funcao_id' => 9,
+                ['edicao_id' => 36, //pegar edição corrente
+                    'funcao_id' => $i->id, 
                     'pessoa_id' => Auth::id(),
                     'homologado' => TRUE
                 ]
         );
+      }
           return 'true';
       }
 

@@ -109,15 +109,21 @@ class EdicaoController extends Controller {
             }
         }
         
+
         foreach ($nivelEdicao as $n) {
           if(in_array($n, $_POST['nivel_id']) ==  false){
-              dd($n);
-              DB::table('nivel_edicao')->where('nivel_id', $n and 'edicao_id', $id)->delete();
+              DB::table('nivel_edicao')->where('nivel_id', $n)->where('edicao_id', $id)->delete();
             }
         }
         foreach ($_POST['area_id'] as $a) { 
             if(in_array($a, $areaEdicao) ==  false){
               DB::table('area_edicao')->insert(['edicao_id' => $id,'area_id' => $a]);
+            }
+        }
+
+        foreach ($areaEdicao as $a) {
+          if(in_array($a, $_POST['area_id']) ==  false){
+              DB::table('area_edicao')->where('area_id', $a)->where('edicao_id', $id)->delete();
             }
         }
        
