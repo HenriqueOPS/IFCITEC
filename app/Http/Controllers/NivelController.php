@@ -84,10 +84,11 @@ class NivelController extends Controller {
      */
     public function areasConhecimento($id) {
         $nivel = Nivel::find($id);
+        dd($nivel);
         if(!($nivel instanceof Nivel)){
             abort(404);
         }
-        $areasConhecimento = $nivel->areas_conhecimento;
+        $areasConhecimento = DB::table('area_conhecimento')->select('area_conhecimento')->where('nivel_id', $nivel->id)->get();
         return response()->json($areasConhecimento, 200);
     }
 

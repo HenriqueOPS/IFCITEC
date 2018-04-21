@@ -14,7 +14,10 @@
                         <h2>Cadastro de Comissão Avaliadora</h2>
                     </div>
                 </div>
-                <form method="POST" action="{{route('register')}}">
+                <form method="POST">
+
+                     {{ csrf_field() }}
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="alert alert-info text-center">
@@ -93,42 +96,6 @@
                                 </span>
                                 @endif
                             </div>
-
-                            <div class="input-group{{ $errors->has('area') ? ' has-error' : '' }}">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">school</i>
-                                </span>
-                                <div class="form-group">
-                                    <label class="control-label">Área do Conhecimento</label>
-                                    <select id="area-select" name="area" value="{{old('area')}}" required>
-                                        <option></option>
-                                        @foreach ($areas as $area)
-                                            <option value="{{$area->id}}">{{$area->area_conhecimento}}</option>
-                                        @endforeach
-                                    </select>
-                                    @if ($errors->has('area'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('area') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-
-
-                            <div class="input-group{{ $errors->has('dt_nascimento') ? ' has-error' : '' }}">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">today</i>
-                                </span>
-                                <div class="form-group ">
-                                    <label class="control-label">Data Nascimento</label>
-                                    <input type="text" class="form-control datepicker" name="dt_nascimento" value="{{ old('dt_nascimento') }}"  required>
-                                </div>
-                                @if ($errors->has('dt_nascimento'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('dt_nascimento') }}</strong>
-                                </span>
-                                @endif
-                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -139,111 +106,60 @@
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
 
-                            <div class="input-group{{ $errors->has('rua') ? ' has-error' : '' }}">
+                          <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">my_location</i>
+                                </span>
+                                <div class="form-group">
+                                    <label class="control-label">CEP</label>
+                                    <input type="text" class="form-control" name="cep" id="cep" required>
+                                </div>
+                            </div>
+                            <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">place</i>
                                 </span>
-                                <div class="form-group label-floating">
+                                <div class="form-group">
                                     <label class="control-label">Rua</label>
-                                    <input type="text" class="form-control" name="rua" value="{{ old('rua') }}" required>
+                                    <input type="text" class="form-control" name="endereco" id="rua" required>
                                 </div>
-                                @if ($errors->has('rua'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('rua') }}</strong>
-                                </span>
-                                @endif
                             </div>
-                            
-                            <div class="input-group{{ $errors->has('numero') ? ' has-error' : '' }}">
+                            <div class="input-group">
                                 <span class="input-group-addon">
-                                    <i class="material-icons">place</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Numero</label>
-                                    <input type="number" class="form-control" name="numero" value="{{ old('numero') }}" required>
-                                </div>
-                                @if ($errors->has('numero'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('numero') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                            
-                            <div class="input-group{{ $errors->has('bairro') ? ' has-error' : '' }}">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">place</i>
+                                    <i class="material-icons">near_me</i>
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Bairro</label>
-                                    <input type="text" class="form-control" name="bairro" value="{{ old('bairro') }}" required>
+                                    <input type="text" class="form-control" name="bairro" id="bairro" required>
                                 </div>
-                                @if ($errors->has('bairro'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('bairro') }}</strong>
-                                </span>
-                                @endif
                             </div>
-                            
-                            <div class="input-group{{ $errors->has('cidade') ? ' has-error' : '' }}">
+                            <div class="input-group">
                                 <span class="input-group-addon">
-                                    <i class="material-icons">place</i>
+                                    <i class="material-icons">near_me</i>
                                 </span>
-                                <div class="form-group label-floating">
+                                <div class="form-group">
                                     <label class="control-label">Cidade</label>
-                                    <input type="text" class="form-control" name="cidade" value="{{ old('cidade') }}" required>
+                                    <input type="text" class="form-control" name="municipio" id="cidade" required>
                                 </div>
-                                @if ($errors->has('cidade'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('cidade') }}</strong>
-                                </span>
-                                @endif
                             </div>
-                            
-                            <div class="input-group{{ $errors->has('estado') ? ' has-error' : '' }}">
+                            <div class="input-group">
                                 <span class="input-group-addon">
-                                    <i class="material-icons">place</i>
+                                    <i class="material-icons">near_me</i>
                                 </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">UF</label>
-                                    <input type="text" class="form-control" name="estado" value="{{ old('estado') }}"  maxlength="2" required>
+                                <div class="form-group">
+                                    <label class="control-label">Estado</label>
+                                    <input type="text" class="form-control" name="uf" id="uf" required>
                                 </div>
-                                @if ($errors->has('estado'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('estado') }}</strong>
-                                </span>
-                                @endif
                             </div>
-                            
-                            <div class="input-group{{ $errors->has('cep') ? ' has-error' : '' }}">
+                            <div class="input-group">
                                 <span class="input-group-addon">
-                                    <i class="material-icons">place</i>
+                                    <i class="material-icons">exposure_zero</i>
                                 </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">CEP (Apenas Números)</label>
-                                    <input type="number" class="form-control" name="cep" value="{{ old('cep') }}" required>
+                                <div class="form-group">
+                                    <label class="control-label">Número</label>
+                                    <input type="text" class="form-control" name="numero" required>
                                 </div>
-                                @if ($errors->has('cep'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('cep') }}</strong>
-                                </span>
-                                @endif
                             </div>
-                            
-                            <div class="input-group{{ $errors->has('complemento') ? ' has-error' : '' }}">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">place</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Complemento</label>
-                                    <input type="text" class="form-control" name="complemento" value="{{ old('complemento') }}">
-                                </div>
-                                @if ($errors->has('complemento'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('complemento') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                            
                         </div>
                     </div>
                     <br>
@@ -268,7 +184,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">
-                            <button class="btn btn-primary">Inscrever</button>
+                            <button href="javascript:void(0);" class="confirma btn btn-primary">Inscrever</button>
 
                         </div>
                     </div>
@@ -277,7 +193,28 @@
         </div>
     </div>
 </div>
+<div id="modal" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="modal">
+    <div class="modal-dialog" role="document1">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Inscrição Comissão Avaliadora</h5>
+            </div>
 
+            <div class="modal-body">
+                <span>Para confirmar sua inscrição como revisor/avaliador, confirme sua senha.</span>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">lock_outline</i>
+                    </span>
+                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>              
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="confirmado btn btn-primary" data-dismiss="modal">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('js')
@@ -305,5 +242,91 @@
             },
         });
     });
+</script>
+<script type="text/javascript" >
+
+    $(document).ready(function() {
+
+        function limpa_formulário_cep() {
+            // Limpa valores do formulário de cep.
+            $("#rua").val("");
+            $("#bairro").val("");
+            $("#cidade").val("");
+            $("#uf").val("");
+        }
+        
+        //Quando o campo cep perde o foco.
+        $("#cep").blur(function() {
+
+            //Nova variável "cep" somente com dígitos.
+            var cep = $(this).val().replace(/\D/g, '');
+
+            //Verifica se campo cep possui valor informado.
+            if (cep != "") {
+
+                //Expressão regular para validar o CEP.
+                var validacep = /^[0-9]{8}$/;
+
+                //Valida o formato do CEP.
+                if(validacep.test(cep)) {
+
+                    //Preenche os campos com "..." enquanto consulta webservice.
+                    $("#rua").val("...");
+                    $("#bairro").val("...");
+                    $("#cidade").val("...");
+                    $("#uf").val("...");
+                    $("#ibge").val("...");
+
+                    //Consulta o webservice viacep.com.br/
+                    $.getJSON("//viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+                        if (!("erro" in dados)) {
+                            //Atualiza os campos com os valores da consulta.
+                            $("#rua").val(dados.logradouro);
+                            $("#bairro").val(dados.bairro);
+                            $("#cidade").val(dados.localidade);
+                            $("#uf").val(dados.uf);
+                            $("#ibge").val(dados.ibge);
+                        } //end if.
+                        else {
+                            //CEP pesquisado não foi encontrado.
+                            limpa_formulário_cep();
+                            alert("CEP não encontrado.");
+                        }
+                    });
+                } //end if.
+                else {
+                    //cep é inválido.
+                    limpa_formulário_cep();
+                    alert("Formato de CEP inválido.");
+                }
+            } //end if.
+            else {
+                //cep sem valor, limpa formulário.
+                limpa_formulário_cep();
+            }
+        });
+    });
+
+</script>
+<script type="application/javascript">
+$('.confirma').click(function(){
+
+    $("#modal").modal();
+
+    $('.confirmado').click(function(){
+        var urlConsulta = './comissao/cadastrar/'+$('#password').val();
+        $.get(urlConsulta, function (res){
+            if(res == 'true'){
+                alert("Sua inscrição foi enviada com sucesso");
+                location.href = './autor';
+            }else{
+                alert("Senha incorreta");
+            }
+
+        });
+    });
+
+});
 </script>
 @endsection

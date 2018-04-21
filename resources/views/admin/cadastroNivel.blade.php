@@ -35,21 +35,22 @@
                                     <i class="material-icons">text_fields</i>
                                 </span>
                                 <div class="form-group label-floating">
-                                    <label class="control-label">Caracteres máximos para resumo</label>
-                                    <input type="number" class="form-control" name="max_ch" required>
+                                    <label class="control-label">Caracteres mínimos para resumo</label>
+                                    <input type="number" class="form-control" name="min_ch" required>
                                 </div>
                             </div>
+
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">text_fields</i>
                                 </span>
                                 <div class="form-group label-floating">
-                                    <label class="control-label">Caracteres mínimos para resumo</label>
-                                    <input type="number" class="form-control" name="min_ch" required>
+                                    <label class="control-label">Caracteres máximos para resumo</label>
+                                    <input type="number" class="form-control" name="max_ch" min="min_ch" required>
                                 </div>
                             </div>
                             
-                           
+        
                             <div class="form-group">
                                 <div class="form-group label-floating">
                                     <i class="material-icons">description</i>

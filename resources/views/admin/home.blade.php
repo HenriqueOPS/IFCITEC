@@ -81,7 +81,7 @@
                             <td class="td-actions text-right">
                                 <a href="javascript:void(0);" class="modalEdicao"  id-edicao="{{ $edicao->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
                                 <a href="{{route('editarEdicao',$edicao->id)}}"><i class="material-icons">edit</i></a>
-                                <a href="javascript:void(0);" class="exclusaoEdicao" id-edicao="{{ $edicao->id }}"><i class="material-icons blue-icon">close</i></a>
+                                <a href="javascript:void(0);" class="exclusaoEdicao" id-edicao="{{ $edicao->id }}"><i class="material-icons blue-icon">delete</i></a>
                             </td>
                         <tr>
 
@@ -126,7 +126,7 @@
 
                                 <a href="{{ route('escola', $escola->id) }}"><i class="material-icons">edit</i></a>
 
-                                <a href="javascript:void(0);" class="exclusao" data-toggle="modal" data-target="#ModalDelete" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">close</i></a>
+                                <a href="javascript:void(0);" class="exclusao" data-toggle="modal" data-target="#ModalDelete" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">delete</i></a>
                             </td>
                         <tr>
 
@@ -165,7 +165,7 @@
 
                                 <a href="{{ route('nivel', $nivel->id) }}"><i class="material-icons">edit</i></a>
 
-                                <a href="javascript:void(0);" class="exclusaoNivel" data-toggle="modal" data-target="#ModalDeleteNivel" id-nivel="{{ $nivel->id }}"><i class="material-icons blue-icon">close</i></a>
+                                <a href="javascript:void(0);" class="exclusaoNivel" data-toggle="modal" data-target="#ModalDeleteNivel" id-nivel="{{ $nivel->id }}"><i class="material-icons blue-icon">delete</i></a>
                             </td>
                         <tr>
 
@@ -206,7 +206,7 @@
 
                                 <a href="{{ route('area', $area->id) }}"><i class="material-icons">edit</i></a>
 
-                                <a href="javascript:void(0);" class="exclusaoArea" id-area="{{ $area->id }}"><i class="material-icons blue-icon">close</i></a>
+                                <a href="javascript:void(0);" class="exclusaoArea" id-area="{{ $area->id }}"><i class="material-icons blue-icon">delete</i></a>
                             </td>
                         </tr>
                     @endif

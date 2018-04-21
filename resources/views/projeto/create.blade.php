@@ -16,7 +16,7 @@
                     </div>
                 </div>
 
-                <form method="post" action="{{route('projeto.integrantes')}}">
+                <form method="post" action="{{route('projeto.store')}}">
 
                     {{ csrf_field() }}
 
@@ -30,7 +30,10 @@
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true"><i class="material-icons">clear</i></span>
                                     </button>
-                                    <b>ATENÇÃO: </b>É obrigatória a leitura do edital.
+                                    <b>ATENÇÃO: </b>É obrigatória a leitura do edital:
+                                    <a href="http://ifcitec.canoas.ifrs.edu.br/wp-content/uploads/2017/06/Regulamento-V-IFCITEC-2017.pdf" target="_blank">
+                                        <b>IFCITEC - Edital 2017</b>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -108,11 +111,8 @@
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Área do Conhecimento</label>
-                                    <select name="area" required>
+                                    <select id="area-select" name="area" value="{{old('area')}}" required>
                                         <option></option>
-                                        @foreach ($areas as $area)
-                                        <option value="{{$area->id}}">{{$area->area_conhecimento}}</option>
-                                        @endforeach
                                     </select>
 
                                     @if ($errors->has('area'))
@@ -179,7 +179,7 @@
 
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">
-                            <button class="btn btn-primary">Próxima etapa</button>
+                            <button class="btn btn-primary">Submeter Projeto</button>
                         </div>
                     </div>
 
@@ -260,7 +260,7 @@ $(document).ready(function () {
         labelField: 'area_conhecimento',
         searchField: 'area_conhecimento',
         onInitialize: function () {
-            //$('.selectize-control').addClass('form-group');
+            $('.selectize-control').addClass('form-group');
             $('.selectize-input').addClass('form-control');
         },
         onLoad: function (data) {

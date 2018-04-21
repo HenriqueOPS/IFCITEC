@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary confirmado" data-dismiss="modal">Confirmar</button>
+                <button type="button" class="confirmado btn btn-primary" data-dismiss="modal">Confirmar</button>
             </div>
         </div>
     </div>
@@ -76,7 +76,7 @@ $('.confirma').click(function(){
         $.get(urlConsulta, function (res){
             if(res == 'true'){
                 alert("Sua inscrição foi enviada com sucesso");
-                location.href = './administrador';
+                location.href = './autor';
             }else{
                 alert("Senha incorreta");
             }

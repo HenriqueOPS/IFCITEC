@@ -86,7 +86,7 @@ Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 
 //Voluntario
 Route::get('/voluntario', 'VoluntarioController@index')->name('voluntario');
-Route::get('/voluntario/cadastrar/{s}', 'VoluntarioController@cadastrar'); //Ajax
+Route::get('/voluntario/cadastrar/{s}', 'VoluntarioController@cadastrarVoluntario')->name('cadastraVoluntario'); //Ajax
 
 Route::get('/administrador/usuarios', 'AdminController@administrarUsuarios')->name('administrarUsuarios');
 
@@ -102,6 +102,7 @@ Route::get('/cadastro/homologacao', 'FichaController@cadastroFichaHomologacao')-
 Route::get('/inscricao-comissao-avaliadora', function(){
     return view('cadastroAvaliador')->withAreas(App\AreaConhecimento::all());
 })->name('comissaoAvaliadora');
+Route::get('/comissao/cadastrar/{s}', 'ComissaoAvaliadoraController@cadastrarComissao')->name('cadastraComissao'); //Ajax
 
 
 Route::resource('projeto', 'ProjetoController');
@@ -123,8 +124,6 @@ Route::get('/projeto/{id}/vinculaAvaliador/', 'ProjetoController@showFormVincula
 Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')->name('vinculaAvaliadorPost');
 //
 Route::get('/projeto/{id}/setSituacao/{situacao}', 'ProjetoController@setSituacao')->name('projeto.setSituacao');
-//AJAX
-Route::prefix('nivel')->group(function () {
-    Route::get('areasConhecimento/{id}', 'NivelController@areasConhecimento');
-});
+
+Route::get('nivel/areasConhecimento/{id}', 'NivelController@areasConhecimento'); //Ajax
 
