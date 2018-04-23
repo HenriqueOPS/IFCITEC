@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
+<link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
 <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 @endsection
 
@@ -26,13 +27,15 @@
                                 <span class="input-group-addon">
                                     <i class="material-icons">school</i>
                                 </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Nível</label>
-                                    <select class="form-control" name="nivel_id" value="{{isset($dados->nivel_id) ? $dados->nivel_id : ''}}" required>
+                                <div class="form-group">
+                                    <label class="control-label">Nível</label>        
+                                    <select id="nivel-select" name="nivel_id" value="{{isset($dados->nivel) ? $dados->nivel : ''}}" required>
                                         @foreach ($niveis as $nivel) 
+
                                         <option value="{{$nivel->id}}">{{$nivel->nivel}}</option>
                                         @endforeach
                                     </select>
+                                    
                                 </div>
                             </div>
                             <div class="input-group">
@@ -55,7 +58,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">
-                            <button class="btn btn-primary">Cadastrar</button>
+                            <button class="btn btn-primary">Editar</button>
 
                         </div>
                     </div>
@@ -126,7 +129,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">
-                            <button class="btn btn-primary">Cadastrar</button>
+                            <button class="btn btn-primary">Salvar Alterações</button>
 
                         </div>
                     </div>
@@ -140,3 +143,28 @@
 
 @endsection
 
+@section('js')
+<script type="text/javascript" src="{{asset('js/selectize.min.js')}}"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+
+    var xhr;
+    var nivelSelect, $nivelSelect;
+
+    var oldNivel = $('#nivel-select').attr("value");
+
+    $nivelSelect = $('#nivel-select').selectize({
+        placeholder: 'Escolha o Nível...',
+        preload: true,
+        onInitialize: function () {
+            this.setValue(oldNivel, false);
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+
+
+    nivelSelect = $nivelSelect[0].selectize;
+});
+
+</script>
+@endsection

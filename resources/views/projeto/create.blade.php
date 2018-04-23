@@ -30,10 +30,7 @@
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true"><i class="material-icons">clear</i></span>
                                     </button>
-                                    <b>ATENÇÃO: </b>É obrigatória a leitura do edital:
-                                    <a href="http://ifcitec.canoas.ifrs.edu.br/wp-content/uploads/2017/06/Regulamento-V-IFCITEC-2017.pdf" target="_blank">
-                                        <b>IFCITEC - Edital 2017</b>
-                                    </a>
+                                    <b>ATENÇÃO: </b>É obrigatória a leitura do edital!
                                 </div>
                             </div>
                         </div>
@@ -50,37 +47,6 @@
                                 @if ($errors->has('titulo'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('titulo') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-
-                            <div class="input-group{{ $errors->has('resumo') ? ' has-error' : '' }}">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">format_align_justify</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Resumo</label>
-                                    <textarea id="resumo" class="form-control" rows="5" name="resumo" required>{{old('resumo')}}</textarea>
-                                    <p>Total de Caracteres: <b><span id="total-char"></span></b></p>
-                                </div>
-                                @if ($errors->has('resumo'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('resumo') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-
-                            <div class="input-group{{ $errors->has('palavras_chaves') ? ' has-error' : '' }}">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">format_quote</i>
-                                </span>
-                                <div class="form-group">
-                                    <label class="control-label">Palavras Chaves</label>
-                                    <input type="text" id="palavras-chaves" name="palavras_chaves" value="{{old('palavras_chaves')}}" required>
-                                </div>
-                                @if ($errors->has('palavras_chaves'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('palavras_chaves') }}</strong>
                                 </span>
                                 @endif
                             </div>
@@ -123,7 +89,36 @@
                                 </div>
                             </div>
 
-                        </div>
+                            <div class="input-group{{ $errors->has('resumo') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">format_align_justify</i>
+                                </span>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Resumo</label>
+                                    <textarea id="resumo" class="form-control" rows="5" name="resumo" required>{{old('resumo')}}</textarea>
+                                    <p>Total de Caracteres: <b><span id="total-char"></span></b></p>
+                                </div>
+                                @if ($errors->has('resumo'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('resumo') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+
+                            <div class="input-group{{ $errors->has('palavras_chaves') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">format_quote</i>
+                                </span>
+                                <div class="form-group">
+                                    <label class="control-label">Palavras Chaves</label>
+                                    <input type="text" id="palavras-chaves" name="palavras_chaves" value="{{old('palavras_chaves')}}" required>
+                                </div>
+                                @if ($errors->has('palavras_chaves'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('palavras_chaves') }}</strong>
+                                </span>
+                                @endif
+                            </div>
                     </div>
 
                     <div class="row">
@@ -260,7 +255,7 @@ $(document).ready(function () {
         labelField: 'area_conhecimento',
         searchField: 'area_conhecimento',
         onInitialize: function () {
-            $('.selectize-control').addClass('form-group');
+            //$('.selectize-control').addClass('form-group');
             $('.selectize-input').addClass('form-control');
         },
         onLoad: function (data) {
@@ -298,11 +293,11 @@ $(document).ready(function () {
     function realizaAjax(callback, value) {
         xhr && xhr.abort();
         xhr = $.ajax({
-            url: 'nivel/areasConhecimento/' + value,
+            url: './nivel/areasConhecimento/' + value,
             success: function (results) {
-                areaSelect.enable();
                 console.log(results);
                 callback(results);
+                areaSelect.enable(results);
             },
             error: function (xhr, textStatus) {
                 callback();

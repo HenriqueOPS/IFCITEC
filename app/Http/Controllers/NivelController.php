@@ -1,9 +1,10 @@
-1<?php
+<?php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Nivel;
+use Illuminate\Support\Facades\DB;
 
 class NivelController extends Controller {
 
@@ -84,7 +85,6 @@ class NivelController extends Controller {
      */
     public function areasConhecimento($id) {
         $nivel = Nivel::find($id);
-        dd($nivel);
         if(!($nivel instanceof Nivel)){
             abort(404);
         }

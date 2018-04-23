@@ -12,7 +12,7 @@
             <h2>Painel administrativo</h2>
         </div>
 
-        <div class="col-md-9 " >
+        <div id="page" class="col-md-10 col-xs-offset-2">
             <ul class="nav nav-pills nav-pills-primary"  role="tablist">
                 <li class="active">
                     <a href="dashboard" id="0" class="tab" role="tab" data-toggle="tab">
@@ -515,8 +515,8 @@
 <!-- Fim Modal -->
 
 <!-- Modal Delete Escola -->
-<div id="ModalDelete" class="modal fade bd-example-modal-lg" role="dialog1" aria-labelledby="ModalDelete">
-    <div class="modal-dialog" role="document1">
+<div id="ModalDelete" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="ModalDelete">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Deletar Escola</h5>

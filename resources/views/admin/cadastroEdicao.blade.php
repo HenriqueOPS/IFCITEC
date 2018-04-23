@@ -25,7 +25,7 @@
                             <span>Durante esse período será possivel submeter projetos</span>
                         </div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
@@ -37,7 +37,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
@@ -57,7 +57,7 @@
                             <span>Durante esse período será possivel homologar os projetos recebidos</span>
                         </div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
@@ -69,7 +69,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
@@ -89,7 +89,7 @@
                             <span>Durante esse período será possivel avaliar os projetos homologados (Dia da Feira)</span>
                         </div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
@@ -101,7 +101,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
@@ -121,7 +121,7 @@
                             <span>Durante esse período será possivel realizar o credenciamento no evento (Dia da Feira)</span>
                         </div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
@@ -133,7 +133,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
@@ -153,7 +153,7 @@
                             <span>Durante esse período será possivel se inscrever para atuar como voluntário durante a feira</span>
                         </div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
@@ -165,7 +165,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
@@ -185,7 +185,7 @@
                             <span>Durante esse período será possivel se inscrever para atuar como voluntário durante a feira</span>
                         </div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
@@ -197,7 +197,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9">
+                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
@@ -215,7 +215,7 @@
                             <h3>Níveis e Áreas da edição</h3>
                         </div>
                     @foreach($niveis as $nivel)
-                    <div class="col-md-12 col-md-offset-1 col-xs-9">
+                    <div class="col-md-12 col-md-offset-1 col-xs-9 col-xs-offset-1">
                         <div class="checkbox">
                                 <label>
                                     <input type="checkbox" value="{{$nivel->id}}" name='nivel_id[]' class="verificaStatus(this)" checked>
@@ -224,7 +224,7 @@
                         </div>
                         @foreach($areas as $area)
                         @if($area->nivel_id == $nivel->id)
-                        <div class="col-md-10 col-md-offset-2 col-xs-9">
+                        <div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" value="{{$area->id}}" name='area_id[]' checked>

@@ -10,11 +10,11 @@
         <div class="col-md-8 col-md-offset-2 col-sm-12">
             <div class="main main-raised">
                 <div class="row">
-                    <div class="col-md-10 col-md-offset-1">
+                    <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
                         <h2>Cadastro de Comissão Avaliadora</h2>
                     </div>
                 </div>
-                <form method="POST">
+                <form method="POST"  action="{{route('cadastroAvaliador')}}">
 
                      {{ csrf_field() }}
 
@@ -32,7 +32,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-10 col-md-offset-1">
+                        <div class="col-md-10 col-md-offset-1 col-xs-11">
 
                             {{ csrf_field() }}
                             <input type="hidden" name="inscricao" value="avaliacao">
@@ -99,12 +99,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
+                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
                             <h2>Endereço</h2>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
+                        <div class="col-md-10 col-md-offset-1 col-xs-11">
 
                           <div class="input-group">
                                 <span class="input-group-addon">
@@ -164,18 +164,18 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
+                        <div class="col-md-10 col-md-offset-1 col-xs-offset-1">
                             <p>Você pode escolher varios:</p>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="funcao[]" value="3">
+                                    <input type="checkbox" name="funcao[]" value="1">
                                     <span style="color: black">Quero ser Avaliador</span>
                                 </label>
                             </div>
 
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="funcao[]" value="4">
+                                    <input type="checkbox" name="funcao[]" value="2">
                                     <span style="color: black">Quero ser Homologador</span>
                                 </label>
                             </div>
@@ -184,33 +184,11 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">
-                            <button href="javascript:void(0);" class="confirma btn btn-primary">Inscrever</button>
+                            <button href="javascript:void(0);" class="btn btn-primary">Inscrever</button>
 
                         </div>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="modal" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="modal">
-    <div class="modal-dialog" role="document1">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Inscrição Comissão Avaliadora</h5>
-            </div>
-
-            <div class="modal-body">
-                <span>Para confirmar sua inscrição como revisor/avaliador, confirme sua senha.</span>
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="material-icons">lock_outline</i>
-                    </span>
-                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>              
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="confirmado btn btn-primary" data-dismiss="modal">Confirmar</button>
             </div>
         </div>
     </div>
@@ -308,25 +286,5 @@
         });
     });
 
-</script>
-<script type="application/javascript">
-$('.confirma').click(function(){
-
-    $("#modal").modal();
-
-    $('.confirmado').click(function(){
-        var urlConsulta = './comissao/cadastrar/'+$('#password').val();
-        $.get(urlConsulta, function (res){
-            if(res == 'true'){
-                alert("Sua inscrição foi enviada com sucesso");
-                location.href = './autor';
-            }else{
-                alert("Senha incorreta");
-            }
-
-        });
-    });
-
-});
 </script>
 @endsection
