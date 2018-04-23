@@ -49,8 +49,7 @@
                                     <input type="number" class="form-control" name="max_ch" min="min_ch" required>
                                 </div>
                             </div>
-                            
-        
+                
                             <div class="form-group">
                                 <div class="form-group label-floating">
                                     <i class="material-icons">description</i>

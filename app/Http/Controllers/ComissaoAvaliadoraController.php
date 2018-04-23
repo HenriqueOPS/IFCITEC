@@ -5,7 +5,7 @@ use App\Endereco;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
+
 
 class ComissaoAvaliadoraController extends Controller
 {
@@ -28,10 +28,9 @@ class ComissaoAvaliadoraController extends Controller
     {
     
     }
-    public function cadastrarComissao($s, Request $req){
-      if(password_verify($s, Auth::user()['attributes']['senha'])){
-        dd($funcao);
-        $data = $req->all();
+
+    public function cadastraComissao(Request $req){
+        $data = $req->all(); 
         $idEndereco = Endereco::create([
                     'cep' => $data['cep'],
                     'endereco' => $data['endereco'],
@@ -40,38 +39,40 @@ class ComissaoAvaliadoraController extends Controller
                     'uf' => $data['uf'],
                     'numero' => $data['numero']
         ]);
-
-        DB::table('pessoa')->insert(
-                ['titulacao' => $data['titulacao'], 
+        DB::table('pessoa')->where('id',Auth::id())->update([
+                    'titulacao' => $data['titulacao'], 
                     'lattes' => $data['lattes'], 
                     'profissao' => $data['profissao'],
                     'instituicao' => $data['instituicao'],
                     'endereco_id' => $idEndereco['original']['id'],
                 ]
-        )->where('id',Auth::$id);
+        );
 
-        $id = DB::table('funcao')->where('funcao', 'Avaliador')->get(); //se marcou avaliador
-        foreach($id as $i){
+        if(in_array("1", $data['funcao'])){
+        $idA = DB::table('funcao')->where('funcao', 'Avaliador')->get(); 
+        foreach($idA as $i){
           DB::table('funcao_pessoa')->insert(
                 ['edicao_id' => 36, //pegar edição corrente
                     'funcao_id' => $i->id, 
                     'pessoa_id' => Auth::id(),
                     'homologado' => FALSE
-                ]
-        );
+                ]);
+        }
+        }
 
-        $id = DB::table('funcao')->where('funcao', 'Homologador')->get(); //se marcou revisor
-        foreach($id as $i){
+        if(in_array("2", $data['funcao'])){
+        $idH = DB::table('funcao')->where('funcao', 'Homologador')->get(); 
+        foreach($idH as $i){
           DB::table('funcao_pessoa')->insert(
                 ['edicao_id' => 36, //pegar edição corrente
                     'funcao_id' => $i->id, 
                     'pessoa_id' => Auth::id(),
                     'homologado' => FALSE
-                ]
-        );
-          return 'true';
+                ]);
+        }
       }
+        
+        return redirect()->route('autor');
 
-      return 'false';
     }
 }

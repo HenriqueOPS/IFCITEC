@@ -92,16 +92,17 @@ Route::get('/administrador/usuarios', 'AdminController@administrarUsuarios')->na
 
 
 
+Route::get('/periodo', 'PeriodosController@periodoInscricao');
 
 
-
-Route::get('/cadastro/homologacao', 'FichaController@cadastroFichaHomologacao')->name('cadastroFichaHomologacao');
+//Route::get('/cadastro/homologacao', 'HomologacaoController@index')->name('cadastroFichaHomologacao');
 
 
 //
 Route::get('/inscricao-comissao-avaliadora', function(){
     return view('cadastroAvaliador')->withAreas(App\AreaConhecimento::all());
 })->name('comissaoAvaliadora');
+Route::post('/comissao/cadastrar', 'ComissaoAvaliadoraController@cadastraComissao')->name('cadastroAvaliador');
 Route::get('/comissao/cadastrar/{s}', 'ComissaoAvaliadoraController@cadastrarComissao')->name('cadastraComissao'); //Ajax
 
 
@@ -125,5 +126,5 @@ Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')-
 //
 Route::get('/projeto/{id}/setSituacao/{situacao}', 'ProjetoController@setSituacao')->name('projeto.setSituacao');
 
-Route::get('nivel/areasConhecimento/{id}', 'NivelController@areasConhecimento'); //Ajax
+Route::get('projeto/nivel/areasConhecimento/{id}', 'NivelController@areasConhecimento'); //Ajax
 

@@ -34,7 +34,7 @@
                                 </div>
                             </div> 
                         </div>
-                        <button id="pesquisa-pessoa" class="btn btn-primary btn-fab btn-fab-mini btn-round">
+                        <button id="pesquisa-pessoa" class="modal btn btn-primary btn-fab btn-fab-mini btn-round">
                             <i class="material-icons">search</i>
                         </button> 
                     </div>
@@ -53,44 +53,6 @@
                         </div>
                     </div>
                 </div>
-                <div id="dados-pessoa">
-                        <div class="row">
-                            <div class="col-md-10 col-md-offset-1">
-                                <hr>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">face</i>
-                                    </span>
-                                    <div class="form-group label-floating">
-                                        <label class="control-label">Nome</label>
-                                        <input type="text" id="nome" name="nome" class="form-control" disabled>
-                                    </div>
-                                    <span class="help-block">
-                                        <strong></strong>
-                                    </span>
-                                </div>
-
-
-                                <div class="input-group{{ $errors->has('escola') ? ' has-error' : '' }}">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">school</i>
-                                    </span>
-                                    <div class="form-group">
-                                        <label class="control-label">Escola</label>
-                                        <select id="escola-select" name="escola" required>
-                                            <option></option>
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                {{ csrf_field() }}
-                                <input type="hidden" name="pessoa">
-                                <input type="hidden" name="projeto" value="">
-                            </div>
-                        </div>
-                </div>
-                </div>
-
                 <div>
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1">
@@ -106,7 +68,7 @@
                                 </div>
                             </div> 
                         </div>
-                        <button id="pesquisa-pessoa" class="btn btn-primary btn-fab btn-fab-mini btn-round">
+                        <button id="pesquisa-pessoa" class="modal btn btn-primary btn-fab btn-fab-mini btn-round">
                             <i class="material-icons">search</i>
                         </button> 
                     </div>
@@ -125,44 +87,6 @@
                         </div>
                     </div>
                 </div>
-                <div id="dados-pessoa">
-                        <div class="row">
-                            <div class="col-md-10 col-md-offset-1">
-                                <hr>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">face</i>
-                                    </span>
-                                    <div class="form-group label-floating">
-                                        <label class="control-label">Nome</label>
-                                        <input type="text" id="nome" name="nome" class="form-control" disabled>
-                                    </div>
-                                    <span class="help-block">
-                                        <strong></strong>
-                                    </span>
-                                </div>
-
-
-                                <div class="input-group{{ $errors->has('escola') ? ' has-error' : '' }}">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">school</i>
-                                    </span>
-                                    <div class="form-group">
-                                        <label class="control-label">Escola</label>
-                                        <select id="escola-select" name="escola" required>
-                                            <option></option>
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                {{ csrf_field() }}
-                                <input type="hidden" name="pessoa">
-                                <input type="hidden" name="projeto" value="">
-                            </div>
-                        </div>
-                </div>
-                </div>
-
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1">
                         <div class="form-group">
@@ -177,7 +101,7 @@
                                 </div>
                             </div> 
                         </div>
-                        <button id="pesquisa-pessoa" class="btn btn-primary btn-fab btn-fab-mini btn-round">
+                        <button id="pesquisa-pessoa" class="modal btn btn-primary btn-fab btn-fab-mini btn-round">
                             <i class="material-icons">search</i>
                         </button> 
                     </div>
@@ -195,42 +119,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div id="dados-pessoa">
-                        <div class="row">
-                            <div class="col-md-10 col-md-offset-1">
-                                <hr>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">face</i>
-                                    </span>
-                                    <div class="form-group label-floating">
-                                        <label class="control-label">Nome</label>
-                                        <input type="text" id="nome" name="nome" class="form-control" disabled>
-                                    </div>
-                                    <span class="help-block">
-                                        <strong></strong>
-                                    </span>
-                                </div>
-
-
-                                <div class="input-group{{ $errors->has('escola') ? ' has-error' : '' }}">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">school</i>
-                                    </span>
-                                    <div class="form-group">
-                                        <label class="control-label">Escola</label>
-                                        <select id="escola-select" name="escola" required>
-                                            <option></option>
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                {{ csrf_field() }}
-                                <input type="hidden" name="pessoa">
-                                <input type="hidden" name="projeto" value="">
-                            </div>
-                        </div>
                 </div>
                 <div class="row">
                         <div class="col-md-10 col-md-offset-1">
@@ -251,7 +139,7 @@
                                 </div>
                             </div> 
                         </div>
-                        <button id="pesquisa-pessoa" class="btn btn-primary btn-fab btn-fab-mini btn-round">
+                        <button id="pesquisa-pessoa" class="modal btn btn-primary btn-fab btn-fab-mini btn-round">
                             <i class="material-icons">search</i>
                         </button> 
                     </div>
@@ -269,42 +157,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div id="dados-pessoa">
-                        <div class="row">
-                            <div class="col-md-10 col-md-offset-1">
-                                <hr>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">face</i>
-                                    </span>
-                                    <div class="form-group label-floating">
-                                        <label class="control-label">Nome</label>
-                                        <input type="text" id="nome" name="nome" class="form-control" disabled>
-                                    </div>
-                                    <span class="help-block">
-                                        <strong></strong>
-                                    </span>
-                                </div>
-
-
-                                <div class="input-group{{ $errors->has('escola') ? ' has-error' : '' }}">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">school</i>
-                                    </span>
-                                    <div class="form-group">
-                                        <label class="control-label">Escola</label>
-                                        <select id="escola-select" name="escola" required>
-                                            <option></option>
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                {{ csrf_field() }}
-                                <input type="hidden" name="pessoa">
-                                <input type="hidden" name="projeto" value="">
-                            </div>
-                        </div>
                 </div>
                 <div class="row">
                         <div class="col-md-10 col-md-offset-1">
@@ -325,7 +177,7 @@
                                 </div>
                             </div> 
                         </div>
-                        <button id="pesquisa-pessoa" class="btn btn-primary btn-fab btn-fab-mini btn-round">
+                        <button id="pesquisa-pessoa" class="modal btn btn-primary btn-fab btn-fab-mini btn-round">
                             <i class="material-icons">search</i>
                         </button> 
                     </div>
@@ -343,42 +195,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div id="dados-pessoa">
-                        <div class="row">
-                            <div class="col-md-10 col-md-offset-1">
-                                <hr>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">face</i>
-                                    </span>
-                                    <div class="form-group label-floating">
-                                        <label class="control-label">Nome</label>
-                                        <input type="text" id="nome" name="nome" class="form-control" disabled>
-                                    </div>
-                                    <span class="help-block">
-                                        <strong></strong>
-                                    </span>
-                                </div>
-
-
-                                <div class="input-group{{ $errors->has('escola') ? ' has-error' : '' }}">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">school</i>
-                                    </span>
-                                    <div class="form-group">
-                                        <label class="control-label">Escola</label>
-                                        <select id="escola-select" name="escola" required>
-                                            <option></option>
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                {{ csrf_field() }}
-                                <input type="hidden" name="pessoa">
-                                <input type="hidden" name="projeto" value="">
-                            </div>
-                        </div>
                 </div>
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1">
@@ -394,7 +210,7 @@
                                 </div>
                             </div> 
                         </div>
-                        <button id="pesquisa-pessoa" class="btn btn-primary btn-fab btn-fab-mini btn-round">
+                        <button id="pesquisa-pessoa" class="modal btn btn-primary btn-fab btn-fab-mini btn-round">
                             <i class="material-icons">search</i>
                         </button> 
                     </div>
@@ -413,6 +229,24 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <a href="" class="btn btn-primary">Submeter</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div  id="modal" class="modal fade bd-example-modal-lg"  role="dialog" aria-labelledby="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="nome-curtoModal"></h5>
+        </div>
+        <div class="modal-body">
                 <div id="dados-pessoa">
                         <div class="row">
                             <div class="col-md-10 col-md-offset-1">
@@ -449,15 +283,13 @@
                             </div>
                         </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <a href="" class="btn btn-primary">Submeter</a>
-                    </div>
-                </div>
-            </div>
+    <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
         </div>
     </div>
 </div>
+</div>
+<!-- Fim Modal -->
 @endsection
 
 @section('js')
@@ -495,6 +327,32 @@ $(document).ready(function () {
             $('.selectize-input').addClass('form-control');
         },
     });
+});
+</script>
+
+<script type="application/javascript">
+$('.modal').click(function(){
+
+    //recupera o e-mail do integrante
+    //var email = $(this).attr('email-integrante');
+
+    //monta a url de consulta
+    //var urlConsulta = './//'+email;
+    //faz a consulta via Ajax
+    //$.get(urlConsulta, function (res){
+
+        //console.log(res);
+
+        //altera o DOM
+        //$("#areaModal").html(res.dados.area_conhecimento);
+        //$("#nivelModal").html(res.data.nivel);
+        //$("#descricaoModal").html(res.dados.descricao);
+
+        //abre a modal
+        $("#modal").modal();
+
+   // });
+
 });
 </script>
 @endsection
