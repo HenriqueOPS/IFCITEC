@@ -180,6 +180,7 @@ class EdicaoController extends Controller {
           
             DB::table('nivel_edicao')->where('edicao_id', $id)->delete();
             DB::table('area_edicao')->where('edicao_id', $id)->delete();
+            DB::table('funcao_pessoa')->where('edicao_id', $id)->delete();
             Edicao::find($id)->delete();
           return 'true';
       }

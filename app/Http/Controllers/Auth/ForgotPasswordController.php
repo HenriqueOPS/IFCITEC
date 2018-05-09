@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ForgotPasswordController extends Controller
 {
@@ -28,5 +31,16 @@ class ForgotPasswordController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+    public function emailSenha(Request $req)
+    {
+        $data = $req->all(); 
+      //  dd($data['email']);
+        Mail::send('mail.mailRecuperarSenha', [], function($message){
+            $message->to($data['email']);
+            $message->subject('IFCITEC');
+        });
+        return redirect()->route('login');
     }
 }

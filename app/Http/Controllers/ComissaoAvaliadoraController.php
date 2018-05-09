@@ -5,6 +5,7 @@ use App\Endereco;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 
 class ComissaoAvaliadoraController extends Controller
@@ -52,7 +53,7 @@ class ComissaoAvaliadoraController extends Controller
         $idA = DB::table('funcao')->where('funcao', 'Avaliador')->get(); 
         foreach($idA as $i){
           DB::table('funcao_pessoa')->insert(
-                ['edicao_id' => 36, //pegar edição corrente
+                ['edicao_id' => 1, //pegar edição corrente
                     'funcao_id' => $i->id, 
                     'pessoa_id' => Auth::id(),
                     'homologado' => FALSE
@@ -64,14 +65,18 @@ class ComissaoAvaliadoraController extends Controller
         $idH = DB::table('funcao')->where('funcao', 'Homologador')->get(); 
         foreach($idH as $i){
           DB::table('funcao_pessoa')->insert(
-                ['edicao_id' => 36, //pegar edição corrente
+                ['edicao_id' => 1, //pegar edição corrente
                     'funcao_id' => $i->id, 
                     'pessoa_id' => Auth::id(),
                     'homologado' => FALSE
                 ]);
         }
       }
-        
+
+        Mail::send('mail.primeiro', [], function($message){
+            $message->to(Auth::user()->email);
+            $message->subject('IFCITEC');
+        });
         return redirect()->route('autor');
 
     }

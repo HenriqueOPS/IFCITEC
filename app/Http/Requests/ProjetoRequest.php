@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Nivel;
 
 class ProjetoRequest extends FormRequest {
 
@@ -26,7 +27,7 @@ class ProjetoRequest extends FormRequest {
             'resumo' => 'required',
             'palavras_chaves' => 'required',
             'nivel' => 'required',
-            'area' => 'required',
+            'area_conhecimento' => 'required',
             'funcao' => 'required',
             'escola' => 'required',
         ];
@@ -43,7 +44,7 @@ class ProjetoRequest extends FormRequest {
             'resumo.required' => 'O resumo é obrigatório',
             'resumo.between' => 'O resumo deve conter de :min a :max caracteres',
             'nivel.required' => 'É necessário definir um nível',
-            'area.required' => 'É necessário definir uma área do conhecimento',
+            'area_conhecimento.required' => 'É necessário definir uma área do conhecimento',
             'funcao.required' => 'É necessário definir a sua função neste projeto',
             'escola.required' => 'É necessário informar a escola pela qual você está vínculado neste projeto'
         ];
@@ -56,13 +57,17 @@ class ProjetoRequest extends FormRequest {
      * @return void
      */
     public function withValidator($validator) {
-        switch ($validator->getData()['nivel']) {
-            case 1:
-                $validator->addRules(['resumo' => 'required|between:800,1500']);
-                break;
-            default:
-                $validator->addRules(['resumo' => 'required|between:1500,2000']);
-        }
+     //   $validator->getData()['nivel'];
+     //   $validator->addRules(['resumo' => 'required|between: min_ch,max_ch']);
+
+
+      
+        //$validator->addRules(['resumo' => 'required|between: 1000,1500']);
+
+                $dados = Nivel::find($validator->getData()['nivel']);
+               // dd($dados->min_ch);
+                $validator->addRules(['resumo' => ('required|between: '.$dados->min_ch.','.$dados->max_ch)]);
+                               
 
         $validator->after(function ($validator) {
             $totalPalavras = (count(explode(",", $validator->getData()['palavras_chaves'])));

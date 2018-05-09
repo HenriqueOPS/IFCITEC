@@ -27,11 +27,10 @@
                 </div>
                 @endif
 
-                <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">
+                <form method="POST" action="{{ url('/password/email') }}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <div class="content">
-                    <div class="col-md-offset-2">
-                        <div class="col-md-10">
+                    <div class="row">
+                    <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
                              <div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">email</i>
@@ -45,13 +44,12 @@
                                     <strong>{{ $errors->first('email') }}</strong>
                                 </span>
                                 @endif
-                            </div><br><br>
-                            <div class="col-md-offset-2">
+                            </div>
+                            <div class="col-md-offset-3">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="material-icons">send </i> Enviar link de redefinição
                                 </button>
                             </div>
-                        </div>
                     </div><br><br><br><br><br>
                 </form>
             </div>

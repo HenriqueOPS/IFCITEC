@@ -30,7 +30,7 @@
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true"><i class="material-icons">clear</i></span>
                                     </button>
-                                    <b>ATENÇÃO: </b>É obrigatória a leitura do edital!
+                                    <b>ATENÇÃO: </b>É obrigatória a leitura do edital.
                                 </div>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Nível</label>
-                                    <select id="nivel-select" name="nivel" value="{{old('nivel')}}" required>
+                                    <select id="nivel-select" name="nivel" required>
                                         <option></option>
                                         @foreach ($niveis as $nivel)
                                         <option value="{{$nivel->id}}">{{$nivel->nivel}}</option>
@@ -71,19 +71,19 @@
                                 </div>
                             </div>
 
-                            <div class="input-group{{ $errors->has('area') ? ' has-error' : '' }}">
+                            <div class="input-group{{ $errors->has('area_conhecimento') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">public</i>
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Área do Conhecimento</label>
-                                    <select id="area-select" name="area" value="{{old('area')}}" required>
+                                    <select id="area-select" name="area_conhecimento" value="{{old('area_conhecimento')}}" required>
                                         <option></option>
                                     </select>
 
-                                    @if ($errors->has('area'))
+                                    @if ($errors->has('area_conhecimento'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('area') }}</strong>
+                                        <strong>{{ $errors->first('area_conhecimento') }}</strong>
                                     </span>
                                     @endif
                                 </div>
@@ -119,11 +119,13 @@
                                 </span>
                                 @endif
                             </div>
+
+                        </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
-                            <h2>Vínculo</h2>
+                            <h2>Seu Vínculo</h2>
                         </div>
                     </div>
 
@@ -174,7 +176,7 @@
 
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">
-                            <button class="btn btn-primary">Submeter Projeto</button>
+                            <button class="btn btn-primary">Próxima etapa</button>
                         </div>
                     </div>
 
@@ -247,21 +249,22 @@ $(document).ready(function () {
     var nivelSelect, $nivelSelect;
     var areaSelect, $areaSelect;
 
-    var oldArea = $('#area-select').attr("value");
+    var oldArea = $('#area-select').attr("value"); 
 
-    $areaSelect = $('#area-select').selectize({
+     $areaSelect = $('#area-select').selectize({
         placeholder: 'Área do Conhecimento...',
-        valueField: 'id',
-        labelField: 'area_conhecimento',
-        searchField: 'area_conhecimento',
+        valueField: ['id'],
+        labelField: ['area_conhecimento'],
+        searchField: ['area_conhecimento'],
         onInitialize: function () {
             //$('.selectize-control').addClass('form-group');
             $('.selectize-input').addClass('form-control');
         },
         onLoad: function (data) {
+            console.log(data);
             this.setValue(oldArea, false);
             oldArea = null;
-        },
+        }
     });
 
     areaSelect = $areaSelect[0].selectize;
@@ -287,7 +290,6 @@ $(document).ready(function () {
         }
     });
 
-
     nivelSelect = $nivelSelect[0].selectize;
 
     function realizaAjax(callback, value) {
@@ -296,8 +298,8 @@ $(document).ready(function () {
             url: './nivel/areasConhecimento/' + value,
             success: function (results) {
                 console.log(results);
-                callback(results);
                 areaSelect.enable(results);
+                callback(results);
             },
             error: function (xhr, textStatus) {
                 callback();
