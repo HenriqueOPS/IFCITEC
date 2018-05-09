@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class VoluntarioController extends Controller
 {
@@ -32,13 +33,17 @@ class VoluntarioController extends Controller
       	$id = DB::table('funcao')->where('funcao', 'Voluntário')->get();
       	foreach($id as $i){
           DB::table('funcao_pessoa')->insert(
-                ['edicao_id' => 36, //pegar edição corrente
+                ['edicao_id' => 1, //pegar edição corrente
                     'funcao_id' => $i->id, 
                     'pessoa_id' => Auth::id(),
                     'homologado' => TRUE
                 ]
         );
       }
+          Mail::send('mail.mailVoluntario', [], function($message){
+            $message->to(Auth::user()->email);
+            $message->subject('IFCITEC');
+        });
           return 'true';
       }
 

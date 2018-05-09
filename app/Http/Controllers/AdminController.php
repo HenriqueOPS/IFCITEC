@@ -8,6 +8,7 @@ use App\Escola;
 use App\Endereco;
 use App\Nivel;
 use App\AreaConhecimento;
+use App\Http\Requests\NivelRequest;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -65,7 +66,7 @@ class AdminController extends Controller
     }
 
 
-    public function cadastraNivel(Request $req){
+    public function cadastraNivel(NivelRequest $req){
         $data = $req->all();     
         Nivel::create([
                     'nivel' => $data['nivel'],
@@ -78,15 +79,13 @@ class AdminController extends Controller
         
     }
 
-    public function editarNivel($id) {
-     
-       
+    public function editarNivel($id) {      
         $dados = Nivel::find($id);
 
         return view('admin.editarNivel', compact('dados'));
     }
 
-    public function editaNivel(Request $req) {
+    public function editaNivel(NivelRequest $req) {
 
         $id = $req->all()['id_nivel'];
         Nivel::where('id',$id)->update(['nivel'=>$req->all()['nivel'],
@@ -238,10 +237,6 @@ class AdminController extends Controller
 
 
     public function excluiEscola($id, $s){
-     /* print_r(Auth::user()['attributes']['senha']);
-      echo '<br>';
-      print_r(bcrypt($s));
-      dd($s);*/
       if(password_verify($s, Auth::user()['attributes']['senha'])){
           Escola::find($id)->delete();
           return 'true';

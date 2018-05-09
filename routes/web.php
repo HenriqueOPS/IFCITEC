@@ -19,6 +19,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::post('/recuperar/senha/', 'Auth\ForgotPasswordController@emailSenha')->name('recuperar.senha');
 
 // Cria as rotas de cadastro no braço e em Português
 Route::get('cadastro', [
@@ -107,10 +108,10 @@ Route::get('/comissao/cadastrar/{s}', 'ComissaoAvaliadoraController@cadastrarCom
 
 
 Route::resource('projeto', 'ProjetoController');
-Route::post('/integrantes','ProjetoController@integrantes')->name('projeto.integrantes');
+//Route::post('/integrantes','ProjetoController@integrantes')->name('projeto.integrantes');
 
 Route::prefix('projeto')->group(function () {
-    Route::get('{projeto}/vincula-integrante', 'ProjetoController@showFormVinculaIntegrante')->name('projeto.formVinculaIntegrante');
+    Route::get('{projeto}/vincula-integrante', 'ProjetoController@integrantes')->name('projeto.integrantes');
     Route::post('vincula-integrante', 'ProjetoController@vinculaIntegrante')->name('projeto.vinculaIntegrante');
     //AJAX
     Route::get('{projeto}/vincula-integrante/{email}', 'ProjetoController@searchPessoaByEmail');
@@ -127,4 +128,6 @@ Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')-
 Route::get('/projeto/{id}/setSituacao/{situacao}', 'ProjetoController@setSituacao')->name('projeto.setSituacao');
 
 Route::get('projeto/nivel/areasConhecimento/{id}', 'NivelController@areasConhecimento'); //Ajax
+
+
 

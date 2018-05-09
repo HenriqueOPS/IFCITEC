@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ProjetoRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\ProjetoRequest;
 use Illuminate\Support\Facades\Response;
 //
 use App\Nivel;
 use App\AreaConhecimento;
 use App\Funcao;
 use App\Escola;
+use App\Edicao;
 use App\Projeto;
 use App\Pessoa;
 use App\PalavraChave;
@@ -64,10 +65,12 @@ class ProjetoController extends Controller {
         $projeto->fill($request->toArray());
         $projeto->titulo = strtoupper($request->titulo);
         //
-        $areaConhecimento = AreaConhecimento::find($request->area);
+        $areaConhecimento = AreaConhecimento::find($request->area_conhecimento);
         $nivel = Nivel::find($request->nivel);
+        $edicao = Edicao::find(2);
         $projeto->areaConhecimento()->associate($areaConhecimento);
         $projeto->nivel()->associate($nivel);
+        $projeto->edicao()->associate($edicao);
         //
         $projeto->save();
         //--Inicio Attachment de Palavras Chaves. Tabela: palavra_projeto
@@ -81,11 +84,13 @@ class ProjetoController extends Controller {
                 ['escola_id' => $request->escola,
                     'funcao_id' => $request->funcao,
                     'pessoa_id' => Auth::id(),
-                    'projeto_id' => $projeto->id
+                    'projeto_id' => $projeto->id,
+                    'edicao_id' => 2
                 ]
         );
-        //
-        return redirect()->route('projeto.show', ['projeto' => $projeto->id]);
+    
+        return redirect()->route('projeto.integrantes', ['projeto' => $projeto->id]);
+        //vincula integrante
     }
 
     /**
@@ -134,7 +139,7 @@ class ProjetoController extends Controller {
         //
     }
 
-    public function showFormVinculaIntegrante($id) {
+    public function integrantes($id) {
         $projeto = Projeto::find($id);
         //É necessário um refact neste bloco:
         //Bloqueando roles no projeto conforme regulamento
@@ -155,7 +160,7 @@ class ProjetoController extends Controller {
         if (!($projeto instanceof Projeto)) {
             abort(404);
         }
-        return view('projeto.vinculaIntegrante')->withProjeto($projeto)->withFuncoes($funcoes)->withEscolas($escolas);
+        return view('projeto.integrantes')->withProjeto($projeto)->withFuncoes($funcoes)->withEscolas($escolas);
     }
 
     public function vinculaIntegrante(Request $request) {
@@ -304,7 +309,7 @@ class ProjetoController extends Controller {
         return redirect('home');
     }
 
-    public function integrantes(){
-        return view('projeto.integrantes');
-    }
+ //   public function integrantes(){
+   //     return view('projeto.integrantes');
+   // }
 }

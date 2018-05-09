@@ -44,13 +44,17 @@ class Projeto extends Model {
         return $this->belongsTo('App\Nivel');
     }
 
+    public function edicao() {
+        return $this->belongsTo('App\Edicao', 'edicao_id');
+    }
+
     public function palavrasChaves() {
         return $this->belongsToMany('App\PalavraChave', 'palavra_projeto', 'projeto_id', 'palavra_id');
     }
 
     public function getStatus() {
         
-        return "Não Revisado"; // XGH
+        return "Não Homologado"; // XGH
 
 
         $situacao = DB::table('situacao')->select('situacao')->where('id', '=', $this->id)->orderBy('count', 'desc')->first();

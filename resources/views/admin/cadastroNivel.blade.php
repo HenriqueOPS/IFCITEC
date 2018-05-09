@@ -20,7 +20,7 @@
 
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="input-group">
+                            <div class="input-group{{ $errors->has('nivel') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">text_fields</i>
                                 </span>
@@ -28,9 +28,14 @@
                                     <label class="control-label">Nome do Nível</label>
                                     <input type="text" class="form-control" name="nivel" required>
                                 </div>
+                                @if ($errors->has('nivel'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('nivel') }}</strong>
+                                </span>
+                                @endif
                             </div>
                             
-                            <div class="input-group">
+                            <div class="input-group{{ $errors->has('min_ch') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">text_fields</i>
                                 </span>
@@ -38,9 +43,14 @@
                                     <label class="control-label">Caracteres mínimos para resumo</label>
                                     <input type="number" class="form-control" name="min_ch" required>
                                 </div>
+                                @if ($errors->has('min_ch'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('min_ch') }}</strong>
+                                </span>
+                                @endif
                             </div>
 
-                            <div class="input-group">
+                            <div class="input-group{{ $errors->has('max_ch') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">text_fields</i>
                                 </span>
@@ -48,14 +58,24 @@
                                     <label class="control-label">Caracteres máximos para resumo</label>
                                     <input type="number" class="form-control" name="max_ch" min="min_ch" required>
                                 </div>
+                            @if ($errors->has('max_ch'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('max_ch') }}</strong>
+                                </span>
+                                @endif
                             </div>
                 
-                            <div class="form-group">
+                            <div class="form-group{{ $errors->has('descricao') ? ' has-error' : '' }}">
                                 <div class="form-group label-floating">
                                     <i class="material-icons">description</i>
                                     <label for="exampleFormControlTextarea1">Descrição</label>
                                     <textarea class="form-control" rows="3" name="descricao" required></textarea>
                                 </div>
+                                @if ($errors->has('descricao'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('descricao') }}</strong>
+                                </span>
+                                @endif
                             </div>
                         </div>
                         
