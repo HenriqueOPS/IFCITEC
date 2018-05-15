@@ -2,7 +2,9 @@ stages:
   - build
   - test
   - stage
-  - deploy
+  - deploy-stage
+  - production
+  - deploy-production
 
 cache:
   paths:
@@ -15,15 +17,15 @@ job-composer:
     - docker:dind
   image: docker:latest
   script:
-    - docker run --rm -v $PWD:/app ifrscanoas/composer update
+    - docker run --rm -v $PWD:/app ifrscanoas/composer install
 
 #jod-code-test:
 #  stage: test
 #  script:
-  # run laravel tests
-  #- php vendor/bin/phpunit --coverage-text --colors=never 
+#  run laravel tests
+#    - php vendor/bin/phpunit --coverage-text --colors=never 
 
-# Testa conexão com banco e realiza o migrate
+# Testa conexão com banco e migrations
 job-db-generate:
   stage: test
   image: php:7.1.7-apache
@@ -59,10 +61,61 @@ job-stage-container:
     - stage
 
 # Sobe a aplicação no servidor
-job-deploy-on-server:
-  stage: deploy
-  #image: docker:latest
+job-deploy-stage:
+  stage: deploy-stage
+  variables:
+    GIT_STRATEGY: none  # Não executa git clone pois este job só dispara um webhook
+  cache:          
+    policy: push        # Não utiliza cache global
   script:
-    - echo 1
+    - apt-get update -yqq && apt-get install jq -yqq
+    - echo randompw=$(cat /dev/urandom | tr -dc 'a-np-z1-79' | fold -w 6 | head -n 1)
+    - >-
+        curl -s -S -k
+        -X POST 
+        -H "Content-Type: application/json"
+        -d "{ 'project': '$CI_PROJECT_NAME', 'commit': '$CI_COMMIT_SHA', 'branch': '$CI_COMMIT_REF_NAME', 'pipeline' : '$CI_PIPELINE_ID', 'job': '$CI_JOB_ID', 'randompw': '$RANDOMPW'}"
+        https://jenkins.canoas.ifrs.edu.br:8443/generic-webhook-trigger/invoke?token=$TOKEN_WEBHOOK | jq .status
+    
+  environment:
+    name: $CI_COMMIT_REF_NAME
+    url: http://$CI_PROJECT_NAME.commit-$CI_COMMIT_SHA-job-$CI_JOB_ID.dockerdev.canoas.ifrs.edu.br/
+    on_stop: job-stop-stage
+  allow_failure: false
+
+job-stop-stage:
+  stage: deploy-stage
+  variables:
+    GIT_STRATEGY: none
+  cache:
+    policy: push
+  script: 
+    - curl -X POST https://jenkins.canoas.ifrs.edu.br/generic-webhook-trigger/invoke?token=$TOKEN_WEBHOOK_2
+  when: manual
+  environment:
+    name: $CI_COMMIT_REF_NAME
+    action: stop
+
+
+# Cria um container para master, disponível no menu Registry
+job-container-prod:
+  stage: production
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - export IMAGE_TAG=$(echo -en $CI_COMMIT_REF_NAME | tr -c '[:alnum:]_.-' '-')
+    - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" -f ./Dockerfile-prod .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
     - master
+
+# Sobe a aplicação no servidor
+job-deploy-prod:
+  stage: deploy-production
+  variables:
+    GIT_STRATEGY: none  # Não executa git clone pois este job só dispara um webhook
+  cache:          
+    policy: push        # Não utiliza cache global
+  script: echo '1'
