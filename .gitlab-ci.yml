@@ -55,7 +55,7 @@ job-stage-container:
   script:
     - export IMAGE_TAG=$(echo -en $CI_COMMIT_REF_NAME | tr -c '[:alnum:]_.-' '-')
     - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
-    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" -f ./Dockerfile-prod .
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" -f ./Dockerfile-stage .
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
     - stage
@@ -67,6 +67,8 @@ job-deploy-stage:
     GIT_STRATEGY: none  # Não executa git clone pois este job só dispara um webhook
   cache:          
     policy: push        # Não utiliza cache global
+  only:
+    - stage
   script:
     - apt-get update -yqq && apt-get install jq -yqq
     - echo randompw=$(cat /dev/urandom | tr -dc 'a-np-z1-79' | fold -w 6 | head -n 1)
@@ -79,7 +81,7 @@ job-deploy-stage:
     
   environment:
     name: $CI_COMMIT_REF_NAME
-    url: http://$CI_PROJECT_NAME.commit-$CI_COMMIT_SHA-job-$CI_JOB_ID.dockerdev.canoas.ifrs.edu.br/
+    url: http://web.inscricaoifcitecstage.dockerdev.canoas.ifrs.edu.br/
     on_stop: job-stop-stage
   allow_failure: false
 
@@ -89,6 +91,8 @@ job-stop-stage:
     GIT_STRATEGY: none
   cache:
     policy: push
+  only:
+    - stage
   script: 
     - curl -X POST https://jenkins.canoas.ifrs.edu.br/generic-webhook-trigger/invoke?token=$TOKEN_WEBHOOK_2
   when: manual
@@ -118,4 +122,6 @@ job-deploy-prod:
     GIT_STRATEGY: none  # Não executa git clone pois este job só dispara um webhook
   cache:          
     policy: push        # Não utiliza cache global
+  only:
+    - master
   script: echo '1'
