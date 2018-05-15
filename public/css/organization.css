@@ -1,0 +1,41 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 28/07/2017, 12:38:21
+    Author     : Rafael
+*/
+
+.red-icon{
+    color:red;
+}
+
+.green-icon{
+    color:green;
+}
+
+.gray-icon{
+    color:gray;
+}
+
+.botao{
+float:right
+}
+
+#page_footer_links {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.nav {
+    
+}
+
+.navbar .navbar-collapse {
+    text-align: center;
+}
+
+
+
