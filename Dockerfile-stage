@@ -1,0 +1,12 @@
+FROM php:7.1.7-apache
+RUN apt-get update -yqq && \
+    apt-get install nano zlib1g-dev libpq-dev -yqq --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
+RUN docker-php-ext-install zip pdo_pgsql pgsql
+RUN a2dissite * && a2enmod rewrite
+COPY laravel-virtualhost.conf /etc/apache2/sites-available/
+RUN a2ensite laravel-virtualhost.conf
+COPY ./ /var/www/html/
+RUN chmod 777 -R storage/ bootstrap/cache/ && chown -R www-data:www-data /var/www/ && \
+    find /var/www/ -type d -exec chmod -R 755 {} \; && find /var/www/ -type f -exec chmod -R 644 {} \;
