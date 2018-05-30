@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Nivel;
+use App\Projeto;
 
 class ProjetoRequest extends FormRequest {
 
@@ -28,8 +29,8 @@ class ProjetoRequest extends FormRequest {
             'palavras_chaves' => 'required',
             'nivel' => 'required',
             'area_conhecimento' => 'required',
-            'funcao' => 'required',
             'escola' => 'required',
+            'orientador' => 'required',
         ];
     }
 
@@ -45,8 +46,11 @@ class ProjetoRequest extends FormRequest {
             'resumo.between' => 'O resumo deve conter de :min a :max caracteres',
             'nivel.required' => 'É necessário definir um nível',
             'area_conhecimento.required' => 'É necessário definir uma área do conhecimento',
-            'funcao.required' => 'É necessário definir a sua função neste projeto',
-            'escola.required' => 'É necessário informar a escola pela qual você está vínculado neste projeto'
+            'escola.required' => 'É necessário informar a escola pela qual você está vínculado neste projeto',
+            'orientador.required' => 'É necessário informar o orientador deste projeto',
+            'palavras_chaves.required' => 'É necessário informar palavras-chave',
+            'palavras_chaves.min' => 'As palavras-chave devem conter pelo menos :min palavras',
+
         ];
     }
 
@@ -56,33 +60,29 @@ class ProjetoRequest extends FormRequest {
      * @param  \Illuminate\Validation\Validator  $validator
      * @return void
      */
-    public function withValidator($validator) {
-     //   $validator->getData()['nivel'];
-     //   $validator->addRules(['resumo' => 'required|between: min_ch,max_ch']);
+    public function withValidator($validator) {   
 
-
-      
-        //$validator->addRules(['resumo' => 'required|between: 1000,1500']);
-
-                $dados = Nivel::find($validator->getData()['nivel']);
-               // dd($dados->min_ch);
-                $validator->addRules(['resumo' => ('required|between: '.$dados->min_ch.','.$dados->max_ch)]);
-                               
-
-        $validator->after(function ($validator) {
-            $totalPalavras = (count(explode(",", $validator->getData()['palavras_chaves'])));
-            switch ($validator->getData()['nivel']) {
-                case 1:
-                    if ($totalPalavras < 2) {
-                        $validator->errors()->add('palavras_chaves', 'É necessário ao menos duas palavras-chaves');
-                    }
-                    break;
-                default:
-                    if ($totalPalavras < 3) {
-                        $validator->errors()->add('palavras_chaves', 'É necessário ao menos três palavras-chaves');
-                    }
+            $dados = Nivel::find($validator->getData()['nivel']);
+            $validator->addRules(['resumo' => ('required|between: '.$dados->min_ch.','.$dados->max_ch)]);
+            $autor = $validator->getData()['autor'];
+            $cont = 0;
+            foreach ($autor as $a) {
+                if($a != null){
+                    $cont++;
+                }
+            }       
+            if($cont == 0){
+                $validator->sometimes('autor[]', 'required', function($input) use ($cont){
+                return $input->$cont == 0;
+                });
+                $validator->errors()->add('autor[]', 'É necessário ao menos um autor');
             }
-        });
+           
+            $totalPalavras = (count(explode(",", $validator->getData()['palavras_chaves'])));
+            if($totalPalavras < $dados->palavras) {
+                $validator->addRules(['palavras_chaves' => ('required|min: '.$dados->palavras)]);
+            }
+           
     }
 
 }

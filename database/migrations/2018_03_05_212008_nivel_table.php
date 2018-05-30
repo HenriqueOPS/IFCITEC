@@ -17,6 +17,7 @@ class NivelTable extends Migration
             $table->increments('id');
             $table->integer('max_ch');
             $table->integer('min_ch');
+            $table->integer('palavras');
             $table->string('nivel');
             $table->text('descricao');
             $table->timestamps();

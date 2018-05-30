@@ -126,7 +126,7 @@
 
                                 <a href="{{ route('escola', $escola->id) }}"><i class="material-icons">edit</i></a>
 
-                                <a href="javascript:void(0);" class="exclusao" data-toggle="modal" data-target="#ModalDelete" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">delete</i></a>
+                                <a href="javascript:void(0);" class="exclusao" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">delete</i></a>
                             </td>
                         <tr>
 
@@ -165,7 +165,7 @@
 
                                 <a href="{{ route('nivel', $nivel->id) }}"><i class="material-icons">edit</i></a>
 
-                                <a href="javascript:void(0);" class="exclusaoNivel" data-toggle="modal" data-target="#ModalDeleteNivel" id-nivel="{{ $nivel->id }}"><i class="material-icons blue-icon">delete</i></a>
+                                <a href="javascript:void(0);" class="exclusaoNivel" id-nivel="{{ $nivel->id }}"><i class="material-icons blue-icon">delete</i></a>
                             </td>
                         <tr>
 
@@ -222,6 +222,31 @@
 </div>
 
 
+<!-- Modal Delete Área -->
+<div id="ModalDeleteArea" class="modal fade bd-example-modal-lg" role="dialog3" aria-labelledby="ModalDeleteArea">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Deletar Área</h5>
+            </div>
+
+            <div class="modal-body">
+                <span>Para deletar a área, confirme sua senha.</span>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">lock_outline</i>
+                    </span>
+                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>              
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary excluir" data-dismiss="modal">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fim Modal -->
+
 <!-- Modal Delete Edição -->
 <div id="ModalDeleteEdicao" class="modal fade bd-example-modal-lg" role="dialog4" aria-labelledby="ModalDeleteEdicao">
     <div class="modal-dialog" role="document4">
@@ -236,7 +261,7 @@
                     <span class="input-group-addon">
                         <i class="material-icons">lock_outline</i>
                     </span>
-                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>              
+                    <input type="password" placeholder="Senha..." class="form-control" id="password2" name="password" required>              
                 </div>
             </div>
             <div class="modal-footer">
@@ -321,31 +346,6 @@
 </div>
 <!-- Fim Modal -->
 
-<!-- Modal Delete Área -->
-<div id="ModalDeleteArea" class="modal fade bd-example-modal-lg" role="dialog3" aria-labelledby="ModalDeleteArea">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Deletar Área</h5>
-            </div>
-
-            <div class="modal-body">
-                <span>Para deletar a área, confirme sua senha.</span>
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="material-icons">lock_outline</i>
-                    </span>
-                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>              
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary excluir" data-dismiss="modal">Excluir</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Fim Modal -->
-
 <!-- Modal Área -->
 <div id="modal2" class="modal fade bd-example-modal-lg" role="dialog2" aria-labelledby=modal2>
   <div class="modal-dialog" role="document">
@@ -395,7 +395,7 @@
                     <span class="input-group-addon">
                         <i class="material-icons">lock_outline</i>
                     </span>
-                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>              
+                    <input type="password" placeholder="Senha..." class="form-control" id="password3" name="password" required>              
                 </div>
             </div>
             <div class="modal-footer">
@@ -430,6 +430,15 @@
                 </span>
                 <div class="form-group label-floating">
                     <span id="max_chModal"></span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">exposure_zero</i>
+                </span>
+                <div class="form-group label-floating">
+                    <span id="palavrasModal"></span>
                 </div>
             </div>
 
@@ -528,7 +537,7 @@
                     <span class="input-group-addon">
                         <i class="material-icons">lock_outline</i>
                     </span>
-                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>              
+                    <input type="password" placeholder="Senha..." class="form-control" id="password4" name="password" required>              
                 </div>
             </div>
             <div class="modal-footer">
@@ -602,6 +611,7 @@ $('.modalNivel').click(function(){
         $("#min_chModal").html(res.dados.min_ch);
         $("#max_chModal").html(res.dados.max_ch);
         $("#desModal").html(res.dados.descricao);
+        $("#palavrasModal").html(res.dados.palavras);
 
         //abre a modal
         $("#modal1").modal();
@@ -755,7 +765,7 @@ $('.exclusao').click(function(){
     $("#ModalDelete").modal();
 
     $('.excluir').click(function(){
-        var urlConsulta = './escola/exclui-escola/'+idEscola+'/'+$('#password').val();
+        var urlConsulta = './escola/exclui-escola/'+idEscola+'/'+$('#password4').val();
         $.get(urlConsulta, function (res){
             if(res == 'true'){
                 alert("Escola excluida");
@@ -776,7 +786,7 @@ $('.exclusaoNivel').click(function(){
     $("#ModalDeleteNivel").modal();
 
     $('.excluir').click(function(){
-        var urlConsulta = './nivel/exclui-nivel/'+idNivel+'/'+$('#password').val();
+        var urlConsulta = './nivel/exclui-nivel/'+idNivel+'/'+$('#password3').val();
         $.get(urlConsulta, function (res){
             if(res == 'true'){
                 alert("Nível excluido");
@@ -800,7 +810,7 @@ $('.exclusaoArea').click(function(){
         var urlConsulta = './area/exclui-area/'+idArea+'/'+$('#password').val();
         $.get(urlConsulta, function (res){
             if(res == 'true'){
-                alert("Área do Conhecimento excluida");
+                alert("Area excluida");
                 location.href = './administrador';
             }else{
                 alert("Senha incorreta");
@@ -818,7 +828,7 @@ $('.exclusaoEdicao').click(function(){
     $("#ModalDeleteEdicao").modal();
 
     $('.excluir').click(function(){
-        var urlConsulta = './edicao/exclui-edicao/'+idEdicao+'/'+$('#password').val();
+        var urlConsulta = './edicao/exclui-edicao/'+idEdicao+'/'+$('#password2').val();
         $.get(urlConsulta, function (res){
             if(res == 'true'){
                 alert("Edição excluida");

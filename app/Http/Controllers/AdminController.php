@@ -8,8 +8,8 @@ use App\Escola;
 use App\Endereco;
 use App\Nivel;
 use App\AreaConhecimento;
-use App\Http\Requests\NivelRequest;
 use Illuminate\Http\Request;
+use App\Http\Requests\NivelRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
@@ -73,6 +73,7 @@ class AdminController extends Controller
                     'descricao' => $data['descricao'],
                     'max_ch' => $data['max_ch'],
                     'min_ch' => $data['min_ch'],
+                    'palavras' => $data['palavras'],
                   ]);
                    
         return redirect()->route('administrador');
@@ -92,6 +93,7 @@ class AdminController extends Controller
                                           'max_ch'=>$req->all()['max_ch'],
                                          'min_ch'=>$req->all()['min_ch'],
                                          'descricao'=>$req->all()['descricao'],
+                                         'palavras'=>$req->all()['palavras'],
       ]);
 
         return redirect()->route('administrador');

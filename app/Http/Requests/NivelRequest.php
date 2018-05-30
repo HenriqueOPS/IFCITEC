@@ -27,6 +27,7 @@ class NivelRequest extends FormRequest {
             'min_ch' => 'required',
             'max_ch' => 'required',
             'descricao' => 'required',
+            'palavras' => 'required',
         ];
     }
 
@@ -42,6 +43,7 @@ class NivelRequest extends FormRequest {
             'max_ch.min' => 'Os caracteres máximos devem conter pelo menos :min caracteres',
             'max_ch.required' => 'O campo caracteres máximos é obrigatório',
             'descricao.required' => 'A descrição do nível é obrigatório',
+            'palavras.required' => 'O minímo de palavras-chave do nível é obrigatório',
         ];
     }
 
@@ -53,9 +55,9 @@ class NivelRequest extends FormRequest {
      */
     public function withValidator($validator) {
 
-                //$dados =$validator->getData()['nivel']);
-               // dd($dados->min_ch);
-                $validator->addRules(['max_ch' => ('required|min: '.$validator->getData()['min_ch'])]);
+                if($validator->getData()['min_ch'] > $validator->getData()['max_ch']){
+                    $validator->addRules(['max_ch' => ('required|min: '.$validator->getData()['min_ch'])]);
+                }
     }
 
 }
