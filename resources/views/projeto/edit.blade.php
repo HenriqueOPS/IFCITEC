@@ -20,6 +20,8 @@
 
                     {{ csrf_field() }}
 
+                    <input type="hidden" name="id_projeto" value="{{ $projetoP->id }}">
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="alert alert-info text-center">
@@ -42,7 +44,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Título</label>
-                                    <input type="text" class="form-control" name="titulo" value="{{old('titulo')}}" required>
+                                    <input type="text" class="form-control" name="titulo" value="{{isset($projetoP->titulo) ? $projetoP->titulo : ''}}" required>
                                 </div>
                                 @if ($errors->has('titulo'))
                                 <span class="help-block">
@@ -57,10 +59,14 @@
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Nível</label>
-                                    <select id="nivel-select" name="nivel" required>
+                                    <select id="nivel-select" name="nivel" value="{{isset($nivelP->id) ? $nivelP->id : ''}}" required>
                                         <option></option>
                                         @foreach ($niveis as $nivel)
+                                        @if ($nivel->id == $nivelP->id)
+                                        <option selected="selected" value="{{$nivel->id}}">{{$nivel->nivel}}</option>
+                                        @else
                                         <option value="{{$nivel->id}}">{{$nivel->nivel}}</option>
+                                        @endif
                                         @endforeach
                                     </select>
                                     @if ($errors->has('nivel'))
@@ -77,7 +83,7 @@
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Área do Conhecimento</label>
-                                    <select id="area-select" name="area_conhecimento" value="{{old('area_conhecimento')}}" required>
+                                    <select id="area-select" name="area_conhecimento" value="{{isset($areaP->id) ? $areaP->id : ''}}" required>
                                         <option></option>
                                     </select>
 
@@ -95,7 +101,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Resumo</label>
-                                    <textarea id="resumo" class="form-control" rows="5" name="resumo" required>{{old('resumo')}}</textarea>
+                                    <textarea id="resumo" class="form-control" rows="5" name="resumo" required>{{$projetoP->resumo}}</textarea>
                                     <p>Total de Caracteres: <b><span id="total-char"></span></b></p>
                                 </div>
                                 @if ($errors->has('resumo'))
@@ -111,7 +117,7 @@
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Palavras Chaves</label>
-                                    <input type="text" id="palavras-chaves" name="palavras_chaves" value="{{old('palavras_chaves')}}" required>
+                                    <input type="text" id="palavras-chaves" name="palavras_chaves" value="{{isset($palavrasP->palavra) ? $palavrasP->palavra : ''}}" required>
                                 </div>
                                 @if ($errors->has('palavras_chaves'))
                                 <span class="help-block">
@@ -126,7 +132,7 @@
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Escola</label>
-                                    <select id="escola-select" name="escola" value="{{old('escola')}}" required>
+                                    <select id="escola-select" name="escola" value="{{isset($escolaP->first()->escola_id) ? $escolaP->first()->escola_id : ''}}" required>
                                         <option></option>
                                         @foreach ($escolas as $escola)
                                         <option value="{{$escola->id}}">{{$escola->nome_curto}}</option>
@@ -158,7 +164,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Email</label>
-                                    <input type="text" id="email" class="form-control" name="autor[]">
+                                    <input type="text" id="email" class="form-control" name="autor[]" value="{{isset($autorP->get(0)->email) ? $autorP->get(0)->email : ''}}" required>
                                 </div>
                                 @if ($errors->has('autor[]'))
                                     <span class="help-block">
@@ -185,7 +191,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Email</label>
-                                    <input type="text" id="email2" class="form-control" name="autor[]">
+                                    <input type="text" id="email2" class="form-control" name="autor[]" value="{{isset($autorP->get(1)->email) ? $autorP->get(1)->email : ''}}">
                                 </div>
                                 @if ($errors->has('autor[]'))
                                     <span class="help-block">
@@ -212,7 +218,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Email</label>
-                                    <input type="text" id="email3" class="form-control" name="autor[]">
+                                    <input type="text" id="email3" class="form-control" name="autor[]" value="{{isset($autorP->get(2)->email) ? $autorP->get(2)->email : ''}}">
                                 </div>
                             </div> 
                             @if ($errors->has('autor[]'))
@@ -244,7 +250,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Email</label>
-                                    <input type="text" id="email4" class="form-control" name="orientador" required>
+                                    <input type="text" id="email4" class="form-control" name="orientador" value="{{isset($orientadorP->first()->email) ? $orientadorP->first()->email : ''}}" required>
                                 </div>
                             </div> 
                             @if ($errors->has('orientador'))
@@ -276,7 +282,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Email</label>
-                                    <input type="text" id="email5" class="form-control" name="coorientador[]">
+                                    <input type="text" id="email5" class="form-control" name="coorientador[]" value="{{isset($coorientadorP->get(0)->email) ? $coorientadorP->get(0)->email : ''}}">
                                 </div>
                             </div> 
                         </div>
@@ -298,7 +304,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Email</label>
-                                    <input type="text" id="email6" class="form-control" name="coorientador[]">
+                                    <input type="text" id="email6" class="form-control" name="coorientador[]" value="{{isset($coorientadorP->get(1)->email) ? $coorientadorP->get(1)->email : ''}}">
                                 </div>
                             </div> 
                         </div>
@@ -312,7 +318,7 @@
                     
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">
-                            <button class="btn btn-primary">Submeter Projeto</button>
+                            <button class="btn btn-primary">Salvar Alterações</button>
                         </div>
                     </div>
 
@@ -538,25 +544,8 @@ $(document).ready(function () {
         },
     });
 
-    var oldFuncao = $('#funcao-select').attr("value");
-    $('#funcao-select').selectize({
-        placeholder: 'Função...',
-        render: {
-            option: function (item, escape) {
-                console.log(item);
-                return '<div class="option">Sou ' + escape(item.text) + '</div>';
-            }
-        },
-        onInitialize: function () {
-            this.setValue(oldFuncao, true);
-            //$('.selectize-control').addClass('form-group');
-            $('.selectize-input').addClass('form-control');
-        },
-    });
-
     var oldEscola = $('#escola-select').attr("value");
     $('#escola-select').selectize({
-        placeholder: 'Digite a Escola a qual pertence o projeto...',
         onInitialize: function () {
             this.setValue(oldEscola, true);
             //$('.selectize-control').addClass('form-group');
@@ -626,6 +615,7 @@ $(document).ready(function () {
             }
         });
     }
+
 
 });
 </script>

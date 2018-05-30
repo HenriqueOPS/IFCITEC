@@ -37,7 +37,7 @@
                             
                             <div class="input-group{{ $errors->has('min_ch') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
-                                    <i class="material-icons">text_fields</i>
+                                    <i class="material-icons">remove_circle</i>
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Caracteres mínimos para resumo</label>
@@ -52,7 +52,7 @@
 
                             <div class="input-group{{ $errors->has('max_ch') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
-                                    <i class="material-icons">text_fields</i>
+                                    <i class="material-icons">add_box</i>
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Caracteres máximos para resumo</label>
@@ -61,6 +61,21 @@
                             @if ($errors->has('max_ch'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('max_ch') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+
+                            <div class="input-group{{ $errors->has('palavras') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">exposure_zero</i>
+                                </span>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Número minímo de palavras-chave</label>
+                                    <input type="number" class="form-control" name="palavras" min="palavras" required>
+                                </div>
+                                @if ($errors->has('palavras'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('palavras') }}</strong>
                                 </span>
                                 @endif
                             </div>

@@ -1,0 +1,1 @@
+<p>Você é Autor no projeto {{$projeto->titulo}} da Feira de Ciências e Inovação Tecnológica do IFRS - Campus Canoas.</p>

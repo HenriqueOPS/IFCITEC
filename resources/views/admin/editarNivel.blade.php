@@ -44,7 +44,7 @@
                                     <i class="material-icons">text_fields</i>
                                 </span>
                                 <div class="form-group label-floating">
-                                    <label class="control-label">Caracteres máximos para resumo</label>
+                                    <label class="control-label">Caracteres mínimos para resumo</label>
                                     <input type="number" class="form-control" name="min_ch" 
                                     value="{{isset($dados->min_ch) ? $dados->min_ch : ''}}"
                                     required>
@@ -61,8 +61,8 @@
                                     <i class="material-icons">text_fields</i>
                                 </span>
                                 <div class="form-group label-floating">
-                                    <label class="control-label">Caracteres mínimos para resumo</label>
-                                    <input type="number" class="form-control" name="max_ch" 
+                                    <label class="control-label">Caracteres máximos para resumo</label>
+                                    <input type="number" class="form-control" name="max_ch"
                                     value="{{isset($dados->max_ch) ? $dados->max_ch : ''}}"
                                     required>
                                 </div>
@@ -73,6 +73,20 @@
                                 @endif
                             </div>
                             
+                            <div class="input-group{{ $errors->has('palavras') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">exposure_zero</i>
+                                </span>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Número minímo de palavras-chave</label>
+                                    <input type="number" class="form-control" name="palavras" min="palavras" value="{{isset($dados->palavras) ? $dados->palavras : ''}}" required>
+                                </div>
+                                @if ($errors->has('palavras'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('palavras') }}</strong>
+                                </span>
+                                @endif
+                            </div>
                            
                             <div class="form-group{{ $errors->has('descricao') ? ' has-error' : '' }}">
                                 <div class="form-group label-floating">

@@ -55,8 +55,8 @@
                                     @endif
                                 @endif
                             @else
-                                <a href="{{route('projeto.formVinculaIntegrante', ['projeto' => $projeto->id])}}" id="novo-integrante" class="btn btn-success">
-                                    Novo Integrante
+                                <a href="{{ route('editarProjeto', $projeto->id) }}" class="btn btn-success">
+                                    Editar informações
                                 </a>
                             @endif
 
@@ -69,7 +69,6 @@
                             <hr>
                             <b><i class="material-icons">school</i> Nível:</b><br>
                             {{$projeto->nivel->nivel}}
-                            <hr>
                             <hr>
                             <b><i class="material-icons">school</i> Escola:</b><br>
                             {{App\Escola::find($projeto->pessoas[0]->pivot->escola_id)->nome_curto}}

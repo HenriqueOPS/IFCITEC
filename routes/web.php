@@ -114,8 +114,15 @@ Route::prefix('projeto')->group(function () {
     Route::get('{projeto}/vincula-integrante', 'ProjetoController@integrantes')->name('projeto.integrantes');
     Route::post('vincula-integrante', 'ProjetoController@vinculaIntegrante')->name('projeto.vinculaIntegrante');
     //AJAX
-    Route::get('{projeto}/vincula-integrante/{email}', 'ProjetoController@searchPessoaByEmail');
+    Route::get('vincula-integrante/{email}', 'ProjetoController@searchPessoaByEmail');
+
 });
+Route::prefix('projeto/editar')->group(function () {
+    //AJAX
+    Route::get('vincula-integrante/{email}', 'ProjetoController@searchPessoaByEmail');
+    Route::get('nivel/areasConhecimento/{id}', 'NivelController@areasConhecimento'); //Ajax
+});
+Route::get('/projeto/editar/{id}', 'ProjetoController@editarProjeto')->name('editarProjeto');
 
 Route::get('/relatorio/{id}','ProjetoController@relatorio')->name('relatorio');
 

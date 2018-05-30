@@ -18,25 +18,40 @@
                 </a>
             </div>
 
-            <div class="col-md-9 main main-raised">
-                <div class="list-projects">
-                    @if($funcoes->isEmpty())
-                    <div class="text-center">
-                        @if (!Auth::user()->temFuncao("Avaliador") && !Auth::user()->temFuncao("Revisor"))
-                        <span class="function">Você não possui nenhum projeto</span><br>
+             <div class="col-md-9 main main-raised">
+            <div class="list-projects">
+                @if($funcoes->isEmpty())
+                <div class="text-center">
+                    @if (!Auth::user()->temFuncao("Avaliador") && !Auth::user()->temFuncao("Revisor"))
+                    <span class="function">Você não possui nenhum projeto</span><br>
                         @if(false)
-                        <a href="{{route('projeto.create')}}" class="btn btn-success">
+                            <a href="{{route('projeto.create')}}" class="btn btn-success">
                             Novo Projeto
                         </a>
                         @endif
-                        @else
-                        <span class="function">Você não possui nenhum projeto para homologar/revisar</span><br>
-                        @endif
-                    </div>
-                   
+                    @else
+                     <span class="function">Você não possui nenhum projeto para homologar/revisar</span><br>
                     @endif
                 </div>
+                @else
+                  
+                        @foreach($projetos as $projeto)
+                        <div class="project">
+                            <div class="project-title">
+                                <span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
+                            </div>
+                            <div class="project-info">
+                                Integrantes: 
+                            </div>
+                        </div>
+                       
+                    @endforeach
+
+                @endif
             </div>
+
+        </div>
+
 
         </div>
     </div>
