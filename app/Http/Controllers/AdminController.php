@@ -44,9 +44,14 @@ class AdminController extends Controller
         $enderecos = DB::table('endereco')->select('endereco.id', 'endereco', 'numero', 'bairro', 'municipio', 'uf', 'cep')
                                       ->orderBy('id', 'asc')
                                       ->get();
-        $escolas = DB::table('escola')->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
+        /*$escolas = DB::table('escola')->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
                                       ->select('escola.id', 'nome_completo', 'nome_curto', 'email', 
                                       'telefone', 'municipio')              
+                                      ->orderBy('nome_curto', 'asc')
+                                      ->get();*/
+
+        $escolas = DB::table('escola')->select('escola.id', 'nome_completo', 'nome_curto', 'email', 
+                                      'telefone')              
                                       ->orderBy('nome_curto', 'asc')
                                       ->get();
 
@@ -88,13 +93,14 @@ class AdminController extends Controller
 
     public function editaNivel(NivelRequest $req) {
 
-        $id = $req->all()['id_nivel'];
-        Nivel::where('id',$id)->update(['nivel'=>$req->all()['nivel'],
-                                          'max_ch'=>$req->all()['max_ch'],
-                                         'min_ch'=>$req->all()['min_ch'],
-                                         'descricao'=>$req->all()['descricao'],
-                                         'palavras'=>$req->all()['palavras'],
-      ]);
+        $data = $req->all();
+        $id = $data['id_nivel'];
+        Nivel::where('id',$id)->update(['nivel'     => $data['nivel'],
+                                        'max_ch'    => $data['max_ch'],
+                                        'min_ch'    => $data['min_ch'],
+                                        'descricao' => $data['descricao'],
+                                        'palavras'  => $data['palavras'],
+                                        ]);
 
         return redirect()->route('administrador');
     }
@@ -119,14 +125,12 @@ class AdminController extends Controller
         //$niveis = AreaConhecimento::with('niveis')->get();
         $niveis = DB::table('nivel')->select('id','nivel')->get();
          
-        return view('admin.cadastroArea', array(
-      'niveis' => $niveis));
+        return view('admin.cadastroArea', array('niveis' => $niveis));
     }
 
     public function cadastraArea(Request $req){
+        
         $data = $req->all();
-
-      
 
         AreaConhecimento::create([
                     'nivel_id' => $data['nivel_id'],
@@ -170,39 +174,61 @@ class AdminController extends Controller
 
     public function dadosEscola($id) { //Ajax
       $dados = Escola::find($id);
-      $data = Endereco::find($dados->endereco_id);
+      if($dados['endereco_id'])
+        $data = Endereco::find($dados['endereco_id']);
       return compact('dados','data');
     }
 
     public function editarEscola($id) {
      
-       
-        $dados = Escola::find($id);
-        $data = Endereco::find($dados->endereco_id);
+      $data = '';
+      $dados = Escola::find($id);
+        
+      if($dados['endereco_id'])
+        $data = Endereco::find($dados['endereco_id']);
 
-        return view('admin.editarEscola', compact('dados','data'));
+      return view('admin.editarEscola', compact('dados','data'));
+    
     }
 
     public function editaEscola(Request $req) {
 
-        $id = $req->all()['id_escola'];
-        Escola::where('id',$id)->update(['nome_completo'=>$req->all()['nome_completo'],
-                                         'nome_curto'=>$req->all()['nome_curto'],
-                                         'email'=>$req->all()['email'],
-                                         'telefone'=>$req->all()['telefone'],
-                                         
+        $data = $req->all();
 
-      ]);
-        $data = $req->all()['id_endereco'];
-        Endereco::where('id',$data)->update(['cep'=>$req->all()['cep'],
-                                         'endereco'=>$req->all()['endereco'],
-                                         'bairro'=>$req->all()['bairro'],
-                                         'municipio'=>$req->all()['municipio'],
-                                         'uf'=>$req->all()['uf'],
-                                         'numero'=>$req->all()['numero'],
+        $id_escola = $data['id_escola'];
+        $id_endereco = $data['id_endereco'];
+
+        if($id_endereco != 0){
+
+        Endereco::where('id',$id_endereco)->update(['cep' => $data['cep'],
+                                            'endereco' => $data['endereco'],
+                                            'bairro' => $data['bairro'],
+                                            'municipio' => $data['municipio'],
+                                            'uf' => $data['uf'],
+                                            'numero' => $data['numero']
+                                       ]);
+
+        }else{
+
+        $id_endereco = Endereco::create(['cep' => $data['cep'],
+                          'endereco' => $data['endereco'],
+                          'bairro' => $data['bairro'],
+                          'municipio' => $data['municipio'],
+                          'uf' => $data['uf'],
+                          'numero' => $data['numero']
+                        ]);
+
+        $id_endereco = $id_endereco['id'];
+        
+        }
 
 
-      ]);
+        Escola::where('id',$id_escola)->update(['nome_completo'=> $data['nome_completo'],
+                                                'nome_curto'=> $data['nome_curto'],
+                                                'email'=> $data['email'],
+                                                'telefone'=> $data['telefone'],
+                                                'endereco_id' => $id_endereco
+                                              ]);
 
         return redirect()->route('administrador');
     }
