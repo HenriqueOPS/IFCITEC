@@ -214,28 +214,36 @@
                         <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
                             <h3>Níveis e Áreas da edição</h3>
                         </div>
+
                     @foreach($niveis as $nivel)
+
                     <div class="col-md-12 col-md-offset-1 col-xs-9 col-xs-offset-1">
                         <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" value="{{$nivel->id}}" name='nivel_id[]' class="verificaStatus(this)" checked>
+                                    <input type="checkbox" value="{{$nivel->id}}" name='nivel_id[]' class="checkboxNivel checkboxNivel{{$nivel->id}}">
                                     {{$nivel->nivel}}
                                 </label>
                         </div>
+
                         @foreach($areas as $area)
-                        @if($area->nivel_id == $nivel->id)
-                        <div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" value="{{$area->id}}" name='area_id[]' checked>
-                                    {{$area->area_conhecimento}}
-                                </label>
+
+                            @if($area->nivel_id == $nivel->id)
+                            <div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" class="checkboxNivel{{$nivel->id}} checkboxArea" value="{{$area->id}}" name='area_id[]'>
+                                        {{$area->area_conhecimento}}
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        @endif
+                            @endif
+
                         @endforeach
+
                     </div>
+
                     @endforeach  
+
                     </div>
 
                     <!-- Campos Extras -->
@@ -266,18 +274,36 @@
 
 @section('js')
 <script type="text/javascript">
-$('.verificaStatus').click(function(nome){
-    for (i=0;i<nome.form.elements.length;i++){
-    if(nome.form.nivel_id[i].checked == 0)
-        {
-            nome.form.area_id.checked = 1;
-           
-        }
-    else
-        {
-            nome.form.area_id.checked = 0;
-        }
+$('.checkboxNivel').click(function(data){
+
+    //marca ou desmarca todas as areas quando seleciona o nivel
+    let childNameClass = '.checkboxNivel'+ $(this).val();
+    let state = $($(this)).prop("checked");
+
+    $(childNameClass).prop("checked", state);
+
+});
+
+$('.checkboxArea').click(function(data){
+
+    //marca o nivel qnd selecionou apenas a area
+    let parent = $(this).prop('class').split(' ')[0];
+
+    $('.checkboxNivel.'+parent).prop("checked", true);
+
+    //remove a marcação do nível quando não tem nenhuma area selecionada
+    let nivelElements = $('.'+parent);
+    let totalChilds = nivelElements.length;
+    let totalChildsUnChecked = nivelElements.length;
+
+    for(var i=0;i<totalChilds;i++){
+        if(!$(nivelElements[i]).prop("checked"))
+            totalChildsUnChecked--;
     }
+
+    if(totalChildsUnChecked == 1)
+        $('.checkboxNivel.'+parent).prop("checked", false);
+
 });
 
 </script>

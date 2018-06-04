@@ -19,7 +19,7 @@
                     {{ csrf_field() }}
 
                     <input type="hidden" name="id_escola" value="{{ $dados->id }}">
-                    <input type="hidden" name="id_endereco" value="{{ $data->id }}">
+                    <input type="hidden" name="id_endereco" value="{{ isset($data->id) ? $data->id : '0'}}">
                     
 
                     <div class="row">
