@@ -49,9 +49,36 @@ class AdminController extends Controller
                                       'telefone', 'municipio')              
                                       ->orderBy('nome_curto', 'asc')
                                       ->get();
+        $projetos = DB::table('projeto')->select('titulo','id')              
+                                      ->orderBy('created_at', 'asc')
+                                      ->get()
+                                      ->keyBy('id')
+                                      ->toArray();
 
+      //Participantes dos projetos
+        if($projetos != null){
+        $idAutor =  Funcao::where('funcao','Autor')-> first();
+        $idOrientador =  Funcao::where('funcao','Orientador')-> first();
+        $idCoorientador =  Funcao::where('funcao','Coorientador')-> first();
 
-        return view('admin.home', collect(['edicoes' => $edicoes, 'enderecos' => $enderecos, 'escolas' => $escolas, 'niveis' => $niveis, 'areas' => $areas]));
+        $ids = array_keys( $projetos);
+
+        $autor = DB::table('escola_funcao_pessoa_projeto')->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')->select('escola_funcao_pessoa_projeto.projeto_id','pessoa.id','pessoa.nome')->whereIn('projeto_id', $ids)->where('funcao_id', $idAutor->id)->get()->toArray();
+        $orientador = DB::table('escola_funcao_pessoa_projeto')->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')->select('escola_funcao_pessoa_projeto.projeto_id','pessoa.id','pessoa.nome')->whereIn('projeto_id', $ids)->where('funcao_id', $idOrientador->id)->get()->toArray();
+        $coorientador = DB::table('escola_funcao_pessoa_projeto')->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')->select('escola_funcao_pessoa_projeto.projeto_id','pessoa.id','pessoa.nome')->whereIn('projeto_id', $ids)->where('funcao_id', $idCoorientador->id)->get()->toArray();  
+        }
+        else{
+            $autores = (array) null;
+            $orientador = null;
+            $coorientadores = (array) null;
+        }
+        if(! isset($coorientadores)){
+            $coorientadores = (array) null;
+        }
+      
+        
+
+        return view('admin.home', collect(['edicoes' => $edicoes, 'enderecos' => $enderecos, 'escolas' => $escolas, 'niveis' => $niveis, 'areas' => $areas, 'projetos' => $projetos, 'autor' => $autor, 'orientador' => $orientador, 'coorientador' => $coorientador]));
 
     }
 
