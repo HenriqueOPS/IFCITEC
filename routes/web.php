@@ -123,6 +123,7 @@ Route::prefix('projeto/editar')->group(function () {
     Route::get('nivel/areasConhecimento/{id}', 'NivelController@areasConhecimento'); //Ajax
 });
 Route::get('/projeto/editar/{id}', 'ProjetoController@editarProjeto')->name('editarProjeto');
+Route::post('/projeto/edita-projeto', 'ProjetoController@editaProjeto')->name('editaProjeto');
 
 Route::get('/relatorio/{id}','ProjetoController@relatorio')->name('relatorio');
 

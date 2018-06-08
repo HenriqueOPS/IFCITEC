@@ -38,6 +38,12 @@
                         Áreas
                     </a>
                 </li>
+                <li>
+                    <a href="dashboard" id="4" class="tab" role="tab" data-toggle="tab">
+                        <i class="material-icons">list_alt</i>
+                        Listar Projetos
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -213,6 +219,45 @@
                     @endforeach
                     @endforeach
 
+                    </tbody>
+
+                    <thead id="4">
+                    <div id="4">
+                        
+                    </div>
+                    
+                    </thead>
+
+                    <tbody id="4">
+                        @foreach($projetos as $i => $projeto)
+
+                        <div id="4" class="project">
+                        <div class="project-title">
+                             <span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
+                        </div>
+                        <div class="project-info">
+                            Integrantes: 
+                            @foreach ($autor as $dadosAutor)
+                            @if($dadosAutor->projeto_id == $projeto->id)
+                            {{$dadosAutor->nome}},
+                            @endif
+                            @endforeach
+                    
+                            @foreach ($orientador as $dadosOrientador)
+                            @if($dadosOrientador->projeto_id == $projeto->id)
+                            {{$dadosOrientador->nome}},
+                            @endif
+                            @endforeach
+                    
+                            @foreach($coorientador as $dadosCoorientador)
+                            @if($dadosCoorientador->projeto_id == $projeto->id)
+                            {{$dadosCoorientador->nome}},
+                            @endif
+                            @endforeach
+                        </div>
+                        </div>
+
+                        @endforeach
                     </tbody>
 
                 </table>
@@ -742,20 +787,24 @@ function hideBodys(){
     $('tbody[id=1]').hide();
     $('tbody[id=2]').hide();
     $('tbody[id=3]').hide();
+    $('tbody[id=4]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
     $('div[id=3]').hide();
+    $('div[id=4]').hide();
 }
 function hideHeads(){
     $('thead[id=0]').hide();
     $('thead[id=1]').hide();
     $('thead[id=2]').hide();
     $('thead[id=3]').hide();
+    $('thead[id=4]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
     $('div[id=3]').hide();
+    $('div[id=4]').hide();
 }
 </script>
 <script type="application/javascript">

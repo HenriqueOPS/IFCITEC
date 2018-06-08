@@ -16,7 +16,7 @@
                     </div>
                 </div>
 
-                <form method="post" action="{{route('projeto.store')}}">
+                <form method="post" action="{{route('editaProjeto')}}">
 
                     {{ csrf_field() }}
 
@@ -117,7 +117,14 @@
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Palavras Chaves</label>
-                                    <input type="text" id="palavras-chaves" name="palavras_chaves" value="{{isset($palavrasP->palavra) ? $palavrasP->palavra : ''}}" required>
+                                    <input type="text" id="palavra-select" name="palavras_chaves" value="
+                                    @foreach ($palavrasP as $key)
+                                        {{ $key->palavra }}
+                                        @if (next($palavrasP))
+                                        ,
+                                        @endif
+                                    @endforeach
+                                    " required>
                                 </div>
                                 @if ($errors->has('palavras_chaves'))
                                 <span class="help-block">
@@ -524,7 +531,8 @@ $(document).ready(function () {
         $('#total-char').html($('#resumo').val().length);
     });
 
-    $('#palavras-chaves').selectize({
+    //var oldPalavra = $('#palavra-select').attr("value");
+    $('#palavra-select').selectize({
         delimiter: ',',
         persist: false,
         create: function (input) {
@@ -535,6 +543,10 @@ $(document).ready(function () {
         },
         onInitialize: function () {
             //$('.selectize-control').addClass('form-group');
+            //for(var chave=0, valor; valor=input[chave], chave<matriz.length; chave++) {
+                 // chave é o índice, valor é o valor
+            //}
+
             $('.selectize-input').addClass('form-control');
         },
         render: {

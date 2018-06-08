@@ -102,7 +102,7 @@
                                         Bom
                                     </label>
                                 </div>
-                            </div>
+							</div>
                             <div class="col-md-offset-2">
                                 <div class="checkbox">
                                     <label>
@@ -121,7 +121,7 @@
                         </div>
                         </div>
                     </div>
-                        
+
 
                     <hr>
                     </div>
