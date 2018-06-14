@@ -143,7 +143,6 @@ class AdminController extends Controller
     }
 
     public function cadastroArea() {
-        //$niveis = AreaConhecimento::with('niveis')->get();
         $niveis = DB::table('nivel')->select('id','nivel')->get();
          
         return view('admin.cadastroArea', array(

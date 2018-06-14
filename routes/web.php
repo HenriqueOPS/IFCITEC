@@ -45,7 +45,7 @@ Route::post('/escola/edita-escola', 'AdminController@editaEscola')->name('editaE
 Route::get('/escola/dados-escola/{id}', 'AdminController@dadosEscola'); //Ajax
 Route::get('/escola/exclui-escola/{id}/{s}', 'AdminController@excluiEscola'); //Ajax
 
-
+Route::get('/gerenciar', 'AdminController@administrarUsuarios');
 
 //Autor 
 Route::get('/autor', 'AutorController@index')->name('autor');
@@ -90,16 +90,8 @@ Route::get('/voluntario', 'VoluntarioController@index')->name('voluntario');
 Route::get('/voluntario/cadastrar/{s}', 'VoluntarioController@cadastrarVoluntario')->name('cadastraVoluntario'); //Ajax
 
 Route::get('/administrador/usuarios', 'AdminController@administrarUsuarios')->name('administrarUsuarios');
-
-
-
 Route::get('/periodo', 'PeriodosController@periodoInscricao');
 
-
-//Route::get('/cadastro/homologacao', 'HomologacaoController@index')->name('cadastroFichaHomologacao');
-
-
-//
 Route::get('/inscricao-comissao-avaliadora', function(){
     return view('cadastroAvaliador')->withAreas(App\AreaConhecimento::all());
 })->name('comissaoAvaliadora');
@@ -108,10 +100,8 @@ Route::get('/comissao/cadastrar/{s}', 'ComissaoAvaliadoraController@cadastrarCom
 
 
 Route::resource('projeto', 'ProjetoController');
-//Route::post('/integrantes','ProjetoController@integrantes')->name('projeto.integrantes');
 
 Route::prefix('projeto')->group(function () {
-    Route::get('{projeto}/vincula-integrante', 'ProjetoController@integrantes')->name('projeto.integrantes');
     Route::post('vincula-integrante', 'ProjetoController@vinculaIntegrante')->name('projeto.vinculaIntegrante');
     //AJAX
     Route::get('vincula-integrante/{email}', 'ProjetoController@searchPessoaByEmail');

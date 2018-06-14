@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Controllers\PeriodosController;
 use App\Endereco;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +31,7 @@ class ComissaoAvaliadoraController extends Controller
     
     }
 
-    public function cadastraComissao(Request $req){
+    public function cadastraComissao(PeriodosController $p, Request $req){
         $data = $req->all(); 
         $idEndereco = Endereco::create([
                     'cep' => $data['cep'],
@@ -53,7 +54,7 @@ class ComissaoAvaliadoraController extends Controller
         $idA = DB::table('funcao')->where('funcao', 'Avaliador')->get(); 
         foreach($idA as $i){
           DB::table('funcao_pessoa')->insert(
-                ['edicao_id' => 1, //pegar edição corrente
+                ['edicao_id' => $p->periodoComissao(),
                     'funcao_id' => $i->id, 
                     'pessoa_id' => Auth::id(),
                     'homologado' => FALSE
@@ -65,7 +66,7 @@ class ComissaoAvaliadoraController extends Controller
         $idH = DB::table('funcao')->where('funcao', 'Homologador')->get(); 
         foreach($idH as $i){
           DB::table('funcao_pessoa')->insert(
-                ['edicao_id' => 1, //pegar edição corrente
+                ['edicao_id' => $p->periodoComissao(),
                     'funcao_id' => $i->id, 
                     'pessoa_id' => Auth::id(),
                     'homologado' => FALSE
