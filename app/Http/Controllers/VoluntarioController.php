@@ -1,7 +1,6 @@
 <?php
-
 namespace App\Http\Controllers;
-
+use App\Http\Controllers\PeriodosController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -28,12 +27,12 @@ class VoluntarioController extends Controller
     {
         return view('voluntario');
     }
-    public function cadastrarVoluntario($s){
+    public function cadastrarVoluntario(PeriodosController $p, $s){
       if(password_verify($s, Auth::user()['attributes']['senha'])){
       	$id = DB::table('funcao')->where('funcao', 'Voluntário')->get();
       	foreach($id as $i){
           DB::table('funcao_pessoa')->insert(
-                ['edicao_id' => 1, //pegar edição corrente
+                ['edicao_id' => $p->periodoVoluntario(),
                     'funcao_id' => $i->id, 
                     'pessoa_id' => Auth::id(),
                     'homologado' => TRUE

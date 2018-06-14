@@ -167,10 +167,24 @@
                                 @endif
                             </div> 
                         </div>
-                        </div>
-                        <br><br><br><br>
-                        <div class="col-md-2">
-                            <a class="modalInt" data-toggle="modal" data-target="#modal" ><i class="material-icons blue-icon">remove_red_eye</i></a>
+                        <div class="input-group{{ $errors->has('autor[]') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">person</i>
+                                </span>
+                                <div class="form-group">
+                                    <label class="control-label">Autor 1</label>
+                                    <select id="pessoa-select" name="autor[]" required>
+                                        <option></option>
+                                        @foreach ($pessoas as $pessoa)
+                                        <option value="{{$pessoa->id}}">{{$pessoa->nome}} sdjhd {{$pessoa->email}}</option>
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('autor[]'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('autor[]') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -549,6 +563,16 @@ $(document).ready(function () {
         },
         onInitialize: function () {
             this.setValue(oldFuncao, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+
+    var oldPessoa = $('#pessoa-select').attr("value");
+    $('#pessoa-select').selectize({
+        placeholder: 'Digite o nome do participante...',
+        onInitialize: function () {
+            this.setValue(oldEscola, true);
             //$('.selectize-control').addClass('form-group');
             $('.selectize-input').addClass('form-control');
         },
