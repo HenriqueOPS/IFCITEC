@@ -8,7 +8,8 @@
 <div class="container">
 
     <div class="page-header">
-	    <h1>Olá {{ Auth::user()->nome }}</h1>      
+	    <h1>Olá {{ Auth::user()->nome }}</h1>  
+
 	</div>
 
 	<ul class="nav nav-pills nav-stacked" style="width: 250px">

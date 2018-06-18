@@ -91,13 +91,31 @@ class EdicaoController extends Controller {
     }
 
     public function editaEdicao(Request $req) {
-        $id = $req->all()['id_edicao'];
-        Edicao::where('id',$id)->update(['inscricao_abertura'=>$req->all()['inscricao_abertura'],'inscricao_fechamento'=>$req->all()['inscricao_fechamento'],'homologacao_abertura'=>$req->all()['homologacao_abertura'], 'homologacao_fechamento'=>$req->all()['homologacao_fechamento'], 'avaliacao_abertura'=>$req->all()['avaliacao_abertura'], 'avaliacao_fechamento'=>$req->all()['avaliacao_fechamento'], 'credenciamento_abertura'=>$req->all()['credenciamento_abertura'], 'credenciamento_fechamento'=>$req->all()['credenciamento_fechamento'],'voluntario_abertura'=>$req->all()['voluntario_abertura'],'voluntario_fechamento'=>$req->all()['voluntario_fechamento'], 'comissao_abertura'=>$req->all()['comissao_abertura'], 'comissao_fechamento'=>$req->all()['comissao_fechamento']]);
+        
+        $data = $req->all();
+        $id = $data['id_edicao'];
+
+        Edicao::where('id',$id)->update([
+              'inscricao_abertura'        => $data['inscricao_abertura'],
+              'inscricao_fechamento'      => $data['inscricao_fechamento'],
+              'homologacao_abertura'      => $data['homologacao_abertura'],
+              'homologacao_fechamento'    => $data['homologacao_fechamento'], 
+              'avaliacao_abertura'        => $data['avaliacao_abertura'], 
+              'avaliacao_fechamento'      => $data['avaliacao_fechamento'], 
+              'credenciamento_abertura'   => $data['credenciamento_abertura'], 
+              'credenciamento_fechamento' => $data['credenciamento_fechamento'],
+              'voluntario_abertura'       => $data['voluntario_abertura'],
+              'voluntario_fechamento'     => $data['voluntario_fechamento'], 
+              'comissao_abertura'         => $data['comissao_abertura'], 
+              'comissao_fechamento'       => $data['comissao_fechamento']
+            ]);
         
         $nivel = DB::table('nivel_edicao')->select('nivel_id')->where('edicao_id', $id)->get();
+
         foreach($nivel as $ni){
           $nivelEdicao[] = $ni->nivel_id;
         } 
+
         $area = DB::table('area_edicao')->select('area_id')->where('edicao_id', $id)->get();
         foreach($area as $ai){
           $areaEdicao[] = $ai->area_id;
@@ -108,13 +126,13 @@ class EdicaoController extends Controller {
               DB::table('nivel_edicao')->insert(['edicao_id' => $id,'nivel_id' => $n]);
             }
         }
-        
 
         foreach ($nivelEdicao as $n) {
           if(in_array($n, $_POST['nivel_id']) ==  false){
               DB::table('nivel_edicao')->where('nivel_id', $n)->where('edicao_id', $id)->delete();
             }
         }
+
         foreach ($_POST['area_id'] as $a) { 
             if(in_array($a, $areaEdicao) ==  false){
               DB::table('area_edicao')->insert(['edicao_id' => $id,'area_id' => $a]);
@@ -162,26 +180,27 @@ class EdicaoController extends Controller {
     }
 
     public function dadosEdicao($id) { //Ajax    
+      
       $dados = Edicao::find($id);
       $nivelEdicao = DB::table('nivel_edicao')->select('nivel_id')->where('edicao_id', $id)->get();
       $areaEdicao = DB::table('area_edicao')->select('area_id')->where('edicao_id', $id)->get();
       $nivel = DB::table('nivel')->select('id','nivel')->get();
       $area = DB::table('area_conhecimento')->select('id','area_conhecimento', 'nivel_id')->get();
 
-       
-        
-    
       return compact('dados','nivelEdicao','nivel','area','areaEdicao');
     }
 
     public function excluiEdicao($id, $s){
+
       if(password_verify($s, Auth::user()['attributes']['senha'])){
-         $e = Edicao::find($id);
+        
+          $e = Edicao::find($id);
           
-            DB::table('nivel_edicao')->where('edicao_id', $id)->delete();
-            DB::table('area_edicao')->where('edicao_id', $id)->delete();
-            DB::table('funcao_pessoa')->where('edicao_id', $id)->delete();
-            Edicao::find($id)->delete();
+          DB::table('nivel_edicao')->where('edicao_id', $id)->delete();
+          DB::table('area_edicao')->where('edicao_id', $id)->delete();
+          DB::table('funcao_pessoa')->where('edicao_id', $id)->delete();
+          Edicao::find($id)->delete();
+          
           return 'true';
       }
 
