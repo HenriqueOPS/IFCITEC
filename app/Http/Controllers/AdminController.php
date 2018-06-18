@@ -34,26 +34,25 @@ class AdminController extends Controller
     public function index()
     {
         $edicoes = DB::table('edicao')->select('edicao.*')->get();
+
         $niveis = DB::table('nivel')->select('nivel.*')
-                                    ->orderBy('nivel', 'asc')
-                                    ->get();
-        $areas = DB::table('area_conhecimento')->join('nivel', 'area_conhecimento.nivel_id',                            '=', 'nivel.id')
-                                      ->select('area_conhecimento.id', 'area_conhecimento', 'area_conhecimento.descricao','nivel_id')
-                                      ->orderBy('area_conhecimento', 'asc')
-                                      ->get();
-        $enderecos = DB::table('endereco')->select('endereco.id', 'endereco', 'numero', 'bairro', 'municipio', 'uf', 'cep')
-                                      ->orderBy('id', 'asc')
-                                      ->get();
+                                    ->orderBy('nivel', 'asc')->get();
+
+        $areas = DB::table('area_conhecimento')
+			->join('nivel', 'area_conhecimento.nivel_id', '=', 'nivel.id')
+			->select('area_conhecimento.id', 'area_conhecimento', 'area_conhecimento.descricao','nivel_id')
+            ->orderBy('area_conhecimento', 'asc')->get();
+
         /*$escolas = DB::table('escola')->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
                                       ->select('escola.id', 'nome_completo', 'nome_curto', 'email',
                                       'telefone', 'municipio')
                                       ->orderBy('nome_curto', 'asc')
                                       ->get();*/
 
-        $escolas = DB::table('escola')->select('escola.id', 'nome_completo', 'nome_curto', 'email',
-                                      'telefone')
-                                      ->orderBy('nome_curto', 'asc')
-                                      ->get();
+        $escolas = DB::table('escola')
+			->select('escola.id', 'nome_completo', 'nome_curto', 'email', 'telefone')
+            ->orderBy('nome_curto', 'asc')->get();
+        /*
         $projetos = DB::table('projeto')->select('titulo','id')
                                       ->orderBy('created_at', 'asc')
                                       ->get()
@@ -61,7 +60,8 @@ class AdminController extends Controller
                                       ->toArray();
 
       //Participantes dos projetos
-        if($projetos != null){
+
+        if($projetos){
         $idAutor =  Funcao::where('funcao','Autor')-> first();
         $idOrientador =  Funcao::where('funcao','Orientador')-> first();
         $idCoorientador =  Funcao::where('funcao','Coorientador')-> first();
@@ -84,8 +84,18 @@ class AdminController extends Controller
 
 
         return view('admin.home', collect(['edicoes' => $edicoes, 'enderecos' => $enderecos, 'escolas' => $escolas, 'niveis' => $niveis, 'areas' => $areas, 'projetos' => $projetos, 'autor' => $autor, 'orientador' => $orientador, 'coorientador' => $coorientador]));
+		*/
 
-    }
+        $projetos = array();
+
+		return view('admin.home', collect(['edicoes' => $edicoes,
+												 'escolas' => $escolas,
+												 'niveis' => $niveis,
+												 'areas' => $areas,
+												 'projetos' => $projetos
+												]));
+
+	}
 
 
     public function dadosNivel($id) { //Ajax
@@ -99,7 +109,9 @@ class AdminController extends Controller
 
 
     public function cadastraNivel(NivelRequest $req){
+
         $data = $req->all();
+
         Nivel::create([
                     'nivel' => $data['nivel'],
                     'descricao' => $data['descricao'],
@@ -122,29 +134,34 @@ class AdminController extends Controller
 
         $data = $req->all();
         $id = $data['id_nivel'];
-        Nivel::where('id',$id)->update(['nivel'     => $data['nivel'],
-                                        'max_ch'    => $data['max_ch'],
-                                        'min_ch'    => $data['min_ch'],
-                                        'descricao' => $data['descricao'],
-                                        'palavras'  => $data['palavras'],
-                                        ]);
+
+        Nivel::where('id',$id)
+			->update(['nivel'     => $data['nivel'],
+					  'max_ch'    => $data['max_ch'],
+					  'min_ch'    => $data['min_ch'],
+					  'descricao' => $data['descricao'],
+					  'palavras'  => $data['palavras'],
+					]);
 
         return redirect()->route('administrador');
     }
 
     public function excluiNivel($id, $s){
+
       if(password_verify($s, Auth::user()['attributes']['senha'])){
           Nivel::find($id)->delete();
+
           return 'true';
       }
 
       return 'false';
     }
 
-
     public function dadosArea($id) { //Ajax
+
       $dados = AreaConhecimento::find($id);
       $data = Nivel::find($dados->nivel_id);
+
       return compact('dados','data');
     }
 
@@ -158,15 +175,11 @@ class AdminController extends Controller
 
         $data = $req->all();
 
-
-
         AreaConhecimento::create([
                     'nivel_id' => $data['nivel_id'],
                     'area_conhecimento' => $data['area_conhecimento'],
                     'descricao' => $data['descricao'],
                   ]);
-
-
 
         return redirect()->route('administrador');
 
@@ -181,12 +194,15 @@ class AdminController extends Controller
 
     public function editaArea(Request $req) {
 
-        $id = $req->all()['id_area'];
-        AreaConhecimento::where('id',$id)->update(['nivel_id'=>$req->all()['nivel_id'],
-                                           'area_conhecimento'=>$req->all()['area_conhecimento'],
-                                          'descricao'=>$req->all()['descricao'],
+    	$data = $req->all();
 
-      ]);
+        $id = $data['id_area'];
+
+        AreaConhecimento::where('id',$id)
+			->update(['nivel_id'=>$data['nivel_id'],
+                      'area_conhecimento'=>$data['area_conhecimento'],
+					  'descricao'=>$data['descricao']
+					]);
 
         return redirect()->route('administrador');
     }
@@ -201,9 +217,12 @@ class AdminController extends Controller
     }
 
     public function dadosEscola($id) { //Ajax
+
       $dados = Escola::find($id);
+
       if($dados['endereco_id'])
         $data = Endereco::find($dados['endereco_id']);
+
       return compact('dados','data');
     }
 
@@ -228,35 +247,37 @@ class AdminController extends Controller
 
         if($id_endereco != 0){
 
-        Endereco::where('id',$id_endereco)->update(['cep' => $data['cep'],
-                                            'endereco' => $data['endereco'],
-                                            'bairro' => $data['bairro'],
-                                            'municipio' => $data['municipio'],
-                                            'uf' => $data['uf'],
-                                            'numero' => $data['numero']
-                                       ]);
+			Endereco::where('id',$id_endereco)
+				->update(['cep' => $data['cep'],
+						  'endereco' => $data['endereco'],
+						  'bairro' => $data['bairro'],
+						  'municipio' => $data['municipio'],
+						  'uf' => $data['uf'],
+						  'numero' => $data['numero']
+						]);
 
         }else{
 
-        $id_endereco = Endereco::create(['cep' => $data['cep'],
-                          'endereco' => $data['endereco'],
-                          'bairro' => $data['bairro'],
-                          'municipio' => $data['municipio'],
-                          'uf' => $data['uf'],
-                          'numero' => $data['numero']
-                        ]);
+			$id_endereco = Endereco::create(['cep' => $data['cep'],
+											 'endereco' => $data['endereco'],
+											 'bairro' => $data['bairro'],
+											 'municipio' => $data['municipio'],
+											 'uf' => $data['uf'],
+											 'numero' => $data['numero']
+										]);
 
-        $id_endereco = $id_endereco['id'];
+			$id_endereco = $id_endereco['id'];
 
         }
 
 
-        Escola::where('id',$id_escola)->update(['nome_completo'=> $data['nome_completo'],
-                                                'nome_curto'=> $data['nome_curto'],
-                                                'email'=> $data['email'],
-                                                'telefone'=> $data['telefone'],
-                                                'endereco_id' => $id_endereco
-                                              ]);
+        Escola::where('id',$id_escola)
+			->update(['nome_completo'=> $data['nome_completo'],
+					  'nome_curto'=> $data['nome_curto'],
+					  'email'=> $data['email'],
+					  'telefone'=> $data['telefone'],
+					  'endereco_id' => $id_endereco
+				     ]);
 
         return redirect()->route('administrador');
     }
@@ -269,13 +290,13 @@ class AdminController extends Controller
         $data = $req->all();
 
         $idEndereco = Endereco::create([
-                    'cep' => $data['cep'],
-                    'endereco' => $data['endereco'],
-                    'bairro' => $data['bairro'],
-                    'municipio' => $data['municipio'],
-                    'uf' => $data['uf'],
-                    'numero' => $data['numero']
-        ]);
+										'cep' => $data['cep'],
+										'endereco' => $data['endereco'],
+										'bairro' => $data['bairro'],
+										'municipio' => $data['municipio'],
+										'uf' => $data['uf'],
+										'numero' => $data['numero']
+									  ]);
 
         Escola::create([
                     'nome_completo' => $data['nome_completo'],
@@ -285,24 +306,23 @@ class AdminController extends Controller
                     'endereco_id' => $idEndereco['original']['id']
                   ]);
 
-
-
         return redirect()->route('administrador');
 
     }
 
-
     public function excluiEscola($id, $s){
+
       if(password_verify($s, Auth::user()['attributes']['senha'])){
           Escola::find($id)->delete();
+
           return 'true';
       }
 
       return 'false';
     }
 
-    public function administrarUsuarios()
-    {
+    public function administrarUsuarios(){
         return view('admin.administrarUsuarios');
     }
+
 }
