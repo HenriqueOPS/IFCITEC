@@ -120,7 +120,7 @@
                         <tr>
                             <td class="text-center">{{ $i+1 }}</td>
                             <td>{{ $escola->nome_curto }}</td>
-                            <td>{{ $escola->municipio }}</td>
+                            <td></td>
                             <td>{{ $escola->email }}</td>
                             <td>{{ $escola->telefone }}</td>
 
