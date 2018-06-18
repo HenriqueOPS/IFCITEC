@@ -18,6 +18,16 @@ Route::get('/', function () {
   return redirect()->route('login');
 });
 
+// API
+Route::post('/api/login', 'ApiController@login');
+Route::post('/api/registra-presenca', 'ApiController@registraPresenca');
+
+Route::get('/api/projetos-avaliacao/{id}', 'ApiController@projetosAvaliacao');
+Route::get('/api/campos-avaliacao/{id}', 'ApiController@camposAvaliacao');
+Route::get('/api/salva-avaliacao/{id}', 'ApiController@salvaAvaliacao');
+
+
+
 Auth::routes();
 Route::post('/recuperar/senha/', 'Auth\ForgotPasswordController@emailSenha')->name('recuperar.senha');
 
@@ -47,7 +57,7 @@ Route::get('/escola/exclui-escola/{id}/{s}', 'AdminController@excluiEscola'); //
 
 Route::get('/gerenciar', 'AdminController@administrarUsuarios');
 
-//Autor 
+//Autor
 Route::get('/autor', 'AutorController@index')->name('autor');
 
 
