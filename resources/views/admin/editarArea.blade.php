@@ -28,10 +28,16 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Nível</label>
-                                    <select class="form-control" id="nivel_id" value="{{isset($dados->nivel_id) ? $dados->nivel_id : ''}}" required>
-                                        foreach () {
-                                        <option></option>
-                                        }
+                                    <select class="form-control" name="nivel_id" id="nivel_id" required>
+										@foreach ($niveis as $nivel)
+
+											@if($dados->nivel_id == $nivel->id)
+												<option value="{{$nivel->id}}" selected>{{$nivel->nivel}}</option>
+											@else
+												<option value="{{$nivel->id}}">{{$nivel->nivel}}</option>
+											@endif
+
+										@endforeach
                                     </select>
                                 </div>
                             </div>
@@ -48,7 +54,7 @@
                                 <div class="form-group label-floating">
                                     <i class="material-icons">description</i>
                                     <label for="exampleFormControlTextarea1">Descrição</label>
-                                    <textarea class="form-control" rows="3" name="descricao" value="{{isset($dados->descricao) ? $dados->descricao : ''}}" required></textarea>
+                                    <textarea class="form-control" rows="3" name="descricao" required>{{isset($dados->descricao) ? $dados->descricao : ''}}</textarea>
                                 </div>
                             </div>
                         </div>
