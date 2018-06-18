@@ -9,11 +9,11 @@ services:
     volumes:
       - ./:/var/www/html/
     ports:
-      - '80'
+      - '8088:80'
     links:
       - postgres
-    
-  postgres: 
+
+  postgres:
     image: postgres:9.3
     environment:
       - POSTGRES_USER=postgres
