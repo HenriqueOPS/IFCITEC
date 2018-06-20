@@ -43,14 +43,6 @@
                         <a  href="{{route('projeto.create')}}" class="btn btn-primary btn-round">
                             <i class="material-icons">add</i> Novo Projeto
                         </a>
-
-                        <a href="{{route('comissaoAvaliadora')}}" class="btn btn-primary btn-round">
-                            <i class="material-icons">assignment</i> Quero Ser Avaliador/ Revisor
-                        </a>
-
-                        <a href="{{route('voluntario')}}" class="btn btn-primary btn-round">
-                            <i class="material-icons">directions_walk</i> Quero Ser Voluntário
-                        </a>
                     </div>
                 </div>
         </div>
@@ -116,14 +108,6 @@
                         <a  href="{{route('projeto.create')}}" class="btn btn-primary btn-round">
                             <i class="material-icons">add</i> Novo Projeto
                         </a>
-
-                        <a href="{{route('comissaoAvaliadora')}}" class="btn btn-primary btn-round">
-                            <i class="material-icons">assignment</i> Quero Ser Avaliador/ Revisor
-                        </a>
-
-                        <a href="{{route('voluntario')}}" class="btn btn-primary btn-round">
-                            <i class="material-icons">directions_walk</i> Quero Ser Voluntário
-                        </a>
                     </div>
             </div>
         </thead>
@@ -187,14 +171,6 @@
             <div class="col-md-12">
                         <a  href="{{route('projeto.create')}}" class="btn btn-primary btn-round">
                             <i class="material-icons">add</i> Novo Projeto
-                        </a>
-
-                        <a href="{{route('comissaoAvaliadora')}}" class="btn btn-primary btn-round">
-                            <i class="material-icons">assignment</i> Quero Ser Avaliador/ Revisor
-                        </a>
-
-                        <a href="{{route('voluntario')}}" class="btn btn-primary btn-round">
-                            <i class="material-icons">directions_walk</i> Quero Ser Voluntário
                         </a>
                     </div>
             </div>

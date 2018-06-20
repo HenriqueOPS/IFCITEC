@@ -162,82 +162,79 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="col-md-8 col-md-offset-1">
-                        <div class="form-group{{ $errors->has('autor[]') ? ' has-error' : '' }}">
-                            <span id="projeto-show">Informe o email do Autor 1 (obrigatório):</span>
-                            <div class="input-group">
+                        <div class="col-md-9 col-md-offset-1">
+                        <span id="projeto-show">Informe o email do Autor 1 (obrigatório):</span>
+                        <div class="input-group{{ $errors->has('autor[]') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
-                                    <i class="material-icons">email</i>
+                                    <i class="material-icons">person</i>
                                 </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Email</label>
-                                    <input type="text" id="email" class="form-control" name="autor[]" value="{{isset($autorP->get(0)->email) ? $autorP->get(0)->email : ''}}" required>
-                                </div>
-                                @if ($errors->has('autor[]'))
+                                <div class="form-group">
+                                    <label class="control-label">Autor 1</label>
+                                    <select id="pessoa-1-select" name="autor[]" value="{{isset($autor[0]->pessoa_id) ? $autor[0]->pessoa_id : ''}}" required>
+                                        <option></option>
+                                        @foreach ($pessoas as $pessoa)
+                                        <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('autor[]'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('autor[]') }}</strong>
                                     </span>
-                                @endif
-                            </div> 
-                        </div>
-                        </div>
-                        <br><br><br><br>
-                        <div class="col-md-2">
-                            <a class="modalInt" data-toggle="modal" data-target="#modal" ><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="col-md-8 col-md-offset-1">
-                        <div class="form-group{{ $errors->has('autor[]') ? ' has-error' : '' }}">
-                            <span>Informe o email do Autor 2 (opcional):</span>
-                            <div class="input-group">
+                        <div class="col-md-9 col-md-offset-1">
+                        <span id="projeto-show">Informe o email do Autor 2 (opcional):</span>
+                        <div class="input-group{{ $errors->has('autor[]') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
-                                    <i class="material-icons">email</i>
+                                    <i class="material-icons">person</i>
                                 </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Email</label>
-                                    <input type="text" id="email2" class="form-control" name="autor[]" value="{{isset($autorP->get(1)->email) ? $autorP->get(1)->email : ''}}">
-                                </div>
-                                @if ($errors->has('autor[]'))
+                                <div class="form-group">
+                                    <label class="control-label">Autor 2</label>
+                                    <select id="pessoa-2-select" name="autor[]" value="{{isset($autor[1]->pessoa_id) ? $autor[1]->pessoa_id : ''}}">
+                                        <option></option>
+                                        @foreach ($pessoas as $pessoa)
+                                        <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('autor[]'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('autor[]') }}</strong>
                                     </span>
-                                @endif
-                            </div>    
-                        </div>
-                        </div>
-                        <br><br><br><br>
-                        <div class="col-md-2">
-                            <a class="modalInt2" data-toggle="modal" data-target="#modal" ><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="col-md-8 col-md-offset-1">
-                        <div class="form-group{{ $errors->has('autor[]') ? ' has-error' : '' }}">
-                            <span id="projeto-show">Informe o email do Autor 3 (opcional):</span>
-                            <div class="input-group">
+                        <div class="col-md-9 col-md-offset-1">
+                        <span id="projeto-show">Informe o email do Autor 3 (opcional):</span>
+                        <div class="input-group{{ $errors->has('autor[]') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
-                                    <i class="material-icons">email</i>
+                                    <i class="material-icons">person</i>
                                 </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Email</label>
-                                    <input type="text" id="email3" class="form-control" name="autor[]" value="{{isset($autorP->get(2)->email) ? $autorP->get(2)->email : ''}}">
-                                </div>
-                            </div> 
-                            @if ($errors->has('autor[]'))
+                                <div class="form-group">
+                                    <label class="control-label">Autor 3</label>
+                                    <select id="pessoa-3-select" name="autor[]" value="{{isset($autor[2]->pessoa_id) ? $autor[2]->pessoa_id : ''}}">
+                                        <option></option>
+                                        @foreach ($pessoas as $pessoa)
+                                        <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('autor[]'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('autor[]') }}</strong>
                                     </span>
-                            @endif
-                        </div>
-                        </div>
-                        <br><br><br><br>
-                        <div class="col-md-2">
-                            <a class="modalInt3" data-toggle="modal" data-target="#modal" ><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -248,28 +245,27 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="col-md-8 col-md-offset-1">
-                        <div class="form-group{{ $errors->has('orientador') ? ' has-error' : '' }}">
-                            <span id="projeto-show">Informe o email do Orientador (obrigatório):</span>
-                            <div class="input-group">
+                        <div class="col-md-9 col-md-offset-1">
+                        <span id="projeto-show">Informe o email do Orientador (obrigatório):</span>
+                        <div class="input-group{{ $errors->has('orientador') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
-                                    <i class="material-icons">email</i>
+                                    <i class="material-icons">person</i>
                                 </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Email</label>
-                                    <input type="text" id="email4" class="form-control" name="orientador" value="{{isset($orientadorP->first()->email) ? $orientadorP->first()->email : ''}}" required>
+                                <div class="form-group">
+                                    <label class="control-label">Orientador</label>
+                                    <select id="pessoa-4-select" name="orientador" value="{{isset($orientador[0]->pessoa_id) ? $orientador[0]->pessoa_id : ''}}" required>
+                                        <option></option>
+                                        @foreach ($pessoas as $pessoa)
+                                        <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('orientador'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('orientador') }}</strong>
+                                    </span>
+                                    @endif
                                 </div>
-                            </div> 
-                            @if ($errors->has('orientador'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('orientador') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                        </div>
-                        <br><br><br><br>
-                        <div class="col-md-2">
-                            <a class="modalOrt" data-toggle="modal" data-target="#modal"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -280,45 +276,53 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="col-md-8 col-md-offset-1">
-                        <div class="form-group">
-                            <span id="projeto-show">Informe o email do Coorientador 1 (opcional):</span>
-                            <div class="input-group">
+                        <div class="col-md-9 col-md-offset-1">
+                        <span id="projeto-show">Informe o email do Coorientador 1 (opcional):</span>
+                        <div class="input-group{{ $errors->has('coorientador[]') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
-                                    <i class="material-icons">email</i>
+                                    <i class="material-icons">person</i>
                                 </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Email</label>
-                                    <input type="text" id="email5" class="form-control" name="coorientador[]" value="{{isset($coorientadorP->get(0)->email) ? $coorientadorP->get(0)->email : ''}}">
+                                <div class="form-group">
+                                    <label class="control-label">Coorientador 1</label>
+                                    <select id="pessoa-5-select" name="coorientador[]" value="{{isset($coorientador[0]->pessoa_id) ? $coorientador[0]->pessoa_id : ''}}">
+                                        <option></option>
+                                        @foreach ($pessoas as $pessoa)
+                                        <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('coorientador[]'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('coorientador[]') }}</strong>
+                                    </span>
+                                    @endif
                                 </div>
-                            </div> 
-                        </div>
-                        </div>
-                        <br><br><br><br>
-                        <div class="col-md-2">
-                            <a class="modalCoo1" data-toggle="modal" data-target="#modal"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="col-md-8 col-md-offset-1">
-                        <div class="form-group">
-                            <span id="projeto-show">Informe o email do Coorientador 2 (opcional):</span>
-                            <div class="input-group">
+                        <div class="col-md-9 col-md-offset-1">
+                        <span id="projeto-show">Informe o email do Coorientador (opcional):</span>
+                        <div class="input-group{{ $errors->has('coorientador[]') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
-                                    <i class="material-icons">email</i>
+                                    <i class="material-icons">person</i>
                                 </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Email</label>
-                                    <input type="text" id="email6" class="form-control" name="coorientador[]" value="{{isset($coorientadorP->get(1)->email) ? $coorientadorP->get(1)->email : ''}}">
+                                <div class="form-group">
+                                    <label class="control-label">Coorientador 2</label>
+                                    <select id="pessoa-6-select" name="coorientador[]" value="{{isset($coorientador[1]->pessoa_id) ? $coorientador[1]->pessoa_id : ''}}">
+                                        <option></option>
+                                        @foreach ($pessoas as $pessoa)
+                                        <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('coorientador[]'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('coorientador[]') }}</strong>
+                                    </span>
+                                    @endif
                                 </div>
-                            </div> 
-                        </div>
-                        </div>
-                        <br><br><br><br>
-                        <div class="col-md-2">
-                            <a class="modalCoo2" data-toggle="modal" data-target="#modal"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -334,201 +338,85 @@
         </div>
     </div>
 </div>
-<!-- Modal-->
-<div id="modal" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Dados da Pessoa</h5>
-        </div>
-        <div class="modal-body">
-
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">person</i>
-                </span>
-                <div class="form-group label-floating">
-                    <span id="nomeModal"></span>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">email</i>
-                </span>
-                <div class="form-group label-floating">
-                    <span id="emailModal"></span>
-                </div>
-            </div>
-
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
-        </div>
-    </div>
-</div>
-</div>
-<!-- Fim Modal Nível -->
 @endsection
 
 @section('js')
 <script type="text/javascript" src="{{asset('js/selectize.min.js')}}"></script>
-
-<script type="application/javascript">
-$('.modalInt').click(function(){
-    email = $('#email').val();
-    var urlConsulta = './vincula-integrante/'+email;
-    //faz a consulta via Ajax
-    $.get(urlConsulta, function (res){
-        if('error'){
-        $("#nomeModal").html(res.error);
-        $("#emailModal").html(null);
-        console.log(urlConsulta);
-        $("#modal").modal();
-        }
-        if('pessoa'){
-        //altera o DOM
-        $("#nomeModal").html(res.pessoa.nome);
-        $("#emailModal").html(res.pessoa.email);
-        //abre a modal
-        $("#modal").modal();
-         }
-        
-
-    });
-
-})
-</script>
-<script type="application/javascript">
-$('.modalInt2').click(function(){
-    email = $('#email2').val();
-    var urlConsulta = './vincula-integrante/'+email;
-    //faz a consulta via Ajax
-    $.get(urlConsulta, function (res){
-        if('error'){
-        $("#nomeModal").html(res.error);
-        $("#emailModal").html(null);
-        console.log(res);
-        $("#modal").modal();
-        }
-        if('pessoa'){
-        //altera o DOM
-        $("#nomeModal").html(res.pessoa.nome);
-        $("#emailModal").html(res.pessoa.email);
-        //abre a modal
-        $("#modal").modal();
-         }
-        
-
-    });
-
-})
-</script>
-<script type="application/javascript">
-$('.modalInt3').click(function(){
-    email = $('#email3').val();
-    var urlConsulta = './vincula-integrante/'+email;
-    //faz a consulta via Ajax
-    $.get(urlConsulta, function (res){
-        if('error'){
-        $("#nomeModal").html(res.error);
-        $("#emailModal").html(null);
-        console.log(res);
-        $("#modal").modal();
-        }
-        if('pessoa'){
-        //altera o DOM
-        $("#nomeModal").html(res.pessoa.nome);
-        $("#emailModal").html(res.pessoa.email);
-        //abre a modal
-        $("#modal").modal();
-         }
-        
-
-    });
-
-})
-</script>
-<script type="application/javascript">
-$('.modalOrt').click(function(){
-    email = $('#email4').val();
-    var urlConsulta = './vincula-integrante/'+email;
-    //faz a consulta via Ajax
-    $.get(urlConsulta, function (res){
-        if('error'){
-        $("#nomeModal").html(res.error);
-        $("#emailModal").html(null);
-        console.log(res);
-        $("#modal").modal();
-        }
-        if('pessoa'){
-        //altera o DOM
-        $("#nomeModal").html(res.pessoa.nome);
-        $("#emailModal").html(res.pessoa.email);
-        //abre a modal
-        $("#modal").modal();
-         }
-        
-
-    });
-
-})
-</script>
-<script type="application/javascript">
-$('.modalCoo1').click(function(){
-    email = $('#email5').val();
-    var urlConsulta = './vincula-integrante/'+email;
-    //faz a consulta via Ajax
-    $.get(urlConsulta, function (res){
-        if('error'){
-        $("#nomeModal").html(res.error);
-        $("#emailModal").html(null);
-        console.log(res);
-        $("#modal").modal();
-        }
-        if('pessoa'){
-        //altera o DOM
-        $("#nomeModal").html(res.pessoa.nome);
-        $("#emailModal").html(res.pessoa.email);
-        //abre a modal
-        $("#modal").modal();
-         }
-        
-
-    });
-
-})
-</script>
-<script type="application/javascript">
-$('.modalCoo2').click(function(){
-    email = $('#email6').val();
-    var urlConsulta = './vincula-integrante/'+email;
-    //faz a consulta via Ajax
-    $.get(urlConsulta, function (res){
-        if('error'){
-        $("#nomeModal").html(res.error);
-        $("#emailModal").html(null);
-        console.log(res);
-        $("#modal").modal();
-        }
-        if('pessoa'){
-        //altera o DOM
-        $("#nomeModal").html(res.pessoa.nome);
-        $("#emailModal").html(res.pessoa.email);
-        //abre a modal
-        $("#modal").modal();
-         }
-        
-
-    });
-
-})
-</script>
 <script type="text/javascript">
 $(document).ready(function () {
 
     $('#resumo').keyup(function () {
         $('#total-char').html($('#resumo').val().length);
+    });
+
+    var oldEscola = $('#escola-select').attr("value");
+    $('#escola-select').selectize({
+        placeholder: 'Digite a Escola a qual pertence o projeto...',
+        onInitialize: function () {
+            this.setValue(oldEscola, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+
+    var oldPessoa = $('#pessoa-1-select').attr("value");
+    $('#pessoa-1-select').selectize({
+        placeholder: 'Digite o nome do participante...',
+        onInitialize: function () {
+            this.setValue(oldPessoa, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+
+    var oldPessoa = $('#pessoa-2-select').attr("value");
+    $('#pessoa-2-select').selectize({
+        placeholder: 'Digite o nome do participante...',
+        onInitialize: function () {
+            this.setValue(oldPessoa, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+
+    var oldPessoa = $('#pessoa-3-select').attr("value");
+    $('#pessoa-3-select').selectize({
+        placeholder: 'Digite o nome do participante...',
+        onInitialize: function () {
+            this.setValue(oldPessoa, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+
+    var oldPessoa = $('#pessoa-4-select').attr("value");
+    $('#pessoa-4-select').selectize({
+        placeholder: 'Digite o nome do participante...',
+        onInitialize: function () {
+            this.setValue(oldPessoa, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+
+    var oldPessoa = $('#pessoa-5-select').attr("value");
+    $('#pessoa-5-select').selectize({
+        placeholder: 'Digite o nome do participante...',
+        onInitialize: function () {
+            this.setValue(oldPessoa, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+
+    var oldPessoa = $('#pessoa-6-select').attr("value");
+    $('#pessoa-6-select').selectize({
+        placeholder: 'Digite o nome do participante...',
+        onInitialize: function () {
+            this.setValue(oldPessoa, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
     });
 
     //var oldPalavra = $('#palavra-select').attr("value");
@@ -553,15 +441,6 @@ $(document).ready(function () {
             option_create: function (data, escape) {
                 return '<div class="create option">Inserir <strong>' + escape(data.input) + '</strong>&hellip;</div>';
             }
-        },
-    });
-
-    var oldEscola = $('#escola-select').attr("value");
-    $('#escola-select').selectize({
-        onInitialize: function () {
-            this.setValue(oldEscola, true);
-            //$('.selectize-control').addClass('form-group');
-            $('.selectize-input').addClass('form-control');
         },
     });
 
