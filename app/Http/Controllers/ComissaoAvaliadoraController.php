@@ -28,7 +28,24 @@ class ComissaoAvaliadoraController extends Controller
      */
     public function index()
     {
-    
+        return view('avaliador.home');
+    }
+
+    public function cadastrarComissao(PeriodosController $p){
+        $areas = DB::table('area_conhecimento')->join('area_edicao', 'area_conhecimento.id', '=', 'area_edicao.area_id')
+                                    ->select('area_conhecimento.id','area_conhecimento.area_conhecimento', 'area_conhecimento.nivel_id')
+                                    ->where('area_edicao.edicao_id', $p->periodoComissao())
+                                    ->orderBy('area_conhecimento.id', 'asc')
+                                    ->get()
+                                    ->toArray();
+
+        $niveis = DB::table('nivel')->join('nivel_edicao', 'nivel.id', '=', 'nivel_edicao.id')
+                                    ->select('nivel.nivel', 'nivel.id','nivel_edicao.edicao_id')
+                                    ->where('nivel_edicao.edicao_id', $p->periodoComissao())
+                                    ->orderBy('nivel.id', 'asc')
+                                    ->get()
+                                    ->toArray();
+        return view('cadastroAvaliador', ['areas' => $areas,'niveis' => $niveis]);
     }
 
     public function cadastraComissao(PeriodosController $p, Request $req){
@@ -82,3 +99,4 @@ class ComissaoAvaliadoraController extends Controller
 
     }
 }
+

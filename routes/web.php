@@ -50,6 +50,8 @@ Route::get('/gerenciar', 'AdminController@administrarUsuarios');
 //Autor 
 Route::get('/autor', 'AutorController@index')->name('autor');
 
+//Organizador
+Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 
 // Administrador
 Route::get('/administrador', 'AdminController@index')->name('administrador');
@@ -85,6 +87,9 @@ Route::get('/revisor', 'HomeController@homeRevisor')->name('revisor');
 //Organizador
 Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 
+//Comissao Avaliadora
+Route::get('/comissaoavaliadora', 'ComissaoAvaliadoraController@index')->name('comissao');
+
 //Voluntario
 Route::get('/voluntario', 'VoluntarioController@index')->name('voluntario');
 Route::get('/voluntario/cadastrar/{s}', 'VoluntarioController@cadastrarVoluntario')->name('cadastraVoluntario'); //Ajax
@@ -92,9 +97,7 @@ Route::get('/voluntario/cadastrar/{s}', 'VoluntarioController@cadastrarVoluntari
 Route::get('/administrador/usuarios', 'AdminController@administrarUsuarios')->name('administrarUsuarios');
 Route::get('/periodo', 'PeriodosController@periodoInscricao');
 
-Route::get('/inscricao-comissao-avaliadora', function(){
-    return view('cadastroAvaliador')->withAreas(App\AreaConhecimento::all());
-})->name('comissaoAvaliadora');
+Route::get('/inscricao-comissao-avaliadora', 'ComissaoAvaliadoraController@cadastrarComissao')->name('comissaoAvaliadora');
 Route::post('/comissao/cadastrar', 'ComissaoAvaliadoraController@cadastraComissao')->name('cadastroAvaliador');
 Route::get('/comissao/cadastrar/{s}', 'ComissaoAvaliadoraController@cadastrarComissao')->name('cadastraComissao'); //Ajax
 

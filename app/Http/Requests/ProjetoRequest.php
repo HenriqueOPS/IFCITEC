@@ -80,9 +80,10 @@ class ProjetoRequest extends FormRequest {
            
             $totalPalavras = (count(explode(",", $validator->getData()['palavras_chaves'])));
             if($totalPalavras < $dados->palavras) {
-                $validator->addRules(['palavras_chaves' => ('required|min: '.$dados->palavras)]);
+                $validator->addRules(['palavras_chaves' => ('required|min: '. $dados->palavras)]);
+                
             }
-           
+
     }
 
 }

@@ -36,6 +36,7 @@
 
                         
                     </div>
+                
 
                     <div class="collapse navbar-collapse" id="app-navbar-collapse">
                         <!-- Left Side Of Navbar -->
@@ -55,8 +56,27 @@
                                 </ul>
                             </li>
                         </ul>
-                        
                         <!-- Right Side Of Navbar -->
+                        <ul class="nav navbar-nav navbar-left">
+                            <li><a href="autor">Projeto</a></li>
+                            <li><a href="#" class="dropdown-toggle" data-toggle="dropdown" >Comissão Avaliadora</a>
+                            <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="{{ route('comissaoAvaliadora') }}">
+                                            Cadastrar-se
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('comissao') }}">
+                                            Painel de Comissão Avaliadora
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="voluntario">Voluntário</a></li>
+                            <li><a href="organizador">Organizador</a></li>
+                            <li><a href="administrador">Administrador</a></li>
+                        </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <!-- Authentication Links
                             <li class="dropdown">

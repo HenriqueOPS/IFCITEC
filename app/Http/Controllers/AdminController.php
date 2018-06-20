@@ -31,7 +31,7 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(PeriodosController $p)
     {
         $edicoes = DB::table('edicao')->select('edicao.*')->get();
 
@@ -53,7 +53,9 @@ class AdminController extends Controller
 			->select('escola.id', 'nome_completo', 'nome_curto', 'email', 'telefone')
             ->orderBy('nome_curto', 'asc')->get();
         /*
-        $projetos = DB::table('projeto')->select('titulo','id')
+        $projetos = DB::table('projeto')
+                                      ->select('titulo','id')
+                                      ->where('edicao_id', $p->periodoInscricao())
                                       ->orderBy('created_at', 'asc')
                                       ->get()
                                       ->keyBy('id')
