@@ -212,6 +212,59 @@
                         </div>
                     </div>
 
+					<!-- Período da feira -->
+					<div class="row">
+						<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+							<h3>Período da Feira</h3>
+							<span>Durante esse período será possivel acessar o sistema como Autor, Avaliador, Homologador e Organizador</span>
+						</div>
+
+						<div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
+							<div class="input-group">
+							<span class="input-group-addon">
+								<i class="material-icons">today</i>
+							</span>
+								<div class="form-group ">
+									<label class="control-label">Início</label>
+									<input type="datetime-local" class="form-control datepicker"
+										   name="feira_abertura" value="{{ strftime('%Y-%m-%dT%H:%M:%S', strtotime($dados->feira_abertura)) }}" required>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
+							<div class="input-group">
+							<span class="input-group-addon">
+								<i class="material-icons">today</i>
+							</span>
+								<div class="form-group ">
+									<label class="control-label">Fim</label>
+									<input type="datetime-local" class="form-control datepicker"
+										   name="feira_fechamento"  value="{{ strftime('%Y-%m-%dT%H:%M:%S', strtotime($dados->feira_fechamento)) }}" required>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Número de projetos da feira -->
+					<div class="row">
+						<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+							<h3>Número de Projetos</h3>
+							<span>Número de projetos que irão participar da feira</span>
+						</div>
+
+						<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+							<div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">filter_9_plus</i>
+                                </span>
+								<div class="form-group ">
+									<input type="number" class="form-control datepicker" name="projetos" value="{{ $dados->projetos }}" required>
+								</div>
+							</div>
+						</div>
+					</div>
+
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
                             <h3>Níveis e Áreas da edição</h3>
