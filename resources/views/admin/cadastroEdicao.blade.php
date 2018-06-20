@@ -1,311 +1,367 @@
 @extends('layouts.app')
 
 @section('css')
-<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
+	<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2 col-sm-12">
-            <div class="main main-raised">
-                <div class="row">
-                    <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                        <h2>Cadastro de Edição</h2>
-                    </div>
-                </div>
-                <form method="post" action="{{route('cadastraEdicao')}}">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2 col-sm-12">
+				<div class="main main-raised">
+					<div class="row">
+						<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+							<h2>Cadastro de Edição</h2>
+						</div>
+					</div>
+					<form method="post" action="{{route('cadastraEdicao')}}">
 
-                    {{ csrf_field() }}
+					{{ csrf_field() }}
 
-                    <!-- Período de Inscrição -->
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                            <h3>Período de Inscrição</h3>
-                            <span>Durante esse período será possivel submeter projetos</span>
-                        </div>
+					<!-- Período de Inscrição -->
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+								<h3>Período de Inscrição</h3>
+								<span>Durante esse período será possivel submeter projetos</span>
+							</div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="input-group">
+							<div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
+								<div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
                                 </span>
-                                <div class="form-group ">
-                                    <label class="control-label">Início</label>
-                                    <input type="datetime-local" class="form-control datepicker" name="inscricao_abertura" required>
-                                </div>
-                            </div>
-                        </div>
+									<div class="form-group ">
+										<label class="control-label">Início</label>
+										<input type="datetime-local" class="form-control datepicker"
+											   name="inscricao_abertura" required>
+									</div>
+								</div>
+							</div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="input-group">
+							<div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
+								<div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
                                 </span>
-                                <div class="form-group ">
-                                    <label class="control-label">Fim</label>
-                                    <input type="datetime-local" class="form-control datepicker" name="inscricao_fechamento" required>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+									<div class="form-group ">
+										<label class="control-label">Fim</label>
+										<input type="datetime-local" class="form-control datepicker"
+											   name="inscricao_fechamento" required>
+									</div>
+								</div>
+							</div>
+						</div>
 
-                    <!-- Período de Homologação -->
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                            <h3>Período de Homologação</h3>
-                            <span>Durante esse período será possivel homologar os projetos recebidos</span>
-                        </div>
+						<!-- Período de Homologação -->
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+								<h3>Período de Homologação</h3>
+								<span>Durante esse período será possivel homologar os projetos recebidos</span>
+							</div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="input-group">
+							<div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
+								<div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
                                 </span>
-                                <div class="form-group ">
-                                    <label class="control-label">Início</label>
-                                    <input type="datetime-local" class="form-control datepicker" name="homologacao_abertura" required>
-                                </div>
-                            </div>
-                        </div>
+									<div class="form-group ">
+										<label class="control-label">Início</label>
+										<input type="datetime-local" class="form-control datepicker"
+											   name="homologacao_abertura" required>
+									</div>
+								</div>
+							</div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="input-group">
+							<div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
+								<div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
                                 </span>
-                                <div class="form-group ">
-                                    <label class="control-label">Fim</label>
-                                    <input type="datetime-local" class="form-control datepicker" name="homologacao_fechamento"  required>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+									<div class="form-group ">
+										<label class="control-label">Fim</label>
+										<input type="datetime-local" class="form-control datepicker"
+											   name="homologacao_fechamento" required>
+									</div>
+								</div>
+							</div>
+						</div>
 
-                    <!-- Período de Avaliação -->
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                            <h3>Período de Avaliação</h3>
-                            <span>Durante esse período será possivel avaliar os projetos homologados (Dia da Feira)</span>
-                        </div>
+						<!-- Período de Avaliação -->
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+								<h3>Período de Avaliação</h3>
+								<span>Durante esse período será possivel avaliar os projetos homologados (Dia da Feira)</span>
+							</div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="input-group">
+							<div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
+								<div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
                                 </span>
-                                <div class="form-group ">
-                                    <label class="control-label">Início</label>
-                                    <input type="datetime-local" class="form-control datepicker" name="avaliacao_abertura" required>
-                                </div>
-                            </div>
-                        </div>
+									<div class="form-group ">
+										<label class="control-label">Início</label>
+										<input type="datetime-local" class="form-control datepicker"
+											   name="avaliacao_abertura" required>
+									</div>
+								</div>
+							</div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="input-group">
+							<div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
+								<div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
                                 </span>
-                                <div class="form-group ">
-                                    <label class="control-label">Fim</label>
-                                    <input type="datetime-local" class="form-control datepicker" name="avaliacao_fechamento" required>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+									<div class="form-group ">
+										<label class="control-label">Fim</label>
+										<input type="datetime-local" class="form-control datepicker"
+											   name="avaliacao_fechamento" required>
+									</div>
+								</div>
+							</div>
+						</div>
 
-                    <!-- Período de Credenciamento -->
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                            <h3>Período de Credenciamento</h3>
-                            <span>Durante esse período será possivel realizar o credenciamento no evento (Dia da Feira)</span>
-                        </div>
+						<!-- Período de Credenciamento -->
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+								<h3>Período de Credenciamento</h3>
+								<span>Durante esse período será possivel realizar o credenciamento no evento (Dia da Feira)</span>
+							</div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="input-group">
+							<div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
+								<div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
                                 </span>
-                                <div class="form-group ">
-                                    <label class="control-label">Início</label>
-                                    <input type="datetime-local" class="form-control datepicker" name="credenciamento_abertura" required>
-                                </div>
-                            </div>
-                        </div>
+									<div class="form-group ">
+										<label class="control-label">Início</label>
+										<input type="datetime-local" class="form-control datepicker"
+											   name="credenciamento_abertura" required>
+									</div>
+								</div>
+							</div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="input-group">
+							<div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
+								<div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
                                 </span>
-                                <div class="form-group ">
-                                    <label class="control-label">Fim</label>
-                                    <input type="datetime-local" class="form-control datepicker" name="credenciamento_fechamento" required>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+									<div class="form-group ">
+										<label class="control-label">Fim</label>
+										<input type="datetime-local" class="form-control datepicker"
+											   name="credenciamento_fechamento" required>
+									</div>
+								</div>
+							</div>
+						</div>
 
-                    <!-- Período de Voluntário -->
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                            <h3>Período de Inscrição para Voluntário</h3>
-                            <span>Durante esse período será possivel se inscrever para atuar como voluntário durante a feira</span>
-                        </div>
+						<!-- Período de Voluntário -->
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+								<h3>Período de Inscrição para Voluntário</h3>
+								<span>Durante esse período será possivel se inscrever para atuar como voluntário durante a feira</span>
+							</div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="input-group">
+							<div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
+								<div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
                                 </span>
-                                <div class="form-group ">
-                                    <label class="control-label">Início</label>
-                                    <input type="datetime-local" class="form-control datepicker" name="voluntario_abertura" required>
-                                </div>
-                            </div>
-                        </div>
+									<div class="form-group ">
+										<label class="control-label">Início</label>
+										<input type="datetime-local" class="form-control datepicker"
+											   name="voluntario_abertura" required>
+									</div>
+								</div>
+							</div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="input-group">
+							<div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
+								<div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
                                 </span>
-                                <div class="form-group ">
-                                    <label class="control-label">Fim</label>
-                                    <input type="datetime-local" class="form-control datepicker" name="voluntario_fechamento" required>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+									<div class="form-group ">
+										<label class="control-label">Fim</label>
+										<input type="datetime-local" class="form-control datepicker"
+											   name="voluntario_fechamento" required>
+									</div>
+								</div>
+							</div>
+						</div>
 
-                    <!-- Período de Inscrição para Avaliador/Homologador -->
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                            <h3>Período de Inscrição para Avaliador/Homologador</h3>
-                            <span>Durante esse período será possivel se inscrever para atuar como voluntário durante a feira</span>
-                        </div>
+						<!-- Período de Inscrição para Avaliador/Homologador -->
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+								<h3>Período de Inscrição para Avaliador/Homologador</h3>
+								<span>Durante esse período será possivel se inscrever para atuar como voluntário durante a feira</span>
+							</div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="input-group">
+							<div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
+								<div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
                                 </span>
-                                <div class="form-group ">
-                                    <label class="control-label">Início</label>
-                                    <input type="datetime-local" class="form-control datepicker" name="comissao_abertura" required>
-                                </div>
-                            </div>
-                        </div>
+									<div class="form-group ">
+										<label class="control-label">Início</label>
+										<input type="datetime-local" class="form-control datepicker"
+											   name="comissao_abertura" required>
+									</div>
+								</div>
+							</div>
 
-                        <div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="input-group">
+							<div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
+								<div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">today</i>
                                 </span>
-                                <div class="form-group ">
-                                    <label class="control-label">Fim</label>
-                                    <input type="datetime-local" class="form-control datepicker" name="comissao_fechamento" required>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+									<div class="form-group ">
+										<label class="control-label">Fim</label>
+										<input type="datetime-local" class="form-control datepicker"
+											   name="comissao_fechamento" required>
+									</div>
+								</div>
+							</div>
+						</div>
 
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                            <h3>Níveis e Áreas da edição</h3>
-                        </div>
+						<!-- Período da feira -->
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+								<h3>Período da Feira</h3>
+								<span>Durante esse período será possivel acessar o sistema como Autor, Avaliador, Homologador e Organizador</span>
+							</div>
 
-                    @foreach($niveis as $nivel)
+							<div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
+								<div class="input-group">
+							<span class="input-group-addon">
+								<i class="material-icons">today</i>
+							</span>
+									<div class="form-group ">
+										<label class="control-label">Início</label>
+										<input type="datetime-local" class="form-control datepicker"
+											   name="feira_abertura" required>
+									</div>
+								</div>
+							</div>
 
-                    <div class="col-md-12 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                        <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" value="{{$nivel->id}}" name='nivel_id[]' class="checkboxNivel checkboxNivel{{$nivel->id}}">
-                                    {{$nivel->nivel}}
-                                </label>
-                        </div>
+							<div class="col-md-4 col-md-offset-1 col-xs-9 col-xs-offset-1">
+								<div class="input-group">
+							<span class="input-group-addon">
+								<i class="material-icons">today</i>
+							</span>
+									<div class="form-group ">
+										<label class="control-label">Fim</label>
+										<input type="datetime-local" class="form-control datepicker"
+											   name="feira_fechamento" required>
+									</div>
+								</div>
+							</div>
+						</div>
 
-                        @foreach($areas as $area)
+						<!-- Número de projetos da feira -->
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+								<h3>Número de Projetos</h3>
+								<span>Número de projetos que irão participar da feira</span>
+							</div>
 
-                            @if($area->nivel_id == $nivel->id)
-                            <div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" class="checkboxNivel{{$nivel->id}} checkboxArea" value="{{$area->id}}" name='area_id[]'>
-                                        {{$area->area_conhecimento}}
-                                    </label>
-                                </div>
-                            </div>
-                            @endif
+							<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+								<div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">filter_9_plus</i>
+                                </span>
+									<div class="form-group ">
+										<input type="number" class="form-control datepicker" name="projetos" required>
+									</div>
+								</div>
+							</div>
+						</div>
 
-                        @endforeach
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+								<h3>Níveis e Áreas da edição</h3>
+							</div>
 
-                    </div>
+							@foreach($niveis as $nivel)
 
-                    @endforeach  
+								<div class="col-md-12 col-md-offset-1 col-xs-9 col-xs-offset-1">
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="{{$nivel->id}}" name='nivel_id[]'
+												   class="checkboxNivel checkboxNivel{{$nivel->id}}">
+											{{$nivel->nivel}}
+										</label>
+									</div>
 
-                    </div>
+									@foreach($areas as $area)
 
-                    <!-- Campos Extras -->
-                    <!--
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                            <h3>Campos Extras</h3>
-                            <span>Estes campos irão aparecer no formulário que o autor irá cadastrar o projeto</span>
-                        </div>
+										@if($area->nivel_id == $nivel->id)
+											<div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">
+												<div class="checkbox">
+													<label>
+														<input type="checkbox"
+															   class="checkboxNivel{{$nivel->id}} checkboxArea"
+															   value="{{$area->id}}" name='area_id[]'>
+														{{$area->area_conhecimento}}
+													</label>
+												</div>
+											</div>
+										@endif
 
+									@endforeach
 
-                    </div>
-                    -->
+								</div>
 
-                    <div class="row">
-                        <div class="col-md-6 col-md-offset-3 text-center">
-                            <button class="btn btn-primary">Cadastrar</button>
-                        </div>
-                    </div>
+							@endforeach
 
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6 col-md-offset-3 text-center">
+								<button class="btn btn-primary">Cadastrar</button>
+							</div>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 
 @endsection
 
 @section('js')
-<script type="text/javascript">
-$('.checkboxNivel').click(function(data){
+	<script type="text/javascript">
+		$('.checkboxNivel').click(function (data) {
 
-    //marca ou desmarca todas as areas quando seleciona o nivel
-    let childNameClass = '.checkboxNivel'+ $(this).val();
-    let state = $($(this)).prop("checked");
+			//marca ou desmarca todas as areas quando seleciona o nivel
+			let childNameClass = '.checkboxNivel' + $(this).val();
+			let state = $($(this)).prop("checked");
 
-    $(childNameClass).prop("checked", state);
+			$(childNameClass).prop("checked", state);
 
-});
+		});
 
-$('.checkboxArea').click(function(data){
+		$('.checkboxArea').click(function (data) {
 
-    //marca o nivel qnd selecionou apenas a area
-    let parent = $(this).prop('class').split(' ')[0];
+			//marca o nivel qnd selecionou apenas a area
+			let parent = $(this).prop('class').split(' ')[0];
 
-    $('.checkboxNivel.'+parent).prop("checked", true);
+			$('.checkboxNivel.' + parent).prop("checked", true);
 
-    //remove a marcação do nível quando não tem nenhuma area selecionada
-    let nivelElements = $('.'+parent);
-    let totalChilds = nivelElements.length;
-    let totalChildsUnChecked = nivelElements.length;
+			//remove a marcação do nível quando não tem nenhuma area selecionada
+			let nivelElements = $('.' + parent);
+			let totalChilds = nivelElements.length;
+			let totalChildsUnChecked = nivelElements.length;
 
-    for(var i=0;i<totalChilds;i++){
-        if(!$(nivelElements[i]).prop("checked"))
-            totalChildsUnChecked--;
-    }
+			for (var i = 0; i < totalChilds; i++) {
+				if (!$(nivelElements[i]).prop("checked"))
+					totalChildsUnChecked--;
+			}
 
-    if(totalChildsUnChecked == 1)
-        $('.checkboxNivel.'+parent).prop("checked", false);
+			if (totalChildsUnChecked == 1)
+				$('.checkboxNivel.' + parent).prop("checked", false);
 
-});
+		});
 
-</script>
+	</script>
 
 @endsection
