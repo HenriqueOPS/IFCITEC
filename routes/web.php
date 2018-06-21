@@ -11,6 +11,21 @@
   |
  */
 
+Route::get('/version', function (){
+
+	$str = file_get_contents('version.json');
+	$json = json_decode($str, true);
+
+	echo "Commit SHA: ".$json['commit-sha'];
+	echo "<br>";
+	echo "Tag ID: ".$json['tag-id'];
+	echo "<br>";
+	echo "Pipeline ID: ".$json['pipeline'];
+	echo "<br>";
+
+
+});
+
 Route::get('/', function () {
   if(Auth::check())
     return redirect()->route('home');
