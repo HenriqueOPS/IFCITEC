@@ -45,8 +45,7 @@ job-db-generate:
     - php artisan env
     - php artisan --env=local migrate
     - php artisan db:seed
-	- cd public/
-	- echo '{"commit-sha":$CI_COMMIT_SHA,"tag-id":$CI_COMMIT_TAG,"pipeline":$CI_PIPELINE_ID}' > version.json
+    - cd public/ && echo '{"commit-sha":$CI_COMMIT_SHA,"tag-id":$CI_COMMIT_TAG,"pipeline":$CI_PIPELINE_ID}' > version.json
 
 # Cria um container para stage, disponível no menu Registry
 job-stage-container:
