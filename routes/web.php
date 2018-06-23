@@ -13,14 +13,15 @@
 
 Route::get('/version', function (){
 
-	$str = file_get_contents('version.json');
-	$json = json_decode($str, true);
+	$str = file_get_contents('version.txt');
 
-	echo "Commit SHA: ".$json['commit-sha'];
+	$strData = explode(':',$str);
+
+	echo "Commit SHA: ".$strData[0];
 	echo "<br>";
-	echo "Tag ID: ".$json['tag-id'];
+	echo "Tag ID: ".$strData[1];
 	echo "<br>";
-	echo "Pipeline ID: ".$json['pipeline'];
+	echo "Pipeline ID: ".$strData[2];
 	echo "<br>";
 
 
