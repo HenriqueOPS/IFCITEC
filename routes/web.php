@@ -14,15 +14,11 @@
 Route::get('/version', function (){
 
 	$str = file_get_contents('version.txt');
-
 	$strData = explode(':',$str);
 
 	echo "Commit SHA: ".$strData[0];
 	echo "<br>";
-	echo "Tag ID: ".$strData[1];
-	echo "<br>";
-	echo "Pipeline ID: ".$strData[2];
-	echo "<br>";
+	echo "Pipeline ID: ".$strData[1];
 
 
 });
