@@ -45,7 +45,6 @@ job-db-generate:
     - php artisan env
     - php artisan --env=local migrate
     - php artisan db:seed
-    - cd public/ && echo '{"commit-sha":$CI_COMMIT_SHA,"tag-id":$CI_COMMIT_TAG,"pipeline":$CI_PIPELINE_ID}' > version.json
 
 # Cria um container para stage, disponível no menu Registry
 test-job:
@@ -54,6 +53,7 @@ test-job:
   services:
     - docker:dind
   script:
+    - cd public/ && echo '{"commit-sha":$CI_COMMIT_SHA,"tag-id":$CI_COMMIT_TAG,"pipeline":$CI_PIPELINE_ID}' > version.json
     - export IMAGE_TAG=$(echo -en $CI_COMMIT_REF_NAME | tr -c '[:alnum:]_.-' '-')
     - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" -f ./Dockerfile-stage .
