@@ -47,26 +47,13 @@ job-db-generate:
     - php artisan db:seed
 
 # Cria um container para stage, disponível no menu Registry
-test-job:
-  stage: stage
-  image: docker:latest
-  services:
-    - docker:dind
-  script:
-    - echo "$CI_COMMIT_SHA:$CI_PIPELINE_ID" > ./public/version.txt
-    - export IMAGE_TAG=$(echo -en $CI_COMMIT_REF_NAME | tr -c '[:alnum:]_.-' '-')
-    - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
-    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" -f ./Dockerfile-stage .
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
-
-
-# Cria um container para stage, disponível no menu Registry
 job-stage-container:
   stage: stage
   image: docker:latest
   services:
     - docker:dind
   script:
+    - echo "$CI_COMMIT_SHA:$CI_PIPELINE_ID" > ./public/version.txt
     - export IMAGE_TAG=$(echo -en $CI_COMMIT_REF_NAME | tr -c '[:alnum:]_.-' '-')
     - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" -f ./Dockerfile-stage .
@@ -122,6 +109,7 @@ job-container-prod:
   services:
     - docker:dind
   script:
+    - echo "$CI_COMMIT_SHA:$CI_PIPELINE_ID" > ./public/version.txt
     - export IMAGE_TAG=$(echo -en $CI_COMMIT_REF_NAME | tr -c '[:alnum:]_.-' '-')
     - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" -f ./Dockerfile-prod .

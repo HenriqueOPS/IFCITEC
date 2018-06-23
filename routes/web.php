@@ -12,15 +12,10 @@
  */
 
 Route::get('/version', function (){
+	$strData = explode(':', file_get_contents('version.txt'));
 
-	$str = file_get_contents('version.txt');
-	$strData = explode(':',$str);
-
-	echo "Commit SHA: ".$strData[0];
-	echo "<br>";
+	echo "Commit SHA: ".$strData[0]."<br />";
 	echo "Pipeline ID: ".$strData[1];
-
-
 });
 
 Route::get('/', function () {
