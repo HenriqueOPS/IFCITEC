@@ -5,7 +5,6 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Nivel;
 use App\Projeto;
-
 class ProjetoRequest extends FormRequest {
 
     /**
@@ -80,8 +79,7 @@ class ProjetoRequest extends FormRequest {
            
             $totalPalavras = (count(explode(",", $validator->getData()['palavras_chaves'])));
             if($totalPalavras < $dados->palavras) {
-                $validator->addRules(['palavras_chaves' => ('required|min: '. $dados->palavras)]);
-                
+               $validator->addRules(['palavras_chaves' => ('required|min: '. $dados->palavras)]);
             }
 
     }

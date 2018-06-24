@@ -39,29 +39,6 @@
 								<input type="hidden" name="inscricao" value="avaliacao">
 
 
-								@foreach($niveis as $nivel)
-									<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-										<h4>Nível {{$nivel->nivel}}</h4>
-									</div>
-									@foreach($areas as $area)
-                                    @if($area->nivel_id == $nivel->id)
-
-										<div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">
-											<div class="checkbox">
-												<label>
-													<input type="checkbox"
-														   class="checkboxNivel{{$area->id}} checkboxArea"
-														   value="{{$area->id}}" name='area_id[]'>
-													{{$area->area_conhecimento}}
-												</label>
-											</div>
-										</div>
-
-                                        @endif
-									@endforeach
-								@endforeach
-
-
 								<div class="input-group{{ $errors->has('titulacao') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">bookmark</i>
@@ -125,6 +102,28 @@
                                 </span>
 									@endif
 								</div>
+                                <h4>Selecione as áreas do conhecimento que gostaria de avaliar/homologar, de acordo com o nível:</h4>
+                                @foreach($niveis as $nivel)
+                                    <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
+                                        <p>Nível {{$nivel->nivel}}</p>
+                                    </div>
+                                    @foreach($areas as $area)
+                                    @if($area->nivel_id == $nivel->id)
+
+                                        <div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox"
+                                                           class="checkboxNivel{{$area->id}} checkboxArea"
+                                                           value="{{$area->id}}" name='area_id[]'>
+                                                    {{$area->area_conhecimento}}
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        @endif
+                                    @endforeach
+                                @endforeach
 							</div>
 						</div>
 						<div class="row">
@@ -227,29 +226,6 @@
 @section('js')
 	<script type="text/javascript" src="{{asset('js/datepicker/bootstrap-datepicker.js')}}"></script>
 	<script type="text/javascript" src="{{asset('js/datepicker/locales/bootstrap-datepicker.pt-BR.js')}}"></script>
-	<script type="text/javascript" src="{{asset('js/selectize.min.js')}}"></script>
-	<script type="text/javascript">
-		$('.datepicker').datepicker({
-			format: 'dd/mm/yyyy',
-			language: 'pt-BR',
-			templates: {
-				leftArrow: '&lsaquo;',
-				rightArrow: '&rsaquo;'
-			},
-		});
-		$(document).ready(function () {
-			var oldArea = $('#area-select').attr("value");
-
-			$nivelSelect = $('#area-select').selectize({
-				placeholder: 'Escolha a Área...',
-				preload: true,
-				onInitialize: function () {
-					this.setValue(oldArea, false);
-					$('.selectize-input').addClass('form-control');
-				},
-			});
-		});
-	</script>
 	<script type="text/javascript">
 
 		$(document).ready(function () {

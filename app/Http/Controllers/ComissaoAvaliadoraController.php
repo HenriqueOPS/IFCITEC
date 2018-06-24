@@ -50,6 +50,11 @@ class ComissaoAvaliadoraController extends Controller
 
     public function cadastraComissao(PeriodosController $p, Request $req){
         $data = $req->all(); 
+        //insert comissao_edicao
+        $areas = $data['area_id'];
+        foreach ($areas as $area) {
+            //insert areas_comissao
+        }
         $idEndereco = Endereco::create([
                     'cep' => $data['cep'],
                     'endereco' => $data['endereco'],
@@ -91,7 +96,7 @@ class ComissaoAvaliadoraController extends Controller
         }
       }
 
-        Mail::send('mail.primeiro', [], function($message){
+        Mail::send('mail.primeiro', [Auth::user()->nome], function($message){
             $message->to(Auth::user()->email);
             $message->subject('IFCITEC');
         });

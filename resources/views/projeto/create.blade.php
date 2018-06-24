@@ -157,7 +157,7 @@
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Autor 1</label>
-                                    <select id="pessoa-1-select" name="autor[]" required>
+                                    <select id="pessoa-1-select" name="autor[]" value="{{old('autor[0]')}}"  required>
                                         <option></option>
                                         @foreach ($pessoas as $pessoa)
                                         <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
