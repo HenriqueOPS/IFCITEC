@@ -123,7 +123,8 @@ class ProjetoController extends Controller {
              );
 
             $email = Pessoa::find($a)->email;
-            Mail::send('mail.mailAutor', ['projeto'=>$projeto], function($message) use ($email){
+            $nome = Pessoa::find($a)->nome;
+            Mail::send('mail.mailAutor', ['projeto'=>$projeto, 'nome' => $nome], function($message) use ($email){
             $message->to($email);
             $message->subject('IFCITEC');
             });
@@ -148,8 +149,9 @@ class ProjetoController extends Controller {
                     'edicao_id' => $p->periodoInscricao(),
                 ]
                 );
-                $email = Pessoa::find($request['orientador'])->email;;
-                Mail::send('mail.mailOrientador', ['projeto'=>$projeto], function($message) use ($email){
+                $email = Pessoa::find($request['orientador'])->email;
+                $nome = Pessoa::find($request['orientador'])->nome;
+                Mail::send('mail.mailOrientador', ['projeto'=>$projeto, 'nome' => $nome], function($message) use ($email){
                 $message->to($email);
                 $message->subject('IFCITEC');
                 });
@@ -174,7 +176,8 @@ class ProjetoController extends Controller {
                 ]
                 );
             $email = Pessoa::find($c)->email;
-            Mail::send('mail.mailCoorientador', ['projeto'=>$projeto], function($message) use ($email){
+            $nome = Pessoa::find($c)->nome;
+            Mail::send('mail.mailCoorientador', ['projeto'=>$projeto, 'nome' => $nome], function($message) use ($email){
             $message->to($email);
             $message->subject('IFCITEC');
             });
@@ -326,7 +329,8 @@ class ProjetoController extends Controller {
              );
 
             $email = Pessoa::find($a)->email;
-            Mail::send('mail.mailAutor', ['projeto'=>$projeto], function($message) use ($email){
+             $nome = Pessoa::find($a)->nome;
+            Mail::send('mail.mailAutor', ['projeto'=>$projeto, 'nome' => $nome], function($message) use ($email){
             $message->to($email);
             $message->subject('IFCITEC');
             });
@@ -356,7 +360,8 @@ class ProjetoController extends Controller {
              );
 
             $email = Pessoa::find($a)->email;
-            Mail::send('mail.mailAutor', ['projeto'=>$projeto], function($message) use ($email){
+            $nome = Pessoa::find($a)->nome;
+            Mail::send('mail.mailAutor', ['projeto'=>$projeto, 'nome' => $nome], function($message) use ($email){
             $message->to($email);
             $message->subject('IFCITEC');
             });
@@ -384,7 +389,8 @@ class ProjetoController extends Controller {
                 ]
                 );
                 $email = Pessoa::find($req->all()['orientador'])->email;
-                Mail::send('mail.mailOrientador', ['projeto'=>$projeto], function($message) use ($email){
+                $nome = Pessoa::find($req->all()['orientador'])->nome;
+                Mail::send('mail.mailOrientador', ['projeto'=>$projeto, 'nome' => $nome], function($message) use ($email){
                 $message->to($email);
                 $message->subject('IFCITEC');
                 });
@@ -411,7 +417,8 @@ class ProjetoController extends Controller {
                 ]
                 );
             $email = Pessoa::find($c)->email;
-            Mail::send('mail.mailCoorientador', ['projeto'=>$projeto], function($message) use ($email){
+            $nome = Pessoa::find($c)->nome;
+            Mail::send('mail.mailCoorientador', ['projeto'=>$projeto, 'nome' => $nome], function($message) use ($email){
             $message->to($email);
             $message->subject('IFCITEC');
             });
@@ -437,7 +444,8 @@ class ProjetoController extends Controller {
                 ]
                 );
             $email = Pessoa::find($c)->email;
-            Mail::send('mail.mailCoorientador', ['projeto'=>$projeto], function($message) use ($email){
+            $nome = Pessoa::find($c)->nome;
+            Mail::send('mail.mailCoorientador', ['projeto'=>$projeto, 'nome' => $nome], function($message) use ($email){
             $message->to($email);
             $message->subject('IFCITEC');
             });

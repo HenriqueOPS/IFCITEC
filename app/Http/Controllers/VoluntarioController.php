@@ -39,7 +39,7 @@ class VoluntarioController extends Controller
                 ]
         );
       }
-          Mail::send('mail.mailVoluntario', [], function($message){
+          Mail::send('mail.mailVoluntario', [Auth::user()->nome], function($message){
             $message->to(Auth::user()->email);
             $message->subject('IFCITEC');
         });
