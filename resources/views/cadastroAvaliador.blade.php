@@ -103,9 +103,31 @@
 									@endif
 								</div>
                                 <h4>Selecione as áreas do conhecimento que gostaria de avaliar/homologar, de acordo com o nível:</h4>
-                                @foreach($niveis as $nivel)
+                                @if(is_array($nivel))
+                                @foreach($nivel as $n)
                                     <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
-                                        <p>Nível {{$nivel->nivel}}</p>
+                                      <p>Nível {{$n->nivel}}:</p>
+                                    </div>
+                                    @foreach($areas as $area)
+                                    @if($area->nivel_id == $n->id)
+
+                                        <div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox"
+                                                           class="checkboxNivel{{$area->id}} checkboxArea"
+                                                           value="{{$area->id}}" name='area_id[]'>
+                                                    {{$area->area_conhecimento}}
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        @endif
+                                    @endforeach
+                                @endforeach
+                                @else
+                                	<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">        
+                                      <p>Nível {{$nivel->nivel}}:</p>
                                     </div>
                                     @foreach($areas as $area)
                                     @if($area->nivel_id == $nivel->id)
@@ -123,7 +145,7 @@
 
                                         @endif
                                     @endforeach
-                                @endforeach
+                                @endif
 							</div>
 						</div>
 						<div class="row">

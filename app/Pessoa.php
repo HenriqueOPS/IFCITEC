@@ -57,6 +57,10 @@ class Pessoa extends Authenticatable {
         return $schema . '.' . $this->table;
     }
 
+    public function edicoes() {
+        return $this->belongsToMany('App\Edicao', 'comissao_edicao','pessoa_id','edicao_id');
+    }
+
     public function tarefas() {
         return $this->belongsToMany('App\Tarefa');
     }

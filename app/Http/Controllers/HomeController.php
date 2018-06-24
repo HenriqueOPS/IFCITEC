@@ -118,4 +118,8 @@ class HomeController extends Controller {
         return (collect($projetosAgrupados));
     }
 
+    public function sucesso(){
+        return view('cadastroSucesso');
+    }
+
 }

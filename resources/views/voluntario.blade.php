@@ -68,17 +68,16 @@
 @section('js')
 <script type="application/javascript">
 $('.confirma').click(function(){
-
     $("#modal").modal();
 
     $('.confirmado').click(function(){
         var urlConsulta = './voluntario/cadastrar/'+$('#password').val();
         $.get(urlConsulta, function (res){
             if(res == 'true'){
-                alert("Sua inscrição foi enviada com sucesso");
-                location.href = './autor';
+                bootbox.alert("Sua inscrição foi enviada com sucesso");
+                location.href('./home');
             }else{
-                alert("Senha incorreta");
+                bootbox.alert("Senha incorreta");
             }
 
         });
@@ -87,4 +86,5 @@ $('.confirma').click(function(){
 });
 </script>
 @endsection
+
 
