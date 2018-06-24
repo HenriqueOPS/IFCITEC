@@ -27,6 +27,10 @@ class Edicao extends Model
     public function niveis() {
         return $this->belongsToMany('App\Nivel', 'nivel_edicao','nivel_id','edicao_id');
     }
+
+    public function pessoas() {
+        return $this->belongsToMany('App\Pessoa', 'comissao_edicao','pessoa_id','edicao_id');
+    }
     
     public function areas() {
         return $this->belongsToMany('App\AreaConhecimento', 'area_edicao','area_id','edicao_id');

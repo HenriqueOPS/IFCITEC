@@ -160,6 +160,7 @@
         <script src="{{ asset('js/app.js') }}"></script>
         <script src="{{ asset('js/material.min.js') }}"></script>
         <script src="{{ asset('js/material-kit.js') }}"></script>
+        <script src="{{ asset('js/bootbox.min.js') }}"></script>
         @yield('js')
     </body>
 </html>

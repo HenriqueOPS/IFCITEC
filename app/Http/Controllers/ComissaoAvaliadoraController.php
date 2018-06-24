@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Controllers\PeriodosController;
 use App\Endereco;
+use App\Pessoa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -45,16 +46,42 @@ class ComissaoAvaliadoraController extends Controller
                                     ->orderBy('nivel.id', 'asc')
                                     ->get()
                                     ->toArray();
-        return view('cadastroAvaliador', ['areas' => $areas,'niveis' => $niveis]);
+
+        $orientador = DB::table('funcao')->select('id')
+                                        ->where('funcao','Orientador')
+                                        ->get();
+        $coorientador = DB::table('funcao')->select('id')
+                                        ->where('funcao','Coorientador')
+                                        ->get();
+        
+        $projetosNiveis = DB::table('nivel')->join('projeto', 'nivel.id', '=', 'projeto.nivel_id')
+                                    ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+                                    ->select('nivel.nivel', 'nivel.id')
+                                    ->where('escola_funcao_pessoa_projeto.edicao_id', $p->periodoComissao())
+                                    ->where('pessoa_id', Auth::user()->id)
+                                    ->where('escola_funcao_pessoa_projeto.funcao_id', $orientador->get(0)->id)
+                                    ->orWhere('escola_funcao_pessoa_projeto.funcao_id', $coorientador->get(0)->id)
+                                    ->orderBy('nivel.id', 'asc')
+                                    ->get()
+                                    ->toArray();
+
+        foreach ($niveis as $n) {
+            foreach ($projetosNiveis as $pn) {
+                if($n->id != $pn->id){
+                    $nivel = $n;
+                }
+            }
+        }
+
+        if ($projetosNiveis == null) {
+            $nivel = $niveis;
+        }
+
+        return view('cadastroAvaliador', ['areas' => $areas,'nivel' => $nivel]);
     }
 
     public function cadastraComissao(PeriodosController $p, Request $req){
         $data = $req->all(); 
-        //insert comissao_edicao
-        $areas = $data['area_id'];
-        foreach ($areas as $area) {
-            //insert areas_comissao
-        }
         $idEndereco = Endereco::create([
                     'cep' => $data['cep'],
                     'endereco' => $data['endereco'],
@@ -63,7 +90,7 @@ class ComissaoAvaliadoraController extends Controller
                     'uf' => $data['uf'],
                     'numero' => $data['numero']
         ]);
-        DB::table('pessoa')->where('id',Auth::id())->update([
+        $id = DB::table('pessoa')->where('id',Auth::id())->update([
                     'titulacao' => $data['titulacao'], 
                     'lattes' => $data['lattes'], 
                     'profissao' => $data['profissao'],
@@ -71,6 +98,23 @@ class ComissaoAvaliadoraController extends Controller
                     'endereco_id' => $idEndereco['original']['id'],
                 ]
         );
+
+        Pessoa::find($id)->edicoes()->attach(['edicao_id' => $p->periodoComissao()],
+            ['pessoa_id' => Auth::id()]);
+
+
+        $comissaoEdicao = DB::table('comissao_edicao')->select('id')
+                                    ->where('edicao_id', $p->periodoComissao())
+                                    ->where('pessoa_id', Auth::id())
+                                    ->get();
+        $areas = $data['area_id'];
+        foreach ($areas as $area) {
+            DB::table('areas_comissao')->insert(
+                ['area_id' => $area,
+                    'comissao_edicao_id' => $comissaoEdicao->get(0)->id, 
+                    'homologado' => FALSE
+                ]);
+        }
 
         if(in_array("1", $data['funcao'])){
         $idA = DB::table('funcao')->where('funcao', 'Avaliador')->get(); 

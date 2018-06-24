@@ -228,7 +228,7 @@
                         @else
                         <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" value="{{isset($nivel->id) ? $nivel->id : ''}}" name="nivel_id[]">
+                                    <input type="checkbox" value="{{isset($nivel->id) ? $nivel->id : ''}}" name="nivel_id[]" class="checkboxNivel checkboxNivel{{$nivel->id}}">
                                     {{$nivel->nivel}}
                                 </label>
                         </div>
@@ -246,7 +246,7 @@
                             @else
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" value="{{isset($area->id) ? $area->id : ''}}" name="area_id[]">
+                                    <input type="checkbox" class="checkboxNivel{{$nivel->id}} checkboxArea" value="{{isset($area->id) ? $area->id : ''}}" name="area_id[]">
                                     {{$area->area_conhecimento}}
                                 </label>
                             </div>
@@ -281,5 +281,42 @@
         </div>
     </div>
 </div>
+
+@endsection
+@section('js')
+<script type="text/javascript">
+$('.checkboxNivel').click(function(data){
+
+    //marca ou desmarca todas as areas quando seleciona o nivel
+    let childNameClass = '.checkboxNivel'+ $(this).val();
+    let state = $($(this)).prop("checked");
+
+    $(childNameClass).prop("checked", state);
+
+});
+
+$('.checkboxArea').click(function(data){
+
+    //marca o nivel qnd selecionou apenas a area
+    let parent = $(this).prop('class').split(' ')[0];
+
+    $('.checkboxNivel.'+parent).prop("checked", true);
+
+    //remove a marcação do nível quando não tem nenhuma area selecionada
+    let nivelElements = $('.'+parent);
+    let totalChilds = nivelElements.length;
+    let totalChildsUnChecked = nivelElements.length;
+
+    for(var i=0;i<totalChilds;i++){
+        if(!$(nivelElements[i]).prop("checked"))
+            totalChildsUnChecked--;
+    }
+
+    if(totalChildsUnChecked == 1)
+        $('.checkboxNivel.'+parent).prop("checked", false);
+
+});
+
+</script>
 
 @endsection

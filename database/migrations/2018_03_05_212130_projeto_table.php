@@ -24,8 +24,8 @@ class ProjetoTable extends Migration
             $table->integer('nivel_id')->unsigned();
             $table->integer('edicao_id')->unsigned();
             //Foreign Keys Constraints
-            $table->foreign('area_id')->references('id')->on(env('DB_SCHEMA').'.area_edicao');
-            $table->foreign('nivel_id')->references('id')->on(env('DB_SCHEMA').'.nivel_edicao');
+            $table->foreign('area_id')->references('id')->on(env('DB_SCHEMA').'.area_conhecimento');
+            $table->foreign('nivel_id')->references('id')->on(env('DB_SCHEMA').'.nivel');
             $table->foreign('edicao_id')->references('id')->on(env('DB_SCHEMA').'.edicao');
         });
     }

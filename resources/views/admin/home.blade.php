@@ -817,10 +817,9 @@ $('.exclusao').click(function(){
         var urlConsulta = './escola/exclui-escola/'+idEscola+'/'+$('#password4').val();
         $.get(urlConsulta, function (res){
             if(res == 'true'){
-                alert("Escola excluida");
-                location.href = './administrador';
+                bootbox.alert("Escola excluída com sucesso");
             }else{
-                alert("Senha incorreta");
+                bootbox.alert("Senha incorreta");
             }
 
         });
@@ -838,10 +837,9 @@ $('.exclusaoNivel').click(function(){
         var urlConsulta = './nivel/exclui-nivel/'+idNivel+'/'+$('#password3').val();
         $.get(urlConsulta, function (res){
             if(res == 'true'){
-                alert("Nível excluido");
-                location.href = './administrador';
+                bootbox.alert("Nível excluído com sucesso");
             }else{
-                alert("Senha incorreta");
+                bootbox.alert("Senha incorreta");
             }
 
         });
@@ -859,10 +857,9 @@ $('.exclusaoArea').click(function(){
         var urlConsulta = './area/exclui-area/'+idArea+'/'+$('#password').val();
         $.get(urlConsulta, function (res){
             if(res == 'true'){
-                alert("Area excluida");
-                location.href = './administrador';
+                bootbox.alert("Área do conhecimento excluída com sucesso");
             }else{
-                alert("Senha incorreta");
+                bootbox.alert("Senha incorreta");
             }
 
         });
@@ -880,10 +877,9 @@ $('.exclusaoEdicao').click(function(){
         var urlConsulta = './edicao/exclui-edicao/'+idEdicao+'/'+$('#password2').val();
         $.get(urlConsulta, function (res){
             if(res == 'true'){
-                alert("Edição excluida");
-                location.href = './administrador';
+                bootbox.alert("Edição excluída com sucesso");
             }else{
-                alert("Senha incorreta");
+                bootbox.alert("Senha incorreta");
             }
 
         });

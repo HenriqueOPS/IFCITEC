@@ -41,7 +41,7 @@ class Projeto extends Model {
     }
 
     public function nivel() {
-        return $this->belongsTo('App\Nivel');
+        return $this->belongsTo('App\Nivel','nivel_id');
     }
 
     public function edicao() {

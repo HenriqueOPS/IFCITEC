@@ -48,10 +48,15 @@ class ProjetoController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create(PeriodosController $p) {
+        $niveisEdicao = DB::table('nivel_edicao')->select('nivel_id')->where('edicao_id', $p->periodoInscricao())->get()->keyBy('nivel_id')->toArray();
+        $idNivel = array_keys($niveisEdicao);
 
-        $niveis = Nivel::all();
-        $areas = AreaConhecimento::all();
+        $areasEdicao = DB::table('area_edicao')->select('area_id')->where('edicao_id', $p->periodoInscricao())->get()->keyBy('area_id')->toArray();
+        $idArea = array_keys($areasEdicao);
+
+        $niveis = Nivel::find($idNivel);
+        $areas = AreaConhecimento::find($idArea);
 
         $funcoes = Funcao::getByCategory('integrante');
 
@@ -80,9 +85,9 @@ class ProjetoController extends Controller {
         $areaConhecimento = AreaConhecimento::find($request->area_conhecimento);
         $nivel = Nivel::find($request->nivel);
         $edicao = Edicao::find($p->periodoInscricao());
+        $projeto->edicao()->associate($edicao);
         $projeto->areaConhecimento()->associate($areaConhecimento);
         $projeto->nivel()->associate($nivel);
-        $projeto->edicao()->associate($edicao);
         //
         $projeto->save();
         //--Inicio Attachment de Palavras Chaves. Tabela: palavra_projeto
@@ -90,7 +95,6 @@ class ProjetoController extends Controller {
         foreach ($palavrasChaves as $palavra) {
             $projeto->palavrasChaves()->attach(PalavraChave::create(['palavra' => $palavra]));
         }
-
         //--Inicio Attachment de Participante.
         //Tabela: funcao_pessoa
         //Tabela: escola_funcao_pessoa_projeto

@@ -11,6 +11,7 @@
   |
  */
 
+
 Route::get('/', function () {
   if(Auth::check())
     return redirect()->route('home');
@@ -32,6 +33,9 @@ Route::post('cadastro', [
 ]);
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::get('/sucesso', 'HomeController@sucesso')->name('sucesso');
 
 //Edição dos dados pessoais
 Route::get('/editar-cadastro', 'PessoaController@editarCadastro')->name('editarCadastro');
