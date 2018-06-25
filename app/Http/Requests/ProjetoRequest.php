@@ -59,29 +59,37 @@ class ProjetoRequest extends FormRequest {
      * @param  \Illuminate\Validation\Validator  $validator
      * @return void
      */
-    public function withValidator($validator) {   
+    public function withValidator($validator) {
 
             $dados = Nivel::find($validator->getData()['nivel']);
             $validator->addRules(['resumo' => ('required|between: '.$dados->min_ch.','.$dados->max_ch)]);
+
             $autor = $validator->getData()['autor'];
             $cont = 0;
             foreach ($autor as $a) {
                 if($a != null){
                     $cont++;
                 }
-            }       
+            }
             if($cont == 0){
                 $validator->sometimes('autor[]', 'required', function($input) use ($cont){
                 return $input->$cont == 0;
                 });
                 $validator->errors()->add('autor[]', 'É necessário ao menos um autor');
             }
-           
-            $totalPalavras = (count(explode(",", $validator->getData()['palavras_chaves'])));
-            if($totalPalavras < $dados->palavras) {
-               $validator->addRules(['palavras_chaves' => ('required|min: '. $dados->palavras)]);
-            }
 
+            // XGH
+			// valida as palavras chaves por Callback
+			// ME PERDOE POR ISSO =(
+			$validator->after(function ($validator) {
+				$totalPalavras = (count(explode(",", $validator->getData()['palavras_chaves'])));
+
+				$numPalavras = Nivel::find($validator->getData()['nivel']);
+
+				if($totalPalavras < $numPalavras->palavras) {
+					$validator->errors()->add('palavras_chaves', 'As palavras-chave devem conter pelo menos '.$numPalavras->palavras.' palavras');
+				}
+			});
     }
 
 }
