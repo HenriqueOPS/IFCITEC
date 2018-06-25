@@ -18,7 +18,20 @@ class Edicao extends Model
         'credenciamento_abertura','credenciamento_fechamento',
         'voluntario_abertura','voluntario_fechamento',
         'comissao_abertura','comissao_fechamento',
-        'relatorio_abertura','relatorio_fechamento','ano'];
+        'relatorio_abertura','relatorio_fechamento',
+		'feira_abertura', 'feira_fechamento', 'ano', 'projetos'];
+
+	public static function getEdicaoId() {
+
+		$edicao = Edicao::whereRaw("((NOW() AT TIME ZONE 'America/Sao_Paulo') >= feira_abertura)")
+						->whereRaw("((NOW() AT TIME ZONE 'America/Sao_Paulo') <= feira_fechamento)")
+						->get();
+
+		if($edicao)
+			return $edicao[0]->id;
+
+		return 0;
+	}
 
     public function edicoes() {
         return $this->belongsToMany('App\Edicao', 'edicao');
@@ -31,7 +44,7 @@ class Edicao extends Model
     public function pessoas() {
         return $this->belongsToMany('App\Pessoa', 'comissao_edicao','pessoa_id','edicao_id');
     }
-    
+
     public function areas() {
         return $this->belongsToMany('App\AreaConhecimento', 'area_edicao','area_id','edicao_id');
     }
