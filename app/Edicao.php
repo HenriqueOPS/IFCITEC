@@ -21,6 +21,18 @@ class Edicao extends Model
         'relatorio_abertura','relatorio_fechamento',
 		'feira_abertura', 'feira_fechamento', 'ano', 'projetos'];
 
+	public static function getEdicaoId() {
+
+		$edicao = Edicao::whereRaw("((NOW() AT TIME ZONE 'America/Sao_Paulo') >= feira_abertura)")
+						->whereRaw("((NOW() AT TIME ZONE 'America/Sao_Paulo') <= feira_fechamento)")
+						->get();
+
+		if($edicao)
+			return $edicao[0]->id;
+
+		return 0;
+	}
+
     public function edicoes() {
         return $this->belongsToMany('App\Edicao', 'edicao');
     }
