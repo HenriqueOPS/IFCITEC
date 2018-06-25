@@ -14,15 +14,7 @@
 
 	<div class="row">
 
-
-		<ul class="col-md-3 nav nav-pills nav-stacked">
-			<li><a href="{{route('administrador')}}">Administrador</a></li>
-			<li><a href="{{route('comissaoAvaliadora')}}">Cadastro Avaliador / Revisor</a></li>
-			<li><a href="{{route('avaliador')}}">Avaliador</a></li>
-			<li><a href="{{route('revisor')}}">Revisor</a></li>
-		</ul>
-
-		<div class="col-md-9">
+		<div class="col-md-12 main main-raised">
 
 			<h3>Debug =)</h3>
 

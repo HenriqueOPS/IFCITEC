@@ -3,7 +3,7 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
-/* 
+/*
     Created on : 25/06/2017, 22:02:02
     Author     : filipe_oliveira
 */
@@ -24,22 +24,7 @@ h2{
 
 body{
     background-image: url("../img/fundo.png");
-
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: 0 0;
-    background-attachment: fixed;
-}
-
-.moodle-icon{
-    width: 48px;
-    height: 48px;
-    display: inline-block;
-    -webkit-mask: url('../img/moodleIcon.svg') no-repeat 50% 50%;
-    mask: url('../img/moodleIcon.svg') no-repeat 50% 50%;
-    -webkit-mask-size: contain;
-    mask-size: contain;
-    vertical-align: middle;
+    background-size: 100%;
 }
 
 .icon-white{
@@ -128,7 +113,7 @@ body{
     -webkit-user-select: none; /* Safari */
        -moz-user-select: none; /* Firefox */
         -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; 
+            user-select: none;
 }
 
 /* vinculaHomologador styles */
@@ -137,7 +122,7 @@ body{
   min-height: 250px;
   padding: 8px;
   border: 2px rgba(0,0,0,0) dashed;
-  transition: border 0.2s ease-in; 
+  transition: border 0.2s ease-in;
 }
 
 .drop-area > * {
