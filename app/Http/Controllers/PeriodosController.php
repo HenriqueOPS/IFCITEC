@@ -88,4 +88,17 @@ class PeriodosController extends Controller
 		return 0;
 	}
 
+	public function periodoFeira() {
+
+		$id = DB::select("SELECT id FROM edicao WHERE
+							((NOW() AT TIME ZONE 'America/Sao_Paulo') >= feira_abertura) AND
+							((NOW() AT TIME ZONE 'America/Sao_Paulo') <= feira_fechamento)
+						  LIMIT 1");
+
+		if($id)
+			return $id[0]->id;
+
+		return 0;
+	}
+
 }

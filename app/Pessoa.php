@@ -2,15 +2,17 @@
 
 namespace App;
 
+use App\Http\Controllers\PeriodosController as Periodos;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable as Notifiable;
 //
 use Illuminate\Support\Facades\DB;
 
+
 class Pessoa extends Authenticatable {
 
     use Notifiable;
-    
+
     /**
      * The table associated with the model.
      *
@@ -61,8 +63,46 @@ class Pessoa extends Authenticatable {
         return $this->belongsToMany('App\Tarefa');
     }
 
+	/**
+	 * Verifica se pessoa possui a função passada por parâmetro
+	 * na edição corrente
+	 * @access public
+	 * @param String $check Uma string contento o nome da Role
+	 * @return boolean
+	 */
+	public function temFuncao($funcao) {
+
+    	//pega o id da edição
+		$EdicaoId = Edicao::getEdicaoId();
+
+		if($EdicaoId){
+
+			//Faz a consulta na mão por causa dos Wheres
+			$query = DB::table('funcao_pessoa')
+							->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+							//Busca pela Função
+							->where('funcao.funcao','=',$funcao)
+							//Busca pela Pessoa
+							->where('funcao_pessoa.pessoa_id','=',$this->id)
+							//Busca pela Edição
+							->where('edicao_id', $EdicaoId)
+							->orWhere('edicao_id',null)
+							->get();
+
+			if($query->count()) {
+				//Verifica se não foi homologado como Revisor ou Avaliador
+				if(($funcao=='Revisor' || $funcao=='Avaliador') && !$query[0]->homologado)
+					return false;
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
     public function funcoes() {
-        return $this->belongsToMany('App\Funcao'); 
+        return $this->belongsToMany('App\Funcao');
     }
 
     public function projetos() {
@@ -77,23 +117,8 @@ class Pessoa extends Authenticatable {
         return $this->hasMany('App\Revisao');
     }
 
-    public function endereco() {
-        return $this->hasOne('App\Endereco');
-    }
-
     static function findByEmail($email) {
         return Pessoa::where('email', $email)->first();
-    }
-    
-    /**
-     * Verifica se pessoa possui a função passada por parâmetro
-     * como Autor, Coordenador ou Coorientador.
-     * @access public
-     * @param String $check Uma string contento o nome da Role
-     * @return boolean
-     */
-    public function temFuncao($check) {
-        return in_array($check, array_pluck($this->funcoes->toArray(), 'funcao'));
     }
 
     public function scopeWhereFuncao($query, $funcao){
