@@ -29,12 +29,8 @@
                                 </div>
                             </div> 
                             <div class="col-md-10 col-md-offset-1 text-center">
-                            <h3>Confirma sua inscrição como voluntário?</h3>
-                            <a class="btn btn-success">
-                                <i class="material-icons">directions_walk</i> Sim
-                            </a>
-                            <a class="btn btn-success">
-                                <i class="material-icons">arrow_back</i> Voltar
+                            <a href="javascript:void(0);" class="confirma btn btn-success">
+                                <i class="material-icons">directions_walk</i> Inscrever
                             </a>
                             </div>
                         </div>
@@ -44,5 +40,51 @@
         </div>
     </div>
 </div>
+
+<div id="modal" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="modal">
+    <div class="modal-dialog" role="document1">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Inscrição Voluntário</h5>
+            </div>
+
+            <div class="modal-body">
+                <span>Para confirmar sua inscrição como voluntário, confirme sua senha.</span>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">lock_outline</i>
+                    </span>
+                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>              
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="confirmado btn btn-primary" data-dismiss="modal">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
+
+@section('js')
+<script type="application/javascript">
+$('.confirma').click(function(){
+    $("#modal").modal();
+
+    $('.confirmado').click(function(){
+        var urlConsulta = './voluntario/cadastrar/'+$('#password').val();
+        $.get(urlConsulta, function (res){
+            if(res == 'true'){
+                bootbox.alert("Sua inscrição foi enviada com sucesso");
+                location.href('./home');
+            }else{
+                bootbox.alert("Senha incorreta");
+            }
+
+        });
+    });
+
+});
+</script>
+@endsection
+
 

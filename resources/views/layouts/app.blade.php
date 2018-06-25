@@ -8,7 +8,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Ifcitec') }}</title>
+        <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts and icons -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
@@ -28,14 +28,15 @@
             @else
             <nav class="navbar navbar-default navbar-static-top"-->
                 <div class="container">
-
+                    
                     <div class="navbar-header">
                         <a class="navbar-brand" href="{{ route('home') }}">
                             <img src="{{ asset('img/logo.png') }}" width="100" alt="IFCITEC">
                         </a>
 
-
+                        
                     </div>
+                
 
                     <div class="collapse navbar-collapse" id="app-navbar-collapse">
                         <!-- Left Side Of Navbar -->
@@ -55,8 +56,27 @@
                                 </ul>
                             </li>
                         </ul>
-
                         <!-- Right Side Of Navbar -->
+                        <ul class="nav navbar-nav navbar-left">
+                            <li><a href="{{ route('autor') }}">Projeto</a></li>
+                            <li><a href="#" class="dropdown-toggle" data-toggle="dropdown" >Comissão Avaliadora</a>
+                            <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="{{ route('comissaoAvaliadora') }}">
+                                            Cadastrar-se
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('comissao') }}">
+                                            Painel de Comissão Avaliadora
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="{{ route('voluntario') }}">Voluntário</a></li>
+                            <li><a href="{{ route('organizador') }}">Organizador</a></li>
+                            <li><a href="{{ route('administrador') }}">Administrador</a></li>
+                        </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <!-- Authentication Links
                             <li class="dropdown">
@@ -140,6 +160,7 @@
         <script src="{{ asset('js/app.js') }}"></script>
         <script src="{{ asset('js/material.min.js') }}"></script>
         <script src="{{ asset('js/material-kit.js') }}"></script>
+        <script src="{{ asset('js/bootbox.min.js') }}"></script>
         @yield('js')
     </body>
 </html>
