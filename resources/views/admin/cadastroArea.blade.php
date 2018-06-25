@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('css')
+<link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
 <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
+
 @endsection
 
 @section('content')
@@ -18,24 +20,27 @@
 
                     {{ csrf_field() }}
 
+
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <i class="material-icons">text_fields</i>
+                                    <i class="material-icons">school</i>
                                 </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Nível</label>
-                                    <select class="form-control" id="nivel_id">
-                                        foreach () {
-                                        <option></option>
-                                        }
+                                <div class="form-group">
+                                    <label class="control-label">Nível</label>        
+                                    <select id="nivel-select" name="nivel_id" value="{{old('nivel_id')}}" required>
+                                        @foreach ($niveis as $nivel) 
+
+                                        <option value="{{$nivel->id}}">{{$nivel->nivel}}</option>
+                                        @endforeach
                                     </select>
+                                    
                                 </div>
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <i class="material-icons">school</i>
+                                    <i class="material-icons">text_fields</i>
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Nome da Área</label>
@@ -67,3 +72,29 @@
 
 @endsection
 
+
+@section('js')
+<script type="text/javascript" src="{{asset('js/selectize.min.js')}}"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+
+    var xhr;
+    var nivelSelect, $nivelSelect;
+
+    var oldNivel = $('#nivel-select').attr("value");
+
+    $nivelSelect = $('#nivel-select').selectize({
+        placeholder: 'Escolha o Nível...',
+        preload: true,
+        onInitialize: function () {
+            this.setValue(oldNivel, false);
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+
+
+    nivelSelect = $nivelSelect[0].selectize;
+});
+
+</script>
+@endsection

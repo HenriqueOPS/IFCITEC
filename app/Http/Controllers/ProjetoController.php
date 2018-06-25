@@ -1,17 +1,20 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Http\Controllers\PeriodosController;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ProjetoRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Mail;
 //
 use App\Nivel;
 use App\AreaConhecimento;
 use App\Funcao;
 use App\Escola;
+use App\Edicao;
 use App\Projeto;
 use App\Pessoa;
 use App\PalavraChave;
@@ -45,11 +48,27 @@ class ProjetoController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
-        $niveis = Nivel::all();
+    public function create(PeriodosController $p) {
+        $niveisEdicao = DB::table('nivel_edicao')->select('nivel_id')->where('edicao_id', $p->periodoInscricao())->get()->keyBy('nivel_id')->toArray();
+        $idNivel = array_keys($niveisEdicao);
+
+        $areasEdicao = DB::table('area_edicao')->select('area_id')->where('edicao_id', $p->periodoInscricao())->get()->keyBy('area_id')->toArray();
+        $idArea = array_keys($areasEdicao);
+
+        $niveis = Nivel::find($idNivel);
+        $areas = AreaConhecimento::find($idArea);
+
         $funcoes = Funcao::getByCategory('integrante');
+
         $escolas = Escola::all();
-        return view('projeto.create')->withNiveis($niveis)->withFuncoes($funcoes)->withEscolas($escolas);
+        $pessoas = Pessoa::all();
+
+        return view('projeto.create')
+			->withNiveis($niveis)
+			->withAreas($areas)
+			->withFuncoes($funcoes)
+			->withEscolas($escolas)
+			->withPessoas($pessoas);
     }
 
     /**
@@ -58,13 +77,15 @@ class ProjetoController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProjetoRequest $request) {
+    public function store(PeriodosController $p, ProjetoRequest $request) {
         $projeto = new Projeto();
         $projeto->fill($request->toArray());
         $projeto->titulo = strtoupper($request->titulo);
         //
-        $areaConhecimento = AreaConhecimento::find($request->area);
+        $areaConhecimento = AreaConhecimento::find($request->area_conhecimento);
         $nivel = Nivel::find($request->nivel);
+        $edicao = Edicao::find($p->periodoInscricao());
+        $projeto->edicao()->associate($edicao);
         $projeto->areaConhecimento()->associate($areaConhecimento);
         $projeto->nivel()->associate($nivel);
         //
@@ -74,16 +95,99 @@ class ProjetoController extends Controller {
         foreach ($palavrasChaves as $palavra) {
             $projeto->palavrasChaves()->attach(PalavraChave::create(['palavra' => $palavra]));
         }
-        //--Inicio Attachment de Participante. Tabela: escola_funcao_pessoa_projeto
+        //--Inicio Attachment de Participante.
+        //Tabela: funcao_pessoa
+        //Tabela: escola_funcao_pessoa_projeto
         //Insert via DB pois o Laravel não está preparado para um tabela de 4 relacionamentos
-        DB::table('escola_funcao_pessoa_projeto')->insert(
+
+        $idA = DB::table('funcao')->where('funcao', 'Autor')->get();
+        $idO = DB::table('funcao')->where('funcao', 'Orientador')->get();
+        $idC = DB::table('funcao')->where('funcao', 'Coorientador')->get();
+
+        foreach($request['autor'] as $a){
+            if($a != null){
+            $pessoaAutor = DB::table('funcao_pessoa')->select('pessoa_id')
+            ->where('funcao_id', $idA->first()->id)->where('edicao_id', $p->periodoInscricao())
+            ->where('pessoa_id', $a)->get()->toArray();
+            if($pessoaAutor ==  null){
+            DB::table('funcao_pessoa')->insert(
+                ['edicao_id' => $p->periodoInscricao(),
+                    'funcao_id' => $idA->first()->id,
+                    'pessoa_id' => $a,
+                    'homologado' => FALSE
+                ]);
+            }
+            DB::table('escola_funcao_pessoa_projeto')->insert(
                 ['escola_id' => $request->escola,
-                    'funcao_id' => $request->funcao,
-                    'pessoa_id' => Auth::id(),
-                    'projeto_id' => $projeto->id
+                    'funcao_id' => $idA->first()->id,
+                    'pessoa_id' => $a,
+                    'projeto_id' => $projeto->id,
+                    'edicao_id' => $p->periodoInscricao(),
                 ]
-        );
-        //
+             );
+
+            $email = Pessoa::find($a)->email;
+            $nome = Pessoa::find($a)->nome;
+            Mail::send('mail.mailAutor', ['projeto'=>$projeto, 'nome' => $nome], function($message) use ($email){
+            $message->to($email);
+            $message->subject('IFCITEC');
+            });
+
+        }
+    }
+
+        $pessoaOrientador = DB::table('funcao_pessoa')->where('funcao_id', $idO->first()->id)->where('edicao_id', $p->periodoInscricao())->where('pessoa_id', $request['orientador'])->get()->toArray();
+            if($pessoaOrientador ==  null){
+              DB::table('funcao_pessoa')->insert(
+                ['edicao_id' => $p->periodoInscricao(),
+                    'funcao_id' => $idO->first()->id,
+                    'pessoa_id' => $request['orientador'],
+                    'homologado' => FALSE
+                ]);
+            }
+                DB::table('escola_funcao_pessoa_projeto')->insert(
+                ['escola_id' => $request->escola,
+                    'funcao_id' => $idO->first()->id,
+                    'pessoa_id' => $request['orientador'],
+                    'projeto_id' => $projeto->id,
+                    'edicao_id' => $p->periodoInscricao(),
+                ]
+                );
+                $email = Pessoa::find($request['orientador'])->email;
+                $nome = Pessoa::find($request['orientador'])->nome;
+                Mail::send('mail.mailOrientador', ['projeto'=>$projeto, 'nome' => $nome], function($message) use ($email){
+                $message->to($email);
+                $message->subject('IFCITEC');
+                });
+
+        foreach($request['coorientador'] as $c){
+             if($c != null){
+            $pessoaCoorientador = DB::table('funcao_pessoa')->where('funcao_id', $idC->first()->id)->where('edicao_id', $p->periodoInscricao())->where('pessoa_id', $c)->get()->toArray();
+            if($pessoaCoorientador ==  false){
+            DB::table('funcao_pessoa')->insert(
+                ['edicao_id' => $p->periodoInscricao(),
+                    'funcao_id' => $idC->first()->id,
+                    'pessoa_id' => $c,
+                    'homologado' => FALSE
+                ]);
+            }
+            DB::table('escola_funcao_pessoa_projeto')->insert(
+                ['escola_id' => $request->escola,
+                    'funcao_id' => $idC->first()->id,
+                    'pessoa_id' => $c,
+                    'projeto_id' => $projeto->id,
+                    'edicao_id' => $p->periodoInscricao(),
+                ]
+                );
+            $email = Pessoa::find($c)->email;
+            $nome = Pessoa::find($c)->nome;
+            Mail::send('mail.mailCoorientador', ['projeto'=>$projeto, 'nome' => $nome], function($message) use ($email){
+            $message->to($email);
+            $message->subject('IFCITEC');
+            });
+            }
+        }
+
         return redirect()->route('projeto.show', ['projeto' => $projeto->id]);
     }
 
@@ -108,8 +212,252 @@ class ProjetoController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
-        //
+    public function editarProjeto($id) {
+        $pessoas = Pessoa::all();
+        $projetoP = Projeto::find($id);
+        $nivelP = Nivel::find($projetoP->nivel_id);
+        $areaP = AreaConhecimento::find($projetoP->area_id);
+        $idPalavras = DB::table('palavra_projeto')->select('palavra_id')
+            ->where('projeto_id', $id)->get();
+        foreach ($idPalavras as $i) {
+            $palavrasP[] = PalavraChave::find($i->palavra_id);
+        }
+        $escolaP = DB::table('escola_funcao_pessoa_projeto')->select('escola_id')
+        ->where('projeto_id', $id)->get();
+
+       
+        $idAutor = DB::table('funcao')->select('id')
+        ->where('funcao', 'Autor')->get();
+        $idOrientador = DB::table('funcao')->select('id')
+        ->where('funcao', 'Orientador')->get();
+        $idCoorientador = DB::table('funcao')->select('id')
+        ->where('funcao', 'Coorientador')->get();
+
+        $autor = DB::table('escola_funcao_pessoa_projeto')->select('pessoa_id')
+        ->where('projeto_id', $id)->where('funcao_id', $idAutor->first()->id)->get()->toArray();
+        $orientador = DB::table('escola_funcao_pessoa_projeto')->select('pessoa_id')
+        ->where('projeto_id', $id)->where('funcao_id', $idOrientador->first()->id)->get()->toArray();
+        $coorientador = DB::table('escola_funcao_pessoa_projeto')->select('pessoa_id')
+        ->where('projeto_id', $id)->where('funcao_id', $idCoorientador->first()->id)->get()->toArray();
+        $niveis = Nivel::all();
+        $areas = AreaConhecimento::all();
+        $funcoes = Funcao::getByCategory('integrante');
+        $escolas = Escola::all();
+
+        return view('projeto.edit', compact('niveis','areas','funcoes','escolas','projetoP','nivelP','areaP','escolaP','palavrasP','autor','orientador','coorientador','pessoas'));
+    }
+
+    public function editaProjeto(PeriodosController $p, ProjetoRequest $req){
+        $id = $req->all()['id_projeto'];
+        Projeto::where('id',$id)->update(['titulo'=>$req->all()['titulo'],
+                                         'resumo'=>$req->all()['resumo'],
+                                         'area_id'=>$req->all()['area_conhecimento'],
+                                         'nivel_id'=>$req->all()['nivel'],
+
+
+        ]);
+        DB::table('escola_funcao_pessoa_projeto')->where('projeto_id', $id)->update(['escola_id'=>$req->all()['escola'],
+        ]);
+
+        $projeto = Projeto::find($id);
+        $palavrasChave = explode(",", $req->all()['palavras_chaves']);
+        $palavrasBanco = DB::table('palavra_chave')->join('palavra_projeto', 'palavra_chave.id', '=', 'palavra_projeto.palavra_id')->select('palavra')->where('projeto_id', $id)->get()->keyBy('palavra')->toArray();
+        $palavrasb = array_keys( $palavrasBanco);
+        for($i=0;$i<count($palavrasChave);$i++){
+            $palavrasChave[$i] = trim($palavrasChave[$i]);
+        }
+
+        foreach ($palavrasChave as $pc) {
+            if(in_array($pc, $palavrasb) == false){
+                $projeto->palavrasChaves()->attach(PalavraChave::create(['palavra' => $pc]));
+            }
+        }
+
+        foreach ($palavrasBanco as $pcbanco) {
+            if(! in_array($pcbanco->palavra, $palavrasChave)){
+                $idPalavraChave = DB::table('palavra_chave')->join('palavra_projeto', 'palavra_chave.id', '=', 'palavra_projeto.palavra_id')->where('projeto_id', $id)->where('palavra', $pcbanco->palavra)->get();
+                DB::table('palavra_projeto')->where('projeto_id', $id)->where('palavra_id',$idPalavraChave->first()->id)->delete();
+            }
+        }
+
+        $idA = DB::table('funcao')->where('funcao', 'Autor')->get();
+        $idO = DB::table('funcao')->where('funcao', 'Orientador')->get();
+        $idC = DB::table('funcao')->where('funcao', 'Coorientador')->get();
+
+        $aaProjeto = DB::table('escola_funcao_pessoa_projeto')->select('pessoa_id')->where('projeto_id', $id)->where('edicao_id', $p->periodoInscricao())->where('funcao_id', $idA->first()->id)->get()->keyBy('pessoa_id')->toArray();
+        $oProjeto = DB::table('escola_funcao_pessoa_projeto')->select('pessoa_id')->where('projeto_id', $id)->where('edicao_id', $p->periodoInscricao())->where('funcao_id', $idO->first()->id)->get();
+        $ccProjeto = DB::table('escola_funcao_pessoa_projeto')->select('pessoa_id')->where('projeto_id', $id)->where('edicao_id', $p->periodoInscricao())->where('funcao_id', $idC->first()->id)->get()->keyBy('pessoa_id')->toArray();
+        $aProjeto = array_keys( $aaProjeto);
+        $cProjeto = array_keys( $ccProjeto);
+        foreach ($aProjeto as $ap) {
+          if(in_array($ap, $_POST['autor']) ==  false){
+              DB::table('escola_funcao_pessoa_projeto')->where('projeto_id', $id)->where('funcao_id', $idA->first()->id)->where('pessoa_id', $ap)->where('edicao_id', $p->periodoInscricao())->delete();
+              DB::table('funcao_pessoa')->where('funcao_id', $idA->first()->id)->where('pessoa_id', $ap)->where('edicao_id', $p->periodoInscricao())->delete();
+            }
+        }
+        if($oProjeto->first()->pessoa_id !=  $_POST['orientador']){
+              DB::table('escola_funcao_pessoa_projeto')->where('projeto_id', $id)->where('funcao_id', $idO->first()->id)->where('pessoa_id', $oProjeto->first()->pessoa_id)->where('edicao_id', $p->periodoInscricao())->delete();
+              DB::table('funcao_pessoa')->where('funcao_id', $idO->first()->id)->where('pessoa_id', $oProjeto->first()->pessoa_id)->where('edicao_id', $p->periodoInscricao())->delete();
+        }
+        if($cProjeto != null){
+        foreach ($cProjeto as $cp) {
+          if(in_array($cp, $_POST['coorientador']) ==  false){
+              DB::table('escola_funcao_pessoa_projeto')->where('projeto_id', $id)->where('funcao_id', $idC->first()->id)->where('pessoa_id', $cp)->where('edicao_id', $p->periodoInscricao())->delete();
+              DB::table('funcao_pessoa')->where('funcao_id', $idC->first()->id)->where('pessoa_id', $cp)->where('edicao_id', $p->periodoInscricao())->delete();
+            }
+        }
+        }
+        foreach($req->all()['autor'] as $a){
+            if($a != null){
+            if(is_array($aProjeto) == true){
+            if(in_array($a, $aProjeto) ==  false){
+            $pessoaAutor = DB::table('funcao_pessoa')->select('pessoa_id')
+            ->where('edicao_id', $p->periodoInscricao())
+            ->where('funcao_id', $idA->first()->id)
+            ->where('pessoa_id', $a)->get()->toArray();
+            if($pessoaAutor ==  null){
+            DB::table('funcao_pessoa')->insert(
+                ['edicao_id' => $p->periodoInscricao(),
+                    'funcao_id' => $idA->first()->id,
+                    'pessoa_id' => $a,
+                    'homologado' => FALSE
+                ]);
+            }
+            DB::table('escola_funcao_pessoa_projeto')->insert(
+                ['escola_id' => $req->all()['escola'],
+                    'funcao_id' => $idA->first()->id,
+                    'pessoa_id' => $a,
+                    'projeto_id' => $projeto->id,
+                    'edicao_id' => $p->periodoInscricao(),
+                ]
+             );
+
+            $email = Pessoa::find($a)->email;
+             $nome = Pessoa::find($a)->nome;
+            Mail::send('mail.mailAutor', ['projeto'=>$projeto, 'nome' => $nome], function($message) use ($email){
+            $message->to($email);
+            $message->subject('IFCITEC');
+            });
+            }
+        }
+        else{
+            if ($a != $aProjeto->first()->pessoa_id) {
+                $pessoaAutor = DB::table('funcao_pessoa')->select('pessoa_id')
+                ->where('edicao_id', $p->periodoInscricao())
+                ->where('funcao_id', $idA->first()->id)
+                ->where('pessoa_id', $a)->get()->toArray();
+            if($pessoaAutor ==  null){
+            DB::table('funcao_pessoa')->insert(
+                ['edicao_id' => $p->periodoInscricao(),
+                    'funcao_id' => $idA->first()->id,
+                    'pessoa_id' => $a,
+                    'homologado' => FALSE
+                ]);
+            }
+            DB::table('escola_funcao_pessoa_projeto')->insert(
+                ['escola_id' => $req->all()['escola'],
+                    'funcao_id' => $idA->first()->id,
+                    'pessoa_id' => $a,
+                    'projeto_id' => $projeto->id,
+                    'edicao_id' => $p->periodoInscricao(),
+                ]
+             );
+
+            $email = Pessoa::find($a)->email;
+            $nome = Pessoa::find($a)->nome;
+            Mail::send('mail.mailAutor', ['projeto'=>$projeto, 'nome' => $nome], function($message) use ($email){
+            $message->to($email);
+            $message->subject('IFCITEC');
+            });
+            }
+        }
+        }
+    }
+        $orientador = Pessoa::where('id', $oProjeto->first()->pessoa_id) -> first();
+        if($req->all()['orientador'] !=  $orientador->id){
+        $pessoaOrientador = DB::table('funcao_pessoa')->where('funcao_id', $idO->first()->id)->where('edicao_id', $p->periodoInscricao())->where('pessoa_id', $orientador->first()->id)->get()->toArray();
+            if($pessoaOrientador ==  null){
+              DB::table('funcao_pessoa')->insert(
+                ['edicao_id' => $p->periodoInscricao(),
+                    'funcao_id' => $idO->first()->id,
+                    'pessoa_id' => $orientador->first()->id,
+                    'homologado' => FALSE
+                ]);
+                }
+                DB::table('escola_funcao_pessoa_projeto')->insert(
+                ['escola_id' => $req->all()['escola'],
+                    'funcao_id' => $idO->first()->id,
+                    'pessoa_id' => $orientador->first()->id,
+                    'projeto_id' => $projeto->id,
+                    'edicao_id' => $p->periodoInscricao(),
+                ]
+                );
+                $email = Pessoa::find($req->all()['orientador'])->email;
+                $nome = Pessoa::find($req->all()['orientador'])->nome;
+                Mail::send('mail.mailOrientador', ['projeto'=>$projeto, 'nome' => $nome], function($message) use ($email){
+                $message->to($email);
+                $message->subject('IFCITEC');
+                });
+            }
+        foreach($req->all()['coorientador'] as $c){
+            if($c != null){
+            if(is_array($cProjeto) == true){
+            if(in_array($c, $cProjeto) ==  false){
+            $pessoaCoorientador = DB::table('funcao_pessoa')->where('funcao_id', $idC->first()->id)->where('edicao_id', $p->periodoInscricao())->where('pessoa_id', $c)->get()->toArray();
+            if($pessoaCoorientador ==  null){
+            DB::table('funcao_pessoa')->insert(
+                ['edicao_id' => $p->periodoInscricao(),
+                    'funcao_id' => $idC->first()->id,
+                    'pessoa_id' => $c,
+                    'homologado' => FALSE
+                ]);
+            }
+            DB::table('escola_funcao_pessoa_projeto')->insert(
+                ['escola_id' => $req->all()['escola'],
+                    'funcao_id' => $idC->first()->id,
+                    'pessoa_id' => $c,
+                    'projeto_id' => $projeto->id,
+                    'edicao_id' => $p->periodoInscricao(),
+                ]
+                );
+            $email = Pessoa::find($c)->email;
+            $nome = Pessoa::find($c)->nome;
+            Mail::send('mail.mailCoorientador', ['projeto'=>$projeto, 'nome' => $nome], function($message) use ($email){
+            $message->to($email);
+            $message->subject('IFCITEC');
+            });
+            }
+            }
+            else{
+            if (count($cProjeto) == 0 || $c != $cProjeto->first()->pessoa_id) {
+                $pessoaCoorientador = DB::table('funcao_pessoa')->where('funcao_id', $idC->first()->id)->where('edicao_id', $p->periodoInscricao())->where('pessoa_id', $c)->get()->toArray();
+            if($pessoaCoorientador ==  null){
+            DB::table('funcao_pessoa')->insert(
+                ['edicao_id' => $p->periodoInscricao(),
+                    'funcao_id' => $idC->first()->id,
+                    'pessoa_id' => $c,
+                    'homologado' => FALSE
+                ]);
+            }
+            DB::table('escola_funcao_pessoa_projeto')->insert(
+                ['escola_id' => $req->all()['escola'],
+                    'funcao_id' => $idC->first()->id,
+                    'pessoa_id' => $c,
+                    'projeto_id' => $projeto->id,
+                    'edicao_id' => $p->periodoInscricao(),
+                ]
+                );
+            $email = Pessoa::find($c)->email;
+            $nome = Pessoa::find($c)->nome;
+            Mail::send('mail.mailCoorientador', ['projeto'=>$projeto, 'nome' => $nome], function($message) use ($email){
+            $message->to($email);
+            $message->subject('IFCITEC');
+            });
+            }
+            }
+        }
+        }
+        return redirect()->route('projeto.show', ['projeto' => $projeto->id]);
     }
 
     /**
@@ -133,119 +481,13 @@ class ProjetoController extends Controller {
         //
     }
 
-    public function showFormVinculaIntegrante($id) {
-        $projeto = Projeto::find($id);
-        //É necessário um refact neste bloco:
-        //Bloqueando roles no projeto conforme regulamento
-        $funcoes = Funcao::getByCategory('integrante');
-        $totalFuncoes = $projeto->getTotalFuncoes($funcoes);
-        if($totalFuncoes['Autor'] >= 3){
-            unset($funcoes[0]);
-        }
-         if($totalFuncoes['Coorientador'] >= 2){
-            unset($funcoes[1]);
-        }
-         if($totalFuncoes['Orientador'] >= 1){
-            unset($funcoes[2]);
-        }
-        
-        //Fim do refact necessário
-        $escolas = Escola::all();
-        if (!($projeto instanceof Projeto)) {
-            abort(404);
-        }
-        return view('projeto.vinculaIntegrante')->withProjeto($projeto)->withFuncoes($funcoes)->withEscolas($escolas);
-    }
-
-    public function vinculaIntegrante(Request $request) {
-        //Insert via DB pois o Laravel não está preparado para um tabela de 4 relacionamentos
-        DB::table('escola_funcao_pessoa_projeto')->insert(
-                ['escola_id' => $request->escola,
-                    'funcao_id' => $request->funcao,
-                    'pessoa_id' => $request->pessoa,
-                    'projeto_id' => $request->projeto
-                ]
-        );
-        
-        return redirect()->route('projeto.show', ['projeto' =>$request->projeto]);
-    }
-
-    public function showFormVinculaRevisor($id){
-        $projeto = Projeto::find($id);
-        if (!($projeto instanceof Projeto)) {
-            abort(404);
-        }
-        $revisores = (DB::table('revisoresview')->select('*')->orderBy('titulacao')->get());
-       // $revisores = (Pessoa::whereFuncao('Revisor')->orderBy('titulacao')->get());
-
-        return view('organizacao.vinculaRevisor')
-            ->withRevisores($revisores)
-            ->withProjeto($projeto);
-    }
-
-    public function vinculaRevisor(Request $request){
-        DB::table('revisao')->where('projeto_id', '=', $request->projeto_id)->delete();
-        $revisao = new Revisao();
-        $revisao->projeto_id = $request->projeto_id;
-        $revisao->pessoa_id =  $request->revisor_id;
-        $revisao->situacao_id =  4;
-        $revisao->save();
-
-        return redirect('home');
-    }
-
-    public function showFormVinculaAvaliador($id)
-    {
-        $projeto = Projeto::find($id);
-        if (!($projeto instanceof Projeto)) {
-            abort(404);
-        }
-        $avaliadores = (DB::table('avaliadoresview')->select('*')->get());
-        // $revisores = (Pessoa::whereFuncao('Revisor')->orderBy('titulacao')->get());
-
-        $avaliadoresDoProjeto = DB::table('avaliacao')->select('pessoa_id')->where('projeto_id', '=', $id)->get();
-
-        $avaliadoresValue = "";
-        foreach ($avaliadoresDoProjeto as $avaliador) {
-            //dd($avaliador);
-            $avaliadoresValue .= ',' . $avaliador->pessoa_id;
-        }
-        $avaliadoresValue = ltrim($avaliadoresValue, ',');
-
-        return view('organizacao.vinculaAvaliador')
-            ->with(["avaliadores" => $avaliadores,
-                "avaliadoresValue" => $avaliadoresValue,
-                "projeto" => $projeto,
-            ]);
-    }
-
-    public function vinculaAvaliador(Request $request){
-        DB::table('avaliacao')->where('projeto_id', '=', $request->projeto_id)->delete();
-        $avaliadores = explode(',',$request->avaliadores_id);
-        foreach ($avaliadores as $avaliador){
-            $avaliacao = new Avaliacao();
-            $avaliacao->pessoa_id = $avaliador;
-            $avaliacao->projeto_id = $request->projeto_id;
-            $avaliacao->nota_final = 0;
-            $avaliacao->save();
-        }
-
-        return redirect('home');
-    }
-
-    public function searchPessoaByEmail($id, $email){
+    public function searchPessoaByEmail($email){
 
         $pessoa = Pessoa::findByEmail($email);
         if (!($pessoa instanceof Pessoa)) {
             return response()->json(['error' => "A pessoa não está inscrita no sistema!"], 200);
         }
-
-        $projeto = Projeto::find($id);
-        $integrantes = $projeto->pessoas;
-        if($integrantes->contains($pessoa)){
-            return response()->json(['error' => "Esta pessoa já está vinculada ao projeto"], 200);
-        }
-        return response()->json($pessoa, 200);
+         return compact('pessoa');
     }
 
     public function relatorio($id){
@@ -302,4 +544,8 @@ class ProjetoController extends Controller {
 
         return redirect('home');
     }
+
+ //   public function integrantes(){
+   //     return view('projeto.integrantes');
+   // }
 }

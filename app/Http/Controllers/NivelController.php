@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Nivel;
+use Illuminate\Support\Facades\DB;
 
 class NivelController extends Controller {
 
@@ -87,7 +88,7 @@ class NivelController extends Controller {
         if(!($nivel instanceof Nivel)){
             abort(404);
         }
-        $areasConhecimento = $nivel->areas_conhecimento;
+        $areasConhecimento = DB::table('area_conhecimento')->select('area_conhecimento','id')->where('nivel_id', $nivel->id)->get();
         return response()->json($areasConhecimento, 200);
     }
 

@@ -14,13 +14,11 @@ class DadosAvaliacaoTable extends Migration
     public function up()
     {
         Schema::create(env('DB_SCHEMA').'.dados_avaliacao', function (Blueprint $table) {
-            $table->integer('campo_avaliacao_id')->unsigned();
             $table->integer('projeto_id')->unsigned();
             $table->integer('pessoa_id')->unsigned();
             $table->float('valor', 4, 2)->unsigned();
             $table->timestamps();
             //Foreign Keys Constraints
-            $table->foreign('campo_avaliacao_id')->references('id')->on(env('DB_SCHEMA').'.campos_avaliacao');
             $table->foreign('projeto_id')->references('id')->on(env('DB_SCHEMA').'.projeto');
             $table->foreign('pessoa_id')->references('id')->on(env('DB_SCHEMA').'.pessoa');
         });

@@ -59,8 +59,9 @@ class HomeController extends Controller {
         $eloquent = new Builder($query);
         $eloquent->setModel(new Projeto);
         $projetos = $eloquent->get();
-        return view('avaliador')->withFuncoes(collect(["Avaliação" => $projetos]));
 
+        return view('avaliador')->withFuncoes(collect(["Avaliação" => $projetos]));
+        //return view('avaliador');
     }
 
      public function homeRevisor(){
@@ -74,9 +75,6 @@ class HomeController extends Controller {
         return view('revisor')->withFuncoes(collect(["Revisão" => $projetos]));
 
     }
-
-
-
 
     protected function groupProjetosPorFuncao($projetos) {
         $funcoes = Funcao::all();
@@ -118,6 +116,10 @@ class HomeController extends Controller {
             $projetosAgrupados[$situacao][] = $projeto;
         }
         return (collect($projetosAgrupados));
+    }
+
+    public function sucesso(){
+        return view('cadastroSucesso');
     }
 
 }

@@ -9,27 +9,29 @@
 
     <div class="page-header">
 	    <h1>Olá {{ Auth::user()->nome }}</h1>
+
 	</div>
 
 	<div class="row">
-		<div class="col-md-4 col-sm-12">
+
+		<div class="col-md-12 main main-raised">
+
+			<h3>Debug =)</h3>
 
 			<ul class="nav nav-pills nav-stacked">
-				<li><a href="{{route('administrador')}}">Administrador</a></li>
-				<li><a href="{{route('comissaoAvaliadora')}}">Cadastro Avaliador / Revisor</a></li>
-				<li><a href="{{route('avaliador')}}">Avaliador</a></li>
-				<li><a href="{{route('revisor')}}">Revisor</a></li>
+				<li>Edição ID: {{ \App\Edicao::getEdicaoId()  }}</li>
+
+				<li>Organizador: {{Auth::user()->temFuncao('Organizador')}}</li>
+				<li>Orientador: {{Auth::user()->temFuncao('Orientador')}}</li>
+				<li>Avaliador: {{Auth::user()->temFuncao('Avaliador')}}</li>
+				<li>Revisor: {{Auth::user()->temFuncao('Revisor')}}</li>
+				<li>Administrador: {{Auth::user()->temFuncao('Organizador')}}</li>
+
 			</ul>
 
 		</div>
 
-		<div class="col-md-8 col-sm-12 text-center">
-
-			<img src="{{ asset('img/scholarship.svg') }}" width="150">
-
-		</div>
 	</div>
-
 
 
 </div>

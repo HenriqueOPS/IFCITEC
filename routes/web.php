@@ -11,6 +11,13 @@
   |
  */
 
+Route::get('/version', function (){
+	$strData = explode(':', file_get_contents('version.txt'));
+
+	echo "Commit SHA: ".$strData[0]."<br />";
+	echo "Pipeline ID: ".$strData[1];
+});
+
 Route::get('/', function () {
   if(Auth::check())
     return redirect()->route('home');
@@ -18,7 +25,18 @@ Route::get('/', function () {
   return redirect()->route('login');
 });
 
+// API
+Route::post('/api/login', 'ApiController@login');
+Route::post('/api/registra-presenca', 'ApiController@registraPresenca');
+
+Route::get('/api/projetos-avaliacao/{id}', 'ApiController@projetosAvaliacao');
+Route::get('/api/campos-avaliacao/{id}', 'ApiController@camposAvaliacao');
+Route::get('/api/salva-avaliacao/{id}', 'ApiController@salvaAvaliacao');
+
+
+
 Auth::routes();
+Route::post('/recuperar/senha/', 'Auth\ForgotPasswordController@emailSenha')->name('recuperar.senha');
 
 // Cria as rotas de cadastro no braço e em Português
 Route::get('cadastro', [
@@ -32,6 +50,9 @@ Route::post('cadastro', [
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
+Route::get('/sucesso', 'HomeController@sucesso')->name('sucesso');
+
 //Edição dos dados pessoais
 Route::get('/editar-cadastro', 'PessoaController@editarCadastro')->name('editarCadastro');
 Route::post('/editar-cadastro', 'PessoaController@editaCadastro')->name('editaCadastro');
@@ -41,16 +62,16 @@ Route::get('/escola/cadastrar', 'AdminController@cadastroEscola')->name('cadastr
 Route::post('/escola/cadastrar', 'AdminController@cadastraEscola')->name('cadastroEscola');
 Route::get('/escola/editar/{id}', 'AdminController@editarEscola')->name('escola');
 Route::post('/escola/edita-escola', 'AdminController@editaEscola')->name('editaEscola');
-
-
 Route::get('/escola/dados-escola/{id}', 'AdminController@dadosEscola'); //Ajax
 Route::get('/escola/exclui-escola/{id}/{s}', 'AdminController@excluiEscola'); //Ajax
 
+Route::get('/gerenciar', 'AdminController@administrarUsuarios');
 
-
-//Autor 
+//Autor
 Route::get('/autor', 'AutorController@index')->name('autor');
 
+//Organizador
+Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 
 // Administrador
 Route::get('/administrador', 'AdminController@index')->name('administrador');
@@ -59,8 +80,9 @@ Route::get('/administrador', 'AdminController@index')->name('administrador');
 Route::get('/edicao/cadastrar', 'EdicaoController@cadastroEdicao')->name('cadastroEdicao');
 Route::post('/edicao/cadastrar', 'EdicaoController@cadastraEdicao')->name('cadastraEdicao');
 Route::get('/edicao/editar/{id}', 'EdicaoController@editarEdicao')->name('editarEdicao');
-Route::get('/edicao/{id}', 'EdicaoController@edicao')->name('edicao');
-
+Route::post('/edicao/edita-edicao', 'EdicaoController@editaEdicao')->name('edicao');
+Route::get('/edicao/dados-edicao/{id}', 'EdicaoController@dadosEdicao'); //Ajax
+Route::get('/edicao/exclui-edicao/{id}/{s}', 'EdicaoController@excluiEdicao'); //Ajax
 
 // Nivel
 Route::get('/nivel/cadastrar', 'AdminController@cadastroNivel')->name('cadastroNivel');
@@ -76,7 +98,7 @@ Route::post('/area/cadastrar', 'AdminController@cadastraArea')->name('cadastroAr
 Route::get('/area/editar/{id}', 'AdminController@editarArea')->name('area');
 Route::post('/area/edita-area', 'AdminController@editaArea')->name('editaArea');
 Route::get('/area/dados-area/{id}', 'AdminController@dadosArea'); //Ajax
-
+Route::get('/area/exclui-area/{id}/{s}', 'AdminController@excluiArea'); //Ajax
 
 // Avaliador/Revisor
 Route::get('/avaliador', 'HomeController@homeAvaliador')->name('avaliador');
@@ -85,31 +107,36 @@ Route::get('/revisor', 'HomeController@homeRevisor')->name('revisor');
 //Organizador
 Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 
+//Comissao Avaliadora
+Route::get('/comissaoavaliadora', 'ComissaoAvaliadoraController@index')->name('comissao');
+
+//Voluntario
+Route::get('/voluntario', 'VoluntarioController@index')->name('voluntario');
+Route::get('/voluntario/cadastrar/{s}', 'VoluntarioController@cadastrarVoluntario')->name('cadastraVoluntario'); //Ajax
 
 Route::get('/administrador/usuarios', 'AdminController@administrarUsuarios')->name('administrarUsuarios');
+Route::get('/periodo', 'PeriodosController@periodoInscricao');
 
-
-
-
-
-
-//Route::get('/cadastro/homologacao', 'HomologacaoController@index')->name('cadastroFichaHomologacao');
-
-
-//
-Route::get('/inscricao-comissao-avaliadora', function(){
-    return view('cadastroAvaliador')->withAreas(App\AreaConhecimento::all());
-})->name('comissaoAvaliadora');
+Route::get('/inscricao-comissao-avaliadora', 'ComissaoAvaliadoraController@cadastrarComissao')->name('comissaoAvaliadora');
+Route::post('/comissao/cadastrar', 'ComissaoAvaliadoraController@cadastraComissao')->name('cadastroAvaliador');
+Route::get('/comissao/cadastrar/{s}', 'ComissaoAvaliadoraController@cadastrarComissao')->name('cadastraComissao'); //Ajax
 
 
 Route::resource('projeto', 'ProjetoController');
 
 Route::prefix('projeto')->group(function () {
-    Route::get('{projeto}/vincula-integrante', 'ProjetoController@showFormVinculaIntegrante')->name('projeto.formVinculaIntegrante');
     Route::post('vincula-integrante', 'ProjetoController@vinculaIntegrante')->name('projeto.vinculaIntegrante');
     //AJAX
-    Route::get('{projeto}/vincula-integrante/{email}', 'ProjetoController@searchPessoaByEmail');
+    Route::get('vincula-integrante/{email}', 'ProjetoController@searchPessoaByEmail');
+
 });
+Route::prefix('projeto/editar')->group(function () {
+    //AJAX
+    Route::get('vincula-integrante/{email}', 'ProjetoController@searchPessoaByEmail');
+    Route::get('nivel/areasConhecimento/{id}', 'NivelController@areasConhecimento'); //Ajax
+});
+Route::get('/projeto/editar/{id}', 'ProjetoController@editarProjeto')->name('editarProjeto');
+Route::post('/projeto/edita-projeto', 'ProjetoController@editaProjeto')->name('editaProjeto');
 
 Route::get('/relatorio/{id}','ProjetoController@relatorio')->name('relatorio');
 
@@ -120,8 +147,8 @@ Route::get('/projeto/{id}/vinculaAvaliador/', 'ProjetoController@showFormVincula
 Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')->name('vinculaAvaliadorPost');
 //
 Route::get('/projeto/{id}/setSituacao/{situacao}', 'ProjetoController@setSituacao')->name('projeto.setSituacao');
-//AJAX
-Route::prefix('nivel')->group(function () {
-    Route::get('areasConhecimento/{id}', 'NivelController@areasConhecimento');
-});
+
+Route::get('projeto/nivel/areasConhecimento/{id}', 'NivelController@areasConhecimento'); //Ajax
+
+
 
