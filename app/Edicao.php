@@ -27,7 +27,7 @@ class Edicao extends Model
 						->whereRaw("((NOW() AT TIME ZONE 'America/Sao_Paulo') <= feira_fechamento)")
 						->get();
 
-		if($edicao)
+		if($edicao->count())
 			return $edicao[0]->id;
 
 		return 0;
