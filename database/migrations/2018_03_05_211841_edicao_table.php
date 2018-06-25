@@ -15,7 +15,8 @@ class EdicaoTable extends Migration
     {
         Schema::create(env('DB_SCHEMA').'.edicao', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('ano');   
+            $table->integer('ano');
+			$table->integer('projetos');
             //Periodo de Inscricao
             $table->dateTime('inscricao_abertura');
             $table->dateTime('inscricao_fechamento');
@@ -34,6 +35,9 @@ class EdicaoTable extends Migration
             //Periodo de Inscrição para Avaliador/Homologador
             $table->dateTime('comissao_abertura');
             $table->dateTime('comissao_fechamento');
+			//Periodo da feira
+			$table->dateTime('feira_abertura');
+			$table->dateTime('feira_fechamento');
             $table->timestamps();
         });
     }
