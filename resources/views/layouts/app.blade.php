@@ -28,15 +28,15 @@
             @else
             <nav class="navbar navbar-default navbar-static-top"-->
                 <div class="container">
-                    
+
                     <div class="navbar-header">
                         <a class="navbar-brand" href="{{ route('home') }}">
                             <img src="{{ asset('img/logo.png') }}" width="100" alt="IFCITEC">
                         </a>
 
-                        
+
                     </div>
-                
+
 
                     <div class="collapse navbar-collapse" id="app-navbar-collapse">
                         <!-- Left Side Of Navbar -->
@@ -78,50 +78,6 @@
                             <li><a href="{{ route('administrador') }}">Administrador</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            <!-- Authentication Links
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Função <span class="caret"></span></a>
-
-                                <ul class="dropdown-menu" role="menu">
-                                    @if (Auth::user()->temFuncao('Administrador'))
-                                    <li><a href="{{ route('administrador') }}">Administrador</a></li>
-                                    @endif
-
-                                    @if (Auth::user()->temFuncao('Organizador'))
-                                    <li><a href="{{ route('organizador') }}">Organizador</a></li>
-                                    @endif
-
-                                    @if (Auth::user()->temFuncao('Recepção'))
-                                    <li><a href="{{ route('administrador') }}">Recepção</a></li>
-                                    @endif
-
-                                    @if (Auth::user()->temFuncao('Usuário'))
-                                    <li><a href="{{ route('administrador') }}">Usuário</a></li>
-                                    @endif
-
-                                    @if (Auth::user()->temFuncao('Avaliador'))
-                                    <li><a href="{{ route('administrador') }}">Avaliador</a></li>
-                                    @endif
-
-                                    @if (Auth::user()->temFuncao('Revisor'))
-                                    <li><a href="{{ route('administrador') }}">Revisor</a></li>
-                                    @endif
-
-                                    @if (Auth::user()->temFuncao('Autor'))
-                                    <li><a href="{{ route('autor') }}">Autor</a></li>
-                                    @endif
-
-                                    @if (Auth::user()->temFuncao('Orientador'))
-                                    <li><a href="{{ route('administrador') }}">Orientador</a></li>
-                                    @endif
-
-                                    @if (Auth::user()->temFuncao('Coorientador'))
-                                    <li><a href="{{ route('administrador') }}">Coorientador</a></li>
-                                    @endif
-                                </ul>
-                            </li>
-                            -->
-
 
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
