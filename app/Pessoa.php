@@ -77,7 +77,7 @@ class Pessoa extends Authenticatable {
     	//pega o id da edição
 		$EdicaoId = Edicao::getEdicaoId();
 
-		if($EdicaoId){
+		if($EdicaoId || $funcao == 'Administrador'){
 
 			//Faz a consulta na mão por causa dos Wheres
 			$query = DB::table('funcao_pessoa')
@@ -85,15 +85,21 @@ class Pessoa extends Authenticatable {
 							//Busca pela Função
 							->where('funcao.funcao','=',$funcao)
 							//Busca pela Pessoa
-							->where('funcao_pessoa.pessoa_id','=',$this->id)
-							//Busca pela Edição
-							->where('edicao_id', $EdicaoId)
-							->orWhere('edicao_id',null)
-							->get();
+							->where('funcao_pessoa.pessoa_id','=',$this->id);
+
+			//Busca pela edição
+			if($EdicaoId) {
+				//Permissão apenas para a edição corrente ou para todas as edições
+				$query->where('edicao_id', $EdicaoId)
+					  ->orWhere('edicao_id', null)->get();
+			}else{
+				//Permissão apenas para todas as edições
+				$query->where('edicao_id', null)->get();
+			}
 
 			if($query->count()) {
-				//Verifica se não foi homologado como Revisor ou Avaliador
-				if(($funcao=='Revisor' || $funcao=='Avaliador') && !$query[0]->homologado)
+				//Verifica se não foi homologado como Homologador ou Avaliador
+				if(($funcao=='Homologador' || $funcao=='Avaliador') && !$query[0]->homologado)
 					return false;
 
 				return true;
