@@ -18,19 +18,56 @@ class Edicao extends Model
         'credenciamento_abertura','credenciamento_fechamento',
         'voluntario_abertura','voluntario_fechamento',
         'comissao_abertura','comissao_fechamento',
-        'relatorio_abertura','relatorio_fechamento',
 		'feira_abertura', 'feira_fechamento', 'ano', 'projetos'];
 
 	public static function getEdicaoId() {
 
-		$edicao = Edicao::whereRaw("((NOW() AT TIME ZONE 'America/Sao_Paulo') >= feira_abertura)")
-						->whereRaw("((NOW() AT TIME ZONE 'America/Sao_Paulo') <= feira_fechamento)")
+		$edicao = Edicao::whereRaw("(NOW() AT TIME ZONE 'America/Sao_Paulo') >= feira_abertura")
+						->whereRaw("(NOW() AT TIME ZONE 'America/Sao_Paulo') <= feira_fechamento")
 						->get();
 
 		if($edicao->count())
 			return $edicao[0]->id;
 
 		return 0;
+	}
+
+	public static function consultaPeriodo($tipo){
+
+		$nome_campos = false;
+
+		switch ($tipo){
+			case 'Inscrição':
+				$nome_campos = array('inscricao_abertura','inscricao_fechamento');
+			break;
+			case 'Homologação':
+				$nome_campos = array('homologacao_abertura','homologacao_fechamento');
+			break;
+			case 'Avaliação':
+				$nome_campos = array('avaliacao_abertura','avaliacao_fechamento');
+			break;
+			case 'Credenciamento':
+				$nome_campos = array('credenciamento_abertura','credenciamento_fechamento');
+			break;
+			case 'Voluntário':
+				$nome_campos = array('voluntario_abertura','voluntario_fechamento');
+			break;
+			case 'Comissão':
+				$nome_campos = array('comissao_abertura','comissao_fechamento');
+			break;
+		}
+
+		if($nome_campos){
+			$edicao = Edicao::whereRaw("(NOW() AT TIME ZONE 'America/Sao_Paulo') >= ".$nome_campos[0])
+							->whereRaw("(NOW() AT TIME ZONE 'America/Sao_Paulo') <= ".$nome_campos[1])
+							->get();
+
+			if($edicao->count())
+				return $edicao[0]->id;
+		}
+
+		return 0;
+
 	}
 
     public function edicoes() {
