@@ -1,10 +1,12 @@
 <?php
 namespace App\Http\Controllers;
+//use Vendor\Nesbot\Carbon\Src\Carbon\Carbon;
 use App\Http\Controllers\PeriodosController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\MailVoluntarioJob;
 
 class VoluntarioController extends Controller
 {
@@ -39,10 +41,9 @@ class VoluntarioController extends Controller
                 ]
         );
       }
-          Mail::send('mail.mailVoluntario', [Auth::user()->nome], function($message){
-            $message->to(Auth::user()->email);
-            $message->subject('IFCITEC');
-        });
+          $emailJob = (new MailVoluntarioJob())->delay(\Carbon\Carbon::now()->addSeconds(3));
+          dispatch($emailJob);
+         
           return 'true';
       }
 

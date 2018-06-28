@@ -151,4 +151,11 @@ Route::get('/projeto/{id}/setSituacao/{situacao}', 'ProjetoController@setSituaca
 Route::get('projeto/nivel/areasConhecimento/{id}', 'NivelController@areasConhecimento'); //Ajax
 
 
+//Emails
+Route::get('mail/voluntario', function(){
+    Mail::later(5,'mail.mailVoluntario', [Auth::user()->nome], function($message){
+            $message->to(Auth::user()->email);
+            $message->subject('IFCITEC');
+    });
 
+});
