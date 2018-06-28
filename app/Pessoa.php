@@ -103,6 +103,33 @@ class Pessoa extends Authenticatable {
 		return false;
 	}
 
+    public function naoTemFuncao($funcao, $projeto, $pessoa) {
+
+        //pega o id da edição
+        $EdicaoId = Edicao::getEdicaoId();
+
+        if($EdicaoId){
+
+            $query = DB::table('escola_funcao_pessoa_projeto')
+                            //Busca pela Função
+                            ->where('funcao_id','=',$funcao)
+                            //Busca pela Pessoa
+                            ->where('pessoa_id','=',$pessoa)
+                            //Busca pelo Projeto
+                            ->where('projeto_id','!=',$projeto)
+                            //Busca pela Edição
+                            ->where('edicao_id', $EdicaoId)
+                            ->orWhere('edicao_id',null)
+                            ->get();
+
+            if(!$query->count()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function funcoes() {
         return $this->belongsToMany('App\Funcao');
     }

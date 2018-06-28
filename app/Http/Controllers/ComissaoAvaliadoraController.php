@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-
+use App\Jobs\MailComissaoAvaliadoraJob;
 
 class ComissaoAvaliadoraController extends Controller
 {
@@ -53,7 +53,8 @@ class ComissaoAvaliadoraController extends Controller
         $coorientador = DB::table('funcao')->select('id')
                                         ->where('funcao','Coorientador')
                                         ->get();
-        
+    
+
         $projetosNiveis = DB::table('nivel')->join('projeto', 'nivel.id', '=', 'projeto.nivel_id')
                                     ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
                                     ->select('nivel.nivel', 'nivel.id')
@@ -64,9 +65,8 @@ class ComissaoAvaliadoraController extends Controller
                                     ->orderBy('nivel.id', 'asc')
                                     ->get()
                                     ->toArray();
-
         foreach ($niveis as $n) {
-            foreach ($projetosNiveis as $pn) {
+            foreach ($projetosNiveis as $pn) {      
                 if($n->id != $pn->id){
                     $nivel = $n;
                 }
@@ -140,10 +140,8 @@ class ComissaoAvaliadoraController extends Controller
         }
       }
 
-        Mail::send('mail.primeiro', [Auth::user()->nome], function($message){
-            $message->to(Auth::user()->email);
-            $message->subject('IFCITEC');
-        });
+        $emailJob = (new MailComissaoAvaliadoraJob())->delay(\Carbon\Carbon::now()->addSeconds(3));
+        dispatch($emailJob);
         return redirect()->route('autor');
 
     }

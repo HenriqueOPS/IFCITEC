@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class mailPrimeiro extends Mailable
+class MailVoluntario extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -29,6 +29,6 @@ class mailPrimeiro extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.primeiro');
+        return  $this->subject('IFCITEC')->view('mail.mailVoluntario');
     }
 }
