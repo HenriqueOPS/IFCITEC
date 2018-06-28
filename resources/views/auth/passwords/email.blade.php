@@ -5,11 +5,11 @@
 @endsection
 
 @section('content')
-<br><br><br><br>
-    <div class="container" style="width: 600px; height: 350px; background-color: #FFF; border-radius: 10px 20px;">
+
+    <div class="container" style="width: 600px; height: 300px; margin-top: 100px; background-color: #FFF; border-radius: 10px 20px;">
         <div class="row">
             <div class="col-md-12">
-                <center><h2>Redefinir Senha</h2></center><br><br><br><br>
+                <h2 class="text-center">Redefinir Senha</h2>
                 @if (session('status'))
                 <div class="alert alert-success">
                     {{ session('status') }}
@@ -50,7 +50,7 @@
                                     <i class="material-icons">send </i> Enviar link de redefinição
                                 </button>
                             </div>
-                    </div><br><br><br><br><br>
+                    </div>
                 </form>
             </div>
         </div>

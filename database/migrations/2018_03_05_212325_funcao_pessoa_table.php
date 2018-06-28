@@ -16,7 +16,7 @@ class FuncaoPessoaTable extends Migration
         Schema::create(env('DB_SCHEMA').'.funcao_pessoa', function (Blueprint $table) {
             $table->integer('pessoa_id')->unsigned();
             $table->integer('funcao_id')->unsigned();
-            $table->integer('edicao_id')->unsigned();
+            $table->integer('edicao_id')->unsigned()->nullable();
             $table->boolean('homologado')->nullable();
             //Foreign Keys Constraints
             $table->foreign('pessoa_id')->references('id')->on(env('DB_SCHEMA').'.pessoa');
