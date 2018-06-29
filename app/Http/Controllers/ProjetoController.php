@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\PeriodosController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ProjetoRequest;
 use Illuminate\Http\Request;
@@ -53,10 +52,12 @@ class ProjetoController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function create(PeriodosController $p)
+	public function create()
 	{
-		$niveis = Nivel::has('edicoes', '=', $p->periodoInscricao())->get();
-		$areas = AreaConhecimento::has('edicoes', '=', $p->periodoInscricao())->get();
+
+		$niveis = Nivel::has('edicoes', '=', Edicao::getEdicaoId())->get();
+		$areas = AreaConhecimento::has('edicoes', '=', Edicao::getEdicaoId())->get();
+
 
 		$funcoes = Funcao::getByCategory('integrante');
 
@@ -77,7 +78,7 @@ class ProjetoController extends Controller
 	 * @param  \Illuminate\Http\Request $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(PeriodosController $p, ProjetoRequest $request)
+	public function store(ProjetoRequest $request)
 	{
 		$projeto = new Projeto();
 		$projeto->fill($request->toArray());
@@ -85,7 +86,7 @@ class ProjetoController extends Controller
 		//
 		$areaConhecimento = AreaConhecimento::find($request->area_conhecimento);
 		$nivel = Nivel::find($request->nivel);
-		$edicao = Edicao::find($p->periodoInscricao());
+		$edicao = Edicao::find(Edicao::getEdicaoId());
 		$projeto->edicao()->associate($edicao);
 		$projeto->areaConhecimento()->associate($areaConhecimento);
 		$projeto->nivel()->associate($nivel);
@@ -106,7 +107,7 @@ class ProjetoController extends Controller
 				$autor = Pessoa::find($a);
 				if ($autor->temFuncao('Autor') == false) {
 					DB::table('funcao_pessoa')->insert(
-						['edicao_id' => $p->periodoInscricao(),
+						['edicao_id' => Edicao::getEdicaoId(),
 							'funcao_id' => Funcao::where('funcao', 'Autor')->first()->id,
 							'pessoa_id' => $a,
 							'homologado' => FALSE
@@ -117,7 +118,7 @@ class ProjetoController extends Controller
 						'funcao_id' => Funcao::where('funcao', 'Autor')->first()->id,
 						'pessoa_id' => $a,
 						'projeto_id' => $projeto->id,
-						'edicao_id' => $p->periodoInscricao(),
+						'edicao_id' => Edicao::getEdicaoId(),
 					]
 				);
 
@@ -134,7 +135,7 @@ class ProjetoController extends Controller
 		$orientador = Pessoa::find($request['orientador']);
 		if ($orientador->temFuncao('Orientador') == false) {
 			DB::table('funcao_pessoa')->insert(
-				['edicao_id' => $p->periodoInscricao(),
+				['edicao_id' => Edicao::getEdicaoId(),
 					'funcao_id' => Funcao::where('funcao', 'Orientador')->first()->id,
 					'pessoa_id' => $request['orientador'],
 					'homologado' => FALSE
@@ -145,7 +146,7 @@ class ProjetoController extends Controller
 				'funcao_id' => Funcao::where('funcao', 'Orientador')->first()->id,
 				'pessoa_id' => $request['orientador'],
 				'projeto_id' => $projeto->id,
-				'edicao_id' => $p->periodoInscricao(),
+				'edicao_id' => Edicao::getEdicaoId(),
 			]
 		);
 		$email = Pessoa::find($request['orientador'])->email;
@@ -159,7 +160,7 @@ class ProjetoController extends Controller
 				$coorientador = Pessoa::find($c);
 				if ($coorientador->temFuncao('Coorientador') == false) {
 					DB::table('funcao_pessoa')->insert(
-						['edicao_id' => $p->periodoInscricao(),
+						['edicao_id' => Edicao::getEdicaoId(),
 							'funcao_id' => Funcao::where('funcao', 'Coorientador')->first()->id,
 							'pessoa_id' => $c,
 							'homologado' => FALSE
@@ -170,7 +171,7 @@ class ProjetoController extends Controller
 						'funcao_id' => Funcao::where('funcao', 'Coorientador')->first()->id,
 						'pessoa_id' => $c,
 						'projeto_id' => $projeto->id,
-						'edicao_id' => $p->periodoInscricao(),
+						'edicao_id' => Edicao::getEdicaoId(),
 					]
 				);
 				$email = Pessoa::find($c)->email;
@@ -206,7 +207,7 @@ class ProjetoController extends Controller
 	 * @param  int $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function editarProjeto(PeriodosController $p, $id)
+	public function editarProjeto($id)
 	{
 		$pessoas = Pessoa::all();
 		$projetoP = Projeto::find($id);
@@ -238,8 +239,8 @@ class ProjetoController extends Controller
 			->get()
 			->toArray();
 
-		$niveis = Nivel::has('edicoes', '=', $p->periodoInscricao())->get();
-		$areas = AreaConhecimento::has('edicoes', '=', $p->periodoInscricao())->get();
+		$niveis = Nivel::has('edicoes', '=',Edicao::getEdicaoId())->get();
+		$areas = AreaConhecimento::has('edicoes', '=',Edicao::getEdicaoId())->get();
 
 
 		$funcoes = Funcao::getByCategory('integrante');
@@ -248,7 +249,7 @@ class ProjetoController extends Controller
 		return view('projeto.edit', compact('niveis', 'areas', 'funcoes', 'escolas', 'projetoP', 'nivelP', 'areaP', 'escolaP', 'palavrasP', 'autor', 'orientador', 'coorientador', 'pessoas'));
 	}
 
-	public function editaProjeto(PeriodosController $p, ProjetoRequest $req)
+	public function editaProjeto(ProjetoRequest $req)
 	{
 		$id = $req->all()['id_projeto'];
 		Projeto::where('id', $id)->update(['titulo' => $req->all()['titulo'],
@@ -290,7 +291,7 @@ class ProjetoController extends Controller
 		}
 		$autores = DB::table('escola_funcao_pessoa_projeto')->select('pessoa_id')
 			->where('projeto_id', $id)
-			->where('edicao_id', $p->periodoInscricao())
+			->where('edicao_id', Edicao::getEdicaoId())
 			->where('funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
 			->get()
 			->keyBy('pessoa_id')
@@ -298,13 +299,13 @@ class ProjetoController extends Controller
 
 		$oProjeto = DB::table('escola_funcao_pessoa_projeto')->select('pessoa_id')
 			->where('projeto_id', $id)
-			->where('edicao_id', $p->periodoInscricao())
+			->where('edicao_id', Edicao::getEdicaoId())
 			->where('funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
 			->get();
 
 		$coorientadores = DB::table('escola_funcao_pessoa_projeto')->select('pessoa_id')
 			->where('projeto_id', $id)
-			->where('edicao_id', $p->periodoInscricao())
+			->where('edicao_id', Edicao::getEdicaoId())
 			->where('funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
 			->get()
 			->keyBy('pessoa_id')
@@ -321,13 +322,13 @@ class ProjetoController extends Controller
 					->where('projeto_id', $id)
 					->where('funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
 					->where('pessoa_id', $ap)
-					->where('edicao_id', $p->periodoInscricao())
+					->where('edicao_id', Edicao::getEdicaoId())
 					->delete();
 				if (Pessoa::find($ap)->naoTemFuncao(Funcao::where('funcao', 'Autor')->first()->id, $id, $ap) == true) {
 					DB::table('funcao_pessoa')
 						->where('funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
 						->where('pessoa_id', $ap)
-						->where('edicao_id', $p->periodoInscricao())
+						->where('edicao_id', Edicao::getEdicaoId())
 						->delete();
 				}
 			}
@@ -337,13 +338,13 @@ class ProjetoController extends Controller
 				->where('projeto_id', $id)
 				->where('funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
 				->where('pessoa_id', $oProjeto->first()->pessoa_id)
-				->where('edicao_id', $p->periodoInscricao())
+				->where('edicao_id', Edicao::getEdicaoId())
 				->delete();
 			if (Pessoa::find($oProjeto->first()->pessoa_id)->naoTemFuncao(Funcao::where('funcao', 'Orientador')->first()->id, $id, $oProjeto->first()->pessoa_id) == true) {
 				DB::table('funcao_pessoa')
 					->where('funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
 					->where('pessoa_id', $oProjeto->first()->pessoa_id)
-					->where('edicao_id', $p->periodoInscricao())
+					->where('edicao_id', Edicao::getEdicaoId())
 					->delete();
 			}
 		}
@@ -354,13 +355,13 @@ class ProjetoController extends Controller
 						->where('projeto_id', $id)
 						->where('funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
 						->where('pessoa_id', $cp)
-						->where('edicao_id', $p->periodoInscricao())
+						->where('edicao_id', Edicao::getEdicaoId())
 						->delete();
 					if (Pessoa::find($ap)->naoTemFuncao(Funcao::where('funcao', 'Autor')->first()->id, $id, $ap) == true) {
 						DB::table('funcao_pessoa')
 							->where('funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
 							->where('pessoa_id', $cp)
-							->where('edicao_id', $p->periodoInscricao())
+							->where('edicao_id', Edicao::getEdicaoId())
 							->delete();
 					}
 				}
@@ -372,7 +373,7 @@ class ProjetoController extends Controller
 					if (in_array($a, $aProjeto) == false) {
 						if (Pessoa::find($a)->temFuncao('Autor') == false) {
 							DB::table('funcao_pessoa')->insert(
-								['edicao_id' => $p->periodoInscricao(),
+								['edicao_id' => Edicao::getEdicaoId(),
 									'funcao_id' => Funcao::where('funcao', 'Autor')->first()->id,
 									'pessoa_id' => $a,
 									'homologado' => FALSE
@@ -383,7 +384,7 @@ class ProjetoController extends Controller
 								'funcao_id' => Funcao::where('funcao', 'Autor')->first()->id,
 								'pessoa_id' => $a,
 								'projeto_id' => $projeto->id,
-								'edicao_id' => $p->periodoInscricao(),
+								'edicao_id' => Edicao::getEdicaoId(),
 							]
 						);
 
@@ -397,7 +398,7 @@ class ProjetoController extends Controller
 					if ($a != $aProjeto->first()->pessoa_id) {
 						if (Pessoa::find($a)->temFuncao('Autor') == false) {
 							DB::table('funcao_pessoa')->insert(
-								['edicao_id' => $p->periodoInscricao(),
+								['edicao_id' => Edicao::getEdicaoId(),
 									'funcao_id' => Funcao::where('funcao', 'Autor')->first()->id,
 									'pessoa_id' => $a,
 									'homologado' => FALSE
@@ -408,7 +409,7 @@ class ProjetoController extends Controller
 								'funcao_id' => Funcao::where('funcao', 'Autor')->first()->id,
 								'pessoa_id' => $a,
 								'projeto_id' => $projeto->id,
-								'edicao_id' => $p->periodoInscricao(),
+								'edicao_id' => Edicao::getEdicaoId(),
 							]
 						);
 
@@ -425,7 +426,7 @@ class ProjetoController extends Controller
 		if ($req->all()['orientador'] != $orientador->id) {
 			if (Pessoa::find($req->all()['orientador'])->temFuncao('Orientador') == false) {
 				DB::table('funcao_pessoa')->insert(
-					['edicao_id' => $p->periodoInscricao(),
+					['edicao_id' => Edicao::getEdicaoId(),
 						'funcao_id' => Funcao::where('funcao', 'Orientador')->first()->id,
 						'pessoa_id' => $orientador->first()->id,
 						'homologado' => FALSE
@@ -436,7 +437,7 @@ class ProjetoController extends Controller
 					'funcao_id' => Funcao::where('funcao', 'Orientador')->first()->id,
 					'pessoa_id' => $orientador->first()->id,
 					'projeto_id' => $projeto->id,
-					'edicao_id' => $p->periodoInscricao(),
+					'edicao_id' => Edicao::getEdicaoId(),
 				]
 			);
 			$email = Pessoa::find($req->all()['orientador'])->email;
@@ -451,7 +452,7 @@ class ProjetoController extends Controller
 					if (in_array($c, $cProjeto) == false) {
 						if (Pessoa::find($c)->temFuncao('Coorientador') == false) {
 							DB::table('funcao_pessoa')->insert(
-								['edicao_id' => $p->periodoInscricao(),
+								['edicao_id' => Edicao::getEdicaoId(),
 									'funcao_id' => Funcao::where('funcao', 'Coorientador')->first()->id,
 									'pessoa_id' => $c,
 									'homologado' => FALSE
@@ -462,7 +463,7 @@ class ProjetoController extends Controller
 								'funcao_id' => Funcao::where('funcao', 'Coorientador')->first()->id,
 								'pessoa_id' => $c,
 								'projeto_id' => $projeto->id,
-								'edicao_id' => $p->periodoInscricao(),
+								'edicao_id' => Edicao::getEdicaoId(),
 							]
 						);
 						$email = Pessoa::find($c)->email;
@@ -475,7 +476,7 @@ class ProjetoController extends Controller
 					if (count($cProjeto) == 0 || $c != $cProjeto->first()->pessoa_id) {
 						if (Pessoa::find($c)->temFuncao('Coorientador') == false) {
 							DB::table('funcao_pessoa')->insert(
-								['edicao_id' => $p->periodoInscricao(),
+								['edicao_id' => Edicao::getEdicaoId(),
 									'funcao_id' => Funcao::where('funcao', 'Coorientador')->first()->id,
 									'pessoa_id' => $c,
 									'homologado' => FALSE
@@ -486,7 +487,7 @@ class ProjetoController extends Controller
 								'funcao_id' => Funcao::where('funcao', 'Coorientador')->first()->id,
 								'pessoa_id' => $c,
 								'projeto_id' => $projeto->id,
-								'edicao_id' => $p->periodoInscricao(),
+								'edicao_id' => Edicao::getEdicaoId(),
 							]
 						);
 						$email = Pessoa::find($c)->email;
