@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\PeriodosController;
 use App\Endereco;
 use App\Pessoa;
+use App\Edicao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -99,12 +100,12 @@ class ComissaoAvaliadoraController extends Controller
                 ]
         );
 
-        Pessoa::find($id)->edicoes()->attach(['edicao_id' => $p->periodoComissao()],
+        Pessoa::find($id)->edicoes()->attach(['edicao_id' => Edicao::getEdicaoId()],
             ['pessoa_id' => Auth::id()]);
 
 
         $comissaoEdicao = DB::table('comissao_edicao')->select('id')
-                                    ->where('edicao_id', $p->periodoComissao())
+                                    ->where('edicao_id', Edicao::getEdicaoId())
                                     ->where('pessoa_id', Auth::id())
                                     ->get();
         $areas = $data['area_id'];
@@ -120,7 +121,7 @@ class ComissaoAvaliadoraController extends Controller
         $idA = DB::table('funcao')->where('funcao', 'Avaliador')->get(); 
         foreach($idA as $i){
           DB::table('funcao_pessoa')->insert(
-                ['edicao_id' => $p->periodoComissao(),
+                ['edicao_id' => Edicao::getEdicaoId(),
                     'funcao_id' => $i->id, 
                     'pessoa_id' => Auth::id(),
                     'homologado' => FALSE
@@ -132,7 +133,7 @@ class ComissaoAvaliadoraController extends Controller
         $idH = DB::table('funcao')->where('funcao', 'Homologador')->get(); 
         foreach($idH as $i){
           DB::table('funcao_pessoa')->insert(
-                ['edicao_id' => $p->periodoComissao(),
+                ['edicao_id' => Edicao::getEdicaoId(),
                     'funcao_id' => $i->id, 
                     'pessoa_id' => Auth::id(),
                     'homologado' => FALSE
