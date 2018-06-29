@@ -33,25 +33,18 @@ class AdminController extends Controller
      */
     public function index(PeriodosController $p)
     {
-        $edicoes = DB::table('edicao')->select('edicao.*')->get();
 
-		$niveis = DB::table('nivel')->select('nivel.*')
-			->orderBy('nivel', 'asc')->get();
+		$edicoes = Edicao::all(['id', 'ano',
+						'inscricao_abertura', 'inscricao_fechamento',
+						'homologacao_abertura', 'homologacao_fechamento',
+						'avaliacao_abertura', 'avaliacao_fechamento']);
 
-		$areas = DB::table('area_conhecimento')
-			->join('nivel', 'area_conhecimento.nivel_id', '=', 'nivel.id')
-			->select('area_conhecimento.id', 'area_conhecimento', 'area_conhecimento.descricao', 'nivel_id')
-			->orderBy('area_conhecimento', 'asc')->get();
+		$niveis = Nivel::all(['id', 'nivel', 'descricao']);
 
-		/*$escolas = DB::table('escola')->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
-                                      ->select('escola.id', 'nome_completo', 'nome_curto', 'email',
-                                      'telefone', 'municipio')
-                                      ->orderBy('nome_curto', 'asc')
-                                      ->get();*/
+		$areas = AreaConhecimento::all(['id', 'area_conhecimento', 'descricao', 'nivel_id']);
 
-		$escolas = DB::table('escola')
-			->select('escola.id', 'nome_completo', 'nome_curto', 'email', 'telefone')
-			->orderBy('nome_curto', 'asc')->get();
+		$escolas = Escola::all(['id', 'nome_completo', 'nome_curto', 'email', 'telefone']);
+
 		/*
         $projetos = DB::table('projeto')->select('titulo','id')
                                       ->orderBy('created_at', 'asc')
@@ -87,6 +80,7 @@ class AdminController extends Controller
         */
 
 		$projetos = array();
+
 
 		return view('admin.home', collect(['edicoes' => $edicoes,
 			'escolas' => $escolas,

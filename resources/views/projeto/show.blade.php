@@ -11,7 +11,7 @@
                         <h2>{{$projeto->titulo}}</h2>
                     </div>
                 </div>
-            
+
                 <div class="row">
                     <div id="projeto-show">
                         <div class="col-md-7 col-md-offset-1">
@@ -28,7 +28,7 @@
                             </div>
                             <p class="resumo">{{$projeto->resumo}}</p>
                             <hr>
-                            <b>Palavras-Chaves:</b> 
+                            <b>Palavras-Chaves:</b>
                             @foreach($projeto->palavrasChaves as $palavra)
                                 {{$palavra->palavra}};
                             @endforeach
@@ -41,7 +41,7 @@
                             @endif
                         </div>
                         <div class="col-md-3">
-                            @if(Auth::user()->temFuncao('Avaliador'))// || Auth::user()->temFuncao('Revisor'))
+                            @if(Auth::user()->temFuncao('Avaliador'))
                                 @if($projeto->getStatus() != "Avaliado")
                                     @if($projeto->nivel->nivel == "Ensino Fundamental")
 
