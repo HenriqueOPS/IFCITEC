@@ -2,6 +2,7 @@
 
 namespace App;
 
+use function GuzzleHttp\Promise\all;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable as Notifiable;
 //
@@ -91,15 +92,17 @@ class Pessoa extends Authenticatable {
 			if($EdicaoId) {
 				//Permissão apenas para a edição corrente ou para todas as edições
 				$query->where('edicao_id', $EdicaoId)
-					  ->orWhere('edicao_id', null)->get();
+					  ->orWhere('edicao_id', null);
 			}else{
 				//Permissão apenas para todas as edições
-				$query->where('edicao_id', null)->get();
+				$query->where('edicao_id', null);
 			}
 
 			if($query->count()) {
+
+
 				//Verifica se não foi homologado como Homologador ou Avaliador
-				if(($funcao=='Homologador' || $funcao=='Avaliador') && !$query[0]->homologado)
+				if(($funcao=='Homologador' || $funcao=='Avaliador') && !$query->get()[0]->homologado)
 					return false;
 
 				return true;

@@ -76,18 +76,19 @@
 
                     <tbody id="0">
 
+
                         @foreach($edicoes as $id => $edicao)
 
                         <tr>
                             <td class="text-center">{{$id+1}}</td>
-                            <td>{{$edicao->ano}}</td>
-                            <td>{{$edicao->inscricao_abertura}} - {{$edicao->inscricao_fechamento}}</td>
-                            <td>{{$edicao->homologacao_abertura}} - {{$edicao->homologacao_fechamento}}</td>
-                            <td>{{$edicao->avaliacao_abertura}} - {{$edicao->avaliacao_fechamento}}</td>
+                            <td>{{  \App\Edicao::numeroEdicao($edicao['ano']) }}</td>
+                            <td>{{$edicao['inscricao_abertura']}} - {{$edicao['inscricao_fechamento']}}</td>
+                            <td>{{$edicao['homologacao_abertura']}} - {{$edicao['homologacao_fechamento']}}</td>
+                            <td>{{$edicao['avaliacao_abertura']}} - {{$edicao['avaliacao_fechamento']}}</td>
                             <td class="td-actions text-right">
-                                <a href="javascript:void(0);" class="modalEdicao"  id-edicao="{{ $edicao->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
-                                <a href="{{route('editarEdicao',$edicao->id)}}"><i class="material-icons">edit</i></a>
-                                <a href="javascript:void(0);" class="exclusaoEdicao" id-edicao="{{ $edicao->id }}"><i class="material-icons blue-icon">delete</i></a>
+                                <a href="javascript:void(0);" class="modalEdicao"  id-edicao="{{ $edicao['id'] }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a href="{{route('editarEdicao',$edicao['id'])}}"><i class="material-icons">edit</i></a>
+                                <a href="javascript:void(0);" class="exclusaoEdicao" id-edicao="{{ $edicao['id'] }}"><i class="material-icons blue-icon">delete</i></a>
                             </td>
                         <tr>
 
@@ -119,20 +120,20 @@
 
                         <tr>
                             <td class="text-center">{{ $i+1 }}</td>
-                            <td>{{ $escola->nome_curto }}</td>
+                            <td>{{ $escola['nome_curto'] }}</td>
                             <td></td>
-                            <td>{{ $escola->email }}</td>
-                            <td>{{ $escola->telefone }}</td>
+                            <td>{{ $escola['email'] }}</td>
+                            <td>{{ $escola['telefone'] }}</td>
 
 
 
                             <td class="td-actions text-right">
 
-                                <a href="javascript:void(0);" class="modalEscola"  data-toggle="modal" data-target="#modal0" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a href="javascript:void(0);" class="modalEscola"  data-toggle="modal" data-target="#modal0" id-escola="{{ $escola['id'] }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
 
-                                <a href="{{ route('escola', $escola->id) }}"><i class="material-icons">edit</i></a>
+                                <a href="{{ route('escola', $escola['id']) }}"><i class="material-icons">edit</i></a>
 
-                                <a href="javascript:void(0);" class="exclusao" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">delete</i></a>
+                                <a href="javascript:void(0);" class="exclusao" id-escola="{{ $escola['id'] }}"><i class="material-icons blue-icon">delete</i></a>
                             </td>
                         <tr>
 
@@ -162,16 +163,16 @@
 
                         <tr>
                             <td class="text-center">{{ $i+1 }}</td>
-                            <td>{{ $nivel->nivel }}</td>
-                            <td>{{ $nivel->descricao }}</td>
+                            <td>{{ $nivel['nivel'] }}</td>
+                            <td>{{ $nivel['descricao'] }}</td>
 
                             <td class="td-actions text-right">
 
-                                <a href="javascript:void(0);" class="modalNivel" data-toggle="modal" data-target="#modal1" id-nivel="{{ $nivel->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a href="javascript:void(0);" class="modalNivel" data-toggle="modal" data-target="#modal1" id-nivel="{{ $nivel['id'] }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
 
-                                <a href="{{ route('nivel', $nivel->id) }}"><i class="material-icons">edit</i></a>
+                                <a href="{{ route('nivel', $nivel['id']) }}"><i class="material-icons">edit</i></a>
 
-                                <a href="javascript:void(0);" class="exclusaoNivel" id-nivel="{{ $nivel->id }}"><i class="material-icons blue-icon">delete</i></a>
+                                <a href="javascript:void(0);" class="exclusaoNivel" id-nivel="{{ $nivel['id'] }}"><i class="material-icons blue-icon">delete</i></a>
                             </td>
                         <tr>
 
@@ -199,20 +200,20 @@
 
                     @foreach($niveis as $nivel)
                     @foreach($areas as $i => $area)
-                    @if($area->nivel_id == $nivel->id)
+                    @if($area['nivel_id'] == $nivel['id'])
                         <tr>
                             <td class="text-center">{{ $i+1 }}</td>
-                            <td>{{ $area->area_conhecimento }}</td>
-                            
-                            <td>{{ $nivel->nivel }}</td>
+                            <td>{{ $area['area_conhecimento'] }}</td>
+
+                            <td>{{ $nivel['nivel'] }}</td>
 
                             <td class="td-actions text-right">
 
-                                <a href="javascript:void(0);" class="modalArea" data-toggle="modal" data-target="#modal2" id-area="{{ $area->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a href="javascript:void(0);" class="modalArea" data-toggle="modal" data-target="#modal2" id-area="{{ $area['id'] }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
 
-                                <a href="{{ route('area', $area->id) }}"><i class="material-icons">edit</i></a>
+                                <a href="{{ route('area', $area['id']) }}"><i class="material-icons">edit</i></a>
 
-                                <a href="javascript:void(0);" class="exclusaoArea" id-area="{{ $area->id }}"><i class="material-icons blue-icon">delete</i></a>
+                                <a href="javascript:void(0);" class="exclusaoArea" id-area="{{ $area['id'] }}"><i class="material-icons blue-icon">delete</i></a>
                             </td>
                         </tr>
                     @endif
@@ -223,9 +224,9 @@
 
                     <thead id="4">
                     <div id="4">
-                        
+
                     </div>
-                    
+
                     </thead>
 
                     <tbody id="4">
@@ -236,19 +237,19 @@
                              <span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
                         </div>
                         <div class="project-info">
-                            Integrantes: 
+                            Integrantes:
                             @foreach ($autor as $dadosAutor)
                             @if($dadosAutor->projeto_id == $projeto->id)
                             {{$dadosAutor->nome}},
                             @endif
                             @endforeach
-                    
+
                             @foreach ($orientador as $dadosOrientador)
                             @if($dadosOrientador->projeto_id == $projeto->id)
                             {{$dadosOrientador->nome}},
                             @endif
                             @endforeach
-                    
+
                             @foreach($coorientador as $dadosCoorientador)
                             @if($dadosCoorientador->projeto_id == $projeto->id)
                             {{$dadosCoorientador->nome}},
@@ -281,7 +282,7 @@
                     <span class="input-group-addon">
                         <i class="material-icons">lock_outline</i>
                     </span>
-                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>              
+                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>
                 </div>
             </div>
             <div class="modal-footer">
@@ -306,7 +307,7 @@
                     <span class="input-group-addon">
                         <i class="material-icons">lock_outline</i>
                     </span>
-                    <input type="password" placeholder="Senha..." class="form-control" id="password2" name="password" required>              
+                    <input type="password" placeholder="Senha..." class="form-control" id="password2" name="password" required>
                 </div>
             </div>
             <div class="modal-footer">
@@ -381,7 +382,7 @@
                     <span id="testeModal"></span>
                 </div>
             </div>
-            
+
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
@@ -440,7 +441,7 @@
                     <span class="input-group-addon">
                         <i class="material-icons">lock_outline</i>
                     </span>
-                    <input type="password" placeholder="Senha..." class="form-control" id="password3" name="password" required>              
+                    <input type="password" placeholder="Senha..." class="form-control" id="password3" name="password" required>
                 </div>
             </div>
             <div class="modal-footer">
@@ -582,7 +583,7 @@
                     <span class="input-group-addon">
                         <i class="material-icons">lock_outline</i>
                     </span>
-                    <input type="password" placeholder="Senha..." class="form-control" id="password4" name="password" required>              
+                    <input type="password" placeholder="Senha..." class="form-control" id="password4" name="password" required>
                 </div>
             </div>
             <div class="modal-footer">
@@ -602,6 +603,8 @@
 @endsection
 
 @section('js')
+
+<script src="{{asset('js/main.js')}}"></script>
 <script type="application/javascript">
 $('.modalEscola').click(function(){
 
@@ -715,12 +718,12 @@ $('.modalEdicao').click(function(){
         teste += "      Áreas: ";
         for(var a=0; a<res.areaEdicao.length; a++) {
              if(res.nivel[i].id == res.area[a].nivel_id){
-        res.area[a].area_conhecimento ? teste += res.area[a].area_conhecimento+"<br>" : teste += '';
-        }
+        		res.area[a].area_conhecimento ? teste += res.area[a].area_conhecimento+"<br>" : teste += '';
+        	}
         }
         }
         //altera o DOM
-        $("#anoModal").html(res.dados.ano);
+        $("#anoModal").html(numeroEdicao(res.dados.ano));
         $("#pinsModal").html(pins);
         $("#phomModal").html(phom);
         $("#pcreModal").html(pcre);
