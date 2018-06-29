@@ -55,8 +55,8 @@ class ProjetoController extends Controller
 	public function create()
 	{
 
-		$niveis = Nivel::has('edicoes', '=', Edicao::getEdicaoId())->get();
-		$areas = AreaConhecimento::has('edicoes', '=', Edicao::getEdicaoId())->get();
+		$niveis = Edicao::find(Edicao::getEdicaoId())->niveis()->get();
+		$areas = Edicao::find(Edicao::getEdicaoId())->areas()->get();
 
 
 		$funcoes = Funcao::getByCategory('integrante');
@@ -239,8 +239,8 @@ class ProjetoController extends Controller
 			->get()
 			->toArray();
 
-		$niveis = Nivel::has('edicoes', '=',Edicao::getEdicaoId())->get();
-		$areas = AreaConhecimento::has('edicoes', '=',Edicao::getEdicaoId())->get();
+		$niveis = Edicao::find(Edicao::getEdicaoId())->niveis()->get();
+		$areas = Edicao::find(Edicao::getEdicaoId())->areas()->get();
 
 
 		$funcoes = Funcao::getByCategory('integrante');

@@ -32,17 +32,17 @@ class ComissaoAvaliadoraController extends Controller
         return view('avaliador.home');
     }
 
-    public function cadastrarComissao(PeriodosController $p){
+    public function cadastrarComissao(){
         $areas = DB::table('area_conhecimento')->join('area_edicao', 'area_conhecimento.id', '=', 'area_edicao.area_id')
                                     ->select('area_conhecimento.id','area_conhecimento.area_conhecimento', 'area_conhecimento.nivel_id')
-                                    ->where('area_edicao.edicao_id', $p->periodoComissao())
+                                    ->where('area_edicao.edicao_id', Edicao::getEdicaoId())
                                     ->orderBy('area_conhecimento.id', 'asc')
                                     ->get()
                                     ->toArray();
 
         $niveis = DB::table('nivel')->join('nivel_edicao', 'nivel.id', '=', 'nivel_edicao.id')
                                     ->select('nivel.nivel', 'nivel.id','nivel_edicao.edicao_id')
-                                    ->where('nivel_edicao.edicao_id', $p->periodoComissao())
+                                    ->where('nivel_edicao.edicao_id', Edicao::getEdicaoId())
                                     ->orderBy('nivel.id', 'asc')
                                     ->get()
                                     ->toArray();
@@ -80,7 +80,7 @@ class ComissaoAvaliadoraController extends Controller
         return view('cadastroAvaliador', ['areas' => $areas,'nivel' => $nivel]);
     }
 
-    public function cadastraComissao(PeriodosController $p, Request $req){
+    public function cadastraComissao(Request $req){
         $data = $req->all(); 
         $idEndereco = Endereco::create([
                     'cep' => $data['cep'],
