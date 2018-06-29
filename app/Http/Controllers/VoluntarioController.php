@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\MailVoluntarioJob;
+use App\Edicao;
 
 class VoluntarioController extends Controller
 {
@@ -29,12 +30,12 @@ class VoluntarioController extends Controller
     {
         return view('voluntario');
     }
-    public function cadastrarVoluntario(PeriodosController $p, $s){
+    public function cadastrarVoluntario($s){
       if(password_verify($s, Auth::user()['attributes']['senha'])){
       	$id = DB::table('funcao')->where('funcao', 'Voluntário')->get();
       	foreach($id as $i){
           DB::table('funcao_pessoa')->insert(
-                ['edicao_id' => $p->periodoVoluntario(),
+                ['edicao_id' => Edicao::getEdicaoId(),
                     'funcao_id' => $i->id, 
                     'pessoa_id' => Auth::id(),
                     'homologado' => TRUE
