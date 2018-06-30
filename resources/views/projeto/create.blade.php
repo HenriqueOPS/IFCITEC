@@ -5,6 +5,7 @@
 <link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
 @endsection
 
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -164,12 +165,12 @@
                                         <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
                                         @endforeach
                                     </select>
+                                    </div>
                                     @if ($errors->has('autor[]'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('autor[]') }}</strong>
                                     </span>
                                     @endif
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -190,12 +191,12 @@
                                         <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
                                         @endforeach
                                     </select>
+                                    </div>
                                     @if ($errors->has('autor[]'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('autor[]') }}</strong>
                                     </span>
                                     @endif
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -216,12 +217,12 @@
                                         <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
                                         @endforeach
                                     </select>
+                                    </div>
                                     @if ($errors->has('autor[]'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('autor[]') }}</strong>
                                     </span>
                                     @endif
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -247,12 +248,12 @@
                                         <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
                                         @endforeach
                                     </select>
+                                    </div>
                                     @if ($errors->has('orientador'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('orientador') }}</strong>
                                     </span>
                                     @endif
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -278,12 +279,12 @@
                                         <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
                                         @endforeach
                                     </select>
+                                    </div>
                                     @if ($errors->has('coorientador[]'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('coorientador[]') }}</strong>
                                     </span>
                                     @endif
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -304,12 +305,12 @@
                                         <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
                                         @endforeach
                                     </select>
+                                    </div>
                                     @if ($errors->has('coorientador[]'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('coorientador[]') }}</strong>
                                     </span>
                                     @endif
-                                </div>
                             </div>
                         </div>
                     </div>

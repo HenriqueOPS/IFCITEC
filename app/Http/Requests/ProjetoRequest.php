@@ -65,12 +65,15 @@ class ProjetoRequest extends FormRequest {
             $validator->addRules(['resumo' => ('required|between: '.$dados->min_ch.','.$dados->max_ch)]);
 
             $autor = $validator->getData()['autor'];
+
             $cont = 0;
             foreach ($autor as $a) {
                 if($a != null){
                     $cont++;
                 }
             }
+
+
             if($cont == 0){
                 $validator->sometimes('autor[]', 'required', function($input) use ($cont){
                 return $input->$cont == 0;
@@ -89,6 +92,20 @@ class ProjetoRequest extends FormRequest {
 				if($totalPalavras < $numPalavras->palavras) {
 					$validator->errors()->add('palavras_chaves', 'As palavras-chave devem conter pelo menos '.$numPalavras->palavras.' palavras');
 				}
+
+                $autor = $validator->getData()['autor'];
+                $orientador = $validator->getData()['orientador'];
+                $coorientador = $validator->getData()['coorientador'];
+
+                foreach ($autor as $a) {
+                foreach ($coorientador as $c) {
+                    if($a == $orientador || $a == $c || $orientador == $c){
+                        $validator->errors()->add('autor[]', 'Não é possível informar dois participantes iguais');
+                        $validator->errors()->add('orientador', 'Não é possível informar dois participantes iguais');
+                        $validator->errors()->add('coorientador[]', 'Não é possível informar dois participantes iguais');
+                    }
+                 }
+                 }
 			});
     }
 

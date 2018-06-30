@@ -6,6 +6,7 @@
 
 @endsection
 
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -23,7 +24,7 @@
 
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="input-group">
+                            <div class="input-group{{ $errors->has('nivel_id') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">school</i>
                                 </span>
@@ -35,10 +36,15 @@
                                         <option value="{{$nivel->id}}">{{$nivel->nivel}}</option>
                                         @endforeach
                                     </select>
-                                    
                                 </div>
+                                @if ($errors->has('nivel_id'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('nivel_id') }}</strong>
+                                </span>
+                                @endif
                             </div>
-                            <div class="input-group">
+                            
+                            <div class="input-group{{ $errors->has('area_conhecimento') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">text_fields</i>
                                 </span>
@@ -46,13 +52,23 @@
                                     <label class="control-label">Nome da Área</label>
                                     <input type="text" class="form-control" name="area_conhecimento" required>
                                 </div>
+                                @if ($errors->has('area_conhecimento'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('area_conhecimento') }}</strong>
+                                </span>
+                                @endif
                             </div>
-                            <div class="form-group">
+                            <div class="form-group{{ $errors->has('descricao') ? ' has-error' : '' }}">
                                 <div class="form-group label-floating">
                                     <i class="material-icons">description</i>
                                     <label for="exampleFormControlTextarea1">Descrição</label>
                                     <textarea class="form-control" rows="3" name="descricao" required></textarea>
                                 </div>
+                                @if ($errors->has('descricao'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('descricao') }}</strong>
+                                </span>
+                                @endif
                             </div>
                         </div>
                     </div>

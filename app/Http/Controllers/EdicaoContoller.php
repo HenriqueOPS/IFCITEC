@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\EdicaoRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ProjetoRequest;
@@ -38,7 +39,7 @@ class EdicaoController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function cadastraEdicao(Request $req) {
+    public function cadastraEdicao(EdicaoRequest $req) {
 
         //Busca o ano da ultima edição cadastrada no banco
         $query = DB::table('edicao')->select('edicao.ano')
@@ -90,7 +91,7 @@ class EdicaoController extends Controller {
 
     }
 
-    public function editaEdicao(Request $req) {
+    public function editaEdicao(EdicaoRequest $req) {
 
         $data = $req->all();
         $id = $data['id_edicao'];
