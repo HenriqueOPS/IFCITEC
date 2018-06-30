@@ -1,17 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Requests\AreaRequest;
+use App\Http\Requests\NivelRequest;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+
 use App\Funcao;
 use App\Edicao;
 use App\Escola;
 use App\Endereco;
 use App\Nivel;
 use App\AreaConhecimento;
-use Illuminate\Http\Request;
-use App\Http\Requests\NivelRequest;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -124,7 +126,6 @@ class AdminController extends Controller
 	public function editarNivel($id)
 	{
 		$dados = Nivel::find($id);
-
 		return view('admin.editarNivel', compact('dados'));
 	}
 
@@ -173,7 +174,7 @@ class AdminController extends Controller
 		return view('admin.cadastroArea', array('niveis' => $niveis));
 	}
 
-	public function cadastraArea(Request $req)
+	public function cadastraArea(AreaRequest $req)
 	{
 
 		$data = $req->all();
@@ -192,11 +193,11 @@ class AdminController extends Controller
 	{
 		$niveis = DB::table('nivel')->select('id', 'nivel')->get();
 		$dados = AreaConhecimento::find($id);
-
-		return view('admin.editarArea', array('niveis' => $niveis), compact('dados'));
+		
+		return view('admin.editarArea', array('niveis' => $niveis), compact('dados','n'));
 	}
 
-	public function editaArea(Request $req)
+	public function editaArea(AreaRequest $req)
 	{
 
 		$data = $req->all();

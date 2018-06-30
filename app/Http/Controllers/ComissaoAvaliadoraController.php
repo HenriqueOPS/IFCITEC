@@ -30,7 +30,17 @@ class ComissaoAvaliadoraController extends Controller
      */
     public function index()
     {
-        return view('avaliador.home');
+        if (Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador') || Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Homologador') == true) {
+            return view('inscricaoEnviada');
+        }
+        else{
+            return redirect()->route('comissaoAvaliadora');
+        }
+    }
+
+    public function home()
+    {
+       return view('avaliador.home');
     }
 
     public function cadastrarComissao(){
@@ -59,7 +69,7 @@ class ComissaoAvaliadoraController extends Controller
         $projetosNiveis = DB::table('nivel')->join('projeto', 'nivel.id', '=', 'projeto.nivel_id')
                                     ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
                                     ->select('nivel.nivel', 'nivel.id')
-                                    ->where('escola_funcao_pessoa_projeto.edicao_id', $p->periodoComissao())
+                                    ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
                                     ->where('pessoa_id', Auth::user()->id)
                                     ->where('escola_funcao_pessoa_projeto.funcao_id', $orientador->get(0)->id)
                                     ->orWhere('escola_funcao_pessoa_projeto.funcao_id', $coorientador->get(0)->id)

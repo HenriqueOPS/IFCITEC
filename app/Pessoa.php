@@ -112,6 +112,39 @@ class Pessoa extends Authenticatable {
 		return false;
 	}
 
+    public function temFuncaoComissaoAvaliadora($funcao) {
+
+        //pega o id da edição
+        $EdicaoId = Edicao::getEdicaoId();
+
+        if($EdicaoId){
+
+            //Faz a consulta na mão por causa dos Wheres
+            $query = DB::table('funcao_pessoa')
+                            ->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+                            //Busca pela Função
+                            ->where('funcao.funcao','=',$funcao)
+                            //Busca pela Pessoa
+                            ->where('funcao_pessoa.pessoa_id','=',$this->id);
+
+            //Busca pela edição
+            if($EdicaoId) {
+                //Permissão apenas para a edição corrente ou para todas as edições
+                $query->where('edicao_id', $EdicaoId)
+                      ->orWhere('edicao_id', null);
+            }else{
+                //Permissão apenas para todas as edições
+                $query->where('edicao_id', null);
+            }
+
+            if($query->count()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function naoTemFuncao($funcao, $projeto, $pessoa) {
 
         //pega o id da edição

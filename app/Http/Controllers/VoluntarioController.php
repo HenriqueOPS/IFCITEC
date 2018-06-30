@@ -7,7 +7,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\MailVoluntarioJob;
+
 use App\Edicao;
+use App\Pessoa;
+use App\Funcao;
 
 class VoluntarioController extends Controller
 {
@@ -28,20 +31,23 @@ class VoluntarioController extends Controller
      */
     public function index()
     {
-        return view('voluntario');
+        if (Pessoa::find(Auth::id())->temFuncao('Voluntário') == true) {
+          return view('inscricaoEnviada');
+        }
+        else{
+          return view('voluntario');
+        }
     }
     public function cadastrarVoluntario($s){
       if(password_verify($s, Auth::user()['attributes']['senha'])){
-      	$id = DB::table('funcao')->where('funcao', 'Voluntário')->get();
-      	foreach($id as $i){
           DB::table('funcao_pessoa')->insert(
                 ['edicao_id' => Edicao::getEdicaoId(),
-                    'funcao_id' => $i->id, 
+                    'funcao_id' => Funcao::where('funcao', 'Voluntário')->first()->id, 
                     'pessoa_id' => Auth::id(),
                     'homologado' => TRUE
                 ]
         );
-      }
+
           $emailJob = (new MailVoluntarioJob())->delay(\Carbon\Carbon::now()->addSeconds(3));
           dispatch($emailJob);
          

@@ -62,12 +62,12 @@
                             <li><a href="#" class="dropdown-toggle" data-toggle="dropdown" >Comissão Avaliadora</a>
                             <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="{{ route('comissaoAvaliadora') }}">
+                                        <a href="{{route('comissao')}}">
                                             Cadastrar-se
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('comissao') }}">
+                                        <a href="{{ route('comissaoHome') }}">
                                             Painel de Comissão Avaliadora
                                         </a>
                                     </li>

@@ -51,8 +51,6 @@ Route::post('cadastro', [
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::get('/sucesso', 'HomeController@sucesso')->name('sucesso');
-
 //Edição dos dados pessoais
 Route::get('/editar-cadastro', 'PessoaController@editarCadastro')->name('editarCadastro');
 Route::post('/editar-cadastro', 'PessoaController@editaCadastro')->name('editaCadastro');
@@ -109,6 +107,7 @@ Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 
 //Comissao Avaliadora
 Route::get('/comissaoavaliadora', 'ComissaoAvaliadoraController@index')->name('comissao');
+Route::get('/comissao/avaliadora', 'ComissaoAvaliadoraController@home')->name('comissaoHome');
 
 //Voluntario
 Route::get('/voluntario', 'VoluntarioController@index')->name('voluntario');
