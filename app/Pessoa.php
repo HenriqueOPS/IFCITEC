@@ -100,7 +100,6 @@ class Pessoa extends Authenticatable {
 
 			if($query->count()) {
 
-
 				//Verifica se não foi homologado como Homologador ou Avaliador
 				if(($funcao=='Homologador' || $funcao=='Avaliador') && !$query->get()[0]->homologado)
 					return false;

@@ -23,6 +23,7 @@
                     {{ csrf_field() }}
 
                     <div class="row">
+
                         <div class="col-md-12">
                             <div class="alert alert-info text-center">
                                 <div class="container-fluid">
@@ -59,12 +60,18 @@
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Nível</label>
-                                    <select id="nivel-select" name="nivel" required>
-                                        <option></option>
-                                        @foreach ($niveis as $nivel)
-                                        <option value="{{$nivel->id}}">{{$nivel->nivel}}</option>
-                                        @endforeach
-                                    </select>
+
+									<select id="nivel-select" name="nivel" value="{{old('nivel') ? old('nivel'): ''}}" required>
+										<option></option>
+										@foreach ($niveis as $nivel)
+											@if ($nivel->id == old('nivel'))
+												<option selected="selected" value="{{$nivel->id}}">{{$nivel->nivel}}</option>
+											@else
+												<option value="{{$nivel->id}}">{{$nivel->nivel}}</option>
+											@endif
+										@endforeach
+									</select>
+
                                     @if ($errors->has('nivel'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('nivel') }}</strong>
@@ -128,12 +135,17 @@
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Escola</label>
-                                    <select id="escola-select" name="escola" value="{{old('escola')}}" required>
+                                    <select id="escola-select" name="escola" value="{{old('escola') ? old('escola'): ''}}" required>
                                         <option></option>
                                         @foreach ($escolas as $escola)
-                                        <option value="{{$escola->id}}">{{$escola->nome_curto}}</option>
+											@if(old('escola') == $escola->id)
+												<option value="{{$escola->id}}" selected>{{$escola->nome_curto}}</option>
+											@else
+												<option value="{{$escola->id}}">{{$escola->nome_curto}}</option>
+											@endif
                                         @endforeach
                                     </select>
+
                                     @if ($errors->has('escola'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('escola') }}</strong>
@@ -149,6 +161,7 @@
                             <h3>Autor(es)</h3>
                         </div>
                 </div>
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-9 col-md-offset-1">
@@ -159,10 +172,14 @@
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Autor 1</label>
-                                    <select id="pessoa-1-select" name="autor[]" value="{{old('autor[0]')}}"  required>
+                                    <select id="pessoa-1-select" name="autor[]" value="{{old('autor')[0] ? old('autor')[0] : ''}}" required>
                                         <option></option>
                                         @foreach ($pessoas as $pessoa)
-                                        <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@if(old('autor')[0] == $pessoa->id)
+												<option value="{{$pessoa->id}}" selected>{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@else
+												<option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@endif
                                         @endforeach
                                     </select>
                                     </div>
@@ -175,6 +192,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-9 col-md-offset-1">
@@ -183,12 +201,17 @@
                                 <span class="input-group-addon">
                                     <i class="material-icons">person</i>
                                 </span>
+
                                 <div class="form-group">
                                     <label class="control-label">Autor 2</label>
-                                    <select id="pessoa-2-select" name="autor[]">
+                                    <select id="pessoa-2-select" name="autor[]" value="{{old('autor')[1] ? old('autor')[1] : ''}}">
                                         <option></option>
                                         @foreach ($pessoas as $pessoa)
-                                        <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@if(old('autor')[1] == $pessoa->id)
+												<option value="{{$pessoa->id}}" selected>{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@else
+												<option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@endif
                                         @endforeach
                                     </select>
                                     </div>
@@ -211,10 +234,14 @@
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Autor 3</label>
-                                    <select id="pessoa-3-select" name="autor[]">
+                                    <select id="pessoa-3-select" name="autor[]" value="{{old('autor]')[2] ? old('autor')[0] : ''}}">
                                         <option></option>
                                         @foreach ($pessoas as $pessoa)
-                                        <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@if(old('autor')[0] == $pessoa->id)
+												<option value="{{$pessoa->id}}" selected>{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@else
+												<option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@endif
                                         @endforeach
                                     </select>
                                     </div>
@@ -227,11 +254,13 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                         <div class="col-md-10 col-md-offset-1">
                             <h3>Orientador</h3>
                         </div>
                 </div>
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-9 col-md-offset-1">
@@ -242,10 +271,14 @@
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Orientador</label>
-                                    <select id="pessoa-4-select" name="orientador" required>
+                                    <select id="pessoa-4-select" name="orientador" value="{{old('orientador') ? old('orientador') : ''}}" required>
                                         <option></option>
                                         @foreach ($pessoas as $pessoa)
-                                        <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@if(old('orientador') == $pessoa->id)
+												<option value="{{$pessoa->id}}" selected>{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@else
+												<option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@endif
                                         @endforeach
                                     </select>
                                     </div>
@@ -258,11 +291,13 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                         <div class="col-md-10 col-md-offset-1">
                             <h3>Coorientador(es)</h3>
                         </div>
                 </div>
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-9 col-md-offset-1">
@@ -273,10 +308,14 @@
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Coorientador 1</label>
-                                    <select id="pessoa-5-select" name="coorientador[]">
+                                    <select id="pessoa-5-select" name="coorientador[]" value="{{old('coorientador')[0] ? old('coorientador')[0] : ''}}">
                                         <option></option>
                                         @foreach ($pessoas as $pessoa)
-                                        <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@if(old('coorientador')[0] == $pessoa->id)
+												<option value="{{$pessoa->id}}" selected>{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@else
+												<option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@endif
                                         @endforeach
                                     </select>
                                     </div>
@@ -289,6 +328,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-9 col-md-offset-1">
@@ -299,10 +339,14 @@
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Coorientador 2</label>
-                                    <select id="pessoa-6-select" name="coorientador[]">
+                                    <select id="pessoa-6-select" name="coorientador[]" value="{{old('coorientador')[1] ? old('coorientador')[1] : ''}}">
                                         <option></option>
                                         @foreach ($pessoas as $pessoa)
-                                        <option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@if(old('coorientador')[1] == $pessoa->id)
+												<option value="{{$pessoa->id}}" selected>{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@else
+												<option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@endif
                                         @endforeach
                                     </select>
                                     </div>
@@ -315,12 +359,13 @@
                         </div>
                     </div>
                 </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 col-md-offset-3 text-center">
-                            <button class="btn btn-primary">Submeter Projeto</button>
-                        </div>
-                    </div>
+
+
+				<div class="row">
+					<div class="col-md-6 col-md-offset-3 text-center">
+						<button class="btn btn-primary">Submeter Projeto</button>
+					</div>
+				</div>
 
                 </form>
             </div>
@@ -449,7 +494,7 @@ $(document).ready(function () {
     var nivelSelect, $nivelSelect;
     var areaSelect, $areaSelect;
 
-    var oldArea = $('#area-select').attr("value"); 
+    var oldArea = $('#area-select').attr("value");
 
      $areaSelect = $('#area-select').selectize({
         placeholder: 'Área do Conhecimento...',

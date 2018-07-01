@@ -82,7 +82,7 @@
                         <tr>
                             <td class="text-center">{{$id+1}}</td>
                             <td>{{  \App\Edicao::numeroEdicao($edicao['ano']) }}</td>
-                            <td>{{$edicao['inscricao_abertura']}} - {{$edicao['inscricao_fechamento']}}</td>
+                            <td>{{ date('d/m/Y H:i:s', strtotime($edicao['inscricao_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['inscricao_fechamento'])) }}</td>
                             <td>{{$edicao['homologacao_abertura']}} - {{$edicao['homologacao_fechamento']}}</td>
                             <td>{{$edicao['avaliacao_abertura']}} - {{$edicao['avaliacao_fechamento']}}</td>
                             <td class="td-actions text-right">
@@ -124,8 +124,6 @@
                             <td></td>
                             <td>{{ $escola['email'] }}</td>
                             <td>{{ $escola['telefone'] }}</td>
-
-
 
                             <td class="td-actions text-right">
 
@@ -238,22 +236,22 @@
                         </div>
                         <div class="project-info">
                             Integrantes:
-                            @foreach ($autor as $dadosAutor)
-                            @if($dadosAutor->projeto_id == $projeto->id)
-                            {{$dadosAutor->nome}},
-                            @endif
+                            @foreach ($autores as $autor)
+								@if($autor->projeto_id == $projeto->id)
+								{{$autor->nome}},
+								@endif
                             @endforeach
 
-                            @foreach ($orientador as $dadosOrientador)
-                            @if($dadosOrientador->projeto_id == $projeto->id)
-                            {{$dadosOrientador->nome}},
-                            @endif
+                            @foreach ($orientadores as $orientador)
+								@if($orientador->projeto_id == $projeto->id)
+								{{$orientador->nome}},
+								@endif
                             @endforeach
 
-                            @foreach($coorientador as $dadosCoorientador)
-                            @if($dadosCoorientador->projeto_id == $projeto->id)
-                            {{$dadosCoorientador->nome}},
-                            @endif
+                            @foreach($coorientadores as $coorientador)
+								@if($coorientador->projeto_id == $projeto->id)
+								{{$coorientador->nome}},
+								@endif
                             @endforeach
                         </div>
                         </div>
@@ -655,11 +653,11 @@ $('.modalNivel').click(function(){
         console.log(res);
 
         //altera o DOM
-        $("#nivelModal").html(res.dados.nivel);
-        $("#min_chModal").html(res.dados.min_ch);
-        $("#max_chModal").html(res.dados.max_ch);
-        $("#desModal").html(res.dados.descricao);
-        $("#palavrasModal").html(res.dados.palavras);
+        $("#nivelModal").html(res.nivel);
+        $("#min_chModal").html(res.min_ch);
+        $("#max_chModal").html(res.max_ch);
+        $("#desModal").html(res.descricao);
+        $("#palavrasModal").html(res.palavras);
 
         //abre a modal
         $("#modal1").modal();

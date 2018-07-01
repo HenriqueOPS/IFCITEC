@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Requests\AreaRequest;
 use App\Http\Requests\NivelRequest;
+use App\Projeto;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,6 @@ class AdminController extends Controller
 	public function __construct()
 	{
 		$this->middleware('auth');
-		//$this->middleware('isAdministrador');
 	}
 
     /**
@@ -33,7 +33,7 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(PeriodosController $p)
+    public function index()
     {
 
 		$edicoes = Edicao::all(['id', 'ano',
@@ -47,48 +47,67 @@ class AdminController extends Controller
 
 		$escolas = Escola::all(['id', 'nome_completo', 'nome_curto', 'email', 'telefone']);
 
-		/*
-        $projetos = DB::table('projeto')->select('titulo','id')
-                                      ->orderBy('created_at', 'asc')
-                                      ->get()
-                                      ->keyBy('id')
-                                      ->toArray();
 
-      //Participantes dos projetos
+        $projetos = DB::table('projeto')
+						->select('titulo','id')
+						->orderBy('created_at', 'asc')
+						->where('edicao_id',Edicao::getEdicaoId())
+						->get()
+						->keyBy('id')
+                        ->toArray();
 
+		$autores = array();
+		$orientadores = array();
+		$coorientadores = array();
+
+		//Participantes dos projetos
         if($projetos){
-        $idAutor =  Funcao::where('funcao','Autor')-> first();
-        $idOrientador =  Funcao::where('funcao','Orientador')-> first();
-        $idCoorientador =  Funcao::where('funcao','Coorientador')-> first();
+			$idAutor =  Funcao::where('funcao','Autor')->first();
+			$idOrientador =  Funcao::where('funcao','Orientador')->first();
+			$idCoorientador =  Funcao::where('funcao','Coorientador')->first();
 
-        $ids = array_keys( $projetos);
+			$ids = array_keys($projetos);
 
-        $autor = DB::table('escola_funcao_pessoa_projeto')->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')->select('escola_funcao_pessoa_projeto.projeto_id','pessoa.id','pessoa.nome')->whereIn('projeto_id', $ids)->where('funcao_id', $idAutor->id)->get()->toArray();
-        $orientador = DB::table('escola_funcao_pessoa_projeto')->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')->select('escola_funcao_pessoa_projeto.projeto_id','pessoa.id','pessoa.nome')->whereIn('projeto_id', $ids)->where('funcao_id', $idOrientador->id)->get()->toArray();
-        $coorientador = DB::table('escola_funcao_pessoa_projeto')->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')->select('escola_funcao_pessoa_projeto.projeto_id','pessoa.id','pessoa.nome')->whereIn('projeto_id', $ids)->where('funcao_id', $idCoorientador->id)->get()->toArray();
+			$autores = DB::table('escola_funcao_pessoa_projeto')
+						->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+						->select('escola_funcao_pessoa_projeto.projeto_id','pessoa.id','pessoa.nome')
+						->whereIn('projeto_id', $ids)
+						->where('funcao_id', $idAutor->id)
+						->get()
+						->toArray();
+
+			$orientadores = DB::table('escola_funcao_pessoa_projeto')
+							->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+							->select('escola_funcao_pessoa_projeto.projeto_id','pessoa.id','pessoa.nome')
+							->whereIn('projeto_id', $ids)
+							->where('funcao_id', $idOrientador->id)
+							->get()
+							->toArray();
+
+			$coorientadores = DB::table('escola_funcao_pessoa_projeto')
+								->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+								->select('escola_funcao_pessoa_projeto.projeto_id','pessoa.id','pessoa.nome')
+								->whereIn('projeto_id', $ids)->where('funcao_id', $idCoorientador->id)
+								->get()
+								->toArray();
         }
-        else{
-            $autores = (array) null;
-            $orientador = null;
-            $coorientadores = (array) null;
-        }
-        if(! isset($coorientadores)){
-            $coorientadores = (array) null;
-        }
 
 
 
+		/*
         return view('admin.home', collect(['edicoes' => $edicoes, 'enderecos' => $enderecos, 'escolas' => $escolas, 'niveis' => $niveis, 'areas' => $areas, 'projetos' => $projetos, 'autor' => $autor, 'orientador' => $orientador, 'coorientador' => $coorientador]));
         */
 
-		$projetos = array();
 
 
 		return view('admin.home', collect(['edicoes' => $edicoes,
 			'escolas' => $escolas,
 			'niveis' => $niveis,
 			'areas' => $areas,
-			'projetos' => $projetos
+			'projetos' => $projetos,
+			'autores' => $autores,
+			'orientadores' => $orientadores,
+			'coorientadores' => $coorientadores
 		]));
 
 	}
@@ -96,8 +115,7 @@ class AdminController extends Controller
 
 	public function dadosNivel($id)
 	{ //Ajax
-		$dados = Nivel::find($id);
-		return compact('dados');
+		return Nivel::find($id);
 	}
 
 	public function cadastroNivel()
@@ -125,8 +143,8 @@ class AdminController extends Controller
 
 	public function editarNivel($id)
 	{
-		$dados = Nivel::find($id);
-		return view('admin.editarNivel', compact('dados'));
+		return Nivel::find($id);
+
 	}
 
 	public function editaNivel(NivelRequest $req)
@@ -193,7 +211,7 @@ class AdminController extends Controller
 	{
 		$niveis = DB::table('nivel')->select('id', 'nivel')->get();
 		$dados = AreaConhecimento::find($id);
-		
+
 		return view('admin.editarArea', array('niveis' => $niveis), compact('dados','n'));
 	}
 

@@ -59,6 +59,8 @@
                         <!-- Right Side Of Navbar -->
                         <ul class="nav navbar-nav navbar-left">
                             <li><a href="{{ route('autor') }}">Projeto</a></li>
+
+
                             <li><a href="#" class="dropdown-toggle" data-toggle="dropdown" >Comissão Avaliadora</a>
                             <ul class="dropdown-menu" role="menu">
                                     <li>
@@ -73,10 +75,20 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li><a href="{{ route('voluntario') }}">Voluntário</a></li>
-                            <li><a href="{{ route('organizador') }}">Organizador</a></li>
-                            <li><a href="{{ route('administrador') }}">Administrador</a></li>
-                        </ul>
+
+							@if(Auth::user()->temFuncao('Voluntário') || Auth::user()->temFuncao('Administrador'))
+                            	<li><a href="{{ route('voluntario') }}">Voluntário</a></li>
+							@endif
+
+							@if(Auth::user()->temFuncao('Organizador') || Auth::user()->temFuncao('Administrador'))
+                           		<li><a href="{{ route('organizador') }}">Organizador</a></li>
+							@endif
+
+							@if(Auth::user()->temFuncao('Administrador'))
+                            	<li><a href="{{ route('administrador') }}">Administrador</a></li>
+                        	@endif
+
+						</ul>
                         <ul class="nav navbar-nav navbar-right">
 
                             <li class="dropdown">

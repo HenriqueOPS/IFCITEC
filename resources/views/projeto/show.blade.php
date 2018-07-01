@@ -77,7 +77,7 @@
                             {{$projeto->areaConhecimento->area_conhecimento}}
                             <hr>
                             <b><i class="material-icons">today</i> Submetido em:</b><br>
-                            {{$projeto->created_at}}
+                            {{date('d/m/Y H:i:s', strtotime($projeto->created_at))}}
                         </div>
                     </div>
                 </div>
