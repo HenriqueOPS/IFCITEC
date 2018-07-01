@@ -8,7 +8,7 @@
             <h2>Painel do Usuário</h2>
         </div>
 
-        <div id="page" class="col-md-10 col-xs-offset-2">
+        <div id="page" class="col-md-12">
             <ul class="nav nav-pills nav-pills-primary"  role="tablist">
                 <li class="active">
                     <a href="dashboard" id="0" class="tab" role="tab" data-toggle="tab">
@@ -34,20 +34,27 @@
 </div>
 <br><br>
 <div class="container">
+
     <div class="row">
+
         <div class="col-md-12 main main-raised">
-            <table class="table">
-                <thead id="0">
-                <div id="0">
-                    <div class="col-md-12">
-                        <a  href="{{route('projeto.create')}}" class="btn btn-primary btn-round">
-                            <i class="material-icons">add</i> Novo Projeto
-                        </a>
-                    </div>
-                </div>
-        </div>
-        </thead>
+
+		<table class="table">
+
+		<thead id="0">
+
+			<div id="0">
+				<div class="col-md-12">
+					<a  href="{{route('projeto.create')}}" class="btn btn-primary btn-round">
+						<i class="material-icons">add</i> Novo Projeto
+					</a>
+				</div>
+			</div>
+
+		</thead>
+
         <tbody id="0">
+
         <div id="0" class="list-projects">
             @if($funcoes->isEmpty())
             <div class="text-center">
@@ -72,20 +79,20 @@
                     <span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
                 </div>
                 <div class="project-info">
-                    Integrantes: 
-                    
+                    Integrantes:
+
                     @foreach ($autor as $dadosAutor)
                     @if($dadosAutor->projeto_id == $projeto->id)
                     {{$dadosAutor->nome}},
                     @endif
                     @endforeach
-                    
+
                     @foreach ($orientador as $dadosOrientador)
                     @if($dadosOrientador->projeto_id == $projeto->id)
                     {{$dadosOrientador->nome}},
                     @endif
                     @endforeach
-                    
+
 
                     @foreach($coorientador as $dadosCoorientador)
                     @if($dadosCoorientador->projeto_id == $projeto->id)
@@ -102,7 +109,9 @@
             @endif
         </div>
         </tbody>
+
         <thead id="1">
+
         <div id="1">
             <div class="col-md-12">
                         <a  href="{{route('projeto.create')}}" class="btn btn-primary btn-round">
@@ -111,7 +120,9 @@
                     </div>
             </div>
         </thead>
+
         <tbody id="1">
+
         <div id="1" class="list-projects">
             @if($funcoes->isEmpty())
             <div class="text-center">
@@ -137,19 +148,19 @@
                     <span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
                 </div>
                 <div class="project-info">
-                    Integrantes: 
+                    Integrantes:
                     @foreach ($autor as $dadosAutor)
                     @if($dadosAutor->projeto_id == $projeto->id)
                     {{$dadosAutor->nome}},
                     @endif
                     @endforeach
-                    
+
                     @foreach ($orientador as $dadosOrientador)
                     @if($dadosOrientador->projeto_id == $projeto->id)
                     {{$dadosOrientador->nome}},
                     @endif
                     @endforeach
-                    
+
 
                     @foreach($coorientador as $dadosCoorientador)
                     @if($dadosCoorientador->projeto_id == $projeto->id)
@@ -166,17 +177,23 @@
             @endif
         </div>
         </tbody>
+
         <thead id="2">
-        <div id="2">
-            <div class="col-md-12">
-                        <a  href="{{route('projeto.create')}}" class="btn btn-primary btn-round">
-                            <i class="material-icons">add</i> Novo Projeto
-                        </a>
-                    </div>
-            </div>
+
+			<div id="2">
+				<div class="col-md-12">
+					<a  href="{{route('projeto.create')}}" class="btn btn-primary btn-round">
+						<i class="material-icons">add</i> Novo Projeto
+					</a>
+				</div>
+			</div>
+
         </thead>
+
         <tbody id="2">
+
         <div id="2" class="list-projects">
+
             @if($funcoes->isEmpty())
             <div class="text-center">
                 @if (!Auth::user()->temFuncao("Avaliador") && !Auth::user()->temFuncao("Revisor"))
@@ -201,19 +218,19 @@
                     <span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
                 </div>
                 <div class="project-info">
-                    Integrantes: 
+                    Integrantes:
                     @foreach ($autor as $dadosAutor)
                     @if($dadosAutor->projeto_id == $projeto->id)
                     {{$dadosAutor->nome}},
                     @endif
                     @endforeach
-                    
+
                     @foreach ($orientador as $dadosOrientador)
                     @if($dadosOrientador->projeto_id == $projeto->id)
                     {{$dadosOrientador->nome}},
                     @endif
                     @endforeach
-                    
+
 
                     @foreach($coorientador as $dadosCoorientador)
                     @if($dadosCoorientador->projeto_id == $projeto->id)
@@ -232,14 +249,13 @@
         </table>
     </div>
 
+</div>
+</div>
 
-</div>
-</div>
 @endsection
 @section('js')
 <script type="application/javascript">
     $(document).ready(function () {
-
 
     hideHeads();
     hideBodys();
@@ -249,7 +265,7 @@
     $('.tab').click(function (e) {
     var target = $(this)[0];
     hideHeads();
-    hideBodys(); 
+    hideBodys();
     $('thead[id='+target.id+']').show();
     $('tbody[id='+target.id+']').show();
     $('div[id='+target.id+']').show();

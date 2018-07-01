@@ -63,11 +63,11 @@
                                     <select id="nivel-select" name="nivel" value="{{isset($nivelP->id) ? $nivelP->id : ''}}" required>
                                         <option></option>
                                         @foreach ($niveis as $nivel)
-                                        @if ($nivel->id == $nivelP->id)
-                                        <option selected="selected" value="{{$nivel->id}}">{{$nivel->nivel}}</option>
-                                        @else
-                                        <option value="{{$nivel->id}}">{{$nivel->nivel}}</option>
-                                        @endif
+											@if ($nivel->id == $nivelP->id)
+												<option selected="selected" value="{{$nivel->id}}">{{$nivel->nivel}}</option>
+											@else
+												<option value="{{$nivel->id}}">{{$nivel->nivel}}</option>
+											@endif
                                         @endforeach
                                     </select>
                                     @if ($errors->has('nivel'))
@@ -327,7 +327,7 @@
                         </div>
                     </div>
                 </div>
-                    
+
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">
                             <button class="btn btn-primary">Salvar Alterações</button>
@@ -450,7 +450,7 @@ $(document).ready(function () {
     var nivelSelect, $nivelSelect;
     var areaSelect, $areaSelect;
 
-    var oldArea = $('#area-select').attr("value"); 
+    var oldArea = $('#area-select').attr("value");
 
      $areaSelect = $('#area-select').selectize({
         placeholder: 'Área do Conhecimento...',

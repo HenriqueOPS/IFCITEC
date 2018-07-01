@@ -29,7 +29,7 @@ class MailCoorientador extends Mailable
      */
     public function build()
     {
-        return  $this->subject('IFCITEC')->view('mail.mailCoorientador')
+        return  $this->subject('IFCITEC - Você é um Coorientador(a)')->view('mail.mailCoorientador')
         ->withNome($this->nome)
         ->withTitulo($this->titulo);
     }

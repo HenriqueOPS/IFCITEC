@@ -32,7 +32,7 @@ class MailAutor extends Mailable
      */
     public function build()
     {
-        return  $this->subject('IFCITEC')->view('mail.mailAutor')
+        return  $this->subject('IFCITEC - Você é um Autor(a)')->view('mail.mailAutor')
         ->withNome($this->nome)
         ->withTitulo($this->titulo);
     }

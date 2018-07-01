@@ -55,14 +55,17 @@ class ProjetoController extends Controller
 	public function create()
 	{
 
+		//Não está no período de Inscrição
+		if(!Edicao::consultaPeriodo('Inscrição'))
+			return redirect()->route('home');
+
 		$niveis = Edicao::find(Edicao::getEdicaoId())->niveis()->get();
 		$areas = Edicao::find(Edicao::getEdicaoId())->areas()->get();
 
-
 		$funcoes = Funcao::getByCategory('integrante');
 
-		$escolas = Escola::all();
-		$pessoas = Pessoa::all();
+		$escolas = Escola::all(['id', 'nome_curto']);
+		$pessoas = Pessoa::all(['id', 'nome', 'email']);
 
 		return view('projeto.create')
 			->withNiveis($niveis)
@@ -87,6 +90,7 @@ class ProjetoController extends Controller
 		$areaConhecimento = AreaConhecimento::find($request->area_conhecimento);
 		$nivel = Nivel::find($request->nivel);
 		$edicao = Edicao::find(Edicao::getEdicaoId());
+
 		$projeto->edicao()->associate($edicao);
 		$projeto->areaConhecimento()->associate($areaConhecimento);
 		$projeto->nivel()->associate($nivel);
@@ -102,82 +106,84 @@ class ProjetoController extends Controller
 		//Tabela: escola_funcao_pessoa_projeto
 		//Insert via DB pois o Laravel não está preparado para um tabela de 4 relacionamentos
 
-		foreach ($request['autor'] as $a) {
-			if ($a != null) {
-				$autor = Pessoa::find($a);
-				if ($autor->temFuncao('Autor') == false) {
-					DB::table('funcao_pessoa')->insert(
-						['edicao_id' => Edicao::getEdicaoId(),
-							'funcao_id' => Funcao::where('funcao', 'Autor')->first()->id,
-							'pessoa_id' => $a,
-							'homologado' => FALSE
-						]);
+		//Autores
+		foreach ($request['autor'] as $idAutor) {
+			if ($idAutor) {
+
+				$dataAutor = Pessoa::select(['id','nome','email'])->find($idAutor);
+
+				if (!$dataAutor->temFuncao('Autor')) {
+					DB::table('funcao_pessoa')
+						->insert(['edicao_id' => Edicao::getEdicaoId(),
+								  'funcao_id' => Funcao::select(['id'])->where('funcao', 'Autor')->first()->id,
+								  'pessoa_id' => $idAutor,
+								  'homologado' => FALSE
+								]);
 				}
-				DB::table('escola_funcao_pessoa_projeto')->insert(
-					['escola_id' => $request->escola,
-						'funcao_id' => Funcao::where('funcao', 'Autor')->first()->id,
-						'pessoa_id' => $a,
-						'projeto_id' => $projeto->id,
-						'edicao_id' => Edicao::getEdicaoId(),
-					]
-				);
 
-				$email = Pessoa::find($a)->email;
-				$nome = Pessoa::find($a)->nome;
-				$titulo = $projeto->titulo;
-				$emailJob = (new MailAutorJob($email, $nome, $titulo))->delay(\Carbon\Carbon::now()->addSeconds(60));
+				DB::table('escola_funcao_pessoa_projeto')
+					->insert(['escola_id' => $request->escola,
+							  'funcao_id' => Funcao::select(['id'])->where('funcao', 'Autor')->first()->id,
+							  'pessoa_id' => $idAutor,
+							  'projeto_id' => $projeto->id,
+							  'edicao_id' => Edicao::getEdicaoId()
+							]);
+
+				$emailJob = (new MailAutorJob($dataAutor->email, $dataAutor->nome, $projeto->titulo))
+					->delay(\Carbon\Carbon::now()->addSeconds(60));
 				dispatch($emailJob);
-
 
 			}
 		}
 
-		$orientador = Pessoa::find($request['orientador']);
-		if ($orientador->temFuncao('Orientador') == false) {
-			DB::table('funcao_pessoa')->insert(
-				['edicao_id' => Edicao::getEdicaoId(),
-					'funcao_id' => Funcao::where('funcao', 'Orientador')->first()->id,
-					'pessoa_id' => $request['orientador'],
-					'homologado' => FALSE
-				]);
+		//Orientador
+		$dataOrientador = Pessoa::select(['id','nome','email'])->find($request['orientador']);
+		if (!$dataOrientador->temFuncao('Orientador')) {
+			DB::table('funcao_pessoa')
+				->insert(['edicao_id' => Edicao::getEdicaoId(),
+						'funcao_id' => Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id,
+						'pessoa_id' => $request['orientador'],
+						'homologado' => FALSE
+						]);
 		}
-		DB::table('escola_funcao_pessoa_projeto')->insert(
-			['escola_id' => $request->escola,
-				'funcao_id' => Funcao::where('funcao', 'Orientador')->first()->id,
-				'pessoa_id' => $request['orientador'],
-				'projeto_id' => $projeto->id,
-				'edicao_id' => Edicao::getEdicaoId(),
-			]
-		);
-		$email = Pessoa::find($request['orientador'])->email;
-		$nome = Pessoa::find($request['orientador'])->nome;
-		$titulo = $projeto->titulo;
-		$emailJob = (new MailAutorJob($email, $nome, $titulo))->delay(\Carbon\Carbon::now()->addSeconds(60));
+
+		DB::table('escola_funcao_pessoa_projeto')
+			->insert(['escola_id' => $request->escola,
+					 'funcao_id' => Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id,
+					 'pessoa_id' => $request['orientador'],
+					 'projeto_id' => $projeto->id,
+					 'edicao_id' => Edicao::getEdicaoId()
+					]);
+
+		$emailJob = (new MailOrientadorJob($dataOrientador->email, $dataOrientador->nome, $projeto->titulo))
+			->delay(\Carbon\Carbon::now()->addSeconds(60));
 		dispatch($emailJob);
 
-		foreach ($request['coorientador'] as $c) {
-			if ($c != null) {
-				$coorientador = Pessoa::find($c);
-				if ($coorientador->temFuncao('Coorientador') == false) {
-					DB::table('funcao_pessoa')->insert(
-						['edicao_id' => Edicao::getEdicaoId(),
-							'funcao_id' => Funcao::where('funcao', 'Coorientador')->first()->id,
-							'pessoa_id' => $c,
-							'homologado' => FALSE
-						]);
+		//Coorientadores
+		foreach ($request['coorientador'] as $idCoorientador) {
+			if ($idCoorientador) {
+
+				$dataCoorientador = Pessoa::select(['id','nome','email'])->find($idCoorientador);
+
+				if (!$dataCoorientador->temFuncao('Coorientador')) {
+					DB::table('funcao_pessoa')
+						->insert(['edicao_id' => Edicao::getEdicaoId(),
+								  'funcao_id' => Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id,
+								  'pessoa_id' => $idCoorientador,
+								  'homologado' => FALSE
+								]);
 				}
-				DB::table('escola_funcao_pessoa_projeto')->insert(
-					['escola_id' => $request->escola,
-						'funcao_id' => Funcao::where('funcao', 'Coorientador')->first()->id,
-						'pessoa_id' => $c,
-						'projeto_id' => $projeto->id,
-						'edicao_id' => Edicao::getEdicaoId(),
-					]
-				);
-				$email = Pessoa::find($c)->email;
-				$nome = Pessoa::find($c)->nome;
-				$titulo = $projeto->titulo;
-				$emailJob = (new MailAutorJob($email, $nome, $titulo))->delay(\Carbon\Carbon::now()->addSeconds(60));
+
+				DB::table('escola_funcao_pessoa_projeto')
+					->insert(['escola_id' => $request->escola,
+							  'funcao_id' => Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id,
+							  'pessoa_id' => $idCoorientador,
+							  'projeto_id' => $projeto->id,
+							  'edicao_id' => Edicao::getEdicaoId(),
+							]);
+
+				$emailJob = (new MailCoorientadorJob($dataCoorientador->email, $dataCoorientador->nome, $projeto->titulo))
+					->delay(\Carbon\Carbon::now()->addSeconds(60));
 				dispatch($emailJob);
 			}
 		}

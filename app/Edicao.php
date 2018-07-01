@@ -20,6 +20,7 @@ class Edicao extends Model
         'comissao_abertura','comissao_fechamento',
 		'feira_abertura', 'feira_fechamento', 'ano', 'projetos'];
 
+    //Pega o ID da edição atual pelo período da feira
 	public static function getEdicaoId() {
 
 		$edicao = Edicao::whereRaw("(NOW() AT TIME ZONE 'America/Sao_Paulo') >= feira_abertura")
@@ -32,6 +33,17 @@ class Edicao extends Model
 		return 0;
 	}
 
+	//Pega o ANO da edição atual em números romanos
+	public static function getAnoEdicao() {
+
+		$ano = Edicao::select(['ano'])
+					->where('id','=', Edicao::getEdicaoId())
+					->get();
+
+		return Edicao::numeroEdicao($ano[0]->ano);
+	}
+
+	//Consulta se está dentro dos períodos
 	public static function consultaPeriodo($tipo){
 
 		$nome_campos = false;

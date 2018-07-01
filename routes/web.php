@@ -10,6 +10,7 @@
   | contains the "web" middleware group. Now create something great!
   |
  */
+use App\Http\Middleware;
 
 Route::get('/version', function (){
 	$strData = explode(':', file_get_contents('version.txt'));
@@ -34,7 +35,6 @@ Route::get('/api/campos-avaliacao/{id}', 'ApiController@camposAvaliacao');
 Route::get('/api/salva-avaliacao/{id}', 'ApiController@salvaAvaliacao');
 
 
-
 Auth::routes();
 Route::post('/recuperar/senha/', 'Auth\ForgotPasswordController@emailSenha')->name('recuperar.senha');
 
@@ -51,19 +51,19 @@ Route::post('cadastro', [
 Route::get('/home', 'HomeController@index')->name('home');
 
 
+Route::get('/debug', function (){
+	return view('admin.debug');
+});
+
+
+
 //Edição dos dados pessoais
 Route::get('/editar-cadastro', 'PessoaController@editarCadastro')->name('editarCadastro');
 Route::post('/editar-cadastro', 'PessoaController@editaCadastro')->name('editaCadastro');
 
-// Escola
-Route::get('/escola/cadastrar', 'AdminController@cadastroEscola')->name('cadastroEscola');
-Route::post('/escola/cadastrar', 'AdminController@cadastraEscola')->name('cadastroEscola');
-Route::get('/escola/editar/{id}', 'AdminController@editarEscola')->name('escola');
-Route::post('/escola/edita-escola', 'AdminController@editaEscola')->name('editaEscola');
-Route::get('/escola/dados-escola/{id}', 'AdminController@dadosEscola'); //Ajax
-Route::get('/escola/exclui-escola/{id}/{s}', 'AdminController@excluiEscola'); //Ajax
 
-Route::get('/gerenciar', 'AdminController@administrarUsuarios');
+
+
 
 //Autor
 Route::get('/autor', 'AutorController@index')->name('autor');
@@ -71,32 +71,64 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 //Organizador
 Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 
-// Administrador
-Route::get('/administrador', 'AdminController@index')->name('administrador');
+/* Administrador Routes */
+Route::group(['middleware' => ['IsAdministrador']], function () {
 
-// Edicao
-Route::get('/edicao/cadastrar', 'EdicaoController@cadastroEdicao')->name('cadastroEdicao');
-Route::post('/edicao/cadastrar', 'EdicaoController@cadastraEdicao')->name('cadastraEdicao');
-Route::get('/edicao/editar/{id}', 'EdicaoController@editarEdicao')->name('editarEdicao');
-Route::post('/edicao/edita-edicao', 'EdicaoController@editaEdicao')->name('edicao');
-Route::get('/edicao/dados-edicao/{id}', 'EdicaoController@dadosEdicao'); //Ajax
-Route::get('/edicao/exclui-edicao/{id}/{s}', 'EdicaoController@excluiEdicao'); //Ajax
 
-// Nivel
-Route::get('/nivel/cadastrar', 'AdminController@cadastroNivel')->name('cadastroNivel');
-Route::post('/nivel/cadastrar', 'AdminController@cadastraNivel')->name('cadastroNivel');
-Route::get('/nivel/editar/{id}', 'AdminController@editarNivel')->name('nivel');
-Route::post('/nivel/edita-nivel', 'AdminController@editaNivel')->name('editaNivel');
-Route::get('/nivel/dados-nivel/{id}', 'AdminController@dadosNivel'); //Ajax
-Route::get('/nivel/exclui-nivel/{id}/{s}', 'AdminController@excluiNivel'); //Ajax
+	Route::get('/administrador', 'AdminController@index')->name('administrador');
 
-// Area
-Route::get('/area/cadastrar', 'AdminController@cadastroArea')->name('cadastroArea');
-Route::post('/area/cadastrar', 'AdminController@cadastraArea')->name('cadastroArea');
-Route::get('/area/editar/{id}', 'AdminController@editarArea')->name('area');
-Route::post('/area/edita-area', 'AdminController@editaArea')->name('editaArea');
-Route::get('/area/dados-area/{id}', 'AdminController@dadosArea'); //Ajax
-Route::get('/area/exclui-area/{id}/{s}', 'AdminController@excluiArea'); //Ajax
+	Route::get('/gerenciar', 'AdminController@administrarUsuarios');
+
+
+	// Nivel
+	Route::get('/nivel/cadastrar', 'AdminController@cadastroNivel')->name('cadastroNivel');
+	Route::post('/nivel/cadastrar', 'AdminController@cadastraNivel')->name('cadastroNivel');
+	Route::get('/nivel/editar/{id}', 'AdminController@editarNivel')->name('nivel');
+	Route::post('/nivel/edita-nivel', 'AdminController@editaNivel')->name('editaNivel');
+
+	Route::get('/nivel/dados-nivel/{id}', 'AdminController@dadosNivel'); //Ajax
+	Route::get('/nivel/exclui-nivel/{id}/{s}', 'AdminController@excluiNivel'); //
+
+
+	// Area
+	Route::get('/area/cadastrar', 'AdminController@cadastroArea')->name('cadastroArea');
+	Route::post('/area/cadastrar', 'AdminController@cadastraArea')->name('cadastroArea');
+	Route::get('/area/editar/{id}', 'AdminController@editarArea')->name('area');
+	Route::post('/area/edita-area', 'AdminController@editaArea')->name('editaArea');
+
+	Route::get('/area/dados-area/{id}', 'AdminController@dadosArea'); //Ajax
+	Route::get('/area/exclui-area/{id}/{s}', 'AdminController@excluiArea'); //Ajax
+
+
+	// Edicao
+	Route::get('/edicao/cadastrar', 'EdicaoController@cadastroEdicao')->name('cadastroEdicao');
+	Route::post('/edicao/cadastrar', 'EdicaoController@cadastraEdicao')->name('cadastraEdicao');
+	Route::get('/edicao/editar/{id}', 'EdicaoController@editarEdicao')->name('editarEdicao');
+	Route::post('/edicao/edita-edicao', 'EdicaoController@editaEdicao')->name('edicao');
+
+	Route::get('/edicao/dados-edicao/{id}', 'EdicaoController@dadosEdicao'); //Ajax
+	Route::get('/edicao/exclui-edicao/{id}/{s}', 'EdicaoController@excluiEdicao'); //Ajax
+
+});
+
+
+/* Organização Routes */
+Route::group(['middleware' => ['IsOrganizacao']], function () {
+
+	// Escola
+	Route::get('/escola/cadastrar', 'AdminController@cadastroEscola')->name('cadastroEscola');
+	Route::post('/escola/cadastrar', 'AdminController@cadastraEscola')->name('cadastroEscola');
+	Route::get('/escola/editar/{id}', 'AdminController@editarEscola')->name('escola');
+	Route::post('/escola/edita-escola', 'AdminController@editaEscola')->name('editaEscola');
+	Route::get('/escola/dados-escola/{id}', 'AdminController@dadosEscola'); //Ajax
+	Route::get('/escola/exclui-escola/{id}/{s}', 'AdminController@excluiEscola'); //Ajax
+
+});
+
+
+
+
+
 
 // Avaliador/Revisor
 Route::get('/avaliador', 'HomeController@homeAvaliador')->name('avaliador');
