@@ -40,7 +40,10 @@ class Edicao extends Model
 					->where('id','=', Edicao::getEdicaoId())
 					->get();
 
-		return Edicao::numeroEdicao($ano[0]->ano);
+		if($ano->count())
+			return Edicao::numeroEdicao($ano[0]->ano);
+
+		return false;
 	}
 
 	//Consulta se está dentro dos períodos
@@ -162,11 +165,11 @@ class Edicao extends Model
         return $this->belongsToMany('App\Edicao', 'edicao');
     }
 
-    public function niveis() {
-        return $this->belongsToMany('App\Nivel', 'nivel_edicao','nivel_id','edicao_id');
-    }
+	public function niveis() {
+		return $this->belongsToMany('App\Nivel', 'nivel_edicao','nivel_id','edicao_id');
+	}
 
-    public function pessoas() {
+	public function pessoas() {
         return $this->belongsToMany('App\Pessoa', 'comissao_edicao','pessoa_id','edicao_id');
     }
 

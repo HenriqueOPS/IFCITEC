@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Edicao;
+use App\Projeto;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -29,32 +30,31 @@ class AutorController extends Controller
      */
     public function index()
     {
-        $funcoes = DB::table('funcao_pessoa')
-						->select('funcao_id')
-						->where('pessoa_id', '=', Auth::user()->id)
-						->where('edicao_id', '=', Edicao::getEdicaoId())
-						->get();
-
-        $projetoPessoa = DB::table('escola_funcao_pessoa_projeto')
-							->select('projeto_id')
+		$projetosPessoa = DB::table('escola_funcao_pessoa_projeto')
+							->select(['projeto_id','funcao'])
 							->where('pessoa_id', '=', Auth::user()->id)
 							->where('edicao_id', '=', Edicao::getEdicaoId())
+							->join('funcao','funcao_id','=','funcao.id')
 							->get()
-							->keyBy('projeto_id')
 							->toArray();
 
-        $chaves = array_keys($projetoPessoa);
+		$projetosIDs = array_column($projetosPessoa, 'projeto_id');
+
+		$integrantes = DB::table('escola_funcao_pessoa_projeto')
+								->select(['projeto_id','nome'])
+								->whereIn('projeto_id', $projetosIDs)
+								->join('pessoa','pessoa_id','=','pessoa.id')
+								->get()
+								->toArray();
 
         $projetos = DB::table('projeto')
 						->select('id','resumo','titulo')
-						->whereIn('id', $chaves)
+						->whereIn('id', $projetosIDs)
 						->get()
 						->keyBy('id')
 						->toArray();
 
-        if(isset($projetos) == false){
-            $projetos = (array) null;
-        }
+        /*
         if($projetos != null){
         $idAutor =  Funcao::where('funcao','Autor')-> first();
         $idOrientador =  Funcao::where('funcao','Orientador')-> first();
@@ -74,8 +74,14 @@ class AutorController extends Controller
         if(! isset($coorientador)){
             $coorientador = (array) null;
         }
+		*/
 
+		$autor = array();
+		$orientador = array();
+		$coorientador = array();
 
-        return view('user.home', array('projetos' => $projetos), array('autor' => $autor), array('coorientador' => $coorientador))->withFuncoes($funcoes)->withOrientador($orientador)->withCoorientador($coorientador);
+        return view('user.home', compact('projetosPessoa','projetos', 'integrantes'))
+			->withOrientador($orientador)
+			->withCoorientador($coorientador);
     }
 }
