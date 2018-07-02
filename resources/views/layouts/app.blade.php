@@ -65,7 +65,7 @@
                             	<li><a href="{{ route('comissaoHome') }}" class="dropdown-toggle" data-toggle="dropdown" >Comissão Avaliadora</a></li>
 							@endif
 
-							@if(\App\Edicao::consultaPeriodo('Comissão'))
+							@if(\App\Edicao::consultaPeriodo('Comissão') || Auth::user()->temFuncao('Administrador'))
 								<li><a href="#" class="dropdown-toggle" data-toggle="dropdown" >Comissão Avaliadora</a>
 									<ul class="dropdown-menu" role="menu">
 										<li>
@@ -75,7 +75,7 @@
 								</li>
 							@endif
 
-							@if(Auth::user()->temFuncao('Voluntário') || Auth::user()->temFuncao('Administrador'))
+							@if(\App\Edicao::consultaPeriodo('Voluntário') || Auth::user()->temFuncao('Administrador'))
                             	<li><a href="{{ route('voluntario') }}">Voluntário</a></li>
 							@endif
 
