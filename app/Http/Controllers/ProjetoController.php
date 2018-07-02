@@ -59,7 +59,18 @@ class ProjetoController extends Controller
 		if(!Edicao::consultaPeriodo('Inscrição'))
 			return redirect()->route('home');
 
+		/*
+		Não sei pq mas parou de funcionar
 		$niveis = Edicao::find(Edicao::getEdicaoId())->niveis()->get();
+		$areas = Edicao::find(Edicao::getEdicaoId())->areas()->get();
+		*/
+
+		$niveis = DB::table('nivel_edicao')
+			->select(['nivel.id','nivel','min_ch','max_ch','palavras'])
+			->where('edicao_id', '=',Edicao::getEdicaoId())
+			->join('nivel','nivel_edicao.nivel_id','=','nivel.id')
+			->get();
+
 		$areas = Edicao::find(Edicao::getEdicaoId())->areas()->get();
 
 		$funcoes = Funcao::getByCategory('integrante');
@@ -245,7 +256,14 @@ class ProjetoController extends Controller
 			->get()
 			->toArray();
 
-		$niveis = Edicao::find(Edicao::getEdicaoId())->niveis()->get();
+		//$niveis = Edicao::find(Edicao::getEdicaoId())->niveis()->get();
+		$niveis = DB::table('nivel_edicao')
+			->select(['nivel.id','nivel','min_ch','max_ch','palavras'])
+			->where('edicao_id', '=',Edicao::getEdicaoId())
+			->join('nivel','nivel_edicao.nivel_id','=','nivel.id')
+			->get();
+
+
 		$areas = Edicao::find(Edicao::getEdicaoId())->areas()->get();
 
 

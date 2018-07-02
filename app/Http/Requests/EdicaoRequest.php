@@ -55,25 +55,25 @@ class EdicaoRequest extends FormRequest
 		return [
 			'inscricao_abertura.required' => 'Esse campo é obrigatório',
 			'inscricao_fechamento.required' => 'Esse campo é obrigatório',
-			'inscricao_fechamento.after' => 'A data do fechamento deve ser posterior a data da abertura',
+			'inscricao_fechamento.after_or_equal' => 'A data do fechamento deve ser posterior a data da abertura',
 			'homologacao_abertura.required' => 'Esse campo é obrigatório',
 			'homologacao_fechamento.required' => 'Esse campo é obrigatório',
-			'homologacao_fechamento.after' => 'A data do fechamento deve ser posterior a data da abertura',
+			'homologacao_fechamento.after_or_equal' => 'A data do fechamento deve ser posterior a data da abertura',
 			'avaliacao_abertura.required' => 'Esse campo é obrigatório',
 			'avaliacao_fechamento.required' => 'Esse campo é obrigatório',
-			'avaliacao_fechamento.after' => 'A data do fechamento deve ser posterior a data da abertura',
+			'avaliacao_fechamento.after_or_equal' => 'A data do fechamento deve ser posterior a data da abertura',
 			'credenciamento_abertura.required' => 'Esse campo é obrigatório',
 			'credenciamento_fechamento.required' => 'Esse campo é obrigatório',
-			'credenciamento_fechamento.after' => 'A data do fechamento deve ser posterior a data da abertura',
+			'credenciamento_fechamento.after_or_equal' => 'A data do fechamento deve ser posterior a data da abertura',
 			'voluntario_abertura.required' => 'Esse campo é obrigatório',
 			'voluntario_fechamento.required' => 'Esse campo é obrigatório',
-			'voluntario_fechamento.after' => 'A data do fechamento deve ser posterior a data da abertura',
+			'voluntario_fechamento.after_or_equal' => 'A data do fechamento deve ser posterior a data da abertura',
 			'comissao_abertura.required' => 'Esse campo é obrigatório',
 			'comissao_fechamento.required' => 'Esse campo é obrigatório',
-			'comissao_fechamento.after' => 'A data do fechamento deve ser posterior a data da abertura',
+			'comissao_fechamento.after_or_equal' => 'A data do fechamento deve ser posterior a data da abertura',
 			'feira_abertura.required' => 'Esse campo é obrigatório',
 			'feira_fechamento.required' => 'Esse campo é obrigatório',
-			'feira_fechamento.after' => 'A data do fechamento deve ser posterior a data da abertura',
+			'feira_fechamento.after_or_equal' => 'A data do fechamento deve ser posterior a data da abertura',
 			'projetos.required' => 'Esse campo é obrigatório',
 		];
 	}
@@ -86,13 +86,13 @@ class EdicaoRequest extends FormRequest
 	 */
 	public function withValidator($validator)
 	{
-		$validator->addRules(['inscricao_fechamento' => ('after: ' . $validator->getData()['inscricao_fechamento'])]);
-		$validator->addRules(['homologacao_fechamento' => ('after: ' . $validator->getData()['homologacao_fechamento'])]);
-		$validator->addRules(['avaliacao_fechamento' => ('after: ' . $validator->getData()['avaliacao_fechamento'])]);
-		$validator->addRules(['credenciamento_fechamento' => ('after: ' . $validator->getData()['credenciamento_fechamento'])]);
-		$validator->addRules(['voluntario_fechamento' => ('after: ' . $validator->getData()['voluntario_fechamento'])]);
-		$validator->addRules(['comissao_fechamento' => ('after: ' . $validator->getData()['comissao_fechamento'])]);
-		$validator->addRules(['feira_fechamento' => ('after: ' . $validator->getData()['feira_fechamento'])]);
+		$validator->addRules(['inscricao_fechamento' => ('date|after_or_equal: ' . $validator->getData()['inscricao_abertura'])]);
+		$validator->addRules(['homologacao_fechamento' => ('date|after_or_equal: ' . $validator->getData()['homologacao_abertura'])]);
+		$validator->addRules(['avaliacao_fechamento' => ('date|after_or_equal: ' . $validator->getData()['avaliacao_abertura'])]);
+		$validator->addRules(['credenciamento_fechamento' => ('date|after_or_equal: ' . $validator->getData()['credenciamento_abertura'])]);
+		$validator->addRules(['voluntario_fechamento' => ('date|after_or_equal: ' . $validator->getData()['voluntario_abertura'])]);
+		$validator->addRules(['comissao_fechamento' => ('date|after_or_equal: ' . $validator->getData()['comissao_abertura'])]);
+		$validator->addRules(['feira_fechamento' => ('date|after_or_equal: ' . $validator->getData()['feira_abertura'])]);
 
         // XGH
         // valida os níveis e áreas por Callback

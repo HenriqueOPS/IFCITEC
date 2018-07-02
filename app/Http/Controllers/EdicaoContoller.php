@@ -47,6 +47,7 @@ class EdicaoController extends Controller {
             ->limit(1)
             ->get();
         $ano = 0;
+
         //Incrementa o ano
         if($query->count()>0)
         $ano = ++$query[0]->ano;

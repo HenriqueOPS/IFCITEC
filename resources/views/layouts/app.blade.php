@@ -61,20 +61,19 @@
                             <li><a href="{{ route('autor') }}">Projeto</a></li>
 
 
-                            <li><a href="#" class="dropdown-toggle" data-toggle="dropdown" >Comissão Avaliadora</a>
-                            <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{route('comissao')}}">
-                                            Cadastrar-se
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('comissaoHome') }}">
-                                            Painel de Comissão Avaliadora
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+							@if((Auth::user()->temFuncao('Avaliador') || Auth::user()->temFuncao('Homologador')))
+                            	<li><a href="{{ route('comissaoHome') }}" class="dropdown-toggle" data-toggle="dropdown" >Comissão Avaliadora</a></li>
+							@endif
+
+							@if(\App\Edicao::consultaPeriodo('Comissão'))
+								<li><a href="#" class="dropdown-toggle" data-toggle="dropdown" >Comissão Avaliadora</a>
+									<ul class="dropdown-menu" role="menu">
+										<li>
+											<a href="{{route('comissao')}}">Cadastrar-se</a>
+										</li>
+									</ul>
+								</li>
+							@endif
 
 							@if(Auth::user()->temFuncao('Voluntário') || Auth::user()->temFuncao('Administrador'))
                             	<li><a href="{{ route('voluntario') }}">Voluntário</a></li>

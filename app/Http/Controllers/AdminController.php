@@ -39,7 +39,7 @@ class AdminController extends Controller
 		$edicoes = Edicao::all(['id', 'ano',
 						'inscricao_abertura', 'inscricao_fechamento',
 						'homologacao_abertura', 'homologacao_fechamento',
-						'avaliacao_abertura', 'avaliacao_fechamento']);
+						'avaliacao_abertura', 'avaliacao_fechamento'])->sortByDesc('ano');
 
 		$niveis = Nivel::all(['id', 'nivel', 'descricao']);
 
