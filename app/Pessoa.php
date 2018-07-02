@@ -73,33 +73,47 @@ class Pessoa extends Authenticatable {
 	 * @param String $check Uma string contento o nome da Role
 	 * @return boolean
 	 */
-	public function temFuncao($funcao) {
+	public function temFuncao($funcao) { // Não me Julgue
 
     	//pega o id da edição
 		$EdicaoId = Edicao::getEdicaoId();
 
 		if($EdicaoId || $funcao == 'Administrador'){
 
-			//Faz a consulta na mão por causa dos Wheres
-			$queryBase = DB::table('funcao_pessoa')
-							->select('homologado')
-							->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
-							//Busca pela Função
-							->where('funcao.funcao','=',$funcao)
-							//Busca pela Pessoa
-							->where('funcao_pessoa.pessoa_id','=',$this->id);
-
 			//Busca pela edição
 			if($EdicaoId) {
 				//Permissão apenas para a edição corrente ou para todas as edições
 				//quando a pessoa possuir permissão para a edição de id 1, tbm terá para todas as demais
-				$query = $queryBase->where('edicao_id','=',$EdicaoId);
+				//Faz a consulta na mão por causa dos Wheres
+				$query = DB::table('funcao_pessoa')
+							->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+							//Busca pela Função
+							->where('funcao.funcao','=',$funcao)
+							//Busca pela Pessoa
+							->where('funcao_pessoa.pessoa_id','=',$this->id)
+							->where('funcao_pessoa.edicao_id','=',$EdicaoId);
 
+
+
+				//return $query->toSql();
 				if(!$query->count()) //Todas edições
-					$query = $queryBase->where('edicao_id','=',1);
+					$query = DB::table('funcao_pessoa')
+								->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+								//Busca pela Função
+								->where('funcao.funcao','=',$funcao)
+								//Busca pela Pessoa
+								->where('funcao_pessoa.pessoa_id','=',$this->id)
+								->where('funcao_pessoa.edicao_id','=',1);
+
 			}else{
 				//Permissão apenas para todas as edições
-				$query = $queryBase->where('edicao_id','=',1);
+				$query = DB::table('funcao_pessoa')
+							->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+							//Busca pela Função
+							->where('funcao.funcao','=',$funcao)
+							//Busca pela Pessoa
+							->where('funcao_pessoa.pessoa_id','=',$this->id)
+							->where('funcao_pessoa.edicao_id','=',1);
 			}
 
 			if($query->count()) {
