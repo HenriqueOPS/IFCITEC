@@ -16,7 +16,7 @@ class IsOrganizacao {
      */
     public function handle($request, Closure $next) {
 
-        if (Auth::user()->temFuncao('Organizador')) {
+        if (Auth::user()->temFuncao('Organizador') || Auth::user()->temFuncao('Administrador')) {
                 return $next($request);
         }
         return redirect('home');

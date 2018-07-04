@@ -11,7 +11,7 @@
                         <h2>{{$projeto->titulo}}</h2>
                     </div>
                 </div>
-            
+
                 <div class="row">
                     <div id="projeto-show">
                         <div class="col-md-7 col-md-offset-1">
@@ -28,7 +28,7 @@
                             </div>
                             <p class="resumo">{{$projeto->resumo}}</p>
                             <hr>
-                            <b>Palavras-Chaves:</b> 
+                            <b>Palavras-Chaves:</b>
                             @foreach($projeto->palavrasChaves as $palavra)
                                 {{$palavra->palavra}};
                             @endforeach
@@ -41,7 +41,7 @@
                             @endif
                         </div>
                         <div class="col-md-3">
-                            @if(Auth::user()->temFuncao('Avaliador'))// || Auth::user()->temFuncao('Revisor'))
+                            @if(Auth::user()->temFuncao('Avaliador'))
                                 @if($projeto->getStatus() != "Avaliado")
                                     @if($projeto->nivel->nivel == "Ensino Fundamental")
 
@@ -55,8 +55,8 @@
                                     @endif
                                 @endif
                             @else
-                                <a href="{{route('projeto.formVinculaIntegrante', ['projeto' => $projeto->id])}}" id="novo-integrante" class="btn btn-success">
-                                    Novo Integrante
+                                <a href="{{ route('editarProjeto', $projeto->id) }}" class="btn btn-success">
+                                    Editar informações
                                 </a>
                             @endif
 
@@ -70,7 +70,6 @@
                             <b><i class="material-icons">school</i> Nível:</b><br>
                             {{$projeto->nivel->nivel}}
                             <hr>
-                            <hr>
                             <b><i class="material-icons">school</i> Escola:</b><br>
                             {{App\Escola::find($projeto->pessoas[0]->pivot->escola_id)->nome_curto}}
                             <hr>
@@ -78,7 +77,7 @@
                             {{$projeto->areaConhecimento->area_conhecimento}}
                             <hr>
                             <b><i class="material-icons">today</i> Submetido em:</b><br>
-                            {{$projeto->created_at}}
+                            {{date('d/m/Y H:i:s', strtotime($projeto->created_at))}}
                         </div>
                     </div>
                 </div>

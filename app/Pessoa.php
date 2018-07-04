@@ -2,6 +2,7 @@
 
 namespace App;
 
+use function GuzzleHttp\Promise\all;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable as Notifiable;
 //
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class Pessoa extends Authenticatable {
 
     use Notifiable;
-    
+
     /**
      * The table associated with the model.
      *
@@ -57,8 +58,135 @@ class Pessoa extends Authenticatable {
         return $schema . '.' . $this->table;
     }
 
+    public function edicoes() {
+        return $this->belongsToMany('App\Edicao', 'comissao_edicao','pessoa_id','edicao_id');
+    }
+
     public function tarefas() {
         return $this->belongsToMany('App\Tarefa');
+    }
+
+	/**
+	 * Verifica se pessoa possui a função passada por parâmetro
+	 * na edição corrente
+	 * @access public
+	 * @param String $check Uma string contento o nome da Role
+	 * @return boolean
+	 */
+	public function temFuncao($funcao) { // Não me Julgue
+
+    	//pega o id da edição
+		$EdicaoId = Edicao::getEdicaoId();
+
+		if($EdicaoId || $funcao == 'Administrador'){
+
+			//Busca pela edição
+			if($EdicaoId) {
+				//Permissão apenas para a edição corrente ou para todas as edições
+				//quando a pessoa possuir permissão para a edição de id 1, tbm terá para todas as demais
+				//Faz a consulta na mão por causa dos Wheres
+				$query = DB::table('funcao_pessoa')
+							->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+							//Busca pela Função
+							->where('funcao.funcao','=',$funcao)
+							//Busca pela Pessoa
+							->where('funcao_pessoa.pessoa_id','=',$this->id)
+							->where('funcao_pessoa.edicao_id','=',$EdicaoId);
+
+
+
+				//return $query->toSql();
+				if(!$query->count()) //Todas edições
+					$query = DB::table('funcao_pessoa')
+								->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+								//Busca pela Função
+								->where('funcao.funcao','=',$funcao)
+								//Busca pela Pessoa
+								->where('funcao_pessoa.pessoa_id','=',$this->id)
+								->where('funcao_pessoa.edicao_id','=',1);
+
+			}else{
+				//Permissão apenas para todas as edições
+				$query = DB::table('funcao_pessoa')
+							->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+							//Busca pela Função
+							->where('funcao.funcao','=',$funcao)
+							//Busca pela Pessoa
+							->where('funcao_pessoa.pessoa_id','=',$this->id)
+							->where('funcao_pessoa.edicao_id','=',1);
+			}
+
+			if($query->count()) {
+
+				//Verifica se não foi homologado como Homologador ou Avaliador
+				if(($funcao=='Homologador' || $funcao=='Avaliador') && !$query->get()[0]->homologado)
+					return false;
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+    public function temFuncaoComissaoAvaliadora($funcao) {
+
+        //pega o id da edição
+        $EdicaoId = Edicao::getEdicaoId();
+
+        if($EdicaoId){
+
+            //Faz a consulta na mão por causa dos Wheres
+            $query = DB::table('funcao_pessoa')
+                            ->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+                            //Busca pela Função
+                            ->where('funcao.funcao','=',$funcao)
+                            //Busca pela Pessoa
+                            ->where('funcao_pessoa.pessoa_id','=',$this->id);
+
+            //Busca pela edição
+            if($EdicaoId) {
+                //Permissão apenas para a edição corrente ou para todas as edições
+                $query->where('edicao_id', $EdicaoId)
+                      ->orWhere('edicao_id', null);
+            }else{
+                //Permissão apenas para todas as edições
+                $query->where('edicao_id', null);
+            }
+
+            if($query->count()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function naoTemFuncao($funcao, $projeto, $pessoa) {
+
+        //pega o id da edição
+        $EdicaoId = Edicao::getEdicaoId();
+
+        if($EdicaoId){
+
+            $query = DB::table('escola_funcao_pessoa_projeto')
+                            //Busca pela Função
+                            ->where('funcao_id','=',$funcao)
+                            //Busca pela Pessoa
+                            ->where('pessoa_id','=',$pessoa)
+                            //Busca pelo Projeto
+                            ->where('projeto_id','!=',$projeto)
+                            //Busca pela Edição
+                            ->where('edicao_id', $EdicaoId)
+                            ->orWhere('edicao_id',null)
+                            ->get();
+
+            if(!$query->count()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function funcoes() {
@@ -77,23 +205,8 @@ class Pessoa extends Authenticatable {
         return $this->hasMany('App\Revisao');
     }
 
-    public function endereco() {
-        return $this->hasOne('App\Endereco');
-    }
-
     static function findByEmail($email) {
         return Pessoa::where('email', $email)->first();
-    }
-    
-    /**
-     * Verifica se pessoa possui a função passada por parâmetro
-     * como Autor, Coordenador ou Coorientador.
-     * @access public
-     * @param String $check Uma string contento o nome da Role
-     * @return boolean
-     */
-    public function temFuncao($check) {
-        return in_array($check, array_pluck($this->funcoes->toArray(), 'funcao'));
     }
 
     public function scopeWhereFuncao($query, $funcao){

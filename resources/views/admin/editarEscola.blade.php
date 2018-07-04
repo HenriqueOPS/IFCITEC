@@ -19,10 +19,8 @@
                     {{ csrf_field() }}
 
                     <input type="hidden" name="id_escola" value="{{ $dados->id }}">
-
-                    @if ($endereco == 1)
-                        <input type="hidden" name="id_endereco" value="{{ $data->id }}">
-                    @endif
+                    <input type="hidden" name="id_endereco" value="{{ isset($data->id) ? $data->id : '0'}}">
+                    
 
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
@@ -52,7 +50,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">E-mail da Escola</label>
-                                    <input type="text" class="form-control" name="email" value="{{isset($dados->email) ? $dados->email : ''}}" >
+                                    <input type="text" class="form-control" name="email" value="{{isset($dados->email) ? $dados->email : ''}}"  required>
                                 </div>
                             </div>
                             <div class="input-group">
@@ -61,12 +59,9 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Telefone da Escola</label>
-                                    <input type="text" class="form-control" name="telefone" value="{{isset($dados->telefone) ? $dados->telefone : ''}}" >
+                                    <input type="text" class="form-control" name="telefone" value="{{isset($dados->telefone) ? $dados->telefone : ''}}"  required>
                                 </div>
                             </div>
-
-                            @if ($endereco == 1)
-
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="material-icons">my_location</i>
@@ -122,67 +117,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        @else
-
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">my_location</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">CEP</label>
-                                    <input type="text" class="form-control" name="cep" id="cep"  required>
-                                </div>
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">place</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Rua</label>
-                                    <input type="text" class="form-control" name="endereco" id="rua"  required>
-                                </div>
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">near_me</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Bairro</label>
-                                    <input type="text" class="form-control" name="bairro" id="bairro" required>
-                                </div>
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">near_me</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Cidade</label>
-                                    <input type="text" class="form-control" name="municipio" id="cidade" required>
-                                </div>
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">near_me</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Estado</label>
-                                    <input type="text" class="form-control" name="uf" id="uf" required>
-                                </div>
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">exposure_zero</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Número</label>
-                                    <input type="text" class="form-control" name="numero" required>
-                                </div>
-                            </div>
-                    </div>
-
-                        @endif
-
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">

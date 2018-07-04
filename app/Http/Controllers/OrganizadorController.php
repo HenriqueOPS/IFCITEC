@@ -6,6 +6,8 @@ use App\Edicao;
 use App\Funcao;
 use App\Projeto;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class OrganizadorController extends Controller
 {
@@ -28,8 +30,11 @@ class OrganizadorController extends Controller
     public function index()
     {
 
-        $projetos = $this->groupProjetosPorSituacao(Projeto::all());
-        return view('organizacao.home')->withSituacoes($projetos);
+         $escolas = DB::table('escola')
+        ->select('escola.id', 'nome_completo', 'nome_curto', 'email', 'telefone')
+        ->orderBy('nome_curto', 'asc')->get();
+         $projetos = array();
+        return view('organizador.home')->withEscolas($escolas)->withProjetos($projetos);
 
     }
 

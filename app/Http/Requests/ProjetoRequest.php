@@ -3,7 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use App\Nivel;
+use App\Projeto;
 class ProjetoRequest extends FormRequest {
 
     /**
@@ -26,9 +27,9 @@ class ProjetoRequest extends FormRequest {
             'resumo' => 'required',
             'palavras_chaves' => 'required',
             'nivel' => 'required',
-            'area' => 'required',
-            'funcao' => 'required',
+            'area_conhecimento' => 'required',
             'escola' => 'required',
+            'orientador' => 'required',
         ];
     }
 
@@ -43,9 +44,12 @@ class ProjetoRequest extends FormRequest {
             'resumo.required' => 'O resumo é obrigatório',
             'resumo.between' => 'O resumo deve conter de :min a :max caracteres',
             'nivel.required' => 'É necessário definir um nível',
-            'area.required' => 'É necessário definir uma área do conhecimento',
-            'funcao.required' => 'É necessário definir a sua função neste projeto',
-            'escola.required' => 'É necessário informar a escola pela qual você está vínculado neste projeto'
+            'area_conhecimento.required' => 'É necessário definir uma área do conhecimento',
+            'escola.required' => 'É necessário informar a escola pela qual você está vínculado neste projeto',
+            'orientador.required' => 'É necessário informar o orientador deste projeto',
+            'palavras_chaves.required' => 'É necessário informar palavras-chave',
+            'palavras_chaves.min' => 'As palavras-chave devem conter pelo menos :min palavras',
+
         ];
     }
 
@@ -56,28 +60,55 @@ class ProjetoRequest extends FormRequest {
      * @return void
      */
     public function withValidator($validator) {
-        switch ($validator->getData()['nivel']) {
-            case 1:
-                $validator->addRules(['resumo' => 'required|between:800,1500']);
-                break;
-            default:
-                $validator->addRules(['resumo' => 'required|between:1500,2000']);
-        }
 
-        $validator->after(function ($validator) {
-            $totalPalavras = (count(explode(",", $validator->getData()['palavras_chaves'])));
-            switch ($validator->getData()['nivel']) {
-                case 1:
-                    if ($totalPalavras < 2) {
-                        $validator->errors()->add('palavras_chaves', 'É necessário ao menos duas palavras-chaves');
-                    }
-                    break;
-                default:
-                    if ($totalPalavras < 3) {
-                        $validator->errors()->add('palavras_chaves', 'É necessário ao menos três palavras-chaves');
-                    }
-            }
-        });
+		$dados = Nivel::find($validator->getData()['nivel']);
+		$validator->addRules(['resumo' => ('required|between: '.$dados->min_ch.','.$dados->max_ch)]);
+
+		$autor = $validator->getData()['autor'];
+
+		$cont = 0;
+		foreach ($autor as $a) {
+			if($a != null){
+				$cont++;
+			}
+		}
+
+		if($cont == 0){
+			$validator->sometimes('autor[]', 'required', function($input) use ($cont){
+			return $input->$cont == 0;
+			});
+			$validator->errors()->add('autor[]', 'É necessário ao menos um autor');
+		}
+
+		// XGH
+		// valida as palavras chaves por Callback
+		// ME PERDOE POR ISSO =(
+		$validator->after(function ($validator) {
+			$totalPalavras = (count(explode(",", $validator->getData()['palavras_chaves'])));
+
+			$numPalavras = Nivel::find($validator->getData()['nivel']);
+
+			if($totalPalavras < $numPalavras->palavras) {
+				$validator->errors()->add('palavras_chaves', 'As palavras-chave devem conter pelo menos '.$numPalavras->palavras.' palavras');
+			}
+
+			$autor = $validator->getData()['autor'];
+			$orientador = $validator->getData()['orientador'];
+			$coorientador = $validator->getData()['coorientador'];
+
+			foreach ($autor as $a) {
+				foreach ($coorientador as $c) {
+					if((isset($a) && $a == $orientador) ||
+					   (isset($a) && $a == $c) ||
+					   (isset($orientador) && $orientador == $c)){
+						$validator->errors()->add('autor[]', 'Não é possível informar dois participantes iguais');
+						$validator->errors()->add('orientador', 'Não é possível informar dois participantes iguais');
+						$validator->errors()->add('coorientador[]', 'Não é possível informar dois participantes iguais');
+					}
+				}
+			}
+
+		});
     }
 
 }

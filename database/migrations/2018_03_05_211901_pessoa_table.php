@@ -23,6 +23,9 @@ class PessoaTable extends Migration
             $table->date('dt_nascimento');
             $table->string('telefone', 14)->nullable();
             $table->string('lattes')->nullable();
+            $table->string('titulacao')->nullable();
+            $table->string('profissao')->nullable();
+            $table->string('instituicao')->nullable();
             $table->integer('endereco_id')->unsigned()->nullable();
             $table->rememberToken();
             $table->timestamps();

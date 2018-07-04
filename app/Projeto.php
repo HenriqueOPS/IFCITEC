@@ -41,7 +41,11 @@ class Projeto extends Model {
     }
 
     public function nivel() {
-        return $this->belongsTo('App\Nivel');
+        return $this->belongsTo('App\Nivel','nivel_id');
+    }
+
+    public function edicao() {
+        return $this->belongsTo('App\Edicao', 'edicao_id');
     }
 
     public function palavrasChaves() {
@@ -50,7 +54,7 @@ class Projeto extends Model {
 
     public function getStatus() {
         
-        return "Não Revisado"; // XGH
+        return "Não Homologado"; // XGH
 
 
         $situacao = DB::table('situacao')->select('situacao')->where('id', '=', $this->id)->orderBy('count', 'desc')->first();
