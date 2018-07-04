@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
 @section('css')
+<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 <link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
 @endsection
+
 
 @section('content')
 <div class="container">
@@ -21,6 +23,7 @@
                     {{ csrf_field() }}
 
                     <div class="row">
+
                         <div class="col-md-12">
                             <div class="alert alert-info text-center">
                                 <div class="container-fluid">
@@ -30,10 +33,7 @@
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true"><i class="material-icons">clear</i></span>
                                     </button>
-                                    <b>ATENÇÃO: </b>É obrigatória a leitura do edital:
-                                    <a href="http://ifcitec.canoas.ifrs.edu.br/wp-content/uploads/2017/06/Regulamento-V-IFCITEC-2017.pdf" target="_blank">
-                                        <b>IFCITEC - Edital 2017</b>
-                                    </a>
+                                    <b>ATENÇÃO: </b>É obrigatória a leitura do edital.
                                 </div>
                             </div>
                         </div>
@@ -52,6 +52,50 @@
                                     <strong>{{ $errors->first('titulo') }}</strong>
                                 </span>
                                 @endif
+                            </div>
+
+                            <div class="input-group{{ $errors->has('nivel') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">school</i>
+                                </span>
+                                <div class="form-group">
+                                    <label class="control-label">Nível</label>
+
+									<select id="nivel-select" name="nivel" value="{{old('nivel') ? old('nivel'): ''}}" required>
+										<option></option>
+										@foreach ($niveis as $nivel)
+											@if ($nivel->id == old('nivel'))
+												<option selected="selected" value="{{$nivel->id}}">{{$nivel->nivel}}</option>
+											@else
+												<option value="{{$nivel->id}}">{{$nivel->nivel}}</option>
+											@endif
+										@endforeach
+									</select>
+
+                                    @if ($errors->has('nivel'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('nivel') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="input-group{{ $errors->has('area_conhecimento') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">public</i>
+                                </span>
+                                <div class="form-group">
+                                    <label class="control-label">Área do Conhecimento</label>
+                                    <select id="area-select" name="area_conhecimento" value="{{old('area_conhecimento')}}" required>
+                                        <option></option>
+                                    </select>
+
+                                    @if ($errors->has('area_conhecimento'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('area_conhecimento') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
                             </div>
 
                             <div class="input-group{{ $errors->has('resumo') ? ' has-error' : '' }}">
@@ -85,87 +129,23 @@
                                 @endif
                             </div>
 
-                            <div class="input-group{{ $errors->has('nivel') ? ' has-error' : '' }}">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">school</i>
-                                </span>
-                                <div class="form-group">
-                                    <label class="control-label">Nível</label>
-                                    <select id="nivel-select" name="nivel" value="{{old('nivel')}}" required>
-                                        <option></option>
-                                        @foreach ($niveis as $nivel)
-                                        <option value="{{$nivel->id}}">{{$nivel->nivel}}</option>
-                                        @endforeach
-                                    </select>
-                                    @if ($errors->has('nivel'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('nivel') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="input-group{{ $errors->has('area') ? ' has-error' : '' }}">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">public</i>
-                                </span>
-                                <div class="form-group">
-                                    <label class="control-label">Área do Conhecimento</label>
-                                    <select id="area-select" name="area" value="{{old('area')}}" required>
-                                        <option></option>
-                                    </select>
-
-                                    @if ($errors->has('area'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('area') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <h2>Vínculo</h2>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <div class="input-group{{ $errors->has('funcao') ? ' has-error' : '' }}">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">assignment_ind</i>
-                                </span>
-                                <div class="form-group">
-                                    <label class="control-label">Função</label>
-                                    <select id="funcao-select" name="funcao" value="{{old('funcao')}}" required>
-                                        <option></option>
-                                        @foreach ($funcoes as $funcao)
-                                        <option value="{{$funcao->id}}">{{$funcao->funcao}}</option>
-                                        @endforeach
-                                    </select>
-                                    @if ($errors->has('funcao'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('funcao') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-
                             <div class="input-group{{ $errors->has('escola') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">school</i>
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Escola</label>
-                                    <select id="escola-select" name="escola" value="{{old('escola')}}" required>
+                                    <select id="escola-select" name="escola" value="{{old('escola') ? old('escola'): ''}}" required>
                                         <option></option>
                                         @foreach ($escolas as $escola)
-                                        <option value="{{$escola->id}}">{{$escola->nome_curto}}</option>
+											@if(old('escola') == $escola->id)
+												<option value="{{$escola->id}}" selected>{{$escola->nome_curto}}</option>
+											@else
+												<option value="{{$escola->id}}">{{$escola->nome_curto}}</option>
+											@endif
                                         @endforeach
                                     </select>
+
                                     @if ($errors->has('escola'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('escola') }}</strong>
@@ -173,15 +153,219 @@
                                     @endif
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6 col-md-offset-3 text-center">
-                            <button class="btn btn-primary">Submeter Projeto</button>
+                        <div class="col-md-10 col-md-offset-1">
+                            <h3>Autor(es)</h3>
+                        </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-9 col-md-offset-1">
+                        <span id="projeto-show">Informe o email do Autor 1 (obrigatório):</span>
+                        <div class="input-group{{ $errors->has('autor[]') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">person</i>
+                                </span>
+                                <div class="form-group">
+                                    <label class="control-label">Autor 1</label>
+                                    <select id="pessoa-1-select" name="autor[]" value="{{old('autor')[0] ? old('autor')[0] : ''}}" required>
+                                        <option></option>
+                                        @foreach ($pessoas as $pessoa)
+											@if(old('autor')[0] == $pessoa->id)
+												<option value="{{$pessoa->id}}" selected>{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@else
+												<option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@endif
+                                        @endforeach
+                                    </select>
+                                    </div>
+                                    @if ($errors->has('autor[]'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('autor[]') }}</strong>
+                                    </span>
+                                    @endif
+                            </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-9 col-md-offset-1">
+                        <span id="projeto-show">Informe o email do Autor 2 (opcional):</span>
+                        <div class="input-group{{ $errors->has('autor[]') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">person</i>
+                                </span>
+
+                                <div class="form-group">
+                                    <label class="control-label">Autor 2</label>
+                                    <select id="pessoa-2-select" name="autor[]" value="{{old('autor')[1] ? old('autor')[1] : ''}}">
+                                        <option></option>
+                                        @foreach ($pessoas as $pessoa)
+											@if(old('autor')[1] == $pessoa->id)
+												<option value="{{$pessoa->id}}" selected>{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@else
+												<option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@endif
+                                        @endforeach
+                                    </select>
+                                    </div>
+                                    @if ($errors->has('autor[]'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('autor[]') }}</strong>
+                                    </span>
+                                    @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-9 col-md-offset-1">
+                        <span id="projeto-show">Informe o email do Autor 3 (opcional):</span>
+                        <div class="input-group{{ $errors->has('autor[]') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">person</i>
+                                </span>
+                                <div class="form-group">
+                                    <label class="control-label">Autor 3</label>
+                                    <select id="pessoa-3-select" name="autor[]" value="{{old('autor]')[2] ? old('autor')[0] : ''}}">
+                                        <option></option>
+                                        @foreach ($pessoas as $pessoa)
+											@if(old('autor')[0] == $pessoa->id)
+												<option value="{{$pessoa->id}}" selected>{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@else
+												<option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@endif
+                                        @endforeach
+                                    </select>
+                                    </div>
+                                    @if ($errors->has('autor[]'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('autor[]') }}</strong>
+                                    </span>
+                                    @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <h3>Orientador</h3>
+                        </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-9 col-md-offset-1">
+                        <span id="projeto-show">Informe o email do Orientador (obrigatório):</span>
+                        <div class="input-group{{ $errors->has('orientador') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">person</i>
+                                </span>
+                                <div class="form-group">
+                                    <label class="control-label">Orientador</label>
+                                    <select id="pessoa-4-select" name="orientador" value="{{old('orientador') ? old('orientador') : ''}}" required>
+                                        <option></option>
+                                        @foreach ($pessoas as $pessoa)
+											@if(old('orientador') == $pessoa->id)
+												<option value="{{$pessoa->id}}" selected>{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@else
+												<option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@endif
+                                        @endforeach
+                                    </select>
+                                    </div>
+                                    @if ($errors->has('orientador'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('orientador') }}</strong>
+                                    </span>
+                                    @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <h3>Coorientador(es)</h3>
+                        </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-9 col-md-offset-1">
+                        <span id="projeto-show">Informe o email do Coorientador 1 (opcional):</span>
+                        <div class="input-group{{ $errors->has('coorientador[]') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">person</i>
+                                </span>
+                                <div class="form-group">
+                                    <label class="control-label">Coorientador 1</label>
+                                    <select id="pessoa-5-select" name="coorientador[]" value="{{old('coorientador')[0] ? old('coorientador')[0] : ''}}">
+                                        <option></option>
+                                        @foreach ($pessoas as $pessoa)
+											@if(old('coorientador')[0] == $pessoa->id)
+												<option value="{{$pessoa->id}}" selected>{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@else
+												<option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@endif
+                                        @endforeach
+                                    </select>
+                                    </div>
+                                    @if ($errors->has('coorientador[]'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('coorientador[]') }}</strong>
+                                    </span>
+                                    @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-9 col-md-offset-1">
+                        <span id="projeto-show">Informe o email do Coorientador (opcional):</span>
+                        <div class="input-group{{ $errors->has('coorientador[]') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">person</i>
+                                </span>
+                                <div class="form-group">
+                                    <label class="control-label">Coorientador 2</label>
+                                    <select id="pessoa-6-select" name="coorientador[]" value="{{old('coorientador')[1] ? old('coorientador')[1] : ''}}">
+                                        <option></option>
+                                        @foreach ($pessoas as $pessoa)
+											@if(old('coorientador')[1] == $pessoa->id)
+												<option value="{{$pessoa->id}}" selected>{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@else
+												<option value="{{$pessoa->id}}">{{$pessoa->nome}} < {{$pessoa->email}} ></option>
+											@endif
+                                        @endforeach
+                                    </select>
+                                    </div>
+                                    @if ($errors->has('coorientador[]'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('coorientador[]') }}</strong>
+                                    </span>
+                                    @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+				<div class="row">
+					<div class="col-md-6 col-md-offset-3 text-center">
+						<button class="btn btn-primary">Submeter Projeto</button>
+					</div>
+				</div>
 
                 </form>
             </div>
@@ -191,9 +375,7 @@
 @endsection
 
 @section('js')
-
 <script type="text/javascript" src="{{asset('js/selectize.min.js')}}"></script>
-
 <script type="text/javascript">
 $(document).ready(function () {
 
@@ -239,9 +421,69 @@ $(document).ready(function () {
 
     var oldEscola = $('#escola-select').attr("value");
     $('#escola-select').selectize({
-        placeholder: 'Digite a Escola...',
+        placeholder: 'Digite a Escola a qual pertence o projeto...',
         onInitialize: function () {
             this.setValue(oldEscola, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+
+    var oldPessoa = $('#pessoa-1-select').attr("value");
+    $('#pessoa-1-select').selectize({
+        placeholder: 'Digite o nome do participante...',
+        onInitialize: function () {
+            this.setValue(oldPessoa, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+
+    var oldPessoa = $('#pessoa-2-select').attr("value");
+    $('#pessoa-2-select').selectize({
+        placeholder: 'Digite o nome do participante...',
+        onInitialize: function () {
+            this.setValue(oldPessoa, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+
+    var oldPessoa = $('#pessoa-3-select').attr("value");
+    $('#pessoa-3-select').selectize({
+        placeholder: 'Digite o nome do participante...',
+        onInitialize: function () {
+            this.setValue(oldPessoa, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+
+    var oldPessoa = $('#pessoa-4-select').attr("value");
+    $('#pessoa-4-select').selectize({
+        placeholder: 'Digite o nome do participante...',
+        onInitialize: function () {
+            this.setValue(oldPessoa, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+
+    var oldPessoa = $('#pessoa-5-select').attr("value");
+    $('#pessoa-5-select').selectize({
+        placeholder: 'Digite o nome do participante...',
+        onInitialize: function () {
+            this.setValue(oldPessoa, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+
+    var oldPessoa = $('#pessoa-6-select').attr("value");
+    $('#pessoa-6-select').selectize({
+        placeholder: 'Digite o nome do participante...',
+        onInitialize: function () {
+            this.setValue(oldPessoa, true);
             //$('.selectize-control').addClass('form-group');
             $('.selectize-input').addClass('form-control');
         },
@@ -254,19 +496,20 @@ $(document).ready(function () {
 
     var oldArea = $('#area-select').attr("value");
 
-    $areaSelect = $('#area-select').selectize({
+     $areaSelect = $('#area-select').selectize({
         placeholder: 'Área do Conhecimento...',
-        valueField: 'id',
-        labelField: 'area_conhecimento',
-        searchField: 'area_conhecimento',
+        valueField: ['id'],
+        labelField: ['area_conhecimento'],
+        searchField: ['area_conhecimento'],
         onInitialize: function () {
             //$('.selectize-control').addClass('form-group');
             $('.selectize-input').addClass('form-control');
         },
         onLoad: function (data) {
+            console.log(data);
             this.setValue(oldArea, false);
             oldArea = null;
-        },
+        }
     });
 
     areaSelect = $areaSelect[0].selectize;
@@ -292,16 +535,15 @@ $(document).ready(function () {
         }
     });
 
-
     nivelSelect = $nivelSelect[0].selectize;
 
     function realizaAjax(callback, value) {
         xhr && xhr.abort();
         xhr = $.ajax({
-            url: 'nivel/areasConhecimento/' + value,
+            url: './nivel/areasConhecimento/' + value,
             success: function (results) {
-                areaSelect.enable();
                 console.log(results);
+                areaSelect.enable(results);
                 callback(results);
             },
             error: function (xhr, textStatus) {

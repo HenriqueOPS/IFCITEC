@@ -21,12 +21,17 @@ class AreaConhecimento extends Model {
     protected $fillable = [
         'area_conhecimento', 'descricao', 'nivel_id'
     ];
-    
+
     public function projetos() {
         return $this->hasMany('App\Projeto');
     }
-    
+
+
     public function niveis(){
         return $this->belongsToMany('App\Nivel','area_nivel','area_id','nivel_id');
+    }
+
+    public function edicoes(){
+        return $this->belongsToMany('App\Edicao','area_edicao','area_id','edicao_id');
     }
 }

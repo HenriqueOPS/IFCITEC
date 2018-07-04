@@ -25,7 +25,7 @@ class FuncaoTableSeeder extends Seeder {
                 'projeto' => true,
             ],
             [
-                'funcao' => 'Revisor',
+                'funcao' => 'Homologador',
                 'projeto' => true,
             ],
             [
@@ -44,11 +44,11 @@ class FuncaoTableSeeder extends Seeder {
                 'integrante' => true,
             ],
             [
-                'funcao' => 'Recepção',
-                'sistema' => true,
+                'funcao' => 'Administrador',
+                'sistema' => true
             ],
             [
-                'funcao' => 'Administrador',
+                'funcao' => 'Voluntário',
                 'sistema' => true
             ],
         ];

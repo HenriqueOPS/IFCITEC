@@ -39,6 +39,7 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
             'bindings',
+            'auth:api',
         ],
     ];
 
@@ -57,7 +58,7 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'checkAuthorship' => \App\Http\Middleware\CheckAuthorship::class,
-        'isOrganizacao' => \App\Http\Middleware\IsOrganizacao::class,
-        'isAdministrador' => \App\Http\Middleware\IsAdministrador::class,
+        'IsOrganizacao' => \App\Http\Middleware\IsOrganizacao::class,
+        'IsAdministrador' => \App\Http\Middleware\IsAdministrador::class,
     ];
 }

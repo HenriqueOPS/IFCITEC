@@ -19,7 +19,7 @@ class Nivel extends Model {
      * @var array
      */
     protected $fillable = [
-        'nivel', 'descricao', 'max_ch', 'min_ch',
+        'nivel', 'descricao', 'max_ch', 'min_ch', 'palavras',
     ];
     
     public function projetos() {
@@ -28,5 +28,9 @@ class Nivel extends Model {
     
     public function areas_conhecimento(){
         return $this->belongsToMany('App\AreaConhecimento','area_nivel','nivel_id','area_id');
+    }
+
+    public function edicoes(){
+        return $this->belongsToMany('App\Edicao','nivel_edicao','nivel_id','edicao_id');
     }
 }

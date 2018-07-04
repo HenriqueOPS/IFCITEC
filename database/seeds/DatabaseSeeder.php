@@ -11,11 +11,16 @@ class DatabaseSeeder extends Seeder {
      * @return void
      */
     public function run() {
-        
+
         $this->call(EscolaTableSeeder::class);
+		$this->call(FuncaoTableSeeder::class);
+		$this->call(EdicaoTableSeeder::class);
+
+
+
         //$this->call(NivelTableSeeder::class);
         //$this->call(AreaConhecimentoTableSeeder::class);
-        $this->call(FuncaoTableSeeder::class);
+
         /*
         //Inserções Manualmente - Temporário, deverá ser retirada quando
         //a feature de link na página de organização estiver feita
@@ -26,7 +31,7 @@ class DatabaseSeeder extends Seeder {
                 );
             }
         }
-        
+
         for ($nivel = 2; $nivel < 5; $nivel++) {
             for ($area = 3; $area < 9; $area++) {
                 DB::table(env('DB_SCHEMA') . '.area_nivel')->insert(

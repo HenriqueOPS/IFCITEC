@@ -17,7 +17,7 @@
 
                 </div>
                 <form name="f1" method="post" action="{{ route('editaCadastro') }}">
-                   
+
                     {{ csrf_field() }}
 
                     <div class="row">
