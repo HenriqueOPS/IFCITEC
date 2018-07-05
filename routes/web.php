@@ -19,6 +19,14 @@ Route::get('/version', function (){
 	echo "Pipeline ID: ".$strData[1];
 });
 
+
+//Gera os crachás
+
+//Gera o
+Route::get('/cracha/gerar-crachas', 'CrachaController@generateCrachas');
+Route::get('/cracha/qr-code/{idPessoa}', 'CrachaController@generateQrCode');
+
+
 Route::get('/', function () {
   if(Auth::check())
     return redirect()->route('home');
