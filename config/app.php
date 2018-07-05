@@ -178,7 +178,9 @@ return [
         App\Providers\RouteServiceProvider::class,
         LaravelLegends\PtBrValidator\ValidatorProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
-    ],
+
+		LaravelQRCode\Providers\QRCodeServiceProvider::class,
+	],
 
     /*
     |--------------------------------------------------------------------------
@@ -227,6 +229,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
-    ],
+
+		'QRCode' => LaravelQRCode\Facades\QRCode::class,
+	],
 
 ];
