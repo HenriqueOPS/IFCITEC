@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers;
-//use Vendor\Nesbot\Carbon\Src\Carbon\Carbon;
+
 use App\Http\Controllers\PeriodosController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -40,7 +40,13 @@ class VoluntarioController extends Controller
     }
     public function cadastrarVoluntario($s){
       if(password_verify($s, Auth::user()['attributes']['senha'])){
-          DB::table('funcao_pessoa')->insert(
+          return 'true';
+      }
+      return 'false';
+    }
+
+    public function cadastraVoluntario(){
+        DB::table('funcao_pessoa')->insert(
                 ['edicao_id' => Edicao::getEdicaoId(),
                     'funcao_id' => Funcao::where('funcao', 'Voluntário')->first()->id, 
                     'pessoa_id' => Auth::id(),
@@ -50,10 +56,6 @@ class VoluntarioController extends Controller
 
           $emailJob = (new MailVoluntarioJob())->delay(\Carbon\Carbon::now()->addSeconds(3));
           dispatch($emailJob);
-         
           return 'true';
-      }
-
-      return 'false';
     }
 }

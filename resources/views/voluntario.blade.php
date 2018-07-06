@@ -2,6 +2,18 @@
 
 @section('css')
 <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
+<style>
+.no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; top: 0; }
+.se-pre-con {
+    position: fixed;
+    left: 520px;
+    top: 350px;
+    width: 3%;
+    height: 3%;
+    z-index: 1;
+}
+</style>
 @endsection
 
 @section('content')
@@ -14,6 +26,7 @@
                         <h2>Cadastro de Voluntário</h2>
                     </div>
                 </div>
+                <div class="panel-body">
                 <form method="POST" >
                     <div class="row">
                         <div class="col-md-12">
@@ -32,10 +45,17 @@
                             <a href="javascript:void(0);" class="confirma btn btn-success">
                                 <i class="material-icons">directions_walk</i> Inscrever
                             </a>
+                            <div class="se-pre-con">
+                            <a class="btn btn-simple btn-just-icon">
+                             <img src="{{ asset('img/gif2.gif') }}">
+                             Carregando...
+                             </a>
+                            </div>
                             </div>
                         </div>
                     </div>
                 </form>
+            </div>
             </div>
         </div>
     </div>
@@ -69,21 +89,29 @@
 <script type="application/javascript">
 $('.confirma').click(function(){
     $("#modal").modal();
-
     $('.confirmado').click(function(){
+        $(".se-pre-con").show();
         var urlConsulta = './voluntario/cadastrar/'+$('#password').val();
         $.get(urlConsulta, function (res){
             if(res == 'true'){
+                var consulta = './voluntario/cadastra';
+                $.get(consulta, function (r){
+                console.log(r);
+                });
                 bootbox.alert("Sua inscrição foi enviada com sucesso");
-                location.href('./home');
+                $(".se-pre-con").hide();
             }else{
                 bootbox.alert("Senha incorreta");
+                $(".se-pre-con").hide();
             }
 
         });
     });
 
 });
+</script>
+<script type="text/javascript">
+        $(".se-pre-con").hide();
 </script>
 @endsection
 

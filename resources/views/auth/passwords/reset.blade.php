@@ -1,19 +1,22 @@
 @extends('layouts.app')
 
+@section('css')
+<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
-<div class="container" style="margin-top: 100px; ">
+<div class="container" style="margin-top: 20px; ">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-
+                <br>
+                <h3 class="text-center" style="width: 90%; margin: auto; border-bottom: 1px solid #ccc;">Redefinir Senha</h3>
+                <br>
 				<div class="content text-center box-logo">
 					<a class="btn btn-simple btn-just-icon">
 						<img src="{{ asset('img/logonormal.png') }}" title="IFCITEC" height="110" />
 					</a>
 				</div>
-
-				<h3 class="text-center" style="width: 90%; margin: auto; border-bottom: 1px solid #ccc;">Redefinir Senha</h3>
-
                 <div class="panel-body">
                     @if (session('status'))
                         <div class="alert alert-success">
