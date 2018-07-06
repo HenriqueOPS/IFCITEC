@@ -143,7 +143,8 @@ class AdminController extends Controller
 
 	public function editarNivel($id)
 	{
-		return Nivel::find($id);
+		$dados = Nivel::find($id);
+		return view('admin.editarNivel', array('dados' => $dados));
 
 	}
 

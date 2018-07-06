@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
-<link href="{{ asset('css/organization.css') }}" rel="stylesheet">
+<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -83,8 +83,8 @@
                             <td class="text-center">{{$id+1}}</td>
                             <td>{{  \App\Edicao::numeroEdicao($edicao['ano']) }}</td>
                             <td>{{ date('d/m/Y H:i:s', strtotime($edicao['inscricao_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['inscricao_fechamento'])) }}</td>
-                            <td>{{$edicao['homologacao_abertura']}} - {{$edicao['homologacao_fechamento']}}</td>
-                            <td>{{$edicao['avaliacao_abertura']}} - {{$edicao['avaliacao_fechamento']}}</td>
+                            <td>{{ date('d/m/Y H:i:s', strtotime($edicao['homologacao_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['homologacao_fechamento'])) }}</td>
+                            <td>{{ date('d/m/Y H:i:s', strtotime($edicao['avaliacao_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['avaliacao_fechamento'])) }}</td>
                             <td class="td-actions text-right">
                                 <a href="javascript:void(0);" class="modalEdicao"  id-edicao="{{ $edicao['id'] }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
                                 <a href="{{route('editarEdicao',$edicao['id'])}}"><i class="material-icons">edit</i></a>
@@ -374,7 +374,7 @@
             </div>
             <div class="input-group">
                 <span class="input-group-addon">
-                    <i class="material-icons">today</i>
+                    <i class="material-icons">school</i>
                 </span>
                 <div class="form-group label-floating">
                     <span id="testeModal"></span>
@@ -687,28 +687,29 @@ $('.modalEdicao').click(function(){
         var pcre = '';
         var teste = '';
         pins += "Período de Inscrição: ";
-        res.dados.inscricao_abertura ? pins += res.dados.inscricao_abertura+" até " : pins += '';
-        res.dados.inscricao_fechamento ? pins += res.dados.inscricao_fechamento+" " : pins += '';
+
+        horario(res.dados.inscricao_abertura) ? pins += horario(res.dados.inscricao_abertura)+" até " : pins += '';
+        horario(res.dados.inscricao_fechamento) ? pins += horario(res.dados.inscricao_fechamento)+" " : pins += '';
 
         phom += "Período de Homologação: ";
-        res.dados.homologacao_abertura ? phom += res.dados.homologacao_abertura+" até " : phom += '';
-        res.dados.homologacao_fechamento ? phom += res.dados.homologacao_fechamento+" " : phom += '';
+        horario(res.dados.homologacao_abertura) ? phom += horario(res.dados.homologacao_abertura)+" até " : phom += '';
+        horario(res.dados.homologacao_fechamento) ? phom += horario(res.dados.homologacao_fechamento)+" " : phom += '';
 
         pava += "Período de Avaliação: ";
-        res.dados.avaliacao_abertura ? pava += res.dados.avaliacao_abertura+" até " : pava += '';
-        res.dados.avaliacao_fechamento ? pava += res.dados.avaliacao_fechamento+" " : pava += '';
+        horario(res.dados.avaliacao_abertura) ? pava += horario(res.dados.avaliacao_abertura)+" até " : pava += '';
+        horario(res.dados.avaliacao_fechamento) ? pava += horario(res.dados.avaliacao_fechamento)+" " : pava += '';
 
         pcre += "Período de Credenciamento: ";
-        res.dados.credenciamento_abertura ? pcre += res.dados.credenciamento_abertura+" até " : pcre += '';
-        res.dados.credenciamento_fechamento ? pcre += res.dados.credenciamento_fechamento+" " : pcre += '';
+        horario(res.dados.credenciamento_abertura) ? pcre += horario(res.dados.credenciamento_abertura)+" até " : pcre += '';
+        horario(res.dados.credenciamento_fechamento) ? pcre += horario(res.dados.credenciamento_fechamento)+" " : pcre += '';
 
         pvol += "Período de Inscrição para Voluntário: ";
-        res.dados.voluntario_abertura ? pvol += res.dados.voluntario_abertura+" até " : pvol += '';
-        res.dados.voluntario_fechamento ? pvol += res.dados.voluntario_fechamento+" " : pvol += '';
+        horario(res.dados.voluntario_abertura) ? pvol += horario(res.dados.voluntario_abertura)+" até " : pvol += '';
+        horario(res.dados.voluntario_fechamento) ? pvol += horario(res.dados.voluntario_fechamento)+" " : pvol += '';
 
         piah += "Período de Inscrição para Avaliador/Homologador: ";
-        res.dados.comissao_abertura ? piah += res.dados.comissao_abertura+" até " : piah += '';
-        res.dados.comissao_fechamento ? piah += res.dados.comissao_fechamento+" " : piah += '';
+        horario(res.dados.comissao_abertura) ? piah += horario(res.dados.comissao_abertura)+" até " : piah += '';
+        horario(res.dados.comissao_fechamento) ? piah += horario(res.dados.comissao_fechamento)+" " : piah += '';
 
         for(var i=0; i<res.nivelEdicao.length; i++) {
         teste += "Nível ";
@@ -819,6 +820,7 @@ $('.exclusao').click(function(){
         $.get(urlConsulta, function (res){
             if(res == 'true'){
                 bootbox.alert("Escola excluída com sucesso");
+                window.location.reload();
             }else{
                 bootbox.alert("Senha incorreta");
             }
@@ -839,6 +841,7 @@ $('.exclusaoNivel').click(function(){
         $.get(urlConsulta, function (res){
             if(res == 'true'){
                 bootbox.alert("Nível excluído com sucesso");
+                window.location.reload();
             }else{
                 bootbox.alert("Senha incorreta");
             }
@@ -859,6 +862,7 @@ $('.exclusaoArea').click(function(){
         $.get(urlConsulta, function (res){
             if(res == 'true'){
                 bootbox.alert("Área do conhecimento excluída com sucesso");
+                window.location.reload();
             }else{
                 bootbox.alert("Senha incorreta");
             }
@@ -879,6 +883,7 @@ $('.exclusaoEdicao').click(function(){
         $.get(urlConsulta, function (res){
             if(res == 'true'){
                 bootbox.alert("Edição excluída com sucesso");
+                window.location.reload();
             }else{
                 bootbox.alert("Senha incorreta");
             }
@@ -887,6 +892,19 @@ $('.exclusaoEdicao').click(function(){
     });
 
 });
+
+
+function horario(string){
+    var ano = string.substring(0,4);
+    var mes = string.substring(5,7);
+    var dia = string.substring(8,10);
+    var hora = string.substring(11,13);
+    var minuto = string.substring(14,16);
+    var segundo = string.substring(17,19);
+    return dia + '/' + mes + '/' + ano + ' ' + hora+":"+minuto+":"+segundo;
+}
+
+
 </script>
 @endsection
 
