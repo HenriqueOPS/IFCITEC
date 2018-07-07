@@ -84,7 +84,8 @@ class Pessoa extends Authenticatable {
 			if($EdicaoId) {
 				//Permissão apenas para a edição corrente ou para todas as edições
 				//quando a pessoa possuir permissão para a edição de id 1, tbm terá para todas as demais
-				//Faz a consulta na mão por causa dos Wheres
+
+				//Faz a consulta na mão para a edição atual
 				$query = DB::table('funcao_pessoa')
 							->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
 							//Busca pela Função
@@ -93,9 +94,6 @@ class Pessoa extends Authenticatable {
 							->where('funcao_pessoa.pessoa_id','=',$this->id)
 							->where('funcao_pessoa.edicao_id','=',$EdicaoId);
 
-
-
-				//return $query->toSql();
 				if(!$query->count()) //Todas edições
 					$query = DB::table('funcao_pessoa')
 								->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
@@ -106,7 +104,7 @@ class Pessoa extends Authenticatable {
 								->where('funcao_pessoa.edicao_id','=',1);
 
 			}else{
-				//Permissão apenas para todas as edições
+				//Permissão para todas as edições
 				$query = DB::table('funcao_pessoa')
 							->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
 							//Busca pela Função

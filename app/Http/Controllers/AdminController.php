@@ -347,10 +347,13 @@ class AdminController extends Controller
 		if (password_verify($s, Auth::user()['attributes']['senha'])) {
 			Escola::find($id)->delete();
 
+
 			return 'true';
+		}else{
+			return 'password-problem';
 		}
 
-		return 'false';
+
 	}
 
 	public function administrarUsuarios()
