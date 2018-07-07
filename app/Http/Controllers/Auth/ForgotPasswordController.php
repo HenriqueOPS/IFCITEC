@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\MailSenhaJob;
 
 class ForgotPasswordController extends Controller
 {
@@ -20,6 +21,7 @@ class ForgotPasswordController extends Controller
     | your application to your users. Feel free to explore this trait.
     |
     */
+
 
     use SendsPasswordResetEmails;
 
@@ -36,11 +38,7 @@ class ForgotPasswordController extends Controller
     public function emailSenha(Request $req)
     {
         $data = $req->all(); 
-      //  dd($data['email']);
-        Mail::send('mail.mailRecuperarSenha', [], function($message){
-            $message->to($data['email']);
-            $message->subject('IFCITEC');
-        });
-        return redirect()->route('login');
+        $emailJob = (new MailSenhaJob($data['email'], $data['_token']))->delay(\Carbon\Carbon::now()->addSeconds(3));
+        dispatch($emailJob);
     }
 }
