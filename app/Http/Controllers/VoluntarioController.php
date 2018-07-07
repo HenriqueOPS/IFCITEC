@@ -29,33 +29,32 @@ class VoluntarioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        if (Pessoa::find(Auth::id())->temFuncao('Voluntário') == true) {
+    public function index(){
+        if(Pessoa::find(Auth::id())->temFuncao('Voluntário') == true) {
           return view('inscricaoEnviada');
-        }
-        else{
+        }else{
           return view('voluntario');
         }
     }
     public function cadastrarVoluntario($s){
-      if(password_verify($s, Auth::user()['attributes']['senha'])){
-          return 'true';
-      }
-      return 'false';
+		if(password_verify($s, Auth::user()['attributes']['senha'])){
+		  return 'true';
+		}
+		return 'false';
     }
 
     public function cadastraVoluntario(){
         DB::table('funcao_pessoa')->insert(
                 ['edicao_id' => Edicao::getEdicaoId(),
-                    'funcao_id' => Funcao::where('funcao', 'Voluntário')->first()->id, 
+                    'funcao_id' => Funcao::where('funcao', 'Voluntário')->first()->id,
                     'pessoa_id' => Auth::id(),
-                    'homologado' => TRUE
+                    'homologado' => false
                 ]
         );
 
-          $emailJob = (new MailVoluntarioJob())->delay(\Carbon\Carbon::now()->addSeconds(3));
-          dispatch($emailJob);
-          return 'true';
+        $emailJob = (new MailVoluntarioJob())->delay(\Carbon\Carbon::now()->addSeconds(3));
+        dispatch($emailJob);
+
+        return 'true';
     }
 }
