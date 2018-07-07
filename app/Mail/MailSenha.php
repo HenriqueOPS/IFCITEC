@@ -2,13 +2,13 @@
 
 namespace App\Mail;
 
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-
-class MailOrientador extends Mailable
+class MailSenha extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -17,10 +17,9 @@ class MailOrientador extends Mailable
      *
      * @return void
      */
-    public function __construct($nome, $titulo)
+    public function __construct($token)
     {
-        $this->nome = $nome;
-        $this->titulo = $titulo;
+        $this->token = $token;
     }
 
     /**
@@ -30,8 +29,7 @@ class MailOrientador extends Mailable
      */
     public function build()
     {
-        return  $this->subject('IFCITEC - Você é um Orientador(a)')->view('mail.mailOrientador')
-        ->withNome($this->nome)
-        ->withTitulo($this->titulo);
+        return  $this->subject('Redefinir Senha')->view('mail.mailSenha')
+        ->withToken($this->token);
     }
 }
