@@ -19,6 +19,14 @@ Route::get('/version', function (){
 	echo "Pipeline ID: ".$strData[1];
 });
 
+
+//Gera os crachás
+
+//Gera o
+Route::get('/cracha/gerar-crachas', 'CrachaController@generateCrachas');
+Route::get('/cracha/qr-code/{idPessoa}', 'CrachaController@generateQrCode');
+
+
 Route::get('/', function () {
   if(Auth::check())
     return redirect()->route('home');
@@ -37,6 +45,7 @@ Route::get('/api/salva-avaliacao/{id}', 'ApiController@salvaAvaliacao');
 
 Auth::routes();
 Route::post('/recuperar/senha/', 'Auth\ForgotPasswordController@emailSenha')->name('recuperar.senha');
+
 
 // Cria as rotas de cadastro no braço e em Português
 Route::get('cadastro', [
@@ -143,7 +152,8 @@ Route::get('/comissao/avaliadora', 'ComissaoAvaliadoraController@home')->name('c
 
 //Voluntario
 Route::get('/voluntario', 'VoluntarioController@index')->name('voluntario');
-Route::get('/voluntario/cadastrar/{s}', 'VoluntarioController@cadastrarVoluntario')->name('cadastraVoluntario'); //Ajax
+Route::get('/voluntario/cadastrar/{s}', 'VoluntarioController@cadastrarVoluntario')->name('cadastrarVoluntario'); //Ajax
+Route::get('/voluntario/cadastra', 'VoluntarioController@cadastraVoluntario')->name('cadastraVoluntario');
 
 Route::get('/administrador/usuarios', 'AdminController@administrarUsuarios')->name('administrarUsuarios');
 Route::get('/periodo', 'PeriodosController@periodoInscricao');

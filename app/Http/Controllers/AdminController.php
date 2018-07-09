@@ -143,7 +143,8 @@ class AdminController extends Controller
 
 	public function editarNivel($id)
 	{
-		return Nivel::find($id);
+		$dados = Nivel::find($id);
+		return view('admin.editarNivel', array('dados' => $dados));
 
 	}
 
@@ -346,10 +347,13 @@ class AdminController extends Controller
 		if (password_verify($s, Auth::user()['attributes']['senha'])) {
 			Escola::find($id)->delete();
 
+
 			return 'true';
+		}else{
+			return 'password-problem';
 		}
 
-		return 'false';
+
 	}
 
 	public function administrarUsuarios()
