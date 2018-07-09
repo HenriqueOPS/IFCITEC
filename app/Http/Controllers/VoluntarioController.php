@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers;
-//use Vendor\Nesbot\Carbon\Src\Carbon\Carbon;
+
 use App\Http\Controllers\PeriodosController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -29,31 +29,32 @@ class VoluntarioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        if (Pessoa::find(Auth::id())->temFuncao('Voluntário') == true) {
+    public function index(){
+        if(Pessoa::find(Auth::id())->temFuncao('Voluntário') == true) {
           return view('inscricaoEnviada');
-        }
-        else{
+        }else{
           return view('voluntario');
         }
     }
     public function cadastrarVoluntario($s){
-      if(password_verify($s, Auth::user()['attributes']['senha'])){
-          DB::table('funcao_pessoa')->insert(
+		if(password_verify($s, Auth::user()['attributes']['senha'])){
+		  return 'true';
+		}
+		return 'false';
+    }
+
+    public function cadastraVoluntario(){
+        DB::table('funcao_pessoa')->insert(
                 ['edicao_id' => Edicao::getEdicaoId(),
                     'funcao_id' => Funcao::where('funcao', 'Voluntário')->first()->id,
                     'pessoa_id' => Auth::id(),
-                    'homologado' => TRUE
+                    'homologado' => false
                 ]
         );
 
-          $emailJob = (new MailVoluntarioJob())->delay(\Carbon\Carbon::now()->addSeconds(3));
-          dispatch($emailJob);
+        $emailJob = (new MailVoluntarioJob())->delay(\Carbon\Carbon::now()->addSeconds(3));
+        dispatch($emailJob);
 
-          return 'true';
-      }
-
-      return 'false';
+        return 'true';
     }
 }

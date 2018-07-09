@@ -33,8 +33,59 @@ class OrganizadorController extends Controller
          $escolas = DB::table('escola')
         ->select('escola.id', 'nome_completo', 'nome_curto', 'email', 'telefone')
         ->orderBy('nome_curto', 'asc')->get();
-         $projetos = array();
-        return view('organizador.home')->withEscolas($escolas)->withProjetos($projetos);
+
+
+
+		$projetos = DB::table('projeto')
+			->select('titulo','id')
+			->orderBy('created_at', 'asc')
+			->where('edicao_id',Edicao::getEdicaoId())
+			->get()
+			->keyBy('id')
+			->toArray();
+
+		$autores = array();
+		$orientadores = array();
+		$coorientadores = array();
+
+		//Participantes dos projetos
+		if($projetos){
+			$idAutor =  Funcao::where('funcao','Autor')->first();
+			$idOrientador =  Funcao::where('funcao','Orientador')->first();
+			$idCoorientador =  Funcao::where('funcao','Coorientador')->first();
+
+			$ids = array_keys($projetos);
+
+			$autores = DB::table('escola_funcao_pessoa_projeto')
+				->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+				->select('escola_funcao_pessoa_projeto.projeto_id','pessoa.id','pessoa.nome')
+				->whereIn('projeto_id', $ids)
+				->where('funcao_id', $idAutor->id)
+				->get()
+				->toArray();
+
+			$orientadores = DB::table('escola_funcao_pessoa_projeto')
+				->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+				->select('escola_funcao_pessoa_projeto.projeto_id','pessoa.id','pessoa.nome')
+				->whereIn('projeto_id', $ids)
+				->where('funcao_id', $idOrientador->id)
+				->get()
+				->toArray();
+
+			$coorientadores = DB::table('escola_funcao_pessoa_projeto')
+				->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+				->select('escola_funcao_pessoa_projeto.projeto_id','pessoa.id','pessoa.nome')
+				->whereIn('projeto_id', $ids)->where('funcao_id', $idCoorientador->id)
+				->get()
+				->toArray();
+		}
+
+        return view('organizador.home', collect([
+			'projetos' => $projetos,
+			'autores' => $autores,
+			'orientadores' => $orientadores,
+			'coorientadores' => $coorientadores
+		]))->withEscolas($escolas);
 
     }
 

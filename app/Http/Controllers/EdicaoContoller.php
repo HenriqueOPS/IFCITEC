@@ -59,10 +59,10 @@ class EdicaoController extends Controller {
         if ($e) // foi inserido.
         {
             foreach ($data['nivel_id'] as $i => $nivel)
-            	$niveis = $e->niveis()->attach(['edicao_id' => $e['id']],['nivel_id' => $nivel]);
+            	$e->niveis()->attach(['edicao_id' => $e['id']],['nivel_id' => $nivel]);
 
             foreach ($data['area_id'] as $i => $area)
-            	$areas = $e->areas()->attach(['edicao_id' => $e['id']],['area_id' => $area]);
+            	$e->areas()->attach(['edicao_id' => $e['id']],['area_id' => $area]);
 
         }
 
@@ -71,23 +71,21 @@ class EdicaoController extends Controller {
     }
 
     public function editarEdicao($id) {
+
         $nivel = DB::table('nivel_edicao')->select('nivel_id')->where('edicao_id', $id)->get();
-
-
-        foreach($nivel as $ni){
+        foreach($nivel as $ni)
           $nivelEdicao[] = $ni->nivel_id;
-        }
+
 
         $area = DB::table('area_edicao')->select('area_id')->where('edicao_id', $id)->get();
-
-        foreach($area as $ai){
+        foreach($area as $ai)
           $areaEdicao[] = $ai->area_id;
-        }
+
 
         $areas = DB::table('area_conhecimento')->select('id','area_conhecimento','nivel_id')->get();
         $niveis = DB::table('nivel')->select('id','nivel')->get();
         $dados = Edicao::find($id);
-       // dd($niveis);
+
         return view('admin.editarEdicao',['dados' => $dados,'n' => $niveis,'areas' => $areas,'nivelEdicao' => $nivelEdicao,'areaEdicao' => $areaEdicao]);
 
     }
@@ -97,7 +95,7 @@ class EdicaoController extends Controller {
         $data = $req->all();
         $id = $data['id_edicao'];
 
-        Edicao::where('id',$id)->update([
+        Edicao::find($id)->update([
               'inscricao_abertura'        => $data['inscricao_abertura'],
               'inscricao_fechamento'      => $data['inscricao_fechamento'],
               'homologacao_abertura'      => $data['homologacao_abertura'],
@@ -109,7 +107,9 @@ class EdicaoController extends Controller {
               'voluntario_abertura'       => $data['voluntario_abertura'],
               'voluntario_fechamento'     => $data['voluntario_fechamento'],
               'comissao_abertura'         => $data['comissao_abertura'],
-              'comissao_fechamento'       => $data['comissao_fechamento']
+              'comissao_fechamento'       => $data['comissao_fechamento'],
+			  'feira_abertura'         	  => $data['feira_abertura'],
+			  'feira_fechamento'      	  => $data['feira_fechamento']
             ]);
 
         $nivel = DB::table('nivel_edicao')->select('nivel_id')->where('edicao_id', $id)->get();
@@ -124,27 +124,23 @@ class EdicaoController extends Controller {
         }
 
         foreach ($data['nivel_id'] as $n) {
-            if(in_array($n, $nivelEdicao) ==  false){
+            if(!in_array($n, $nivelEdicao))
               DB::table('nivel_edicao')->insert(['edicao_id' => $id,'nivel_id' => $n]);
-            }
         }
 
         foreach ($nivelEdicao as $n) {
-          if(in_array($n, $data['nivel_id']) ==  false){
+          if(!in_array($n, $data['nivel_id']))
               DB::table('nivel_edicao')->where('nivel_id', $n)->where('edicao_id', $id)->delete();
-            }
         }
 
         foreach ($data['area_id'] as $a) {
-            if(in_array($a, $areaEdicao) ==  false){
+            if(!in_array($a, $areaEdicao))
               DB::table('area_edicao')->insert(['edicao_id' => $id,'area_id' => $a]);
-            }
         }
 
         foreach ($areaEdicao as $a) {
-          if(in_array($a, $data['area_id']) ==  false){
+          if(!in_array($a, $data['area_id']))
               DB::table('area_edicao')->where('area_id', $a)->where('edicao_id', $id)->delete();
-            }
         }
 
         return redirect()->route('administrador');
