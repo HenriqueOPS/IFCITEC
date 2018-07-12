@@ -14,6 +14,11 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
 
+		<!-- Icons -->
+		<link rel="icon" href="{{ asset('img/icons/32x32.png') }}" sizes="32x32" />
+		<link rel="icon" href="{{ asset('img/icons/192x192.png') }}" sizes="192x192" />
+		<link rel="apple-touch-icon-precomposed" href="{{ asset('img/icons/180x180.png') }}" />
+
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link href="{{ asset('css/style.css') }}" rel="stylesheet">
@@ -22,10 +27,41 @@
         <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
         @yield('css')
 
+		@if (!env('APP_DEBUG'))
+
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id={{env('GOOGLE_ANALYTICS_ID')}}"></script>
+		<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', '{{env('GOOGLE_ANALYTICS_ID')}}');
+
+		@if (Auth::user())
+		gtag('set', {'user_id': '{{ Auth::user()->id }}'}); // Defina o ID de usuário usando o user_id conectado.
+		@endif
+		</script>
+
+		<!-- Google Tag Manager -->
+		<script>
+			(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+						new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+					j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+					'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+			})(window,document,'script','dataLayer','{{env('TAG_MANAGER_ID')}}');</script>
+		<!-- End Google Tag Manager -->
+
+		@endif
+
 		<!-- Import JQuery -->
 		<script src="{{ asset('js/app.js') }}"></script>
     </head>
     <body>
+
+	<!-- Google Tag Manager (noscript) -->
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{env('TAG_MANAGER_ID')}}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager (noscript) -->
+
         <div id="app">
 			@if (Auth::guest())
 			@else
@@ -112,6 +148,8 @@
 					</div>
 				</nav>
 			@endif
+
+			<div id="gtm" class="container"></div>
 
             @yield('content')
 
