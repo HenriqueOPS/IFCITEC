@@ -24,12 +24,10 @@
                 </div>
                 @endif
 
-                @if (count($errors) > 0)
+                @if (isset($error))
                 <div class="alert alert-danger">
-                    <strong>Whoops!</strong>
-                        @foreach ($errors->all() as $error)
+                    <strong>Whoops!</strong>                    
                         {{ $error }}
-                        @endforeach
                 </div>
                 @endif
 
