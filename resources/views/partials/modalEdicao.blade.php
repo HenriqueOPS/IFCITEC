@@ -56,6 +56,14 @@
 				</div>
 				<div class="input-group">
                 <span class="input-group-addon">
+                    <i class="material-icons">today</i>
+                </span>
+					<div class="form-group label-floating">
+						<span id="pfeiModal"></span>
+					</div>
+				</div>
+				<div class="input-group">
+                <span class="input-group-addon">
                     <i class="material-icons">school</i>
                 </span>
 					<div class="form-group label-floating">
@@ -90,6 +98,7 @@ $('.modalEdicao').click(function(){
 		var pvol = '';
 		var piah = '';
 		var pcre = '';
+		var pfei = '';
 		var teste = '';
 		pins += "Período de Inscrição: ";
 
@@ -116,6 +125,10 @@ $('.modalEdicao').click(function(){
 		horario(res.dados.comissao_abertura) ? piah += horario(res.dados.comissao_abertura)+" até " : piah += '';
 		horario(res.dados.comissao_fechamento) ? piah += horario(res.dados.comissao_fechamento)+" " : piah += '';
 
+		pfei += "Período da Feira: ";
+		horario(res.dados.feira_abertura) ? pfei += horario(res.dados.feira_abertura)+" até " : pfei += '';
+		horario(res.dados.feira_fechamento) ? pfei += horario(res.dados.feira_fechamento)+" " : pfei += '';
+
 		for(var i=0; i<res.nivelEdicao.length; i++) {
 			teste += "Nível ";
 			res.nivel[i].nivel ? teste += res.nivel[i].nivel+":<br>" : teste
@@ -134,6 +147,7 @@ $('.modalEdicao').click(function(){
 		$("#pavaModal").html(pava);
 		$("#pvolModal").html(pvol);
 		$("#piahModal").html(piah);
+		$("#pfeiModal").html(pfei);
 		$("#testeModal").html(teste);
 
 		//abre a modal

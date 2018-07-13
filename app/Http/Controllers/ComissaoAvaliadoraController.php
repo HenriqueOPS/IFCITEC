@@ -51,7 +51,7 @@ class ComissaoAvaliadoraController extends Controller
                                     ->get()
                                     ->toArray();
 
-        $niveis = DB::table('nivel')->join('nivel_edicao', 'nivel.id', '=', 'nivel_edicao.id')
+        $niveis = DB::table('nivel')->join('nivel_edicao', 'nivel.id', '=', 'nivel_edicao.nivel_id')
                                     ->select('nivel.nivel', 'nivel.id','nivel_edicao.edicao_id')
                                     ->where('nivel_edicao.edicao_id', Edicao::getEdicaoId())
                                     ->orderBy('nivel.id', 'asc')

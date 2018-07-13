@@ -126,6 +126,7 @@
                                     @endforeach
                                 @endforeach
                                 @else
+                                	tchauuu
                                 	<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">        
                                       <p>Nível {{$nivel->nivel}}:</p>
                                     </div>

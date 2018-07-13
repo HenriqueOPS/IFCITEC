@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\MailSenhaJob;
+use App\Pessoa;
 
 class ForgotPasswordController extends Controller
 {
@@ -37,8 +38,15 @@ class ForgotPasswordController extends Controller
 
     public function emailSenha(Request $req)
     {
-        $data = $req->all(); 
+        $data = $req->all();
+        if(! Pessoa::where('email',$data['email'])->get()->isEmpty()){
         $emailJob = (new MailSenhaJob($data['email'], $data['_token']))->delay(\Carbon\Carbon::now()->addSeconds(3));
         dispatch($emailJob);
+        $req->session()->flash('status', 'O email de recuperação de senha foi enviado com sucesso');
+        return view('auth.passwords.email');
+        }
+        else{
+            return view('auth.passwords.email', array('error' => 'Algo deu errado com o e-mail informado'));
+        }
     }
 }
