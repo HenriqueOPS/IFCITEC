@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Http\Requests\AreaRequest;
 use App\Http\Requests\NivelRequest;
 use App\Projeto;
@@ -14,6 +15,7 @@ use App\Edicao;
 use App\Escola;
 use App\Endereco;
 use App\Nivel;
+use App\Pessoa;
 use App\AreaConhecimento;
 
 class AdminController extends Controller
@@ -28,18 +30,18 @@ class AdminController extends Controller
 		$this->middleware('auth');
 	}
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
+	/**
+	 * Show the application dashboard.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index()
+	{
 
 		$edicoes = Edicao::all(['id', 'ano',
-						'inscricao_abertura', 'inscricao_fechamento',
-						'homologacao_abertura', 'homologacao_fechamento',
-						'avaliacao_abertura', 'avaliacao_fechamento'])->sortByDesc('ano');
+			'inscricao_abertura', 'inscricao_fechamento',
+			'homologacao_abertura', 'homologacao_fechamento',
+			'avaliacao_abertura', 'avaliacao_fechamento'])->sortByDesc('ano');
 
 		$niveis = Nivel::all(['id', 'nivel', 'descricao']);
 
@@ -47,58 +49,51 @@ class AdminController extends Controller
 
 		$escolas = Escola::all(['id', 'nome_completo', 'nome_curto', 'email', 'telefone']);
 
+		$usuarios = Pessoa::all(['id', 'nome', 'email']);
 
-        $projetos = DB::table('projeto')
-						->select('titulo','id')
-						->orderBy('created_at', 'asc')
-						->where('edicao_id',Edicao::getEdicaoId())
-						->get()
-						->keyBy('id')
-                        ->toArray();
+		$projetos = DB::table('projeto')
+			->select('titulo', 'id')
+			->orderBy('created_at', 'asc')
+			->where('edicao_id', Edicao::getEdicaoId())
+			->get()
+			->keyBy('id')
+			->toArray();
 
 		$autores = array();
 		$orientadores = array();
 		$coorientadores = array();
 
 		//Participantes dos projetos
-        if($projetos){
-			$idAutor =  Funcao::where('funcao','Autor')->first();
-			$idOrientador =  Funcao::where('funcao','Orientador')->first();
-			$idCoorientador =  Funcao::where('funcao','Coorientador')->first();
+		if ($projetos) {
+			$idAutor = Funcao::where('funcao', 'Autor')->first();
+			$idOrientador = Funcao::where('funcao', 'Orientador')->first();
+			$idCoorientador = Funcao::where('funcao', 'Coorientador')->first();
 
 			$ids = array_keys($projetos);
 
 			$autores = DB::table('escola_funcao_pessoa_projeto')
-						->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
-						->select('escola_funcao_pessoa_projeto.projeto_id','pessoa.id','pessoa.nome')
-						->whereIn('projeto_id', $ids)
-						->where('funcao_id', $idAutor->id)
-						->get()
-						->toArray();
+				->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+				->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
+				->whereIn('projeto_id', $ids)
+				->where('funcao_id', $idAutor->id)
+				->get()
+				->toArray();
 
 			$orientadores = DB::table('escola_funcao_pessoa_projeto')
-							->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
-							->select('escola_funcao_pessoa_projeto.projeto_id','pessoa.id','pessoa.nome')
-							->whereIn('projeto_id', $ids)
-							->where('funcao_id', $idOrientador->id)
-							->get()
-							->toArray();
+				->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+				->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
+				->whereIn('projeto_id', $ids)
+				->where('funcao_id', $idOrientador->id)
+				->get()
+				->toArray();
 
 			$coorientadores = DB::table('escola_funcao_pessoa_projeto')
-								->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
-								->select('escola_funcao_pessoa_projeto.projeto_id','pessoa.id','pessoa.nome')
-								->whereIn('projeto_id', $ids)->where('funcao_id', $idCoorientador->id)
-								->get()
-								->toArray();
-        }
-
-
-
-		/*
-        return view('admin.home', collect(['edicoes' => $edicoes, 'enderecos' => $enderecos, 'escolas' => $escolas, 'niveis' => $niveis, 'areas' => $areas, 'projetos' => $projetos, 'autor' => $autor, 'orientador' => $orientador, 'coorientador' => $coorientador]));
-        */
-
-
+				->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+				->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
+				->whereIn('projeto_id', $ids)->where('funcao_id', $idCoorientador->id)
+				->get()
+				->toArray();
+		}
 
 		return view('admin.home', collect(['edicoes' => $edicoes,
 			'escolas' => $escolas,
@@ -107,8 +102,8 @@ class AdminController extends Controller
 			'projetos' => $projetos,
 			'autores' => $autores,
 			'orientadores' => $orientadores,
-			'coorientadores' => $coorientadores
-		]));
+			'coorientadores' => $coorientadores,
+		]))->withUsuarios($usuarios);
 
 	}
 
@@ -213,7 +208,7 @@ class AdminController extends Controller
 		$niveis = DB::table('nivel')->select('id', 'nivel')->get();
 		$dados = AreaConhecimento::find($id);
 
-		return view('admin.editarArea', array('niveis' => $niveis), compact('dados','n'));
+		return view('admin.editarArea', array('niveis' => $niveis), compact('dados', 'n'));
 	}
 
 	public function editaArea(AreaRequest $req)
@@ -349,16 +344,77 @@ class AdminController extends Controller
 
 
 			return 'true';
-		}else{
+		} else {
 			return 'password-problem';
 		}
 
 
 	}
 
-	public function administrarUsuarios()
+	public function editarFuncaoUsuario($id)
 	{
-		return view('admin.administrarUsuarios');
+		$usuario = Pessoa::find($id);
+		$funcoes = Funcao::all();
+		dd($usuario->temFuncao('Orientador'));
+		return view('admin.editarFuncaoUsuario')
+			->withUsuario($usuario)
+			->withFuncoes($funcoes);
+	}
+
+	public function editaFuncaoUsuario(Request $req, $id)
+	{
+		$data = $req->all();
+		$funcoes = DB::table('funcao_pessoa')
+			->select('funcao_id')
+			->where('pessoa_id', $id)
+			->get()
+			->keyBy('funcao_id')
+			->toArray();
+
+		if (!empty($funcoes)) {
+			$funcaoId = array_keys($funcoes);
+			foreach ($funcoes as $funcao) {
+				if (!isset($data['funcao']) || (!in_array($funcao->funcao_id, $data['funcao']))) {
+					DB::table('funcao_pessoa')->where('funcao_id', $funcao->funcao_id)->where('pessoa_id', $id)->delete();
+				}
+			}
+
+			if (isset($data['funcao'])) {
+				foreach ($data['funcao'] as $funcao) {
+					if (!in_array($funcao, $funcaoId)) {
+						DB::table('funcao_pessoa')->insert([
+							'funcao_id' => $funcao,
+							'pessoa_id' => $id,
+							'edicao_id' => Edicao::getEdicaoId(),
+							'homologado' => TRUE
+						]);
+					}
+				}
+			}
+		} 
+		else {
+			foreach ($data['funcao'] as $funcao) {
+				DB::table('funcao_pessoa')->insert([
+					'funcao_id' => $funcao,
+					'pessoa_id' => $id,
+					'edicao_id' => Edicao::getEdicaoId(),
+					'homologado' => TRUE
+				]);
+			}
+		}
+
+		$usuario = Pessoa::find($id);
+		$funcoes = Funcao::all();
+		return view('admin.editarFuncaoUsuario')
+			->withUsuario($usuario)
+			->withFuncoes($funcoes);
+	}
+
+	public function pesquisa(Request $req){
+		$data = $req->all();
+		//Teste
+		$usuarios = Pessoa::where('nome','Rafaella')->get(); 
+        return response()->json($usuarios);
 	}
 
 }

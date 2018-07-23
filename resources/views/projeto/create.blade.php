@@ -45,7 +45,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Título</label>
-                                    <input type="text" class="form-control" name="titulo" value="{{old('titulo')}}" required>
+                                    <input type="text" class="form-control" name="titulo" value="{{old('titulo')}}" required style="text-transform: uppercase;">
                                 </div>
                                 @if ($errors->has('titulo'))
                                 <span class="help-block">

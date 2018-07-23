@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Controllers\PeriodosController;
 use App\Endereco;
+use App\Funcao;
 use App\Pessoa;
 use App\Edicao;
 use Illuminate\Http\Request;
@@ -58,28 +59,20 @@ class ComissaoAvaliadoraController extends Controller
                                     ->get()
                                     ->toArray();
 
-        $orientador = DB::table('funcao')->select('id')
-                                        ->where('funcao','Orientador')
-                                        ->get();
-        $coorientador = DB::table('funcao')->select('id')
-                                        ->where('funcao','Coorientador')
-                                        ->get();
-    
-
         $projetosNiveis = DB::table('nivel')->join('projeto', 'nivel.id', '=', 'projeto.nivel_id')
                                     ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
                                     ->select('nivel.nivel', 'nivel.id')
                                     ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
                                     ->where('pessoa_id', Auth::user()->id)
-                                    ->where('escola_funcao_pessoa_projeto.funcao_id', $orientador->get(0)->id)
-                                    ->orWhere('escola_funcao_pessoa_projeto.funcao_id', $coorientador->get(0)->id)
+                                    ->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id)
+                                    ->orWhere('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id)
                                     ->orderBy('nivel.id', 'asc')
                                     ->get()
                                     ->toArray();
         foreach ($niveis as $n) {
             foreach ($projetosNiveis as $pn) {      
                 if($n->id != $pn->id){
-                    $nivel = $n;
+                    $nivel[] = $n;
                 }
             }
         }

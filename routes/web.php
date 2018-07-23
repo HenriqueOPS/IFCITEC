@@ -87,7 +87,9 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
 
 	Route::get('/gerenciar', 'AdminController@administrarUsuarios');
-
+	Route::post('/gerenciar-usuario/{id}', 'AdminController@editaFuncaoUsuario')->name('editaFuncaoUsuario');
+	Route::get('/gerenciar/usuario/{id}', 'AdminController@editarFuncaoUsuario')->name('editarFuncaoUsuario');
+	Route::get('/pesquisa','AdminController@pesquisa');
 
 	// Nivel
 	Route::get('/nivel/cadastrar', 'AdminController@cadastroNivel')->name('cadastroNivel');

@@ -40,6 +40,12 @@
                 </li>
                 <li>
                     <a href="dashboard" id="4" class="tab" role="tab" data-toggle="tab">
+                        <i class="material-icons">person</i>
+                        Usuários
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard" id="5" class="tab" role="tab" data-toggle="tab">
                         <i class="material-icons">list_alt</i>
                         Listar Projetos
                     </a>
@@ -217,15 +223,51 @@
 
                     <thead id="4">
                     <div id="4">
+                        <!-- 
+                        <div class="col-md-4">
+                            <input id="search" name="search" placeholder="Pesquisar... (Digite um nome)" type="text" class="form-control">
+                        </div>
+                        <br>
+                        <div class="col-md-4">
+                            <button class="search btn btn-primary btn-fab btn-fab-mini btn-round">
+                                <i class="material-icons">search</i>
+                            </button>
+                        </div>
+                        -->
+                        
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th>Usuários</th>
+                            <th>E-mail</th>
+                            <th class="text-right">Ações</th>
+                        </tr>
+                    </div>
+                    </thead>
+
+                    <tbody id="4">
+                        @foreach($usuarios as $usuario)
+                        <tr>
+                            <td class="text-center">{{$usuario->id}}</td>
+                            <td>{{$usuario->nome}}</td>
+                            <td>{{$usuario->email}}</td>
+                            <td class="text-right">
+                            <a href="{{route('editarFuncaoUsuario',$usuario->id)}}"><i class="material-icons">edit</i></a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+
+                    <thead id="5">
+                    <div id="5">
 
                     </div>
 
                     </thead>
 
-                    <tbody id="4">
+                    <tbody id="5">
                         @foreach($projetos as $i => $projeto)
 
-                        <div id="4" class="project">
+                        <div id="5" class="project">
                         <div class="project-title">
                              <span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
                         </div>
@@ -299,11 +341,13 @@ function hideBodys(){
     $('tbody[id=2]').hide();
     $('tbody[id=3]').hide();
     $('tbody[id=4]').hide();
+    $('tbody[id=5]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
     $('div[id=3]').hide();
     $('div[id=4]').hide();
+    $('div[id=5]').hide();
 }
 function hideHeads(){
     $('thead[id=0]').hide();
@@ -311,12 +355,33 @@ function hideHeads(){
     $('thead[id=2]').hide();
     $('thead[id=3]').hide();
     $('thead[id=4]').hide();
+    $('thead[id=5]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
     $('div[id=3]').hide();
     $('div[id=4]').hide();
+    $('div[id=5]').hide();
 }
 </script>
+<script type="text/javascript">
+ 
+$('#search').on('keyup',function(){
+    $value=$(this).val();
+ 
+    $.ajax({
+        type : 'get',
+        url : '{{URL::to('pesquisa')}}',
+        data:{'search':$value},
+        
+        success:function(usuarios){
+            $('#2').html(usuarios);
+            //$('#result').show();  
+            console.log(usuarios);
+        }
+    });
+})
+</script>
+
 @endsection
 
