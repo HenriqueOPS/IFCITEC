@@ -226,6 +226,7 @@ class ProjetoController extends Controller
 	 */
 	public function editarProjeto($id)
 	{
+
 		$pessoas = Pessoa::all();
 		$projetoP = Projeto::find($id);
 		$nivelP = Nivel::find($projetoP->nivel_id);
@@ -270,13 +271,33 @@ class ProjetoController extends Controller
 		$funcoes = Funcao::getByCategory('integrante');
 		$escolas = Escola::all();
 
-		return view('projeto.edit', compact('niveis', 'areas', 'funcoes', 'escolas', 'projetoP', 'nivelP', 'areaP', 'escolaP', 'palavrasP', 'autor', 'orientador', 'coorientador', 'pessoas'));
+
+		//Valida se pode editar o projeto
+		$ids = array();
+
+		if($orientador)
+			array_push($ids, $orientador[0]);
+
+		foreach ($autor as $a => $id)
+			array_push($ids, $id->pessoa_id);
+
+		foreach ($coorientador as $c => $id)
+			array_push($ids, $id->pessoa_id);
+
+
+		if(in_array(Auth::user()->id, $ids) || Auth::user()->temFuncao('Organizador') || Auth::user()->temFuncao('Administrador'))
+
+			return view('projeto.edit', compact('niveis', 'areas', 'funcoes', 'escolas', 'projetoP', 'nivelP', 'areaP', 'escolaP', 'palavrasP', 'autor', 'orientador', 'coorientador', 'pessoas'));
+
+
+		return redirect()->route('home');
+
 	}
 
 	public function editaProjeto(ProjetoRequest $req)
 	{
 		$id = $req->all()['id_projeto'];
-		Projeto::where('id', $id)->update(['titulo' => $req->all()['titulo'],
+		Projeto::where('id', $id)->update(['titulo' => strtoupper($req->all()['titulo']),
 			'resumo' => $req->all()['resumo'],
 			'area_id' => $req->all()['area_conhecimento'],
 			'nivel_id' => $req->all()['nivel'],

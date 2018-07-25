@@ -53,8 +53,8 @@ class Projeto extends Model {
     }
 
     public function getStatus() {
-        
-        return "Não Homologado"; // XGH
+
+        return "Cadastrado"; // XGH
 
 
         $situacao = DB::table('situacao')->select('situacao')->where('id', '=', $this->id)->orderBy('count', 'desc')->first();
