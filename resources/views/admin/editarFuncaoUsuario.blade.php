@@ -38,7 +38,6 @@
                             @if($funcao->funcao == 'Autor' || $funcao->funcao == 'Orientador' || $funcao->funcao == 'Coorientador')
                             @if($usuario->temFuncao($funcao->funcao))
                             <div class="checkbox">
-                                aaaa
                                 <label>
                                     <input type="checkbox" name="funcao[]" value="{{$funcao->id}}" checked disabled>
                                     <span style="color: black">{{$funcao->funcao}}</span>
@@ -46,7 +45,6 @@
                             </div>
                             @else
                             <div class="checkbox">
-                                bbbb
                                 <label>
                                     <input type="checkbox" name="funcao[]" value="{{$funcao->id}}" disabled>
                                     <span style="color: black">{{$funcao->funcao}}</span>
