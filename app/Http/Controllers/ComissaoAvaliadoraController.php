@@ -33,8 +33,7 @@ class ComissaoAvaliadoraController extends Controller
     {
         if (Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador') || Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Homologador') == true) {
             return view('inscricaoEnviada');
-        }
-        else{
+        } else{
             return redirect()->route('comissaoAvaliadora');
         }
     }
@@ -70,7 +69,7 @@ class ComissaoAvaliadoraController extends Controller
                                     ->get()
                                     ->toArray();
         foreach ($niveis as $n) {
-            foreach ($projetosNiveis as $pn) {      
+            foreach ($projetosNiveis as $pn) {
                 if($n->id != $pn->id){
                     $nivel[] = $n;
                 }
@@ -85,7 +84,7 @@ class ComissaoAvaliadoraController extends Controller
     }
 
     public function cadastraComissao(Request $req){
-        $data = $req->all(); 
+        $data = $req->all();
         $idEndereco = Endereco::create([
                     'cep' => $data['cep'],
                     'endereco' => $data['endereco'],
@@ -95,8 +94,8 @@ class ComissaoAvaliadoraController extends Controller
                     'numero' => $data['numero']
         ]);
         $id = DB::table('pessoa')->where('id',Auth::id())->update([
-                    'titulacao' => $data['titulacao'], 
-                    'lattes' => $data['lattes'], 
+                    'titulacao' => $data['titulacao'],
+                    'lattes' => $data['lattes'],
                     'profissao' => $data['profissao'],
                     'instituicao' => $data['instituicao'],
                     'endereco_id' => $idEndereco['original']['id'],
@@ -115,17 +114,17 @@ class ComissaoAvaliadoraController extends Controller
         foreach ($areas as $area) {
             DB::table('areas_comissao')->insert(
                 ['area_id' => $area,
-                    'comissao_edicao_id' => $comissaoEdicao->get(0)->id, 
+                    'comissao_edicao_id' => $comissaoEdicao->get(0)->id,
                     'homologado' => FALSE
                 ]);
         }
 
         if(in_array("1", $data['funcao'])){
-        $idA = DB::table('funcao')->where('funcao', 'Avaliador')->get(); 
+        $idA = DB::table('funcao')->where('funcao', 'Avaliador')->get();
         foreach($idA as $i){
           DB::table('funcao_pessoa')->insert(
                 ['edicao_id' => Edicao::getEdicaoId(),
-                    'funcao_id' => $i->id, 
+                    'funcao_id' => $i->id,
                     'pessoa_id' => Auth::id(),
                     'homologado' => FALSE
                 ]);
@@ -133,11 +132,11 @@ class ComissaoAvaliadoraController extends Controller
         }
 
         if(in_array("2", $data['funcao'])){
-        $idH = DB::table('funcao')->where('funcao', 'Homologador')->get(); 
+        $idH = DB::table('funcao')->where('funcao', 'Homologador')->get();
         foreach($idH as $i){
           DB::table('funcao_pessoa')->insert(
                 ['edicao_id' => Edicao::getEdicaoId(),
-                    'funcao_id' => $i->id, 
+                    'funcao_id' => $i->id,
                     'pessoa_id' => Auth::id(),
                     'homologado' => FALSE
                 ]);
@@ -149,5 +148,101 @@ class ComissaoAvaliadoraController extends Controller
         return redirect()->route('autor');
 
     }
+
+	public function homologarComissao($id){
+
+		$comissaoEdicao = DB::table('comissao_edicao')->find($id);
+		$pessoa = Pessoa::find($comissaoEdicao->pessoa_id);
+
+		$areasComissao = DB::table('areas_comissao')
+			->select('area_id')
+			->where('comissao_edicao_id','=',$id)
+			->get()
+			->toArray();
+
+		$idsAreas = array();
+		foreach ($areasComissao as $a)
+			array_push($idsAreas, $a->area_id);
+
+
+		$areas = DB::table('area_conhecimento')->join('area_edicao', 'area_conhecimento.id', '=', 'area_edicao.area_id')
+			->select('area_conhecimento.id','area_conhecimento.area_conhecimento', 'area_conhecimento.nivel_id')
+			->where('area_edicao.edicao_id', Edicao::getEdicaoId())
+			->orderBy('area_conhecimento.id', 'asc')
+			->get()
+			->toArray();
+
+		$niveis = DB::table('nivel')->join('nivel_edicao', 'nivel.id', '=', 'nivel_edicao.nivel_id')
+			->select('nivel.nivel', 'nivel.id','nivel_edicao.edicao_id')
+			->where('nivel_edicao.edicao_id', Edicao::getEdicaoId())
+			->orderBy('nivel.id', 'asc')
+			->get()
+			->toArray();
+
+		return view('admin.homologaComissao', compact('id', 'pessoa', 'idsAreas', 'areas', 'niveis'));
+
+	}
+
+	public function homologaComissao(Request $req){
+
+		$data = $req->all();
+
+		$areasComissao = DB::table('areas_comissao')
+			->select('area_id')
+			->where('comissao_edicao_id','=',$data['comissao_edicao_id'])
+			->get()
+			->toArray();
+
+		$idsAreas = array();
+		foreach ($areasComissao as $a)
+			array_push($idsAreas, $a->area_id);
+
+		//cria novas areas
+		$newAreas = array_diff($data['area_id'], $idsAreas);
+
+		foreach ($newAreas as $area => $id){
+
+			DB::table('areas_comissao')
+				->insert([
+						'area_id' => $id,
+						'comissao_edicao_id' => $data['comissao_edicao_id'],
+						'homologado' => true
+						]);
+		}
+
+		//deleta campos que tinham agr não tem mais
+		$oldAreas = array_diff($idsAreas, $data['area_id']);
+		foreach ($oldAreas as $area => $id){
+
+			DB::table('areas_comissao')->where([
+				'area_id' => $id,
+				'comissao_edicao_id' => $data['comissao_edicao_id']
+			])->delete();
+		}
+
+		//homologa os campos já existentes
+		DB::table('areas_comissao')
+			->select('area_id')
+			->where('comissao_edicao_id','=',$data['comissao_edicao_id'])
+			->whereIn('area_id', array_intersect($idsAreas, $data['area_id']))
+			->update(['homologado' => true]);
+
+		DB::table('funcao_pessoa')
+				->where([
+					'pessoa_id' => $data['pessoa_id'],
+					'edicao_id' => Edicao::getEdicaoId(),
+					'funcao_id' => 3
+				])->update(['homologado' => true]);
+
+		DB::table('funcao_pessoa')
+				->where([
+					'pessoa_id' => $data['pessoa_id'],
+					'edicao_id' => Edicao::getEdicaoId(),
+					'funcao_id' => 4
+				])->update(['homologado' => true]);
+
+		return redirect()->route('administrador');
+	}
+
 }
 

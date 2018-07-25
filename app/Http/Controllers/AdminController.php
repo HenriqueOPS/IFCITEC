@@ -95,6 +95,20 @@ class AdminController extends Controller
 				->toArray();
 		}
 
+		$comissao = DB::table('funcao_pessoa')
+			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+			->join('comissao_edicao', function ($join){
+				$join->on('comissao_edicao.pessoa_id', '=', 'pessoa.id');
+				$join->where('comissao_edicao.edicao_id', '=', Edicao::getEdicaoId());
+			})
+			->where('funcao_pessoa.edicao_id', '=', Edicao::getEdicaoId())
+			->whereRaw('(funcao_pessoa.funcao_id = 3 or funcao_pessoa.funcao_id = 4)')
+			->select('comissao_edicao.id','funcao_pessoa.homologado', 'funcao_pessoa.funcao_id',
+					 'pessoa.nome', 'pessoa.instituicao', 'pessoa.titulacao')
+			->orderBy('funcao_pessoa.homologado')
+			->get()
+			->toArray();
+
 		return view('admin.home', collect(['edicoes' => $edicoes,
 			'escolas' => $escolas,
 			'niveis' => $niveis,
@@ -103,6 +117,7 @@ class AdminController extends Controller
 			'autores' => $autores,
 			'orientadores' => $orientadores,
 			'coorientadores' => $coorientadores,
+			'comissao' => $comissao
 		]))->withUsuarios($usuarios);
 
 	}
@@ -391,7 +406,7 @@ class AdminController extends Controller
 					}
 				}
 			}
-		} 
+		}
 		else {
 			foreach ($data['funcao'] as $funcao) {
 				DB::table('funcao_pessoa')->insert([
@@ -413,7 +428,7 @@ class AdminController extends Controller
 	public function pesquisa(Request $req){
 		$data = $req->all();
 		//Teste
-		$usuarios = Pessoa::where('nome','Rafaella')->get(); 
+		$usuarios = Pessoa::where('nome','Rafaella')->get();
         return response()->json($usuarios);
 	}
 

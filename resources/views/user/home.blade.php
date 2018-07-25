@@ -65,10 +65,15 @@
 					<tbody id="0">
 
 					<div id="0" class="list-projects">
+						@php $flag = true @endphp
+
 						@foreach($projetosPessoa as $p)
 							@foreach($projetos as $projeto)
 
 								@if($p->projeto_id==$projeto->id && $p->funcao=='Autor')
+
+									@php $flag = false @endphp
+
 									<div class="project">
 										<div class="project-title">
 											<span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
@@ -86,6 +91,11 @@
 
 							@endforeach
 						@endforeach
+
+						@if($flag)
+							<h3 class="text-center">Você não é <b>Autor</b> em nenhum Projeto</h3>
+						@endif
+
 					</div>
 					</tbody>
 
@@ -105,10 +115,15 @@
 					<tbody id="1">
 
 					<div id="1" class="list-projects">
+						@php $flag = true @endphp
+
 						@foreach($projetosPessoa as $p)
 							@foreach($projetos as $projeto)
 
 								@if($p->projeto_id==$projeto->id && $p->funcao=='Orientador')
+
+									@php $flag = false @endphp
+
 									<div class="project">
 										<div class="project-title">
 											<span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
@@ -126,6 +141,11 @@
 
 							@endforeach
 						@endforeach
+
+						@if($flag)
+							<h3 class="text-center">Você não é <b>Orientador</b> em nenhum Projeto</h3>
+						@endif
+
 					</div>
 					</tbody>
 
@@ -145,10 +165,15 @@
 					<tbody id="2">
 
 					<div id="2" class="list-projects">
+						@php $flag = true @endphp
+
 						@foreach($projetosPessoa as $p)
 							@foreach($projetos as $projeto)
 
 								@if($p->projeto_id==$projeto->id && $p->funcao=='Coorientador')
+
+									@php $flag = false @endphp
+
 									<div class="project">
 										<div class="project-title">
 											<span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
@@ -166,6 +191,10 @@
 
 							@endforeach
 						@endforeach
+
+						@if($flag)
+							<h3 class="text-center">Você não é <b>Coorientador</b> em nenhum Projeto</h3>
+						@endif
 					</div>
 					</tbody>
 

@@ -12,7 +12,7 @@
             <h2>Painel administrativo</h2>
         </div>
 
-        <div id="page" class="col-md-10 col-xs-offset-2">
+        <div id="page" class="col-md-12">
             <ul class="nav nav-pills nav-pills-primary"  role="tablist">
                 <li class="active">
                     <a href="dashboard" id="0" class="tab" role="tab" data-toggle="tab">
@@ -50,6 +50,13 @@
                         Listar Projetos
                     </a>
                 </li>
+				<li>
+					<a href="dashboard" id="6" class="tab" role="tab" data-toggle="tab">
+						<i class="material-icons">list_alt</i>
+						Comissão Avaliadora
+					</a>
+				</li>
+
             </ul>
         </div>
     </div>
@@ -223,7 +230,7 @@
 
                     <thead id="4">
                     <div id="4">
-                        <!-- 
+                        <!--
                         <div class="col-md-4">
                             <input id="search" name="search" placeholder="Pesquisar... (Digite um nome)" type="text" class="form-control">
                         </div>
@@ -234,7 +241,7 @@
                             </button>
                         </div>
                         -->
-                        
+
                         <tr>
                             <th class="text-center">#</th>
                             <th>Usuários</th>
@@ -296,6 +303,66 @@
                         @endforeach
                     </tbody>
 
+					<div id="6">
+						<ul class="tab-comissao nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
+							<li class="active">
+								<a id="avaliador" role="tab" data-toggle="tab">
+									<i class="material-icons">dashboard</i>
+									Avaliadores
+								</a>
+							</li>
+							<li>
+								<a id="homologador" role="tab" data-toggle="tab">
+									<i class="material-icons">schedule</i>
+									Homologadores
+								</a>
+							</li>
+						</ul>
+
+						<thead id="6">
+
+						<tr>
+							<th>Nome</th>
+							<th>Instituição</th>
+							<th>Titulação</th>
+							<th>Status</th>
+							<th></th>
+						</tr>
+
+						</thead>
+
+					</div>
+
+					<tbody id="6">
+
+					@foreach($comissao as $c)
+
+						@if($c->funcao_id == 4)
+							<tr class="homologador">
+						@else
+							<tr class="avaliador">
+						@endif
+
+							<td>{{$c->nome}}</td>
+							<td>{{$c->instituicao}}</td>
+							<td>{{$c->titulacao}}</td>
+							<td>
+								@if($c->homologado)
+									<span class="label label-success">Homologado</span></td>
+								@else
+									<span class="label label-warning">Não Homologado</span></td>
+								@endif
+							<td class="text-right">
+								<a href="{{route('homologarComissao',$c->id)}}"><i class="material-icons">visibility</i></a>
+							</td>
+						</tr>
+
+					@endforeach
+
+
+
+					</tbody>
+
                 </table>
             </div>
         </div>
@@ -333,6 +400,20 @@ $(document).ready(function () {
         $('div[id='+target.id+']').show();
     });
 
+    //comissao avaliadora
+	$('tr.homologador').hide();
+
+	$('.tab-comissao #homologador').click(function (e) {
+		$('tr.avaliador').hide();
+		$('tr.homologador').show();
+	});
+
+	$('.tab-comissao #avaliador').click(function (e) {
+		$('tr.avaliador').show();
+		$('tr.homologador').hide();
+	});
+
+
 });
 
 function hideBodys(){
@@ -342,12 +423,14 @@ function hideBodys(){
     $('tbody[id=3]').hide();
     $('tbody[id=4]').hide();
     $('tbody[id=5]').hide();
+	$('tbody[id=6]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
     $('div[id=3]').hide();
     $('div[id=4]').hide();
     $('div[id=5]').hide();
+	$('div[id=6]').hide();
 }
 function hideHeads(){
     $('thead[id=0]').hide();
@@ -356,27 +439,29 @@ function hideHeads(){
     $('thead[id=3]').hide();
     $('thead[id=4]').hide();
     $('thead[id=5]').hide();
+	$('thead[id=6]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
     $('div[id=3]').hide();
     $('div[id=4]').hide();
     $('div[id=5]').hide();
+	$('div[id=6]').hide();
 }
 </script>
 <script type="text/javascript">
- 
+
 $('#search').on('keyup',function(){
     $value=$(this).val();
- 
+
     $.ajax({
         type : 'get',
         url : '{{URL::to('pesquisa')}}',
         data:{'search':$value},
-        
+
         success:function(usuarios){
             $('#2').html(usuarios);
-            //$('#result').show();  
+            //$('#result').show();
             console.log(usuarios);
         }
     });

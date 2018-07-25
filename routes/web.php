@@ -91,6 +91,10 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/gerenciar/usuario/{id}', 'AdminController@editarFuncaoUsuario')->name('editarFuncaoUsuario');
 	Route::get('/pesquisa','AdminController@pesquisa');
 
+	// Comissão Avaliadora
+	Route::get('/comissao/homologar/{id}', 'ComissaoAvaliadoraController@homologarComissao')->name('homologarComissao');
+	Route::post('/comissao/homologar/', 'ComissaoAvaliadoraController@homologaComissao')->name('homologaComissao');
+
 	// Nivel
 	Route::get('/nivel/cadastrar', 'AdminController@cadastroNivel')->name('cadastroNivel');
 	Route::post('/nivel/cadastrar', 'AdminController@cadastraNivel')->name('cadastroNivel');
