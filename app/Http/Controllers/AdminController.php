@@ -389,8 +389,10 @@ class AdminController extends Controller
 		if (!empty($funcoes)) {
 			$funcaoId = array_keys($funcoes);
 			foreach ($funcoes as $funcao) {
-				if (!isset($data['funcao']) || (!in_array($funcao->funcao_id, $data['funcao']))) {
-					DB::table('funcao_pessoa')->where('funcao_id', $funcao->funcao_id)->where('pessoa_id', $id)->delete();
+				if ($funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Autor')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id) {			
+					if (!isset($data['funcao']) || (!in_array($funcao->funcao_id, $data['funcao']))) {
+						DB::table('funcao_pessoa')->where('funcao_id', $funcao->funcao_id)->where('pessoa_id', $id)->delete();
+					}
 				}
 			}
 
