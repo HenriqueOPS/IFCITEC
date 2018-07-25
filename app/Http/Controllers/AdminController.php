@@ -370,7 +370,7 @@ class AdminController extends Controller
 	{
 		$usuario = Pessoa::find($id);
 		$funcoes = Funcao::all();
-		dd($usuario->temFuncao('Orientador'));
+
 		return view('admin.editarFuncaoUsuario')
 			->withUsuario($usuario)
 			->withFuncoes($funcoes);
