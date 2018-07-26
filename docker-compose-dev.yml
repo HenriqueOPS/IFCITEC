@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+  web:
+    container_name: ifcitecweb
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    volumes:
+      - ./:/var/www/html/
+    ports:
+      - '80'
+    links:
+      - postgres
+    
+  postgres: 
+    image: postgres:9.3
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=ifcitec
+    ports:
+      - '5432'
+
+  phppgadmin:
+    image: tozd/phppgadmin
+    environment:
+      - PHPPGADMIN_HOST=postgres
+      - PHPPGADMIN_PORT=5432
+    ports:
+      - '8080:80'
