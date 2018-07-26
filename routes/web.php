@@ -67,8 +67,8 @@ Route::get('/debug', function (){
 
 
 //Edição dos dados pessoais
-Route::get('/editar-cadastro', 'PessoaController@editarCadastro')->name('editarCadastro');
-Route::post('/editar-cadastro', 'PessoaController@editaCadastro')->name('editaCadastro');
+Route::get('/editar-cadastro/{id}', 'PessoaController@editarCadastro')->name('editarCadastro');
+Route::post('/editar-cadastro/{id}', 'PessoaController@editaCadastro')->name('editaCadastro');
 
 
 
@@ -123,6 +123,9 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 
 	Route::get('/edicao/dados-edicao/{id}', 'EdicaoController@dadosEdicao'); //Ajax
 	Route::get('/edicao/exclui-edicao/{id}/{s}', 'EdicaoController@excluiEdicao'); //Ajax
+
+	//Usuários
+	Route::get('/usuario/exclui-usuario/{id}/{s}', 'AdminController@excluiUsuario'); //
 
 });
 

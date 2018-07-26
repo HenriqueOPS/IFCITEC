@@ -17,7 +17,7 @@
                     </div>
 
                 </div>
-                <form name="f1" method="post" action="{{ route('editaCadastro') }}">
+                <form name="f1" method="post" action="{{ route('editaCadastro', $dados->id) }}">
 
                     {{ csrf_field() }}
 

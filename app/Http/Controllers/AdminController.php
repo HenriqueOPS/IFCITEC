@@ -43,17 +43,17 @@ class AdminController extends Controller
 			'homologacao_abertura', 'homologacao_fechamento',
 			'avaliacao_abertura', 'avaliacao_fechamento'])->sortByDesc('ano');
 
-		$niveis = Nivel::all(['id', 'nivel', 'descricao']);
+		$niveis = Nivel::orderBy('nivel')->get();
 
 		$areas = AreaConhecimento::all(['id', 'area_conhecimento', 'descricao', 'nivel_id']);
 
-		$escolas = Escola::all(['id', 'nome_completo', 'nome_curto', 'email', 'telefone']);
+		$escolas = Escola::orderBy('nome_curto')->get();
 
-		$usuarios = Pessoa::all(['id', 'nome', 'email']);
+		$usuarios = Pessoa::orderBy('nome')->get();
 
 		$projetos = DB::table('projeto')
 			->select('titulo', 'id')
-			->orderBy('created_at', 'asc')
+			->orderBy('titulo')
 			->where('edicao_id', Edicao::getEdicaoId())
 			->get()
 			->keyBy('id')
@@ -366,6 +366,16 @@ class AdminController extends Controller
 
 	}
 
+	public function excluiUsuario($id, $s)
+	{
+		if (password_verify($s, Auth::user()['attributes']['senha'])) {
+			Pessoa::find($id)->delete();
+			return 'true';
+		}
+
+		return 'false';
+	}
+
 	public function editarFuncaoUsuario($id)
 	{
 		$usuario = Pessoa::find($id);
@@ -425,13 +435,6 @@ class AdminController extends Controller
 		return view('admin.editarFuncaoUsuario')
 			->withUsuario($usuario)
 			->withFuncoes($funcoes);
-	}
-
-	public function pesquisa(Request $req){
-		$data = $req->all();
-		//Teste
-		$usuarios = Pessoa::where('nome','Rafaella')->get();
-        return response()->json($usuarios);
 	}
 
 }
