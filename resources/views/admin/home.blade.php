@@ -56,6 +56,12 @@
 						Comissão Avaliadora
 					</a>
 				</li>
+                <li>
+                    <a href="dashboard" id="7" class="tab" role="tab" data-toggle="tab">
+                        <i class="material-icons">description</i>
+                        Relatórios
+                    </a>
+                </li>
 
             </ul>
         </div>
@@ -203,12 +209,11 @@
                     </thead>
 
                     <tbody id="3">
-
                     @foreach($niveis as $nivel)
-                    @foreach($areas as $i => $area)
+                    @foreach($areas as $id=>$area)
                     @if($area['nivel_id'] == $nivel['id'])
                         <tr>
-                            <td class="text-center">{{ $i+1 }}</td>
+                            <td class="text-center">{{ $id+1 }}</td>
                             <td>{{ $area['area_conhecimento'] }}</td>
 
                             <td>{{ $nivel['nivel'] }}</td>
@@ -230,18 +235,6 @@
 
                     <thead id="4">
                     <div id="4">
-                        <!--
-                        <div class="col-md-4">
-                            <input id="search" name="search" placeholder="Pesquisar... (Digite um nome)" type="text" class="form-control">
-                        </div>
-                        <br>
-                        <div class="col-md-4">
-                            <button class="search btn btn-primary btn-fab btn-fab-mini btn-round">
-                                <i class="material-icons">search</i>
-                            </button>
-                        </div>
-                        -->
-
                         <tr>
                             <th class="text-center">#</th>
                             <th>Usuários</th>
@@ -252,13 +245,18 @@
                     </thead>
 
                     <tbody id="4">
-                        @foreach($usuarios as $usuario)
+                        @foreach($usuarios as $key=>$usuario)
                         <tr>
-                            <td class="text-center">{{$usuario->id}}</td>
+                            <td class="text-center">{{$key + 1}}</td>
                             <td>{{$usuario->nome}}</td>
                             <td>{{$usuario->email}}</td>
                             <td class="text-right">
+                            <a href="{{route('editarCadastro',$usuario->id)}}"><i class="material-icons">remove_red_eye</i></a>
+                    
                             <a href="{{route('editarFuncaoUsuario',$usuario->id)}}"><i class="material-icons">edit</i></a>
+                            <!--
+                            <a href="javascript:void(0);" class="exclusaoUsuario" id-usuario="{{ $usuario['id'] }}"><i class="material-icons blue-icon">delete</i></a>
+                            -->
                             </td>
                         </tr>
                         @endforeach
@@ -358,10 +356,26 @@
 						</tr>
 
 					@endforeach
-
-
-
 					</tbody>
+
+                    <thead id="7">
+                    <div id="7">
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th>Relatórios</th>
+                            <th class="text-right">Ações</th>
+                        </tr>
+                    </div>
+                    </thead>
+
+                    <tbody id="7">
+                            <td>#</td>
+                            <td>Relatório</td>
+                            <td class="text-right">
+                                <a href=""><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                    </tbody>
 
                 </table>
             </div>
@@ -376,6 +390,7 @@
 	@include('partials.modalEscola')
 	@include('partials.modalNivel')
 	@include('partials.modalArea')
+    @include('partials.modalUsuario')
 
 @endsection
 
@@ -424,6 +439,7 @@ function hideBodys(){
     $('tbody[id=4]').hide();
     $('tbody[id=5]').hide();
 	$('tbody[id=6]').hide();
+    $('tbody[id=7]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
@@ -431,6 +447,7 @@ function hideBodys(){
     $('div[id=4]').hide();
     $('div[id=5]').hide();
 	$('div[id=6]').hide();
+    $('div[id=7]').hide();
 }
 function hideHeads(){
     $('thead[id=0]').hide();
@@ -440,6 +457,7 @@ function hideHeads(){
     $('thead[id=4]').hide();
     $('thead[id=5]').hide();
 	$('thead[id=6]').hide();
+    $('thead[id=7]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
@@ -447,25 +465,8 @@ function hideHeads(){
     $('div[id=4]').hide();
     $('div[id=5]').hide();
 	$('div[id=6]').hide();
+    $('div[id=7]').hide();
 }
-</script>
-<script type="text/javascript">
-
-$('#search').on('keyup',function(){
-    $value=$(this).val();
-
-    $.ajax({
-        type : 'get',
-        url : '{{URL::to('pesquisa')}}',
-        data:{'search':$value},
-
-        success:function(usuarios){
-            $('#2').html(usuarios);
-            //$('#result').show();
-            console.log(usuarios);
-        }
-    });
-})
 </script>
 
 @endsection

@@ -67,12 +67,22 @@ class ComissaoAvaliadoraController extends Controller
                                     ->orWhere('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id)
                                     ->orderBy('nivel.id', 'asc')
                                     ->get()
+                                    ->keyBy('id')
                                     ->toArray();
+                                    
+        $projetosNiveis = array_keys($projetosNiveis);
+
         foreach ($niveis as $n) {
-            foreach ($projetosNiveis as $pn) {
-                if($n->id != $pn->id){
-                    $nivel[] = $n;
-                }
+            if (!in_array($n->id, $projetosNiveis)) {
+                    if(! isset($nivel)){
+                        $nivel[] = $n;
+                    }
+                   else{
+                        $array = array_pluck($nivel, 'id');
+                        if(! in_array($n->id, $array)){
+                            $nivel[] = $n;
+                        }
+                    }
             }
         }
 
