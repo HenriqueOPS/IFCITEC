@@ -5,6 +5,7 @@
 <link href="{{ asset('css/datepicker/bootstrap-datepicker.standdalone.css') }}" rel="stylesheet">
 @endsection
 
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -33,7 +34,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">RG</label>
-                                    <input type="text" class="form-control" name="rg" value="{{isset($dados->rg) ? $dados->rg : ''}}" required>
+                                    <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="10" class="form-control" name="rg" value="{{isset($dados->rg) ? $dados->rg : ''}}" required>
                                 </div>
                                 <span class="help-block">
                                     <strong></strong>
@@ -61,7 +62,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">CPF</label>
-                                    <input type="text" OnKeyPress="formatar('###.###.###-##', this)" maxlength="14" class="form-control" name="cpf" value="{{isset($dados->cpf) ? $dados->cpf : ''}}" required>
+                                    <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" OnKeyPress="formatar('###.###.###-##', this)" maxlength="14" class="form-control" name="cpf" value="{{isset($dados->cpf) ? $dados->cpf : ''}}" required>
                                 </div>
                                 @if ($errors->has('cpf'))
                                 <span class="help-block">
@@ -106,7 +107,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Telefone</label>
-                                    <input type="text" class="form-control" name="telefone" maxlength="15" value="{{isset($dados->telefone) ? $dados->telefone : ''}}">
+                                    <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="15" class="form-control" name="telefone" value="{{isset($dados->telefone) ? $dados->telefone : ''}}">
                                 </div>
                                 @if ($errors->has('telefone'))
                                     <span class="help-block">
