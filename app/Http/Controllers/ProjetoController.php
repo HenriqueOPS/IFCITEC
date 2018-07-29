@@ -273,19 +273,20 @@ class ProjetoController extends Controller
 
 
 		//Valida se pode editar o projeto
-		$ids = array();
+		$idPessoasProjeto = array();
 
 		if($orientador)
-			array_push($ids, $orientador[0]);
+			array_push($idPessoasProjeto, $orientador[0]->pessoa_id);
 
 		foreach ($autor as $a => $id)
-			array_push($ids, $id->pessoa_id);
+			array_push($idPessoasProjeto, $id->pessoa_id);
 
 		foreach ($coorientador as $c => $id)
-			array_push($ids, $id->pessoa_id);
+			array_push($idPessoasProjeto, $id->pessoa_id);
 
-
-		if(in_array(Auth::user()->id, $ids) || Auth::user()->temFuncao('Organizador') || Auth::user()->temFuncao('Administrador'))
+		if(in_array(Auth::user()->id, $idPessoasProjeto) ||
+           Auth::user()->temFuncao('Organizador') ||
+           Auth::user()->temFuncao('Administrador'))
 
 			return view('projeto.edit', compact('niveis', 'areas', 'funcoes', 'escolas', 'projetoP', 'nivelP', 'areaP', 'escolaP', 'palavrasP', 'autor', 'orientador', 'coorientador', 'pessoas'));
 
@@ -300,9 +301,7 @@ class ProjetoController extends Controller
 		Projeto::where('id', $id)->update(['titulo' => strtoupper($req->all()['titulo']),
 			'resumo' => $req->all()['resumo'],
 			'area_id' => $req->all()['area_conhecimento'],
-			'nivel_id' => $req->all()['nivel'],
-
-
+			'nivel_id' => $req->all()['nivel']
 		]);
 
 		DB::table('escola_funcao_pessoa_projeto')->where('projeto_id', $id)->update(['escola_id' => $req->all()['escola'],
