@@ -1,18 +1,18 @@
-<!-- Modal Área -->
-<div id="ModalArea" class="modal fade bd-example-modal-lg" role="dialog2" aria-labelledby="ModalArea">
+<!-- Modal Tarefa -->
+<div id="ModalTarefa" class="modal fade bd-example-modal-lg" role="dialog8" aria-labelledby="ModalTarefa">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="areaModal"></h5>
+				<h5 class="modal-title" id="tarefaModal"></h5>
 			</div>
 			<div class="modal-body">
 
 				<div class="input-group">
                 <span class="input-group-addon">
-                    <i class="material-icons">school</i>
+                    <i class="material-icons">exposure_zero</i>
                 </span>
 					<div class="form-group label-floating">
-						<span id="nivelAreaModal"></span>
+						<span id="vagasModal"></span>
 					</div>
 				</div>
 
@@ -21,7 +21,7 @@
                     <i class="material-icons">description</i>
                 </span>
 					<div class="form-group label-floating">
-						<span id="descricaoModal"></span>
+						<span id="descricaoTModal"></span>
 					</div>
 				</div>
 			</div>
@@ -31,50 +31,50 @@
 		</div>
 	</div>
 </div>
-<!-- Fim Modal Área -->
+<!-- Fim Modal Tarefa -->
 
 
 <script type="application/javascript">
-$('.modalArea').click(function(){
+$('.modalTarefa').click(function(){
 
-	//recupera o id da escola
-	var idArea = $(this).attr('id-area');
+	//recupera o id da tarefa
+	var idTarefa = $(this).attr('id-tarefa');
 
 	//monta a url de consulta
-	var urlConsulta = './area/dados-area/'+idArea;
+	var urlConsulta = './tarefa/dados-tarefa/'+idTarefa;
 	//faz a consulta via Ajax
 	$.get(urlConsulta, function (res){
 
 		console.log(res);
 
 		//altera o DOM
-		$("#nivelAreaModal").html(res.data);
-		$("#areaModal").html(res.dados.area_conhecimento);
-		$("#descricaoModal").html(res.dados.descricao);
+		$("#vagasModal").html(res.dados.vagas);
+		$("#tarefaModal").html(res.dados.tarefa);
+		$("#descricaoTModal").html(res.dados.descricao);
 
 		//abre a modal
-		$("#ModalArea").modal();
+		$("#ModalTarefa").modal();
 
 	});
 
 })
 </script>
 
-<!-- Modal Delete Área -->
-<div id="ModalDeleteArea" class="modal fade bd-example-modal-lg" role="dialog3" aria-labelledby="ModalDeleteArea">
+<!-- Modal Delete Tarefa -->
+<div id="ModalDeleteTarefa" class="modal fade bd-example-modal-lg" role="dialog8" aria-labelledby="ModalDeleteTarefa">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Deletar Área</h5>
+				<h5 class="modal-title">Deletar Tarefa</h5>
 			</div>
 
 			<div class="modal-body">
-				<span>Para deletar a área, confirme sua senha.</span>
+				<span>Para deletar a tarefa, confirme sua senha.</span>
 				<div class="input-group">
                     <span class="input-group-addon">
                         <i class="material-icons">lock_outline</i>
                     </span>
-					<input type="password" placeholder="Senha..." class="form-control" id="passwordDeleteArea" name="password" required>
+					<input type="password" placeholder="Senha..." class="form-control" id="passwordDeleteTarefa" name="password" required>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -86,16 +86,16 @@ $('.modalArea').click(function(){
 <!-- Fim Modal -->
 
 <script type="application/javascript">
-	$('.exclusaoArea').click(function(){
-		var idArea= $(this).attr('id-area');
+	$('.exclusaoTarefa').click(function(){
+		var idTarefa= $(this).attr('id-tarefa');
 
-		$("#ModalDeleteArea").modal();
+		$("#ModalDeleteTarefa").modal();
 
 		$('.excluir').click(function(){
-			var urlConsulta = './area/exclui-area/'+idArea+'/'+$('#passwordDeleteArea').val();
+			var urlConsulta = './tarefa/exclui-tarefa/'+idTarefa+'/'+$('#passwordDeleteTarefa').val();
 			$.get(urlConsulta, function (res){
 				if(res == 'true'){
-					bootbox.alert("Área do conhecimento excluída com sucesso");
+					bootbox.alert("Tarefa excluída com sucesso");
 					window.location.reload();
 				}else{
 					bootbox.alert("Senha incorreta");

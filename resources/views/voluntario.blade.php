@@ -27,7 +27,10 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                <form method="POST" >
+                <form method="POST" action="{{route('cadastraVoluntario')}}">
+
+                    {{ csrf_field() }}
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="alert alert-info text-center">
@@ -38,21 +41,44 @@
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true"><i class="material-icons">clear</i></span>
                                     </button>
-                                    <b>ATENÇÃO: </b>A inscrição não quer dizer que você já é um voluntário(a). Você receberá mais informações em breve!
+                                    <b>ATENÇÃO: </b>Você receberá mais informações em breve!
                                 </div>
-                            </div> 
-                            <div class="col-md-10 col-md-offset-1 text-center">
-                            <a href="javascript:void(0);" class="confirma btn btn-success">
-                                <i class="material-icons">directions_walk</i> Inscrever
-                            </a>
-                            <div class="se-pre-con">
-                            <a class="btn btn-simple btn-just-icon">
-                             <img src="{{ asset('img/gif2.gif') }}">
-                             Carregando...
-                             </a>
                             </div>
-                            </div>
+                            <h4>Selecione a tarefa que você gostaria de realizar como voluntário da feira:</h4>
+                                @foreach($tarefas as $tarefa)
+                                    <div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">
+                                         @if($tarefa->pessoas()->count() == $tarefa->vagas)
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio"
+                                                           class="tarefa"
+                                                            name="tarefa"
+                                                            value="{{$tarefa->id}}"
+                                                            disabled>
+                                                    {{$tarefa->tarefa}}
+                                                </label>
+                                            </div>
+                                         @else
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio"
+                                                           class="tarefa"
+                                                            value="{{$tarefa->id}}"
+                                                            name="tarefa"
+                                                            >
+                                                    {{$tarefa->tarefa}}
+                                                </label>
+                                            </div>
+                                         @endif
+                                    </div>
+                                @endforeach  
                         </div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6 col-md-offset-3 text-center">
+                                <button href="javascript:void(0);" class="btn btn-primary">Inscrever</button>
+
+                            </div>
                     </div>
                 </form>
             </div>
@@ -60,59 +86,7 @@
         </div>
     </div>
 </div>
-
-<div id="modal" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="modal">
-    <div class="modal-dialog" role="document1">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Inscrição Voluntário</h5>
-            </div>
-
-            <div class="modal-body">
-                <span>Para confirmar sua inscrição como voluntário, confirme sua senha.</span>
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="material-icons">lock_outline</i>
-                    </span>
-                    <input type="password" placeholder="Senha..." class="form-control" id="password" name="password" required>              
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="confirmado btn btn-primary" data-dismiss="modal">Confirmar</button>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 
-@section('js')
-<script type="application/javascript">
-$('.confirma').click(function(){
-    $("#modal").modal();
-    $('.confirmado').click(function(){
-        $(".se-pre-con").show();
-        var urlConsulta = './voluntario/cadastrar/'+$('#password').val();
-        $.get(urlConsulta, function (res){
-            if(res == 'true'){
-                var consulta = './voluntario/cadastra';
-                $.get(consulta, function (r){
-                console.log(r);
-                });
-                bootbox.alert("Sua inscrição foi enviada com sucesso");
-                $(".se-pre-con").hide();
-            }else{
-                bootbox.alert("Senha incorreta");
-                $(".se-pre-con").hide();
-            }
-
-        });
-    });
-
-});
-</script>
-<script type="text/javascript">
-        $(".se-pre-con").hide();
-</script>
-@endsection
 
 

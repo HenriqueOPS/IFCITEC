@@ -11,6 +11,7 @@ use App\Jobs\MailVoluntarioJob;
 use App\Edicao;
 use App\Pessoa;
 use App\Funcao;
+use App\Tarefa;
 
 class VoluntarioController extends Controller
 {
@@ -33,17 +34,14 @@ class VoluntarioController extends Controller
         if(Pessoa::find(Auth::id())->temFuncao('Voluntário') == true) {
           return view('inscricaoEnviada');
         }else{
-          return view('voluntario');
+            $tarefas = Tarefa::orderBy('tarefa')->get();
+
+            return view('voluntario')->withTarefas($tarefas);
         }
     }
-    public function cadastrarVoluntario($s){
-		if(password_verify($s, Auth::user()['attributes']['senha'])){
-		  return 'true';
-		}
-		return 'false';
-    }
 
-    public function cadastraVoluntario(){
+    public function cadastraVoluntario(Request $req){
+        $data = $req->all();
         DB::table('funcao_pessoa')->insert(
                 ['edicao_id' => Edicao::getEdicaoId(),
                     'funcao_id' => Funcao::where('funcao', 'Voluntário')->first()->id,
@@ -52,9 +50,17 @@ class VoluntarioController extends Controller
                 ]
         );
 
+        DB::table('pessoa_tarefa')->insert(
+                ['edicao_id' => Edicao::getEdicaoId(),
+                    'tarefa_id' => $data['tarefa'],
+                    'pessoa_id' => Auth::id(),
+                ]
+        );
+
         $emailJob = (new MailVoluntarioJob())->delay(\Carbon\Carbon::now()->addSeconds(3));
         dispatch($emailJob);
 
-        return 'true';
+        
+        return view('inscricaoEnviada');
     }
 }

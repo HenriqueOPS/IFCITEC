@@ -22,3 +22,11 @@ $factory->define(App\Pessoa::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Nivel::class, function (Faker $faker) {
+    return [
+        'nivel' => $faker->nivel,
+        'descricao' => $faker->descricao,
+    ];
+});
+
