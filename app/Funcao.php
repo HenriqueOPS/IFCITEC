@@ -25,13 +25,9 @@ class Funcao extends Model {
         'funcao', 'descricao', 'sistema', 'integrante', 'projeto'
     ];
 
-    public function pessoaFuncao(){
-
-	}
-
 
     public function pessoas() {
-        return $this->belongsToMany('App\Pessoa', 'funcao_pessoa');
+        return $this->belongsToMany('App\Pessoa', 'funcao_pessoa', 'funcao_id', 'pessoa_id');
     }
 
     public function getPessoasProjeto() {

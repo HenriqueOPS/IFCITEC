@@ -166,7 +166,7 @@ class Edicao extends Model
     }
 
 	public function niveis() {
-		return $this->belongsToMany('App\Nivel', 'nivel_edicao','nivel_id','edicao_id');
+		return $this->belongsToMany('App\Nivel', 'nivel_edicao','edicao_id','nivel_id');
 	}
 
 	public function pessoas() {
@@ -174,7 +174,7 @@ class Edicao extends Model
     }
 
     public function areas() {
-        return $this->belongsToMany('App\AreaConhecimento', 'area_edicao','area_id','edicao_id');
+        return $this->belongsToMany('App\AreaConhecimento', 'area_edicao','edicao_id','area_id');
     }
 
 }
