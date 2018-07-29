@@ -130,7 +130,7 @@ class AdminController extends Controller
 
 	public function cadastroNivel()
 	{
-		return view('admin.cadastroNivel');
+		return view('admin.nivel.create');
 	}
 
 
@@ -154,7 +154,7 @@ class AdminController extends Controller
 	public function editarNivel($id)
 	{
 		$dados = Nivel::find($id);
-		return view('admin.editarNivel', array('dados' => $dados));
+		return view('admin.nivel.edit', array('dados' => $dados));
 
 	}
 
@@ -200,12 +200,11 @@ class AdminController extends Controller
 	{
 		$niveis = DB::table('nivel')->select('id', 'nivel')->get();
 
-		return view('admin.cadastroArea', array('niveis' => $niveis));
+		return view('admin.area.create', array('niveis' => $niveis));
 	}
 
 	public function cadastraArea(AreaRequest $req)
 	{
-
 		$data = $req->all();
 
 		AreaConhecimento::create([
@@ -223,14 +222,13 @@ class AdminController extends Controller
 		$niveis = DB::table('nivel')->select('id', 'nivel')->get();
 		$dados = AreaConhecimento::find($id);
 
-		return view('admin.editarArea', array('niveis' => $niveis), compact('dados', 'n'));
+		return view('admin.area.edit', array('niveis' => $niveis), compact('dados', 'n'));
 	}
 
 	public function editaArea(AreaRequest $req)
 	{
 
 		$data = $req->all();
-
 		$id = $data['id_area'];
 
 		AreaConhecimento::where('id', $id)
@@ -272,7 +270,7 @@ class AdminController extends Controller
 		if ($dados['endereco_id'])
 			$data = Endereco::find($dados['endereco_id']);
 
-		return view('admin.editarEscola', compact('dados', 'data'));
+		return view('admin.escola.edit', compact('dados', 'data'));
 
 	}
 
@@ -323,7 +321,7 @@ class AdminController extends Controller
 
 	public function cadastroEscola()
 	{
-		return view('admin.cadastroEscola');
+		return view('admin.escola.create');
 	}
 
 	public function cadastraEscola(Request $req)
@@ -381,7 +379,7 @@ class AdminController extends Controller
 		$usuario = Pessoa::find($id);
 		$funcoes = Funcao::all();
 
-		return view('admin.editarFuncaoUsuario')
+		return view('admin.usuario.editarFuncao')
 			->withUsuario($usuario)
 			->withFuncoes($funcoes);
 	}
@@ -418,8 +416,7 @@ class AdminController extends Controller
 					}
 				}
 			}
-		}
-		else {
+		} else {
 			foreach ($data['funcao'] as $funcao) {
 				DB::table('funcao_pessoa')->insert([
 					'funcao_id' => $funcao,
@@ -432,7 +429,7 @@ class AdminController extends Controller
 
 		$usuario = Pessoa::find($id);
 		$funcoes = Funcao::all();
-		return view('admin.editarFuncaoUsuario')
+		return view('admin.usuario.editarFuncao')
 			->withUsuario($usuario)
 			->withFuncoes($funcoes);
 	}

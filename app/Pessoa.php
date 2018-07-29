@@ -211,7 +211,10 @@ class Pessoa extends Authenticatable {
         return $query
             ->join('funcao_pessoa','funcao_pessoa.pessoa_id','=','public.pessoa.id')
             ->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
-            ->where('funcao.funcao','=',$funcao);
+            //busca pela Função
+            ->where('funcao.funcao','=',$funcao)
+            //busca pela Edição
+            ->where('funcao_pessoa.edicao_id','=',Edicao::getEdicaoId());
     }
 
     public function getTotalRevisoes(){

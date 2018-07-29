@@ -640,4 +640,147 @@ class ProjetoController extends Controller
 	//   public function integrantes(){
 	//     return view('projeto.integrantes');
 	// }
+
+
+
+    public function showFormVinculaHomologador($id){
+        $projeto = Projeto::find($id);
+        if (!($projeto instanceof Projeto)) {
+            abort(404);
+        }
+
+        $numProjetos = DB::raw('SELECT count(*) 
+                                FROM revisao 
+                                WHERE pessoa_id = pessoa.id');
+
+        $revisores = DB::table('areas_comissao')
+                            ->select('pessoa.id', 'pessoa.nome',
+                                     'pessoa.instituicao', 'pessoa.titulacao',
+                                     DB::raw('('.$numProjetos.') as num_projetos'))
+                            //busca pelo registro na comissao avaliadora
+                            ->join('comissao_edicao', function ($join){
+                                $join->on('comissao_edicao.id', '=', 'areas_comissao.comissao_edicao_id');
+                                $join->where('comissao_edicao.edicao_id', '=', Edicao::getEdicaoId());
+                            })
+                            //busca pela pessoa
+                            ->join('pessoa', 'pessoa.id', '=', 'comissao_edicao.pessoa_id')
+                            //busca pela função homologador (id => 4) HARD CODED e foda-se
+                            ->join('funcao_pessoa', function($join) {
+                                $join->on('pessoa.id', '=', 'funcao_pessoa.pessoa_id');
+                                $join->where('funcao_pessoa.edicao_id', '=', Edicao::getEdicaoId());
+                                $join->where('funcao_pessoa.funcao_id', '=', 4);
+                            })
+                            ->where('area_id','=',$projeto->area_id)
+                            ->orderBy('pessoa.titulacao')
+                            ->get();
+
+        $revisoresProjeto = DB::table('revisao')->where('projeto_id', '=', $id)->get();
+
+        $revisoresValue = "";
+        $idRevisores = array();
+        foreach ($revisoresProjeto as $revisor) {
+            $revisoresValue .= ',' . $revisor->pessoa_id;
+            array_push($idRevisores, $revisor->pessoa_id);
+        }
+        $revisoresValue = ltrim($revisoresValue, ',');
+
+        return view('comissao.homologador.vincula',[
+            "revisoresValue" => $revisoresValue,
+            "idRevisores" => $idRevisores,
+            "revisores" => $revisores,
+            "projeto" => $projeto
+        ]);
+    }
+
+    public function vinculaHomologador(Request $request){
+        DB::table('revisao')->where('projeto_id', '=', $request->projeto_id)->delete();
+        $revisores = explode(',',$request->revisores_id);
+        if($revisores[0] != '') {
+            foreach ($revisores as $revisor) {
+                $revisao = new Revisao();
+                $revisao->projeto_id = $request->projeto_id;
+                $revisao->pessoa_id = $revisor;
+                $revisao->situacao_id = 4;
+                $revisao->save();
+            }
+        }
+
+        return redirect('home');
+    }
+
+
+    public function showFormVinculaAvaliador($id)
+    {
+        $projeto = Projeto::find($id);
+        if (!($projeto instanceof Projeto)) {
+            abort(404);
+        }
+
+        $numProjetos = DB::raw('SELECT count(*) 
+                                FROM revisao 
+                                WHERE pessoa_id = pessoa.id');
+
+        $avaliadores = DB::table('areas_comissao')
+                        ->select('pessoa.id', 'pessoa.nome',
+                            'pessoa.instituicao', 'pessoa.titulacao',
+                            DB::raw('('.$numProjetos.') as num_projetos'))
+                        //busca pelo registro na comissao avaliadora
+                        ->join('comissao_edicao', function ($join){
+                            $join->on('comissao_edicao.id', '=', 'areas_comissao.comissao_edicao_id');
+                            $join->where('comissao_edicao.edicao_id', '=', Edicao::getEdicaoId());
+                        })
+                        //busca pela pessoa
+                        ->join('pessoa', 'pessoa.id', '=', 'comissao_edicao.pessoa_id')
+                        //busca pela função avaliador (id => 3) HARD CODED e foda-se
+                        ->join('funcao_pessoa', function($join) {
+                            $join->on('pessoa.id', '=', 'funcao_pessoa.pessoa_id');
+                            $join->where('funcao_pessoa.edicao_id', '=', Edicao::getEdicaoId());
+                            $join->where('funcao_pessoa.funcao_id', '=', 3);
+                        })
+                        ->where('area_id','=',$projeto->area_id)
+                        ->orderBy('pessoa.titulacao')
+                        ->get();
+
+
+
+
+        $avaliadoresDoProjeto = DB::table('avaliacao')->select('pessoa_id')->where('projeto_id', '=', $id)->get();
+
+        $avaliadoresValue = "";
+        $idAvaliadores = array();
+        foreach ($avaliadoresDoProjeto as $avaliador) {
+            $avaliadoresValue .= ',' . $avaliador->pessoa_id;
+            array_push($idAvaliadores, $avaliador->pessoa_id);
+        }
+        $avaliadoresValue = ltrim($avaliadoresValue, ',');
+
+        return view('comissao.avaliador.vincula')
+            ->with(["avaliadores" => $avaliadores,
+                "avaliadoresValue" => $avaliadoresValue,
+                "idAvaliadores" => $idAvaliadores,
+                "projeto" => $projeto,
+            ]);
+    }
+
+    public function vinculaAvaliador(Request $request)
+    {
+        DB::table('avaliacao')->where('projeto_id', '=', $request->projeto_id)->delete();
+        $avaliadores = explode(',', $request->avaliadores_id);
+        if ($avaliadores[0] != '') {
+            foreach ($avaliadores as $avaliador) {
+                $avaliacao = new Avaliacao();
+                $avaliacao->pessoa_id = $avaliador;
+                $avaliacao->projeto_id = $request->projeto_id;
+                $avaliacao->nota_final = 0;
+                $avaliacao->observacao = '';
+                $avaliacao->save();
+            }
+        }
+
+        return redirect('home');
+    }
+
+
+
+
 }

@@ -120,7 +120,7 @@
 									</a>
 									<ul class="dropdown-menu">
 										<li>
-											<a href="{{ route('editarCadastro', Auth::id()) }}">
+											<a href="{{ route('editarCadastro') }}">
 												Editar Cadastro
 											</a>
 										</li>
