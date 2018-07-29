@@ -7,7 +7,7 @@
             <div class="main main-raised">
                 <div class="row">
                     <div class="col-md-7 col-md-offset-1">
-                        <h2>Vinculação de Revisor</h2>
+                        <h2>Vinculação de Homologador</h2>
                     </div>
                 </div>
                 <div class="row">
@@ -15,6 +15,7 @@
                         <div class="col-md-3 col-md-offset-1">
                            <div id="list" class="drop-area" style="max-height: 60vh;overflow: auto;">
                                @foreach($revisores as $revisor)
+                                   @if(!in_array($revisor->id, $idRevisores))
                                    <div class="card no-select" data-id="{{$revisor->id}}">
                                        <div class="content">
                                            <span class="font-weight-bold">
@@ -28,43 +29,48 @@
                                                </div>
                                                <div>
                                                    <b><i class="material-icons small">settings</i></b>
-                                                   {{$revisor->tot_revisoes}} projetos
+                                                   {{$revisor->num_projetos}} projetos
                                                </div>
                                            </div>
                                        </div>
                                    </div>
+                                   @endif
                                @endforeach
 
                            </div>
                         </div>
                         <div class="col-md-4">
-                            <center><span>Arraste o Revisor para este local</span></center>
+                            <center><span>Arraste o Homologador para este local</span></center>
                             <div id="selected" class="drop-area">
                                 @if($projeto->revisoes->isNotEmpty())
-                                    <div class="card no-select" data-id="{{$projeto->revisoes[0]->pessoa->id}}">
+
+                                    @foreach($projeto->revisoes as $revisor)
+                                    <div class="card no-select" data-id="{{$revisor->pessoa->id}}">
                                         <div class="content">
                                            <span class="font-weight-bold">
                                                <b><i class="material-icons">person</i></b>
-                                               <b>{{$projeto->revisoes[0]->pessoa->nome}}</b>
+                                               <b>{{$revisor->pessoa->nome}}</b>
                                            </span>
                                             <div>
                                                 <div>
                                                     <b><i class="material-icons small">book</i></b>
-                                                    {{$projeto->revisoes[0]->pessoa->titulacao}}
+                                                    {{$revisor->pessoa->titulacao}}
                                                 </div>
                                                 <div>
                                                     <b><i class="material-icons small">settings</i></b>
-                                                    {{$projeto->revisoes[0]->pessoa->getTotalRevisoes()}} projetos
+                                                    {{$revisor->pessoa->getTotalRevisoes()}} projetos
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    @endforeach
+
                                 @endif
 
                             </div>
                             <form method="POST" class="text-center" action="{{route('vinculaRevisorPost')}}">
                                 {{ csrf_field() }}
-                                <input type="hidden" id="revisorID" name="revisor_id" value="">
+                                <input type="hidden" id="revisorID" name="revisores_id" value="{{$revisoresValue}}">
                                 <input type="hidden" id="projetoID" name="projeto_id" value="{{$projeto->id}}">
                                 <input type="submit" class="btn btn-success" value="SALVAR">
                             </form>
@@ -101,19 +107,17 @@
     <script type="text/javascript">
         // Pre initialized by Backend
                 @if($projeto->revisoes->isNotEmpty())
-        var selectedCount = 1;
+        var selectedCount = {{count($projeto->revisoes)}};
                 @else
         var selectedCount = 0;
                 @endif
 
-        var maxSelectedCards = 1;
+        var maxSelectedCards = 2;
 
         var cardsList = document.querySelector('#list');
         var selectedCardsList = document.querySelector('#selected');
 
-        var formHomologadorID = document.querySelector('#revisorID');
-        formHomologadorID.value = '';
-
+        var formHomologadorID = document.querySelector('#revisorID')
 
         var drag = dragula([cardsList, selectedCardsList], {
             accepts: function (el, target) {

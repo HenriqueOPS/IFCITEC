@@ -27,29 +27,8 @@ class HomeController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        /*if(Auth::user()->temFuncao('Organizador')){
-            $projetos = $this->groupProjetosPorSituacao(Projeto::all());
-            return view('organizacao.home')->withSituacoes($projetos);
-        }else if((Auth::user()->temFuncao('Avaliador') || Auth::user()->temFuncao('Revisor'))) {
-            $query = DB::table('projeto')->select('projeto.*')
-                ->join('avaliacao', 'avaliacao.projeto_id', '=', 'projeto.id')
-                ->where('pessoa_id','=', Auth::user()->id);
-
-            $eloquent = new Builder($query);
-            $eloquent->setModel(new Projeto);
-            $projetos = $eloquent->get();
-            return view('home')->withFuncoes(collect(["Avaliação" => $projetos]));
-        }else{
-            $projetos = (Auth::user()->projetos);
-            $funcoes = $this->groupProjetosPorFuncao($projetos);
-            return view('home')->withFuncoes($funcoes);
-        }
-        */
-
         return view('home');
-
     }
-
 
     public function homeAvaliador(){
         $query = DB::table('projeto')->select('projeto.*')
@@ -60,8 +39,7 @@ class HomeController extends Controller {
         $eloquent->setModel(new Projeto);
         $projetos = $eloquent->get();
 
-        return view('avaliador')->withFuncoes(collect(["Avaliação" => $projetos]));
-        //return view('avaliador');
+        return view('comissao.avaliador.home')->withFuncoes(collect(["Avaliação" => $projetos]));
     }
 
      public function homeRevisor(){
@@ -72,7 +50,7 @@ class HomeController extends Controller {
         $eloquent = new Builder($query);
         $eloquent->setModel(new Projeto);
         $projetos = $eloquent->get();
-        return view('revisor')->withFuncoes(collect(["Revisão" => $projetos]));
+        return view('comissao.homologador.home')->withFuncoes(collect(["Revisão" => $projetos]));
 
     }
 

@@ -251,7 +251,7 @@
                             <td>{{$usuario->nome}}</td>
                             <td>{{$usuario->email}}</td>
                             <td class="text-right">
-                            <a href="{{route('editarCadastro',$usuario->id)}}"><i class="material-icons">remove_red_eye</i></a>
+                            <a href="{{route('editarUsuario',$usuario->id)}}"><i class="material-icons">remove_red_eye</i></a>
                     
                             <a href="{{route('editarFuncaoUsuario',$usuario->id)}}"><i class="material-icons">edit</i></a>
                             <!--
@@ -305,13 +305,13 @@
 						<ul class="tab-comissao nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
 							<li class="active">
 								<a id="avaliador" role="tab" data-toggle="tab">
-									<i class="material-icons">dashboard</i>
+									<i class="material-icons">assignment_ind</i>
 									Avaliadores
 								</a>
 							</li>
 							<li>
 								<a id="homologador" role="tab" data-toggle="tab">
-									<i class="material-icons">schedule</i>
+									<i class="material-icons">description</i>
 									Homologadores
 								</a>
 							</li>
