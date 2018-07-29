@@ -19,12 +19,13 @@ class Tarefa extends Model {
      * @var array
      */
     protected $fillable = [
-        'tarefa', 'descricao',
+        'tarefa', 'descricao', 'vagas'
     ];
     
     public function pessoas() {
-        return $this->belongsToMany('App\Pessoa');
+        return $this->belongsToMany('App\Pessoa', 'pessoa_tarefa','tarefa_id','pessoa_id');
     }
     
+
 
 }

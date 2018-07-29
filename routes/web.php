@@ -70,7 +70,18 @@ Route::get('/debug', function (){
 Route::get('/editar-cadastro/{id}', 'PessoaController@editarCadastro')->name('editarCadastro');
 Route::post('/editar-cadastro/{id}', 'PessoaController@editaCadastro')->name('editaCadastro');
 
-
+//Relatórios
+//Route::get('/relatorio', 'ReportController@index')->name('relatorio');
+Route::get('/relatorio/niveis', 'RelatorioController@niveis')->name('relatorioNivel');
+Route::get('/relatorio/niveis/projetos/{id}', 'RelatorioController@nivelProjetos')->name('nivelProjetos');
+Route::get('/relatorio/escolas', 'RelatorioController@escolas')->name('relatorioEscola');
+Route::get('/relatorio/escolas/projetos/{id}', 'RelatorioController@escolaProjetos')->name('escolaProjetos');
+Route::get('/relatorio/areas', 'RelatorioController@areas')->name('relatorioArea');
+Route::get('/relatorio/areas/projetos/{id}', 'RelatorioController@areaProjetos')->name('areaProjetos');
+Route::get('/relatorio/edicoes', 'RelatorioController@edicoes')->name('relatorioEdicao');
+Route::get('/relatorio/funcoes/usuarios', 'RelatorioController@funcoesUsuarios')->name('relatorioFuncoesUsuarios');
+Route::get('/relatorio/voluntario/tarefa', 'RelatorioController@voluntarioTarefa')->name('relatorioVoluntarioTarefa');
+Route::get('/relatorio/tarefa/voluntarios/{id}', 'RelatorioController@tarefaVoluntarios')->name('tarefaVoluntarios');
 
 
 
@@ -124,6 +135,15 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/edicao/dados-edicao/{id}', 'EdicaoController@dadosEdicao'); //Ajax
 	Route::get('/edicao/exclui-edicao/{id}/{s}', 'EdicaoController@excluiEdicao'); //Ajax
 
+	//Tarefa
+	Route::get('/tarefa/cadastrar', 'AdminController@cadastroTarefa')->name('cadastroTarefa');
+	Route::post('/tarefa/cadastrar', 'AdminController@cadastraTarefa')->name('cadastraTarefa');
+	Route::get('/tarefa/editar/{id}', 'AdminController@editarTarefa')->name('tarefa');
+	Route::post('/tarefa/edita-tarefa', 'AdminController@editaTarefa')->name('editaTarefa');
+
+	Route::get('/tarefa/dados-tarefa/{id}', 'AdminController@dadosTarefa'); //Ajax
+	Route::get('/tarefa/exclui-tarefa/{id}/{s}', 'AdminController@excluiTarefa'); //Ajax
+
 	//Usuários
 	Route::get('/usuario/exclui-usuario/{id}/{s}', 'AdminController@excluiUsuario'); //
 
@@ -162,7 +182,7 @@ Route::get('/comissao/avaliadora', 'ComissaoAvaliadoraController@home')->name('c
 //Voluntario
 Route::get('/voluntario', 'VoluntarioController@index')->name('voluntario');
 Route::get('/voluntario/cadastrar/{s}', 'VoluntarioController@cadastrarVoluntario')->name('cadastrarVoluntario'); //Ajax
-Route::get('/voluntario/cadastra', 'VoluntarioController@cadastraVoluntario')->name('cadastraVoluntario');
+Route::post('/voluntario/cadastra', 'VoluntarioController@cadastraVoluntario')->name('cadastraVoluntario');
 
 Route::get('/administrador/usuarios', 'AdminController@administrarUsuarios')->name('administrarUsuarios');
 Route::get('/periodo', 'PeriodosController@periodoInscricao');
@@ -188,7 +208,7 @@ Route::prefix('projeto/editar')->group(function () {
 Route::get('/projeto/editar/{id}', 'ProjetoController@editarProjeto')->name('editarProjeto');
 Route::post('/projeto/edita-projeto', 'ProjetoController@editaProjeto')->name('editaProjeto');
 
-Route::get('/relatorio/{id}','ProjetoController@relatorio')->name('relatorio');
+//Route::get('/relatorio/{id}','ProjetoController@relatorio')->name('relatorio');
 
 Route::get('/projeto/{id}/vinculaRevisor/', 'ProjetoController@showFormVinculaRevisor')->name('vinculaRevisor');
 Route::post('/projeto/vinculaRevisor/', 'ProjetoController@vinculaRevisor')->name('vinculaRevisorPost');
