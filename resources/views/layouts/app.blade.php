@@ -38,7 +38,7 @@
 		gtag('config', '{{env('GOOGLE_ANALYTICS_ID')}}');
 
 		@if (Auth::user())
-		gtag('set', {'user_id': '{{ Auth::user()->id }}'}); // Defina o ID de usuário usando o user_id conectado.
+		gtag('set', {'user_id': '{{ Auth::user()->id }} - {{ Auth::user()->nome }}'}); // Defina o ID de usuário usando o user_id conectado.
 		@endif
 		</script>
 
