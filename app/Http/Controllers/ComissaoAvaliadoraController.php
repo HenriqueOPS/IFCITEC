@@ -184,12 +184,45 @@ class ComissaoAvaliadoraController extends Controller
 			->get()
 			->toArray();
 
-		$niveis = DB::table('nivel')->join('nivel_edicao', 'nivel.id', '=', 'nivel_edicao.nivel_id')
+		$nivel = DB::table('nivel')->join('nivel_edicao', 'nivel.id', '=', 'nivel_edicao.nivel_id')
 			->select('nivel.nivel', 'nivel.id','nivel_edicao.edicao_id')
 			->where('nivel_edicao.edicao_id', Edicao::getEdicaoId())
 			->orderBy('nivel.id', 'asc')
 			->get()
 			->toArray();
+
+        $projetosNiveis = DB::table('nivel')->join('projeto', 'nivel.id', '=', 'projeto.nivel_id')
+            ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+            ->select('nivel.nivel', 'nivel.id')
+            ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
+            ->where('pessoa_id', $comissaoEdicao->pessoa_id)
+            ->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id)
+            ->orWhere('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id)
+            ->orderBy('nivel.id', 'asc')
+            ->get()
+            ->keyBy('id')
+            ->toArray();
+
+        $projetosNiveis = array_keys($projetosNiveis);
+
+        $niveis = array();
+
+        foreach ($nivel as $n) {
+            if (!in_array($n->id, $projetosNiveis)) {
+                if(!isset($niveis)){
+                    $niveis[] = $n;
+                }else{
+                    $array = array_pluck($niveis, 'id');
+                    if(!in_array($n->id, $array)){
+                        $niveis[] = $n;
+                    }
+                }
+            }
+        }
+
+        if ($projetosNiveis == null) {
+            $niveis = $nivel;
+        }
 
 		return view('comissao.homologar', compact('id', 'pessoa', 'idsAreas', 'areas', 'niveis'));
 
