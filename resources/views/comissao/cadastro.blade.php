@@ -178,7 +178,7 @@
                                 <span class="input-group-addon">
                                     <i class="material-icons">near_me</i>
                                 </span>
-									<div class="form-group label-floating">
+									<div class="form-group">
 										<label class="control-label">Bairro</label>
 										<input type="text" class="form-control" name="bairro" id="bairro" required>
 									</div>

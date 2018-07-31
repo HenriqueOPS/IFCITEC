@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Nivel;
+use App\Pessoa;
 use App\Projeto;
 class ProjetoRequest extends FormRequest {
 
@@ -95,6 +96,18 @@ class ProjetoRequest extends FormRequest {
 			$autor = $validator->getData()['autor'];
 			$orientador = $validator->getData()['orientador'];
 			$coorientador = $validator->getData()['coorientador'];
+
+            foreach ($coorientador as $c) {
+                if($c != null){
+                if(Pessoa::find($c)->comissaoNivel($validator->getData()['nivel'], $c) == false){
+                    $validator->errors()->add('coorientador[]', 'Não é possível adicionar esse coorientador');
+                }
+                }
+            }
+
+            if(Pessoa::find($orientador)->comissaoNivel($validator->getData()['nivel'], $orientador) == false){
+                    $validator->errors()->add('orientador', 'Não é possível adicionar esse orientador');
+            }
 
 			foreach ($autor as $a) {
 				foreach ($coorientador as $c) {

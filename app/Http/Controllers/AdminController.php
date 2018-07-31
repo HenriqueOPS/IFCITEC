@@ -16,6 +16,7 @@ use App\Escola;
 use App\Endereco;
 use App\Nivel;
 use App\Pessoa;
+use App\Tarefa;
 use App\AreaConhecimento;
 
 class AdminController extends Controller
@@ -35,30 +36,31 @@ class AdminController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
-	{
+	public function index() {
 
 		$edicoes = Edicao::all(['id', 'ano',
 			'inscricao_abertura', 'inscricao_fechamento',
 			'homologacao_abertura', 'homologacao_fechamento',
 			'avaliacao_abertura', 'avaliacao_fechamento'])->sortByDesc('ano');
 
-		$niveis = Nivel::all(['id', 'nivel', 'descricao']);
+		$niveis = Nivel::orderBy('nivel')->get();
 
 		$areas = AreaConhecimento::all(['id', 'area_conhecimento', 'descricao', 'nivel_id']);
+		
+		$tarefas = DB::table('tarefa')->orderBy('tarefa')->get()->toArray();
 
-		$escolas = Escola::all(['id', 'nome_completo', 'nome_curto', 'email', 'telefone']);
+		$escolas = Escola::orderBy('nome_curto')->get();
 
-		$usuarios = Pessoa::all(['id', 'nome', 'email']);
+		$usuarios = Pessoa::orderBy('nome')->get();
 
 		$projetos = DB::table('projeto')
 			->select('titulo', 'id')
-			->orderBy('created_at', 'asc')
+			->orderBy('titulo')
 			->where('edicao_id', Edicao::getEdicaoId())
 			->get()
 			->keyBy('id')
 			->toArray();
-
+		$numeroProjetos = count($projetos);
 		$autores = array();
 		$orientadores = array();
 		$coorientadores = array();
@@ -112,13 +114,14 @@ class AdminController extends Controller
 		return view('admin.home', collect(['edicoes' => $edicoes,
 			'escolas' => $escolas,
 			'niveis' => $niveis,
-			'areas' => $areas,
+			'tarefas' => $tarefas,
 			'projetos' => $projetos,
 			'autores' => $autores,
 			'orientadores' => $orientadores,
 			'coorientadores' => $coorientadores,
-			'comissao' => $comissao
-		]))->withUsuarios($usuarios);
+			'comissao' => $comissao,
+			'numeroProjetos' => $numeroProjetos
+		]))->withUsuarios($usuarios)->withAreas($areas);
 
 	}
 
@@ -130,7 +133,7 @@ class AdminController extends Controller
 
 	public function cadastroNivel()
 	{
-		return view('admin.cadastroNivel');
+		return view('admin.nivel.create');
 	}
 
 
@@ -154,7 +157,7 @@ class AdminController extends Controller
 	public function editarNivel($id)
 	{
 		$dados = Nivel::find($id);
-		return view('admin.editarNivel', array('dados' => $dados));
+		return view('admin.nivel.edit', array('dados' => $dados));
 
 	}
 
@@ -191,7 +194,7 @@ class AdminController extends Controller
 	{ //Ajax
 
 		$dados = AreaConhecimento::find($id);
-		$data = Nivel::find($dados->nivel_id);
+		$data = Nivel::find($dados->nivel_id)->nivel;
 
 		return compact('dados', 'data');
 	}
@@ -200,12 +203,11 @@ class AdminController extends Controller
 	{
 		$niveis = DB::table('nivel')->select('id', 'nivel')->get();
 
-		return view('admin.cadastroArea', array('niveis' => $niveis));
+		return view('admin.area.create', array('niveis' => $niveis));
 	}
 
 	public function cadastraArea(AreaRequest $req)
 	{
-
 		$data = $req->all();
 
 		AreaConhecimento::create([
@@ -223,14 +225,13 @@ class AdminController extends Controller
 		$niveis = DB::table('nivel')->select('id', 'nivel')->get();
 		$dados = AreaConhecimento::find($id);
 
-		return view('admin.editarArea', array('niveis' => $niveis), compact('dados', 'n'));
+		return view('admin.area.edit', array('niveis' => $niveis), compact('dados', 'n'));
 	}
 
 	public function editaArea(AreaRequest $req)
 	{
 
 		$data = $req->all();
-
 		$id = $data['id_area'];
 
 		AreaConhecimento::where('id', $id)
@@ -272,7 +273,7 @@ class AdminController extends Controller
 		if ($dados['endereco_id'])
 			$data = Endereco::find($dados['endereco_id']);
 
-		return view('admin.editarEscola', compact('dados', 'data'));
+		return view('admin.escola.edit', compact('dados', 'data'));
 
 	}
 
@@ -323,7 +324,7 @@ class AdminController extends Controller
 
 	public function cadastroEscola()
 	{
-		return view('admin.cadastroEscola');
+		return view('admin.escola.create');
 	}
 
 	public function cadastraEscola(Request $req)
@@ -366,12 +367,85 @@ class AdminController extends Controller
 
 	}
 
+	public function cadastroTarefa()
+	{
+		return view('admin.cadastroTarefa');
+	}
+
+	public function cadastraTarefa(Request $req)
+	{
+		$data = $req->all();
+
+		Tarefa::create([
+			'tarefa' => $data['tarefa'],
+			'descricao' => $data['descricao'],
+			'vagas' => $data['vagas']
+		]);
+
+		return redirect()->route('administrador');
+
+	}
+
+	public function editarTarefa($id)
+	{
+		$dados = Tarefa::find($id);
+		return view('admin.editarTarefa', array('dados' => $dados));
+
+	}
+
+	public function editaTarefa(Request $req)
+	{
+
+		$data = $req->all();
+		$id = $data['id_tarefa'];
+
+		Tarefa::where('id', $id)
+			->update(['tarefa' => $data['tarefa'],
+				'descricao' => $data['descricao'],
+				'vagas' => $data['vagas'],
+			]);
+
+		return redirect()->route('administrador');
+	}
+
+	public function dadosTarefa($id)
+	{ //Ajax
+		$dados = Tarefa::find($id);
+
+		return compact('dados');
+	}
+
+	public function excluiTarefa($id, $s)
+	{
+
+		if (password_verify($s, Auth::user()['attributes']['senha'])) {
+			Tarefa::find($id)->delete();
+
+
+			return 'true';
+		} else {
+			return 'password-problem';
+		}
+
+
+	}
+
+	public function excluiUsuario($id, $s)
+	{
+		if (password_verify($s, Auth::user()['attributes']['senha'])) {
+			Pessoa::find($id)->delete();
+			return 'true';
+		}
+
+		return 'false';
+	}
+
 	public function editarFuncaoUsuario($id)
 	{
 		$usuario = Pessoa::find($id);
 		$funcoes = Funcao::all();
 
-		return view('admin.editarFuncaoUsuario')
+		return view('admin.usuario.editarFuncao')
 			->withUsuario($usuario)
 			->withFuncoes($funcoes);
 	}
@@ -394,6 +468,9 @@ class AdminController extends Controller
 						DB::table('funcao_pessoa')->where('funcao_id', $funcao->funcao_id)->where('pessoa_id', $id)->delete();
 					}
 				}
+				if($funcao->funcao_id == Funcao::select(['id'])->where('funcao', 'Voluntário')->first()->id){
+					DB::table('pessoa_tarefa')->where('edicao_id', Edicao::getEdicaoId())->where('pessoa_id', $id)->delete();
+				}
 			}
 
 			if (isset($data['funcao'])) {
@@ -408,8 +485,7 @@ class AdminController extends Controller
 					}
 				}
 			}
-		}
-		else {
+		} else {
 			foreach ($data['funcao'] as $funcao) {
 				DB::table('funcao_pessoa')->insert([
 					'funcao_id' => $funcao,
@@ -422,16 +498,9 @@ class AdminController extends Controller
 
 		$usuario = Pessoa::find($id);
 		$funcoes = Funcao::all();
-		return view('admin.editarFuncaoUsuario')
+		return view('admin.usuario.editarFuncao')
 			->withUsuario($usuario)
 			->withFuncoes($funcoes);
-	}
-
-	public function pesquisa(Request $req){
-		$data = $req->all();
-		//Teste
-		$usuarios = Pessoa::where('nome','Rafaella')->get();
-        return response()->json($usuarios);
 	}
 
 }

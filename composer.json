@@ -8,10 +8,12 @@
         "php": ">=5.6.4",
         "barryvdh/laravel-dompdf": "^0.8.0",
         "brotzka/laravel-dotenv-editor": " 2.*",
+        "cossou/jasperphp": "^2.7",
         "guzzlehttp/guzzle": "^6.2",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "laravellegends/pt-br-validator": "5.1.*",
+        "lavela/phpjasper": "^3.0",
         "nesbot/carbon": "^1.31",
         "werneckbh/laravel-qr-code": "^0.1.3"
     },
