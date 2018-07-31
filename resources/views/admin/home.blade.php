@@ -40,22 +40,34 @@
                 </li>
                 <li>
                     <a href="dashboard" id="4" class="tab" role="tab" data-toggle="tab">
+                        <i class="material-icons">title</i>
+                        Tarefas (Voluntários)
+                    </a>
+                </li>
+                <li>
+                    <a href="dashboard" id="5" class="tab" role="tab" data-toggle="tab">
                         <i class="material-icons">person</i>
                         Usuários
                     </a>
                 </li>
                 <li>
-                    <a href="dashboard" id="5" class="tab" role="tab" data-toggle="tab">
+                    <a href="dashboard" id="6" class="tab" role="tab" data-toggle="tab">
                         <i class="material-icons">list_alt</i>
                         Listar Projetos
                     </a>
                 </li>
 				<li>
-					<a href="dashboard" id="6" class="tab" role="tab" data-toggle="tab">
+					<a href="dashboard" id="7" class="tab" role="tab" data-toggle="tab">
 						<i class="material-icons">list_alt</i>
 						Comissão Avaliadora
 					</a>
 				</li>
+                <li>
+                    <a href="dashboard" id="8" class="tab" role="tab" data-toggle="tab">
+                        <i class="material-icons">description</i>
+                        Relatórios
+                    </a>
+                </li>
 
             </ul>
         </div>
@@ -137,6 +149,7 @@
                             <td>{{ $escola['telefone'] }}</td>
 
                             <td class="td-actions text-right">
+                                <a href="{{ route('escolaProjetos', $escola['id']) }}"><i class="material-icons">description</i></a>
                                 <a href="javascript:void(0);" class="modalEscola"  data-toggle="modal" data-target="#modal0" id-escola="{{ $escola['id'] }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
                                 <a href="{{ route('escola', $escola['id']) }}"><i class="material-icons">edit</i></a>
                                 <a href="javascript:void(0);" class="exclusao" id-escola="{{ $escola['id'] }}"><i class="material-icons blue-icon">delete</i></a>
@@ -173,6 +186,7 @@
                             <td>{{ $nivel['descricao'] }}</td>
 
                             <td class="td-actions text-right">
+                                <a href="{{ route('nivelProjetos', $nivel['id']) }}"><i class="material-icons">description</i></a>
 
                                 <a href="javascript:void(0);" class="modalNivel" data-toggle="modal" data-target="#modal1" id-nivel="{{ $nivel['id'] }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
 
@@ -203,17 +217,15 @@
                     </thead>
 
                     <tbody id="3">
-
-                    @foreach($niveis as $nivel)
-                    @foreach($areas as $i => $area)
-                    @if($area['nivel_id'] == $nivel['id'])
+                    @foreach($areas as $id=>$area)
                         <tr>
-                            <td class="text-center">{{ $i+1 }}</td>
+                            <td class="text-center">{{ $id+1 }}</td>
                             <td>{{ $area['area_conhecimento'] }}</td>
 
-                            <td>{{ $nivel['nivel'] }}</td>
+                            <td>{{ $area->niveis()->first()->nivel }}</td>
 
                             <td class="td-actions text-right">
+                                <a href="{{ route('areaProjetos', $area['id']) }}"><i class="material-icons">description</i></a>
 
                                 <a href="javascript:void(0);" class="modalArea" data-toggle="modal" data-target="#modal2" id-area="{{ $area['id'] }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
 
@@ -222,26 +234,50 @@
                                 <a href="javascript:void(0);" class="exclusaoArea" id-area="{{ $area['id'] }}"><i class="material-icons blue-icon">delete</i></a>
                             </td>
                         </tr>
-                    @endif
-                    @endforeach
                     @endforeach
 
                     </tbody>
 
                     <thead id="4">
                     <div id="4">
-                        <!--
-                        <div class="col-md-4">
-                            <input id="search" name="search" placeholder="Pesquisar... (Digite um nome)" type="text" class="form-control">
+                        <div class="col-md-3">
+                            <a href="{{ route('cadastroTarefa') }}" class="btn btn-primary btn-round">
+                                <i class="material-icons">add</i> Adicionar Tarefa
+                            </a>
                         </div>
-                        <br>
-                        <div class="col-md-4">
-                            <button class="search btn btn-primary btn-fab btn-fab-mini btn-round">
-                                <i class="material-icons">search</i>
-                            </button>
-                        </div>
-                        -->
+                    </div>
+                    <div id="4">
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th>Tarefa</th>
+                            <th>Número</th>
+                            <th class="text-right">Ações</th>
+                        </tr>
+                    </div>
+                    </thead>
 
+                    <tbody id="4">
+                        @foreach($tarefas as $id => $tarefa)
+                        <tr>
+                            <td class="text-center">{{$id+1}}</td>
+                            <td>{{$tarefa->tarefa}}</td>
+                            <td>{{$tarefa->vagas}}</td>
+                            <td class="text-right">
+                            <a href="{{ route('tarefaVoluntarios', $tarefa->id) }}"><i class="material-icons">description</i></a>
+
+                            <a href="javascript:void(0);" class="modalTarefa" data-toggle="modal" data-target="#modal7" id-tarefa="{{ $tarefa->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                    
+                            <a href="{{ route('tarefa', $tarefa->id) }}"><i class="material-icons">edit</i></a>
+                            
+                            <a href="javascript:void(0);" class="exclusaoTarefa" id-tarefa="{{ $tarefa->id }}"><i class="material-icons blue-icon">delete</i></a>
+                        
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+
+                    <thead id="5">
+                    <div id="5">
                         <tr>
                             <th class="text-center">#</th>
                             <th>Usuários</th>
@@ -251,30 +287,34 @@
                     </div>
                     </thead>
 
-                    <tbody id="4">
-                        @foreach($usuarios as $usuario)
+                    <tbody id="5">
+                        @foreach($usuarios as $key=>$usuario)
                         <tr>
-                            <td class="text-center">{{$usuario->id}}</td>
+                            <td class="text-center">{{$key + 1}}</td>
                             <td>{{$usuario->nome}}</td>
                             <td>{{$usuario->email}}</td>
                             <td class="text-right">
+                            <a href="{{route('editarUsuario',$usuario->id)}}"><i class="material-icons">remove_red_eye</i></a>
+                    
                             <a href="{{route('editarFuncaoUsuario',$usuario->id)}}"><i class="material-icons">edit</i></a>
+                            <!--
+                            <a href="javascript:void(0);" class="exclusaoUsuario" id-usuario="{{ $usuario['id'] }}"><i class="material-icons blue-icon">delete</i></a>
+                            -->
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
 
-                    <thead id="5">
-                    <div id="5">
-
+                    <thead id="6">
+                    <div id="6">
+                        <h5><b>Número de projetos: {{$numeroProjetos}} </b></h5>
                     </div>
-
                     </thead>
 
-                    <tbody id="5">
+                    <tbody id="6">
                         @foreach($projetos as $i => $projeto)
 
-                        <div id="5" class="project">
+                        <div id="6" class="project">
                         <div class="project-title">
                              <span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
                         </div>
@@ -303,23 +343,23 @@
                         @endforeach
                     </tbody>
 
-					<div id="6">
+					<div id="7">
 						<ul class="tab-comissao nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
 							<li class="active">
 								<a id="avaliador" role="tab" data-toggle="tab">
-									<i class="material-icons">dashboard</i>
+									<i class="material-icons">assignment_ind</i>
 									Avaliadores
 								</a>
 							</li>
 							<li>
 								<a id="homologador" role="tab" data-toggle="tab">
-									<i class="material-icons">schedule</i>
+									<i class="material-icons">description</i>
 									Homologadores
 								</a>
 							</li>
 						</ul>
 
-						<thead id="6">
+						<thead id="7">
 
 						<tr>
 							<th>Nome</th>
@@ -333,7 +373,7 @@
 
 					</div>
 
-					<tbody id="6">
+					<tbody id="7">
 
 					@foreach($comissao as $c)
 
@@ -358,10 +398,89 @@
 						</tr>
 
 					@endforeach
-
-
-
 					</tbody>
+
+                    <thead id="8">
+                    <div id="8">
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th>Relatórios</th>
+                            <th>Escolha uma edição</th>
+                            <th class="text-right">Ações</th>
+                        </tr>
+                    </div>
+                    </thead>
+
+                    <tbody id="8">
+                        <tr>
+                            <td>1</td>
+                            <td>Relatório de Edições</td>
+                            <td>-</td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioEdicao')}}"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Relatório de Escolas</td>
+                            <td>-</td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioEscola')}}"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Relatório de Níveis</td>
+                            <td>
+                            <ul class="dropdown-menu">
+                               
+                                <li><a></a></li>
+                               
+                            </ul>
+                            </td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioNivel')}}"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Relatório de Áreas</td>
+                            <td>
+                            
+                            </td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioArea')}}"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Relatório de Usuários e suas respectivas funções</td>
+                            <td>
+                            <ul class="dropdown-menu">
+                               
+                                <li><a></a></li>
+                               
+                            </ul>
+                            </td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioFuncoesUsuarios')}}"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Relatório de Voluntários e suas respectivas tarefas</td>
+                            <td>
+                            <ul class="dropdown-menu">
+                               
+                                <li><a></a></li>
+                               
+                            </ul>
+                            </td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioVoluntarioTarefa')}}"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                    </tbody>
 
                 </table>
             </div>
@@ -376,6 +495,8 @@
 	@include('partials.modalEscola')
 	@include('partials.modalNivel')
 	@include('partials.modalArea')
+    @include('partials.modalTarefa')
+    @include('partials.modalUsuario')
 
 @endsection
 
@@ -424,6 +545,8 @@ function hideBodys(){
     $('tbody[id=4]').hide();
     $('tbody[id=5]').hide();
 	$('tbody[id=6]').hide();
+    $('tbody[id=7]').hide();
+    $('tbody[id=8]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
@@ -431,6 +554,8 @@ function hideBodys(){
     $('div[id=4]').hide();
     $('div[id=5]').hide();
 	$('div[id=6]').hide();
+    $('div[id=7]').hide();
+    $('div[id=8]').hide();
 }
 function hideHeads(){
     $('thead[id=0]').hide();
@@ -440,6 +565,8 @@ function hideHeads(){
     $('thead[id=4]').hide();
     $('thead[id=5]').hide();
 	$('thead[id=6]').hide();
+    $('thead[id=7]').hide();
+    $('thead[id=8]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
@@ -447,25 +574,9 @@ function hideHeads(){
     $('div[id=4]').hide();
     $('div[id=5]').hide();
 	$('div[id=6]').hide();
+    $('div[id=7]').hide();
+    $('div[id=8]').hide();
 }
-</script>
-<script type="text/javascript">
-
-$('#search').on('keyup',function(){
-    $value=$(this).val();
-
-    $.ajax({
-        type : 'get',
-        url : '{{URL::to('pesquisa')}}',
-        data:{'search':$value},
-
-        success:function(usuarios){
-            $('#2').html(usuarios);
-            //$('#result').show();
-            console.log(usuarios);
-        }
-    });
-})
 </script>
 
 @endsection

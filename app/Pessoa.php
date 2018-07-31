@@ -187,8 +187,36 @@ class Pessoa extends Authenticatable {
         return false;
     }
 
+    public function comissaoNivel($nivel, $pessoa) {
+
+        //pega o id da edição
+        $EdicaoId = Edicao::getEdicaoId();
+
+        if($EdicaoId){
+
+            $query = DB::table('areas_comissao')
+                            ->join('area_conhecimento', 'areas_comissao.area_id', '=', 'area_conhecimento.id')
+                            ->join('nivel', 'area_conhecimento.nivel_id', '=', 'nivel.id')
+                            ->join('comissao_edicao', 'areas_comissao.comissao_edicao_id', '=', 'comissao_edicao.id')
+                            //Busca pela Pessoa
+                            ->where('comissao_edicao.pessoa_id','=',$pessoa)
+                            //Busca pelo Nível
+                            ->where('nivel.id','=',$nivel)
+                            //Busca pela Edição
+                            ->where('comissao_edicao.edicao_id', $EdicaoId)
+                            ->orWhere('edicao_id',null)
+                            ->get();
+
+            if(!$query->count()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function funcoes() {
-        return $this->belongsToMany('App\Funcao');
+        return $this->belongsToMany('App\Funcao', 'funcao_pessoa', 'pessoa_id', 'funcao_id');
     }
 
     public function projetos() {
@@ -211,7 +239,10 @@ class Pessoa extends Authenticatable {
         return $query
             ->join('funcao_pessoa','funcao_pessoa.pessoa_id','=','public.pessoa.id')
             ->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
-            ->where('funcao.funcao','=',$funcao);
+            //busca pela Função
+            ->where('funcao.funcao','=',$funcao)
+            //busca pela Edição
+            ->where('funcao_pessoa.edicao_id','=',Edicao::getEdicaoId());
     }
 
     public function getTotalRevisoes(){

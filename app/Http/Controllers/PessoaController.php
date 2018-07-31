@@ -151,16 +151,26 @@ class PessoaController extends Controller {
     }
     
     public function editarCadastro() {
-        $dados = Pessoa::find(Auth::id());
-        return view('editaCadastro', compact('dados'));
+        $dados = Pessoa::find(Auth::user()->id);
+        return view('user.edit', compact('dados'));
     }
 
     public function editaCadastro(Request $req) {
-
         $data = $req->all();
-        Pessoa::find(Auth::id())->update($data);
-
+        Pessoa::find(Auth::user()->id)->update($data);
         return redirect()->route('editarCadastro');
+    }
+
+    // Edita os dados do usuário (SOMENTE PARA ADMINISTRADOR)
+    public function editarUsuario($id) {
+        $dados = Pessoa::find($id);
+        return view('admin.usuario.editarCadastro', compact('dados'));
+    }
+
+    public function editaUsuario(Request $req, $id) {
+        $data = $req->all();
+        Pessoa::find($id)->update($data);
+        return redirect()->route('administrador');
 
     }
 

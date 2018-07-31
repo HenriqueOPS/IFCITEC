@@ -38,7 +38,7 @@
 		gtag('config', '{{env('GOOGLE_ANALYTICS_ID')}}');
 
 		@if (Auth::user())
-		gtag('set', {'user_id': '{{ Auth::user()->id }}'}); // Defina o ID de usuário usando o user_id conectado.
+		gtag('set', {'user_id': '{{ Auth::user()->id }} - {{ Auth::user()->nome }}'}); // Defina o ID de usuário usando o user_id conectado.
 		@endif
 		</script>
 
@@ -90,18 +90,12 @@
 							<ul class="nav navbar-nav navbar-left">
 								<li><a href="{{ route('autor') }}">Projeto</a></li>
 
-								@if((Auth::user()->temFuncao('Avaliador') || Auth::user()->temFuncao('Homologador')))
-									<li><a href="{{ route('comissaoHome') }}" class="dropdown-toggle" data-toggle="dropdown" >Comissão Avaliadora</a></li>
-								@endif
-
 								@if(\App\Edicao::consultaPeriodo('Comissão') || Auth::user()->temFuncao('Administrador'))
-									<li><a href="#" class="dropdown-toggle" data-toggle="dropdown" >Comissão Avaliadora</a>
-										<ul class="dropdown-menu" role="menu">
-											<li>
-												<a href="{{route('comissao')}}">Cadastrar-se</a>
-											</li>
-										</ul>
-									</li>
+									@if((Auth::user()->temFuncao('Avaliador') || Auth::user()->temFuncao('Homologador')))
+										<li><a href="{{route('comissaoHome')}}">Comissão Avaliadora</a></li>
+									@else
+										<li><a href="{{route('comissao')}}">Comissão Avaliadora</a></li>
+									@endif
 								@endif
 
 								@if(\App\Edicao::consultaPeriodo('Voluntário') || Auth::user()->temFuncao('Administrador'))
@@ -126,7 +120,7 @@
 									</a>
 									<ul class="dropdown-menu">
 										<li>
-											<a href="{{ route('editaCadastro') }}">
+											<a href="{{ route('editarCadastro') }}">
 												Editar Cadastro
 											</a>
 										</li>

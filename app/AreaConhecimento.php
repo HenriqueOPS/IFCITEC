@@ -28,7 +28,7 @@ class AreaConhecimento extends Model {
 
 
     public function niveis(){
-        return $this->belongsToMany('App\Nivel','area_nivel','area_id','nivel_id');
+        return $this->belongsTo('App\Nivel','nivel_id');
     }
 
     public function edicoes(){
