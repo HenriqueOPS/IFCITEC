@@ -25,7 +25,7 @@
 
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="col-md-12 text-center">
-                                <h3>Meus Dados</h3>
+                                <h3>Dados</h3>
                             </div>
 
                             <div class="input-group">
@@ -115,6 +115,72 @@
                                 </span>
                                 @endif
                             </div>
+
+                            @if($dados->temFuncao('Avaliador') || $dados->temFuncao('Homologador'))
+                                <div class="input-group{{ $errors->has('titulacao') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">bookmark</i>
+                                </span>
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">Titulacao</label>
+                                        <input type="text" class="form-control" name="titulacao" style="text-transform: uppercase;"
+                                               value="{{isset($dados->titulacao) ? $dados->titulacao : ''}}">
+                                    </div>
+                                    @if ($errors->has('titulacao'))
+                                        <span class="help-block">
+                                    <strong>{{ $errors->first('titulacao') }}</strong>
+                                </span>
+                                    @endif
+                                </div>
+
+                                <div class="input-group{{ $errors->has('lattes') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">insert_link</i>
+                                </span>
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">Link Lattes</label>
+                                        <input type="url" class="form-control" name="lattes" value="{{isset($dados->lattes) ? $dados->lattes : ''}}"
+                                               required>
+                                    </div>
+                                    @if ($errors->has('lattes'))
+                                        <span class="help-block">
+                                    <strong>{{ $errors->first('lattes') }}</strong>
+                                </span>
+                                    @endif
+                                </div>
+
+                                <div class="input-group{{ $errors->has('profissao') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">assignment_ind</i>
+                                </span>
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">Profissao</label>
+                                        <input type="text" class="form-control" name="profissao" style="text-transform: uppercase;"
+                                               value="{{isset($dados->profissao) ? $dados->profissao : ''}}" required>
+                                    </div>
+                                    @if ($errors->has('profissao'))
+                                        <span class="help-block">
+                                    <strong>{{ $errors->first('profissao') }}</strong>
+                                </span>
+                                    @endif
+                                </div>
+
+                                <div class="input-group{{ $errors->has('instituicao') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">school</i>
+                                </span>
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">Instituicao</label>
+                                        <input type="text" class="form-control" name="instituicao" style="text-transform: uppercase;"
+                                               value="{{isset($dados->instituicao) ? $dados->instituicao : ''}}" required>
+                                    </div>
+                                    @if ($errors->has('instituicao'))
+                                        <span class="help-block">
+                                    <strong>{{ $errors->first('instituicao') }}</strong>
+                                </span>
+                                    @endif
+                                </div>
+                                @endif
 
                         </div>
                     </div>

@@ -1,8 +1,10 @@
 <html lang="pt-br">
 <head>
 	<meta charset="utf-8">
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
+	
 <style>
+
+	@import "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700";
 	@media all {
 
 	*{
