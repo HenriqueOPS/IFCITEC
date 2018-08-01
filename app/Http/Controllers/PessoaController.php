@@ -152,6 +152,7 @@ class PessoaController extends Controller {
     
     public function editarCadastro() {
         $dados = Pessoa::find(Auth::user()->id);
+        $dados->dt_nascimento = implode("/", array_reverse(explode("-", $dados->dt_nascimento)));
         return view('user.edit', compact('dados'));
     }
 
