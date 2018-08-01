@@ -3,12 +3,16 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <h2 style="margin-top: 20px; margin-left: 200px;">RELATÓRIO DE PROJETOS DA ESCOLA {{$escola->nome_curto}}</h2>
+        <div>
+        <h2 style=" margin: auto; margin-top: 40px; vertical-align: center; text-align: center;">RELATÓRIO DE PROJETOS DA ESCOLA <br>{{$escola->nome_curto}}</h2>
+        </div>
 
+        <div>
+        <h5 style="margin-top: 100px; margin-left: 20px;">Número de projetos: {{$numeroProjetos}}</h5>
+        </div>
 
-        <h5 style="margin-top: 30px; margin-left: 20px;">Número de projetos: {{$numeroProjetos}}</h5>
-
-        <table style="margin-left: 25px; margin-top: 50px; width: 100%;">
+        <div>
+        <table style="margin: auto; margin-top: 40px; margin-left: 20px; margin-right: 20px; width: 100%;">
         	<thead">
         		<tr>
             <th>#</th>
@@ -23,8 +27,8 @@
   				</tr>
   				@endforeach
   			</tbody>	
-  
-		</table> 
+		    </table> 
+        </div>
 	</div>
 </div>
 @endsection
