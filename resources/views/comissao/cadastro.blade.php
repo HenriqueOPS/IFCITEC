@@ -45,7 +45,7 @@
                                 </span>
 									<div class="form-group label-floating">
 										<label class="control-label">Titulacao</label>
-										<input type="text" class="form-control" name="titulacao"
+										<input type="text" class="form-control" name="titulacao" style="text-transform: uppercase;"
 											   value="{{old('titulacao')}}">
 									</div>
 									@if ($errors->has('titulacao'))
@@ -77,7 +77,7 @@
                                 </span>
 									<div class="form-group label-floating">
 										<label class="control-label">Profissao</label>
-										<input type="text" class="form-control" name="profissao"
+										<input type="text" class="form-control" name="profissao" style="text-transform: uppercase;"
 											   value="{{old('profissao')}}" required>
 									</div>
 									@if ($errors->has('profissao'))
@@ -93,7 +93,7 @@
                                 </span>
 									<div class="form-group label-floating">
 										<label class="control-label">Instituicao</label>
-										<input type="text" class="form-control" name="instituicao"
+										<input type="text" class="form-control" name="instituicao" style="text-transform: uppercase;"
 											   value="{{old('instituicao')}}" required>
 									</div>
 									@if ($errors->has('instituicao'))
