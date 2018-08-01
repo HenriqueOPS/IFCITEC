@@ -20,7 +20,7 @@
 	@else
 
 		<div class="page-header">
-			<h1>Olá {{ Auth::user()->nome }}</h1>
+			<h1>Olá, {{ Auth::user()->nome }}</h1>
 
 			@if((\App\Edicao::consultaPeriodo('Inscrição')))
 			<div class="alert alert-info">

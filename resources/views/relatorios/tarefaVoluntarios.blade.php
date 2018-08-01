@@ -3,9 +3,12 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <h2 style="margin-top: 20px; margin-left: 200px;">RELATÓRIO DE VOLUNTÁRIOS DA TAREFA {{$tarefa->tarefa}}</h2>
+        <div>
+        <h2 style=" margin: auto; margin-top: 40px; vertical-align: center; text-align: center;">RELATÓRIO DE VOLUNTÁRIOS DA TAREFA <br> {{$tarefa->tarefa}} <br></h2>
+        </div>
 
-        <table style="margin-left: 25px; margin-top: 50px; width: 100%;">
+        <div>
+        <table style="margin: auto; margin-top: 150px; margin-left: 20px; margin-right: 20px; width: 100%;">
         	<thead">
         		<tr>
             <th>#</th>
@@ -23,7 +26,8 @@
   				@endforeach
   			</tbody>	
   
-		</table> 
+		  </table>
+      </div> 
 	</div>
 </div>
 @endsection
