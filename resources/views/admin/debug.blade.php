@@ -39,6 +39,10 @@
 
 				</ul>
 
+				@php
+					phpinfo();
+				@endphp
+
 			</div>
 
 		</div>

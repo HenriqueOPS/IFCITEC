@@ -86,7 +86,7 @@ class EdicaoController extends Controller {
         $niveis = DB::table('nivel')->select('id','nivel')->get();
         $dados = Edicao::find($id);
 
-        return view('admin.editarEdicao',['dados' => $dados,'n' => $niveis,'areas' => $areas,'nivelEdicao' => $nivelEdicao,'areaEdicao' => $areaEdicao]);
+        return view('admin.edicao.edit',['dados' => $dados,'n' => $niveis,'areas' => $areas,'nivelEdicao' => $nivelEdicao,'areaEdicao' => $areaEdicao]);
 
     }
 
@@ -146,34 +146,11 @@ class EdicaoController extends Controller {
         return redirect()->route('administrador');
     }
 
-    //Retorna os dados de uma determinada edição
-    public function edicao($id)
-    {
-
-        $query = DB::table('edicao')->select('edicao.ano')
-            ->where('id','=',$id)
-            ->get();
-        $ano = $query[0]->ano;
-
-        $niveis = DB::table('nivel')->select('nivel.*')
-            ->where('edicao_id','=',$id)
-            ->get();
-
-
-        return view('admin.homeEdicao', collect([
-                                                'ano' => $ano,
-                                                'id' => $id,
-                                                'projetos' => '',
-                                                'areas' => '',
-                                                'niveis' => $niveis
-                                                ]));
-    }
-
-    public function cadastroEdicao()
-    {
+    public function cadastroEdicao() {
         $niveis = DB::table('nivel')->select('id','nivel')->get();
         $areas = DB::table('area_conhecimento')->select('id','area_conhecimento','nivel_id')->get();
-        return view('admin.cadastroEdicao', array('niveis' => $niveis), array('areas' =>
+
+        return view('admin.edicao.create', array('niveis' => $niveis), array('areas' =>
             $areas));
     }
 

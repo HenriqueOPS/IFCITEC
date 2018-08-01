@@ -64,11 +64,9 @@ Route::get('/debug', function (){
 	return view('admin.debug');
 });
 
-
-
 //Edição dos dados pessoais
-Route::get('/editar-cadastro/{id}', 'PessoaController@editarCadastro')->name('editarCadastro');
-Route::post('/editar-cadastro/{id}', 'PessoaController@editaCadastro')->name('editaCadastro');
+Route::get('/editar-cadastro/', 'PessoaController@editarCadastro')->name('editarCadastro');
+Route::post('/editar-cadastro/', 'PessoaController@editaCadastro')->name('editaCadastro');
 
 //Relatórios
 //Route::get('/relatorio', 'ReportController@index')->name('relatorio');
@@ -91,7 +89,7 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 //Organizador
 Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 
-/* Administrador Routes */
+/* Rotas Administrador */
 Route::group(['middleware' => ['IsAdministrador']], function () {
 
 
@@ -145,12 +143,16 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/tarefa/exclui-tarefa/{id}/{s}', 'AdminController@excluiTarefa'); //Ajax
 
 	//Usuários
-	Route::get('/usuario/exclui-usuario/{id}/{s}', 'AdminController@excluiUsuario'); //
+	Route::get('/usuario/exclui-usuario/{id}/{s}', 'AdminController@excluiUsuario');
+
+    //Edição dos dados de usuario
+    Route::get('/usuario/{id}/editar/', 'PessoaController@editarUsuario')->name('editarUsuario');
+    Route::post('/usuario/{id}/editar-cadastro/', 'PessoaController@editaUsuario')->name('editaUsuario');
 
 });
 
 
-/* Organização Routes */
+/* Rotas Organização */
 Route::group(['middleware' => ['IsOrganizacao']], function () {
 
 	// Escola
@@ -161,23 +163,31 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
 	Route::get('/escola/dados-escola/{id}', 'AdminController@dadosEscola'); //Ajax
 	Route::get('/escola/exclui-escola/{id}/{s}', 'AdminController@excluiEscola'); //Ajax
 
+    //vincula Homologador
+    Route::get('/projeto/{id}/vinculaHomologador/', 'ProjetoController@showFormVinculaHomologador')->name('vinculaRevisor');
+    Route::post('/projeto/vinculaHomologador/', 'ProjetoController@vinculaHomologador')->name('vinculaRevisorPost');
+    //vincula Avaliador
+    Route::get('/projeto/{id}/vinculaAvaliador/', 'ProjetoController@showFormVinculaAvaliador')->name('vinculaAvaliador');
+    Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')->name('vinculaAvaliadorPost');
+
 });
 
 
 
 
-
-
-// Avaliador/Revisor
-Route::get('/avaliador', 'HomeController@homeAvaliador')->name('avaliador');
-Route::get('/revisor', 'HomeController@homeRevisor')->name('revisor');
-
 //Organizador
 Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 
 //Comissao Avaliadora
-Route::get('/comissaoavaliadora', 'ComissaoAvaliadoraController@index')->name('comissao');
+Route::get('/comissao-avaliadora', 'ComissaoAvaliadoraController@index')->name('comissao');
 Route::get('/comissao/avaliadora', 'ComissaoAvaliadoraController@home')->name('comissaoHome');
+
+//Inscrição Comissão Avaliadora
+Route::get('/inscricao-comissao-avaliadora', 'ComissaoAvaliadoraController@cadastrarComissao')->name('comissaoAvaliadora');
+Route::post('/comissao/cadastrar', 'ComissaoAvaliadoraController@cadastraComissao')->name('cadastroAvaliador');
+Route::get('/comissao/cadastrar/{s}', 'ComissaoAvaliadoraController@cadastrarComissao')->name('cadastraComissao'); //Ajax
+
+
 
 //Voluntario
 Route::get('/voluntario', 'VoluntarioController@index')->name('voluntario');
@@ -210,11 +220,7 @@ Route::post('/projeto/edita-projeto', 'ProjetoController@editaProjeto')->name('e
 
 //Route::get('/relatorio/{id}','ProjetoController@relatorio')->name('relatorio');
 
-Route::get('/projeto/{id}/vinculaRevisor/', 'ProjetoController@showFormVinculaRevisor')->name('vinculaRevisor');
-Route::post('/projeto/vinculaRevisor/', 'ProjetoController@vinculaRevisor')->name('vinculaRevisorPost');
-//
-Route::get('/projeto/{id}/vinculaAvaliador/', 'ProjetoController@showFormVinculaAvaliador')->name('vinculaAvaliador');
-Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')->name('vinculaAvaliadorPost');
+
 //
 Route::get('/projeto/{id}/setSituacao/{situacao}', 'ProjetoController@setSituacao')->name('projeto.setSituacao');
 
