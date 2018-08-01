@@ -15,26 +15,27 @@
                         <div class="col-md-3 col-md-offset-1">
                            <div id="list" class="drop-area" style="max-height: 60vh;overflow: auto;">
                                @foreach($avaliadores as $avaliador)
-                                   <div class="card no-select" data-id="{{$avaliador->id}}">
-                                       <div class="content">
-                                           <span class="font-weight-bold">
-                                               <b><i class="material-icons">person</i></b>
-                                               <b>{{$avaliador->nome}}</b>
-                                           </span>
-                                           <div>
+                                   @if(!in_array($avaliador->id, $idAvaliadores))
+                                       <div class="card no-select" data-id="{{$avaliador->id}}">
+                                           <div class="content">
+                                               <span class="font-weight-bold">
+                                                   <b><i class="material-icons">person</i></b>
+                                                   <b>{{$avaliador->nome}}</b>
+                                               </span>
                                                <div>
-                                                   <b><i class="material-icons small">book</i></b>
-                                                   {{$avaliador->titulacao}}
-                                               </div>
-                                               <div>
-                                                   <b><i class="material-icons small">settings</i></b>
-                                                   {{$avaliador->tot_avaliacoes}} projetos
+                                                   <div>
+                                                       <b><i class="material-icons small">book</i></b>
+                                                       {{$avaliador->titulacao}}
+                                                   </div>
+                                                   <div>
+                                                       <b><i class="material-icons small">settings</i></b>
+                                                       {{$avaliador->num_projetos}} projetos
+                                                   </div>
                                                </div>
                                            </div>
                                        </div>
-                                   </div>
+                                   @endif
                                @endforeach
-
                            </div>
                         </div>
                         <div class="col-md-4">

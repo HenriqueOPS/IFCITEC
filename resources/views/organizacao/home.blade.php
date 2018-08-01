@@ -1,147 +1,188 @@
 @extends('layouts.app')
 
-
 @section('css')
-<link href="{{ asset('css/organization.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <ul class="nav nav-pills nav-pills-primary" role="tablist">
-                <li>
-                    <a href="dashboard" id="0" class="tab" role="tab" data-toggle="tab">
-                        <i class="material-icons">adjust</i>
-                        Não Revisados
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="dashboard" id="1" class="tab" role="tab" data-toggle="tab">
-                        <i class="material-icons green-icon">done</i>
-                        Homologados
-                    </a>
-                </li>
-                <li>
-                    <a href="dashboard" id="3" class="tab" role="tab" data-toggle="tab">
-                        <i class="material-icons red-icon">error</i>
-                        Reprovados
-                    </a>
-                </li>
-                <li>
-                    <a href="dashboard" id="5" class="tab" role="tab" data-toggle="tab">
-                        <i class="material-icons blue-icon">done</i>
-                        Avaliados
-                    </a>
-                </li>
-                <li>
-                    <a href="dashboard" id="6" class="tab" role="tab" data-toggle="tab">
-                        <i class="material-icons">help</i>
-                        Não Compareceram
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('relatorio',['id' => 1])}}" >Projetos Integrantes Agrupados</a>
-                    <a href="{{route('relatorio',['id' => 2])}}" >Projetos Integrantes Não Agrupados</a>
-                    <a href="{{route('relatorio',['id' => 3])}}" >Avaliadores</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-<br><br>
-<div class="container">
-    <div class="row">
-        <div class="col-md-11 main main-raised"> 
-            <div class="list-projects">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th class="text-center">#</th>
-                            <th>Integrantes</th>
-                            <th>Título</th>
-                            <th>Avaliadores</th>
-                            <th class="text-right">Ações</th>
-                        </tr>
-                    </thead>
-                    @foreach($situacoes as $situacao=>$projetos)
 
-                        <tbody id="{{$situacao}}">
-                        @foreach($projetos as $projeto)
-                            <tr>
-                                <td class="text-center">{{$projeto->id}}</td>
-                                <td>
-                                    @foreach($projeto->pessoas as $pessoa)
-                                        {{explode(" ", $pessoa->nome)[0]}}
-                                    @endforeach
-                                </td>
-                                <td>{{$projeto->titulo}}</td>
-                                <td>
-                                    @if($projeto->avaliacoes->isNotEmpty())
-                                        @foreach($projeto->avaliacoes as $avaliacao)
-                                            {{$avaliacao->pessoa->nome." "}}
-                                        @endforeach
-                                    @endif
-                                </td>
-                                <td class="td-actions text-right">
-                                    <a href="{{route('projeto.show', ['projeto' => $projeto->id])}}"><i class="material-icons blue-icon">remove_red_eye</i></a>
-                                    <a href="{{route('vinculaAvaliador', ['id' => $projeto->id])}}"><i class="material-icons">assignment_ind</i></a>
-                                    <a href="{{route('projeto.setSituacao', ['id' => $projeto->id, 'situacao' => 5])}}" class="setAvaliado"><i class="material-icons blue-icon">check_circle</i></a>
-                                    <a href="{{route('projeto.setSituacao', ['id' => $projeto->id, 'situacao' => 6])}}" class="setNaoCompareceu"><i class="material-icons">help</i></a>
-                                </td>
-                            <tr>
-                        @endforeach
-                        </tbody>
-                    @endforeach
+    <div class="container">
+        <div class="row">
 
-                </table>
+            <div class="col-md-12 text-center">
+                <h2>Painel administrativo</h2>
+            </div>
+
+            <div id="page" class="col-md-12">
+                <ul class="nav nav-pills nav-pills-primary"  role="tablist">
+                    <li class="active">
+                        <a href="dashboard" id="0" class="tab" role="tab" data-toggle="tab">
+                            <i class="material-icons">account_balance</i>
+                            Escolas
+                        </a>
+                    </li>
+                    <li>
+                        <a href="dashboard" id="1" class="tab" role="tab" data-toggle="tab">
+                            <i class="material-icons">list_alt</i>
+                            Listar Projetos
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
-</div>
+    <br><br>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12 main main-raised">
+                <div class="list-projects">
+                    <table class="table">
+                        <thead id="0">
+                        <div id="0">
+                            <div class="col-md-3">
+                                <a href="{{ route('cadastroEscola') }}" class="btn btn-primary btn-round">
+                                    <i class="material-icons">add</i> Adicionar Escola
+                                </a>
+                            </div>
+                        </div>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th>Escola</th>
+                            <th>Município</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                            <th class="text-right">Ações</th>
+                        </tr>
+                        </thead>
+
+                        <tbody id="0">
+
+                        @foreach($escolas as $i => $escola)
+
+                            <tr>
+                                <td class="text-center">{{ $i+1 }}</td>
+                                <td>{{ $escola->nome_curto }}</td>
+                                <td></td>
+                                <td>{{ $escola->email }}</td>
+                                <td>{{ $escola->telefone }}</td>
+
+
+
+                                <td class="td-actions text-right">
+
+                                    <a href="javascript:void(0);" class="modalEscola"  data-toggle="modal" data-target="#modal0" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+
+                                    <a href="{{ route('escola', $escola->id) }}"><i class="material-icons">edit</i></a>
+
+                                    <a href="javascript:void(0);" class="exclusao" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">delete</i></a>
+                                </td>
+                            <tr>
+
+                        @endforeach
+
+                        </tbody>
+
+                        <thead id="1">
+                        <div id="1">
+
+                        </div>
+
+                        </thead>
+
+                        <tbody id="1">
+                        @foreach($projetos as $i => $projeto)
+
+                            <div id="1" class="project">
+                                <div class="project-title">
+                                    <span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
+                                </div>
+                                <div class="project-info">
+                                    Integrantes:
+                                    @foreach ($autores as $autor)
+                                        @if($autor->projeto_id == $projeto->id)
+                                            {{$autor->nome}},
+                                        @endif
+                                    @endforeach
+
+                                    @foreach ($orientadores as $orientador)
+                                        @if($orientador->projeto_id == $projeto->id)
+                                            {{$orientador->nome}},
+                                        @endif
+                                    @endforeach
+
+                                    @foreach($coorientadores as $coorientador)
+                                        @if($coorientador->projeto_id == $projeto->id)
+                                            {{$coorientador->nome}},
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+
+                        @endforeach
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@endsection
+
+@section('partials')
+
+    @include('partials.modalEscola')
+
 @endsection
 
 @section('js')
-<script type="application/javascript">
-$(document).ready(function () {
-    hideBodys();
-    $('tbody[id=1]').show();
-    $('.tab').click(function (e) {
-        var target = $(this)[0];
-        hideBodys();
-        $('tbody[id='+target.id+']').show();
-    });
 
-    $('.setAvaliado').bind('click',function(e) {
-        e.preventDefault();
-        var r = confirm("Definir projeto como avaliado?");
-        if (r == true) {
-            var target = $(this)[0];
-            document.location.href = target.getAttribute('href');
-        } else {
+    <script type="application/javascript">
+        $(document).ready(function () {
 
+            hideBodys();
+            hideHeads();
+            $('tbody[id=0]').show();
+            $('thead[id=0]').show();
+            $('div[id=0]').show();
+            $('.tab').click(function (e) {
+                var target = $(this)[0];
+                hideBodys();
+                hideHeads();
+                $('tbody[id='+target.id+']').show();
+                $('thead[id='+target.id+']').show();
+                $('div[id='+target.id+']').show();
+            });
+
+        });
+
+        function hideBodys(){
+            $('tbody[id=0]').hide();
+            $('tbody[id=1]').hide();
+            $('tbody[id=2]').hide();
+            $('tbody[id=3]').hide();
+            $('tbody[id=4]').hide();
+            $('div[id=0]').hide();
+            $('div[id=1]').hide();
+            $('div[id=2]').hide();
+            $('div[id=3]').hide();
+            $('div[id=4]').hide();
         }
-    });
-
-    $('.setNaoCompareceu').bind('click',function(e) {
-        e.preventDefault();
-        var r = confirm("Confirmar que projeto não compareceu?");
-        if (r == true) {
-            var target = $(this)[0];
-            document.location.href = target.getAttribute('href');
-        } else {
-
+        function hideHeads(){
+            $('thead[id=0]').hide();
+            $('thead[id=1]').hide();
+            $('thead[id=2]').hide();
+            $('thead[id=3]').hide();
+            $('thead[id=4]').hide();
+            $('div[id=0]').hide();
+            $('div[id=1]').hide();
+            $('div[id=2]').hide();
+            $('div[id=3]').hide();
+            $('div[id=4]').hide();
         }
-    });
-});
-
-function hideBodys(){
-    $('tbody[id=0]').hide();
-    $('tbody[id=1]').hide();
-    $('tbody[id=3]').hide();
-    $('tbody[id=5]').hide();
-    $('tbody[id=6]').hide();
-}
-</script>
+    </script>
 @endsection
+
+
 

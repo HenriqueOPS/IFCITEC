@@ -80,7 +80,7 @@ class OrganizadorController extends Controller
 				->toArray();
 		}
 
-        return view('organizador.home', collect([
+        return view('organizacao.home', collect([
 			'projetos' => $projetos,
 			'autores' => $autores,
 			'orientadores' => $orientadores,

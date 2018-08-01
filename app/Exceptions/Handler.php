@@ -32,9 +32,11 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-		return response()->view('errors.custom', [], 500);
+        if(env('APP_DEBUG'))
+            parent::report($exception);
 
-        parent::report($exception);
+        return response()->view('errors.custom', [], 500);
+
     }
 
     /**
@@ -46,9 +48,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-		return response()->view('errors.custom', [], 500);
 
-        return parent::render($request, $exception);
+		if(env('APP_DEBUG'))
+            return parent::render($request, $exception);
+
+        return response()->view('errors.custom', [], 500);
     }
 
     /**
