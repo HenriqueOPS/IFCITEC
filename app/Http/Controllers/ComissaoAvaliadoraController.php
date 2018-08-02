@@ -203,7 +203,7 @@ class ComissaoAvaliadoraController extends Controller
             ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
             ->select('nivel.nivel', 'nivel.id')
             ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
-            ->where('pessoa_id', Auth::user()->id)
+            ->where('pessoa_id', $comissaoEdicao->pessoa_id)
             //cria a condição entre parenteses
             ->where(function ($q){
                 //Coorientador HARD CODED
