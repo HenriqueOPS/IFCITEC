@@ -34,7 +34,6 @@
 								</div>
 							</div>
 							<div class="col-md-10 col-md-offset-1 col-xs-11">
-
 								{{ csrf_field() }}
 								<input type="hidden" name="inscricao" value="avaliacao">
 
@@ -45,8 +44,8 @@
                                 </span>
 									<div class="form-group label-floating">
 										<label class="control-label">Titulacao</label>
-										<input type="text" class="form-control" name="titulacao" style="text-transform: uppercase;"
-											   value="{{old('titulacao')}}">
+										<input type="text" class="form-control" name="titulacao"
+											   value="{{isset($dados->titulacao) ? $dados->titulacao : ''}}">
 									</div>
 									@if ($errors->has('titulacao'))
 										<span class="help-block">
@@ -61,7 +60,7 @@
                                 </span>
 									<div class="form-group label-floating">
 										<label class="control-label">Link Lattes</label>
-										<input type="url" class="form-control" name="lattes" value="{{old('lattes')}}"
+										<input type="url" class="form-control" name="lattes" value="{{isset($dados->lattes) ? $dados->lattes : ''}}"
 											   required>
 									</div>
 									@if ($errors->has('lattes'))
@@ -77,8 +76,8 @@
                                 </span>
 									<div class="form-group label-floating">
 										<label class="control-label">Profissao</label>
-										<input type="text" class="form-control" name="profissao" style="text-transform: uppercase;"
-											   value="{{old('profissao')}}" required>
+										<input type="text" class="form-control" name="profissao"
+											   value="{{isset($dados->profissao) ? $dados->profissao : ''}}" required>
 									</div>
 									@if ($errors->has('profissao'))
 										<span class="help-block">
@@ -93,8 +92,8 @@
                                 </span>
 									<div class="form-group label-floating">
 										<label class="control-label">Instituicao</label>
-										<input type="text" class="form-control" name="instituicao" style="text-transform: uppercase;"
-											   value="{{old('instituicao')}}" required>
+										<input type="text" class="form-control" name="instituicao"
+											   value="{{isset($dados->instituicao) ? $dados->instituicao : ''}}" required>
 									</div>
 									@if ($errors->has('instituicao'))
 										<span class="help-block">
@@ -162,7 +161,7 @@
                                 </span>
 									<div class="form-group">
 										<label class="control-label">CEP</label>
-										<input type="text" class="form-control" name="cep" id="cep" required>
+										<input type="text" class="form-control" name="cep" id="cep" value="{{isset($data->cep) ? $data->cep : ''}}" required>
 									</div>
 								</div>
 								<div class="input-group">
@@ -171,7 +170,7 @@
                                 </span>
 									<div class="form-group">
 										<label class="control-label">Rua</label>
-										<input type="text" class="form-control" name="endereco" id="rua" required>
+										<input type="text" class="form-control" name="endereco" id="rua" value="{{isset($data->endereco) ? $data->endereco : ''}}" required>
 									</div>
 								</div>
 								<div class="input-group">
@@ -180,7 +179,7 @@
                                 </span>
 									<div class="form-group">
 										<label class="control-label">Bairro</label>
-										<input type="text" class="form-control" name="bairro" id="bairro" required>
+										<input type="text" class="form-control" name="bairro" id="bairro" value="{{isset($data->bairro) ? $data->bairro : ''}}" required>
 									</div>
 								</div>
 								<div class="input-group">
@@ -189,7 +188,7 @@
                                 </span>
 									<div class="form-group">
 										<label class="control-label">Cidade</label>
-										<input type="text" class="form-control" name="municipio" id="cidade" required>
+										<input type="text" class="form-control" name="municipio" id="cidade" value="{{isset($data->municipio) ? $data->municipio : ''}}" required>
 									</div>
 								</div>
 								<div class="input-group">
@@ -198,7 +197,7 @@
                                 </span>
 									<div class="form-group">
 										<label class="control-label">Estado</label>
-										<input type="text" class="form-control" name="uf" id="uf" required>
+										<input type="text" class="form-control" name="uf" id="uf" value="{{isset($data->uf) ? $data->uf : ''}}" required>
 									</div>
 								</div>
 								<div class="input-group">
@@ -207,7 +206,7 @@
                                 </span>
 									<div class="form-group">
 										<label class="control-label">Número</label>
-										<input type="text" class="form-control" name="numero" required>
+										<input type="text" class="form-control" name="numero" value="{{isset($data->numero) ? $data->numero : ''}}" required>
 									</div>
 								</div>
 							</div>
