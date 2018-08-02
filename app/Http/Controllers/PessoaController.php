@@ -165,6 +165,7 @@ class PessoaController extends Controller {
     // Edita os dados do usuário (SOMENTE PARA ADMINISTRADOR)
     public function editarUsuario($id) {
         $dados = Pessoa::find($id);
+        $dados->dt_nascimento = implode("/", array_reverse(explode("-", $dados->dt_nascimento)));
         return view('admin.usuario.editarCadastro', compact('dados'));
     }
 
