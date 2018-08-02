@@ -25,7 +25,7 @@
 
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="col-md-12 text-center">
-                                <h3>Dados</h3>
+                                <h3>Meus Dados</h3>
                             </div>
 
                             <div class="input-group">
