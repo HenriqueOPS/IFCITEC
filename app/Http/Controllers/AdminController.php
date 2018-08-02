@@ -108,6 +108,7 @@ class AdminController extends Controller
 			->select('comissao_edicao.id','funcao_pessoa.homologado', 'funcao_pessoa.funcao_id',
 					 'pessoa.nome', 'pessoa.instituicao', 'pessoa.titulacao')
 			->orderBy('funcao_pessoa.homologado')
+			->orderBy('pessoa.nome')
 			->get()
 			->toArray();
 
@@ -459,17 +460,28 @@ class AdminController extends Controller
 			->get()
 			->keyBy('funcao_id')
 			->toArray();
-
+		$cont = 0;
 		if (!empty($funcoes)) {
 			$funcaoId = array_keys($funcoes);
 			foreach ($funcoes as $funcao) {
+				if($funcao->funcao_id == Funcao::select(['id'])->where('funcao', 'Voluntário')->first()->id){
+					DB::table('pessoa_tarefa')->where('edicao_id', Edicao::getEdicaoId())->where('pessoa_id', $id)->delete();
+				}
+				if($funcao->funcao_id == Funcao::select(['id'])->where('funcao', 'Homologador')->first()->id || $funcao->funcao_id == Funcao::select(['id'])->where('funcao', 'Avaliador')->first()->id){
+					if($cont == 0){
+					$comissaoEdicao = DB::table('comissao_edicao')->select('id')
+                                    ->where('edicao_id', Edicao::getEdicaoId())
+                                    ->where('pessoa_id', $id)
+                                    ->get();
+					DB::table('areas_comissao')->where('comissao_edicao_id', $comissaoEdicao->first()->id)->delete();
+					DB::table('comissao_edicao')->where('id', $comissaoEdicao->first()->id)->delete();
+					}
+					$cont++;
+				}
 				if ($funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Autor')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id) {			
 					if (!isset($data['funcao']) || (!in_array($funcao->funcao_id, $data['funcao']))) {
 						DB::table('funcao_pessoa')->where('funcao_id', $funcao->funcao_id)->where('pessoa_id', $id)->delete();
 					}
-				}
-				if($funcao->funcao_id == Funcao::select(['id'])->where('funcao', 'Voluntário')->first()->id){
-					DB::table('pessoa_tarefa')->where('edicao_id', Edicao::getEdicaoId())->where('pessoa_id', $id)->delete();
 				}
 			}
 
