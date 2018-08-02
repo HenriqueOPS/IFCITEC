@@ -97,11 +97,32 @@ class ComissaoAvaliadoraController extends Controller
             $nivel = $niveis;
         }
 
-        return view('comissao.cadastro', ['areas' => $areas,'nivel' => $nivel]);
+        $dados = Pessoa::find(Auth::id());
+
+        if($dados->titulacao != null){
+            $data = Endereco::find($dados->endereco_id);
+        }
+        else{
+            $data = null;
+        }
+
+        return view('comissao.cadastro', ['areas' => $areas,'nivel' => $nivel, 'dados' => $dados, 'data' => $data]);
     }
 
     public function cadastraComissao(Request $req){
         $data = $req->all();
+        if(Pessoa::find(Auth::id())->endereco_id != null){
+            $idEndereco = DB::table('endereco')->where('id',Pessoa::find(Auth::id())->endereco_id)->update([
+                    'cep' => $data['cep'],
+                    'endereco' => $data['endereco'],
+                    'bairro' => $data['bairro'],
+                    'municipio' => $data['municipio'],
+                    'uf' => $data['uf'],
+                    'numero' => $data['numero']
+                ]
+            );
+        }
+        else{
         $idEndereco = Endereco::create([
                     'cep' => $data['cep'],
                     'endereco' => $data['endereco'],
@@ -110,7 +131,8 @@ class ComissaoAvaliadoraController extends Controller
                     'uf' => $data['uf'],
                     'numero' => $data['numero']
         ]);
-        $id = DB::table('pessoa')->where('id',Auth::id())->update([
+        }
+       $id = DB::table('pessoa')->where('id',Auth::id())->update([
                     'titulacao' => $data['titulacao'],
                     'lattes' => $data['lattes'],
                     'profissao' => $data['profissao'],
