@@ -73,7 +73,7 @@ class Pessoa extends Authenticatable {
 	 * @param String $check Uma string contento o nome da Role
 	 * @return boolean
 	 */
-	public function temFuncao($funcao) { // Não me Julgue
+	public function temFuncao($funcao, $flag = false) { // Não me Julgue
 
     	//pega o id da edição
 		$EdicaoId = Edicao::getEdicaoId();
@@ -94,7 +94,7 @@ class Pessoa extends Authenticatable {
 							->where('funcao_pessoa.pessoa_id','=',$this->id)
 							->where('funcao_pessoa.edicao_id','=',$EdicaoId);
 
-				if(!$query->count()) //Todas edições
+				if(!$query->count()){ //Todas edições
 					$query = DB::table('funcao_pessoa')
 								->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
 								//Busca pela Função
@@ -102,6 +102,7 @@ class Pessoa extends Authenticatable {
 								//Busca pela Pessoa
 								->where('funcao_pessoa.pessoa_id','=',$this->id)
 								->where('funcao_pessoa.edicao_id','=',1);
+                }
 
 			}else{
 				//Permissão para todas as edições
@@ -117,8 +118,11 @@ class Pessoa extends Authenticatable {
 			if($query->count()) {
 
 				//Verifica se não foi homologado como Homologador ou Avaliador
-				if(($funcao=='Homologador' || $funcao=='Avaliador') && !$query->get()[0]->homologado)
-					return false;
+				if(($funcao=='Homologador' || $funcao=='Avaliador')){
+                    if(!$query->get()[0]->homologado && !$flag){
+                        return false;
+                    }
+                }
 
 				return true;
 			}
