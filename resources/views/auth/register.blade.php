@@ -50,7 +50,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">RG</label>
-                                    <input type="text" class="form-control" name="rg" value="{{old('rg')}}" maxlength="10" required>
+                                    <input type="text" class="form-control" name="rg" value="{{old('rg')}}" maxlength="14" required>
                                 </div>
                                 @if ($errors->has('rg'))
                                 <span class="help-block">
