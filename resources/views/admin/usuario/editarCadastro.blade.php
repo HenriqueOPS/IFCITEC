@@ -31,7 +31,7 @@
                                 </span>
                                     <div class="form-group label-floating">
                                         <label class="control-label">RG</label>
-                                        <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="10" class="form-control" name="rg" value="{{isset($dados->rg) ? $dados->rg : ''}}" required>
+                                        <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="14" class="form-control" name="rg" value="{{isset($dados->rg) ? $dados->rg : ''}}" required>
                                     </div>
                                     <span class="help-block">
                                     <strong></strong>
@@ -113,7 +113,7 @@
                                     @endif
                                 </div>
 
-                                @if($dados->temFuncao('Avaliador') || $dados->temFuncao('Homologador'))
+                                @if($dados->temFuncao('Avaliador', TRUE) || $dados->temFuncao('Homologador', TRUE))
                                 <div class="input-group{{ $errors->has('titulacao') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">bookmark</i>
