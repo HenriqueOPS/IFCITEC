@@ -5,7 +5,6 @@
 <link href="{{ asset('css/datepicker/bootstrap-datepicker.standdalone.css') }}" rel="stylesheet">
 @endsection
 
-
 @section('content')
 <div class="container">
     <div class="row">
@@ -122,8 +121,8 @@
                                     <i class="material-icons">bookmark</i>
                                 </span>
                                     <div class="form-group label-floating">
-                                        <label class="control-label">Titulacao</label>
-                                        <input type="text" class="form-control" name="titulacao" style="text-transform: uppercase;"
+                                        <label class="control-label">Titulação Em...</label>
+                                        <input type="text" class="form-control" name="titulacao"
                                                value="{{isset($dados->titulacao) ? $dados->titulacao : ''}}">
                                     </div>
                                     @if ($errors->has('titulacao'))
@@ -154,8 +153,8 @@
                                     <i class="material-icons">assignment_ind</i>
                                 </span>
                                     <div class="form-group label-floating">
-                                        <label class="control-label">Profissao</label>
-                                        <input type="text" class="form-control" name="profissao" style="text-transform: uppercase;"
+                                        <label class="control-label">Profissão</label>
+                                        <input type="text" class="form-control" name="profissao"
                                                value="{{isset($dados->profissao) ? $dados->profissao : ''}}" required>
                                     </div>
                                     @if ($errors->has('profissao'))
@@ -170,8 +169,8 @@
                                     <i class="material-icons">school</i>
                                 </span>
                                     <div class="form-group label-floating">
-                                        <label class="control-label">Instituicao</label>
-                                        <input type="text" class="form-control" name="instituicao" style="text-transform: uppercase;"
+                                        <label class="control-label">Instituição</label>
+                                        <input type="text" class="form-control" name="instituicao"
                                                value="{{isset($dados->instituicao) ? $dados->instituicao : ''}}" required>
                                     </div>
                                     @if ($errors->has('instituicao'))
