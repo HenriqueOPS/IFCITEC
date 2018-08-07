@@ -153,11 +153,13 @@ class PessoaController extends Controller {
     public function editarCadastro() {
         $dados = Pessoa::find(Auth::user()->id);
         $dados->dt_nascimento = implode("/", array_reverse(explode("-", $dados->dt_nascimento)));
+
         return view('user.edit', compact('dados'));
     }
 
     public function editaCadastro(Request $req) {
         $data = $req->all();
+        $data['dt_nascimento'] = implode('-',array_reverse(explode('/', $data['dt_nascimento'])));
         Pessoa::find(Auth::user()->id)->update($data);
         return redirect()->route('editarCadastro');
     }
@@ -171,6 +173,7 @@ class PessoaController extends Controller {
 
     public function editaUsuario(Request $req, $id) {
         $data = $req->all();
+        $data['dt_nascimento'] = implode('-',array_reverse(explode('/', $data['dt_nascimento'])));
         Pessoa::find($id)->update($data);
         return redirect()->route('administrador');
 
