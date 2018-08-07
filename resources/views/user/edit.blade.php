@@ -123,7 +123,7 @@
                                 </span>
                                     <div class="form-group label-floating">
                                         <label class="control-label">Titulacao</label>
-                                        <input type="text" class="form-control" name="titulacao" style="text-transform: uppercase;"
+                                        <input type="text" class="form-control" name="titulacao"
                                                value="{{isset($dados->titulacao) ? $dados->titulacao : ''}}">
                                     </div>
                                     @if ($errors->has('titulacao'))
@@ -155,7 +155,7 @@
                                 </span>
                                     <div class="form-group label-floating">
                                         <label class="control-label">Profissao</label>
-                                        <input type="text" class="form-control" name="profissao" style="text-transform: uppercase;"
+                                        <input type="text" class="form-control" name="profissao"
                                                value="{{isset($dados->profissao) ? $dados->profissao : ''}}" required>
                                     </div>
                                     @if ($errors->has('profissao'))
@@ -171,7 +171,7 @@
                                 </span>
                                     <div class="form-group label-floating">
                                         <label class="control-label">Instituicao</label>
-                                        <input type="text" class="form-control" name="instituicao" style="text-transform: uppercase;"
+                                        <input type="text" class="form-control" name="instituicao"
                                                value="{{isset($dados->instituicao) ? $dados->instituicao : ''}}" required>
                                     </div>
                                     @if ($errors->has('instituicao'))

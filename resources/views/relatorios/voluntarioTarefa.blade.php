@@ -3,9 +3,10 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <h2 style="margin-top: 20px; margin-left: 200px;">RELATÓRIO DE VOLUNTÁRIOS E SUAS RESPECTIVAS TAREFAS</h2>
+        <h2 style="margin-top: 5mm; margin-left: 20mm;">RELATÓRIO DE VOLUNTÁRIOS E SUAS RESPECTIVAS</h2>
+        <h2 style="margin-left: 90mm;">TAREFAS</h2> 
 
-        <table style="margin-left: 25px; margin-top: 50px; width: 100%;">
+        <table style="margin-left: 25mm; margin-top: 5mm; width: 100%;">
         	<thead">
         		<tr>
             <th>#</th>
