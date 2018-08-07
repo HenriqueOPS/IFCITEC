@@ -139,7 +139,7 @@
                                     <div class="form-group label-floating">
                                         <label class="control-label">Link Lattes</label>
                                         <input type="url" class="form-control" name="lattes" value="{{isset($dados->lattes) ? $dados->lattes : ''}}"
-                                               required>
+                                               >
                                     </div>
                                     @if ($errors->has('lattes'))
                                         <span class="help-block">
@@ -155,7 +155,7 @@
                                     <div class="form-group label-floating">
                                         <label class="control-label">Profissão</label>
                                         <input type="text" class="form-control" name="profissao"
-                                               value="{{isset($dados->profissao) ? $dados->profissao : ''}}" required>
+                                               value="{{isset($dados->profissao) ? $dados->profissao : ''}}">
                                     </div>
                                     @if ($errors->has('profissao'))
                                         <span class="help-block">
@@ -171,7 +171,7 @@
                                     <div class="form-group label-floating">
                                         <label class="control-label">Instituição</label>
                                         <input type="text" class="form-control" name="instituicao"
-                                               value="{{isset($dados->instituicao) ? $dados->instituicao : ''}}" required>
+                                               value="{{isset($dados->instituicao) ? $dados->instituicao : ''}}">
                                     </div>
                                     @if ($errors->has('instituicao'))
                                         <span class="help-block">

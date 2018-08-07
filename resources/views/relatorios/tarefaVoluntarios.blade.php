@@ -3,12 +3,12 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div>
-        <h2 style="margin-top: 10mm; margin-left: 20mm;">RELATÓRIO DE VOLUNTÁRIOS DA TAREFA <br> {{$tarefa->tarefa}} <br></h2>
-        </div>
+        
+        <h2 style="margin-top: 5mm; margin-left: 35mm;">RELATÓRIO DE VOLUNTÁRIOS DA TAREFA</h2>
+        <h2 style="text-align: center;">{{$tarefa->tarefa}}</h2>
 
         <div>
-        <table style="margin: auto; margin-top: 150mm; margin-left: 20mm; margin-right: 20mm; width: 100%;">
+        <table style="margin: auto; margin-top: 10mm; margin-left: 20mm; margin-right: 20mm; width: 100%;">
         	<thead">
         		<tr>
             <th>#</th>
