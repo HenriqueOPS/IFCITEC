@@ -1,5 +1,6 @@
 @extends('relatorios.relatorio')
 
+
 @section('content')
         <h2 style=" margin-left: 250px;">RELATÓRIO DE ESCOLAS</h2>
 
@@ -16,7 +17,11 @@
   				@foreach($escolas as $escola)
   				<tr>
     				<td>{{$escola->nome_curto}}</td>
-    				<td>{{$escola->municipio}}</td> 
+    				<td>
+              @if($escola->enderecos != null)
+              {{$escola->enderecos->first()->municipio}}
+              @endif
+            </td> 
     				<td>{{$escola->email}}</td>
     				<td>{{$escola->telefone}}</td>
   				</tr>

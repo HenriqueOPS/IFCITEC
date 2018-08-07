@@ -1,5 +1,6 @@
 @extends('relatorios.relatorio')
 
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -18,10 +19,10 @@
   			<tbody>
   				@foreach($voluntarios as $id => $voluntario)
   				<tr>
-            <td>{{$id + 1}}</td>
-    				<td>{{$voluntario->nome}}</td>
-            <td>{{$voluntario->email}}</td>
-            <td>{{\App\Pessoa::find($voluntario->id)->tarefas()->first()->tarefa}}</td>
+            <td style="border-bottom:solid 1px #000;">{{$id + 1}}</td>
+    				<td style="border-bottom:solid 1px #000;">{{$voluntario->nome}}</td>
+            <td style="border-bottom:solid 1px #000;">{{$voluntario->email}}</td>
+            <td style="border-bottom:solid 1px #000;">{{\App\Pessoa::find($voluntario->id)->tarefas()->first()->tarefa}}</td>
   				</tr>
   				@endforeach
   			</tbody>	
