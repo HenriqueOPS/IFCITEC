@@ -43,7 +43,7 @@
                                     <i class="material-icons">bookmark</i>
                                 </span>
 									<div class="form-group label-floating">
-										<label class="control-label">Titulacao</label>
+										<label class="control-label">Titulação Em...</label>
 										<input type="text" class="form-control" name="titulacao"
 											   value="{{isset($dados->titulacao) ? $dados->titulacao : ''}}">
 									</div>
@@ -75,7 +75,7 @@
                                     <i class="material-icons">assignment_ind</i>
                                 </span>
 									<div class="form-group label-floating">
-										<label class="control-label">Profissao</label>
+										<label class="control-label">Profissão</label>
 										<input type="text" class="form-control" name="profissao"
 											   value="{{isset($dados->profissao) ? $dados->profissao : ''}}" required>
 									</div>
@@ -91,7 +91,7 @@
                                     <i class="material-icons">school</i>
                                 </span>
 									<div class="form-group label-floating">
-										<label class="control-label">Instituicao</label>
+										<label class="control-label">Instituição</label>
 										<input type="text" class="form-control" name="instituicao"
 											   value="{{isset($dados->instituicao) ? $dados->instituicao : ''}}" required>
 									</div>

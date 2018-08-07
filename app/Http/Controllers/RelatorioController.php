@@ -23,7 +23,6 @@ class RelatorioController extends Controller
 
 	public function escolas(){
 		$escolas = Escola::orderBy('nome_curto')->get();
-
 		return \PDF::loadView('relatorios.escolas', array('escolas' => $escolas))->stream('escolas.pdf');
 	}
 
