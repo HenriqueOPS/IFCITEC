@@ -94,6 +94,9 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 
 
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
+	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');
+
+
 
 	Route::get('/gerenciar', 'AdminController@administrarUsuarios');
 	Route::post('/gerenciar-usuario/{id}', 'AdminController@editaFuncaoUsuario')->name('editaFuncaoUsuario');
