@@ -53,49 +53,49 @@ class AdminController extends Controller
 
 		$usuarios = Pessoa::orderBy('nome')->get();
 
-		$projetos = DB::table('projeto')
-			->select('titulo', 'id')
-			->orderBy('titulo')
-			->where('edicao_id', Edicao::getEdicaoId())
-			->get()
-			->keyBy('id')
-			->toArray();
-		$numeroProjetos = count($projetos);
-		$autores = array();
-		$orientadores = array();
-		$coorientadores = array();
+        $projetos = DB::table('projeto')
+            ->select('titulo', 'id')
+            ->orderBy('titulo')
+            ->where('edicao_id', Edicao::getEdicaoId())
+            ->get()
+            ->keyBy('id')
+            ->toArray();
+        $numeroProjetos = count($projetos);
+        $autores = array();
+        $orientadores = array();
+        $coorientadores = array();
 
-		//Participantes dos projetos
-		if ($projetos) {
-			$idAutor = Funcao::where('funcao', 'Autor')->first();
-			$idOrientador = Funcao::where('funcao', 'Orientador')->first();
-			$idCoorientador = Funcao::where('funcao', 'Coorientador')->first();
+        //Participantes dos projetos
+        if ($projetos) {
+            $idAutor = Funcao::where('funcao', 'Autor')->first();
+            $idOrientador = Funcao::where('funcao', 'Orientador')->first();
+            $idCoorientador = Funcao::where('funcao', 'Coorientador')->first();
 
-			$ids = array_keys($projetos);
+            $ids = array_keys($projetos);
 
-			$autores = DB::table('escola_funcao_pessoa_projeto')
-				->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
-				->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
-				->whereIn('projeto_id', $ids)
-				->where('funcao_id', $idAutor->id)
-				->get()
-				->toArray();
+            $autores = DB::table('escola_funcao_pessoa_projeto')
+                ->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+                ->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
+                ->whereIn('projeto_id', $ids)
+                ->where('funcao_id', $idAutor->id)
+                ->get()
+                ->toArray();
 
-			$orientadores = DB::table('escola_funcao_pessoa_projeto')
-				->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
-				->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
-				->whereIn('projeto_id', $ids)
-				->where('funcao_id', $idOrientador->id)
-				->get()
-				->toArray();
+            $orientadores = DB::table('escola_funcao_pessoa_projeto')
+                ->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+                ->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
+                ->whereIn('projeto_id', $ids)
+                ->where('funcao_id', $idOrientador->id)
+                ->get()
+                ->toArray();
 
-			$coorientadores = DB::table('escola_funcao_pessoa_projeto')
-				->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
-				->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
-				->whereIn('projeto_id', $ids)->where('funcao_id', $idCoorientador->id)
-				->get()
-				->toArray();
-		}
+            $coorientadores = DB::table('escola_funcao_pessoa_projeto')
+                ->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+                ->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
+                ->whereIn('projeto_id', $ids)->where('funcao_id', $idCoorientador->id)
+                ->get()
+                ->toArray();
+        }
 
 		$comissao = DB::table('funcao_pessoa')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
@@ -125,6 +125,63 @@ class AdminController extends Controller
 		]))->withUsuarios($usuarios)->withAreas($areas);
 
 	}
+
+    public function projetos() {
+
+        $projetos = DB::table('projeto')
+            ->select('titulo', 'id')
+            ->orderBy('titulo')
+            ->where('edicao_id', Edicao::getEdicaoId())
+            ->get()
+            ->keyBy('id')
+            ->toArray();
+        $numeroProjetos = count($projetos);
+        $autores = array();
+        $orientadores = array();
+        $coorientadores = array();
+
+        //Participantes dos projetos
+        if ($projetos) {
+            $idAutor = Funcao::where('funcao', 'Autor')->first();
+            $idOrientador = Funcao::where('funcao', 'Orientador')->first();
+            $idCoorientador = Funcao::where('funcao', 'Coorientador')->first();
+
+            $ids = array_keys($projetos);
+
+            $autores = DB::table('escola_funcao_pessoa_projeto')
+                ->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+                ->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
+                ->whereIn('projeto_id', $ids)
+                ->where('funcao_id', $idAutor->id)
+                ->get()
+                ->toArray();
+
+            $orientadores = DB::table('escola_funcao_pessoa_projeto')
+                ->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+                ->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
+                ->whereIn('projeto_id', $ids)
+                ->where('funcao_id', $idOrientador->id)
+                ->get()
+                ->toArray();
+
+            $coorientadores = DB::table('escola_funcao_pessoa_projeto')
+                ->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+                ->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
+                ->whereIn('projeto_id', $ids)->where('funcao_id', $idCoorientador->id)
+                ->get()
+                ->toArray();
+        }
+
+
+        return view('admin.projetos', collect([
+            'projetos' => $projetos,
+            'autores' => $autores,
+            'orientadores' => $orientadores,
+            'coorientadores' => $coorientadores,
+            'numeroProjetos' => $numeroProjetos
+        ]));
+
+    }
 
 
 	public function dadosNivel($id)
