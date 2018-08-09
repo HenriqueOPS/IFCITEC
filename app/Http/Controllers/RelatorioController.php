@@ -26,6 +26,54 @@ class RelatorioController extends Controller
 		return \PDF::loadView('relatorios.escolas', array('escolas' => $escolas))->stream('escolas.pdf');
 	}
 
+	public function projetos(){
+		$projetos = DB::table('projeto')->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+			->select('projeto.titulo', 'projeto.id', 'escola_funcao_pessoa_projeto.escola_id')
+			->orderBy('titulo')
+			->where('projeto.edicao_id', Edicao::getEdicaoId())
+			->get()
+			->keyBy('id')
+			->toArray();
+
+		$autores = array();
+		$orientadores = array();
+		$coorientadores = array();
+
+		//Participantes dos projetos
+		if ($projetos) {
+			$idAutor = Funcao::where('funcao', 'Autor')->first();
+			$idOrientador = Funcao::where('funcao', 'Orientador')->first();
+			$idCoorientador = Funcao::where('funcao', 'Coorientador')->first();
+
+			$ids = array_keys($projetos);
+
+			$autores = DB::table('escola_funcao_pessoa_projeto')
+				->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+				->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
+				->whereIn('projeto_id', $ids)
+				->where('funcao_id', $idAutor->id)
+				->get()
+				->toArray();
+
+			$orientadores = DB::table('escola_funcao_pessoa_projeto')
+				->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+				->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
+				->whereIn('projeto_id', $ids)
+				->where('funcao_id', $idOrientador->id)
+				->get()
+				->toArray();
+
+			$coorientadores = DB::table('escola_funcao_pessoa_projeto')
+				->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+				->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
+				->whereIn('projeto_id', $ids)->where('funcao_id', $idCoorientador->id)
+				->get()
+				->toArray();
+		}
+		
+		return \PDF::loadView('relatorios.projetos', array('projetos' => $projetos,'autores' => $autores, 'orientadores' => $orientadores, 'coorientadores' => $coorientadores))->stream('escolas.pdf');
+	}
+
 	public function areas(){
 		$areas = AreaConhecimento::orderBy('area_conhecimento')->get();
 

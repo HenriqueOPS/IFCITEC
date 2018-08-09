@@ -20,6 +20,7 @@
 		background-image: url("../../public/img/relatorio.png");
 		padding-top: 30mm;
 		margin-left: 2mm;
+		margin-right: 2mm;
 		background-size:100% 100%;
     	background-attachment: fixed;
 	}
