@@ -52,6 +52,25 @@
                             </div>
                             @endif
                             @else
+
+                            @if($funcao->funcao == 'Homologador' || $funcao->funcao == 'Avaliador')
+                            @if($usuario->temFuncao($funcao->funcao, TRUE))
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="funcao[]" value="{{$funcao->id}}" checked disabled>
+                                    <span style="color: black">{{$funcao->funcao}}</span>
+                                </label>
+                            </div>
+                            @else
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="funcao[]" value="{{$funcao->id}}" disabled>
+                                    <span style="color: black">{{$funcao->funcao}}</span>
+                                </label>
+                            </div>
+                            @endif
+                            @else
+
                             @if($usuario->temFuncao($funcao->funcao, TRUE))
                             <div class="checkbox">
                                 <label>
@@ -66,6 +85,7 @@
                                     <span style="color: black">{{$funcao->funcao}}</span>
                                 </label>
                             </div>
+                            @endif
                             @endif
                             @endif
                             @endforeach

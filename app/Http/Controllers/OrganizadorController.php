@@ -37,12 +37,13 @@ class OrganizadorController extends Controller
 
 
 		$projetos = DB::table('projeto')
-			->select('titulo','id')
-			->orderBy('created_at', 'asc')
-			->where('edicao_id',Edicao::getEdicaoId())
-			->get()
-			->keyBy('id')
-			->toArray();
+            ->select('titulo', 'id')
+            ->orderBy('titulo')
+            ->where('edicao_id', Edicao::getEdicaoId())
+            ->get()
+            ->keyBy('id')
+            ->toArray();
+        $numeroProjetos = count($projetos);
 
 		$autores = array();
 		$orientadores = array();
@@ -84,7 +85,8 @@ class OrganizadorController extends Controller
 			'projetos' => $projetos,
 			'autores' => $autores,
 			'orientadores' => $orientadores,
-			'coorientadores' => $coorientadores
+			'coorientadores' => $coorientadores,
+            'numeroProjetos' => $numeroProjetos
 		]))->withEscolas($escolas);
 
     }
