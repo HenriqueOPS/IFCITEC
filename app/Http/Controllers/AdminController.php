@@ -126,7 +126,6 @@ class AdminController extends Controller
 
 	}
 
-
 	public function dadosNivel($id)
 	{ //Ajax
 		return Nivel::find($id);

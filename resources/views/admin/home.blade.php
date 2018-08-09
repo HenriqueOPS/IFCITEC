@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+
 @section('css')
 <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 @endsection
@@ -478,6 +479,20 @@
                             </td>
                             <td class="text-right">
                                 <a href="{{route('relatorioVoluntarioTarefa')}}"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>Relatório de Projetos</td>
+                            <td>
+                            <ul class="dropdown-menu">
+                               
+                                <li><a></a></li>
+                               
+                            </ul>
+                            </td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioProjetos')}}"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>
