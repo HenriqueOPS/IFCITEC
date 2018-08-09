@@ -80,6 +80,7 @@ Route::get('/relatorio/edicoes', 'RelatorioController@edicoes')->name('relatorio
 Route::get('/relatorio/funcoes/usuarios', 'RelatorioController@funcoesUsuarios')->name('relatorioFuncoesUsuarios');
 Route::get('/relatorio/voluntario/tarefa', 'RelatorioController@voluntarioTarefa')->name('relatorioVoluntarioTarefa');
 Route::get('/relatorio/tarefa/voluntarios/{id}', 'RelatorioController@tarefaVoluntarios')->name('tarefaVoluntarios');
+Route::get('/relatorio/projetos', 'RelatorioController@projetos')->name('relatorioProjetos');
 
 
 
