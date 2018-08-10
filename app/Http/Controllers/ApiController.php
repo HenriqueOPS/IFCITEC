@@ -9,61 +9,48 @@ use Illuminate\Support\Facades\DB;
 class ApiController extends Controller
 {
 
-	public function login(Request $req, PeriodosController $p) {
+    public function salvaAvaliacao(Request $req) {
 
-		$data = $req->all();
-		$res = array();
+        if($req->header('authorization') == 'bmFvbWVqdWxndWU='){
 
-		$getPessoa = Pessoa::where('email', $data['email'])->get();
+            $data = $req->all();
 
-		if($getPessoa) {
-			if (password_verify($data['senha'], $getPessoa[0]->senha)) {
+            DB::table('avaliacao')
+                ->where('projeto_id','=',$data['idProjeto'])
+                ->where('pessoa_id','=',$data['idPessoa'])
+                ->update([
+                    'nota_final' => $data['notaFinal'],
+                    'observacao' => $data['observacao'],
+                    'avaliado' => true
+                ]);
 
-				$funcoes = DB::table('funcao_pessoa')->select('funcao_id')
-					->where('pessoa_id','=', $getPessoa[0]->id)->get();
+            return response()->json('ok', 200);
+        }
 
-				dd($funcoes);
+        return response()->json('erro', 400);
 
-				$res['id'] = $getPessoa[0]->id;
-				$res['nome'] = $getPessoa[0]->nome;
-				$res['funcao'] = '';
+    }
 
-				return response()->json($res);
+    public function salvaHomologacao(Request $req) {
 
-			}else{
-				$res['result'] = 0;
-				$res['msg'] = 'Email ou senha invalidos';
-			}
-		}else{
-			$res['result'] = 0;
-			$res['msg'] = 'Email ou senha invalidos';
-		}
+        if($req->header('authorization') == 'bmFvbWVqdWxndWU='){
 
-		return response()->json($res);
+            $data = $req->all();
 
-	}
+            DB::table('revisao')
+                ->where('projeto_id','=',$data['idProjeto'])
+                ->where('pessoa_id','=',$data['idPessoa'])
+                ->update([
+                    'nota_final' => $data['notaFinal'],
+                    'observacao' => $data['observacao'],
+                    'revisado' => true
+                ]);
 
-	public function registraPresenca(Request $req) {
+            return response()->json('ok', 200);
+        }
 
+        return response()->json('erro', 400);
 
-		return 'registra-presenca';
-
-
-	}
-
-	public function projetosAvaliacao($id) {
-
-		return 'projetos-avaliacao '.$id;
-
-
-	}
-
-	public function camposAvaliacao($id) {
-		return 'campos-avaliacao '.$id;
-	}
-
-	public function salvaAvaliacao($id) {
-		return 'salva-avaliacao '.$id;
-	}
+    }
 
 }

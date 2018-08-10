@@ -21,7 +21,7 @@ class Projeto extends Model {
      * @var array
      */
     protected $fillable = [
-        'titulo', 'resumo', 'relatorio'
+        'titulo', 'resumo', 'relatorio', 'situacao_id'
     ];
 
     public function pessoas() {
@@ -54,15 +54,16 @@ class Projeto extends Model {
 
     public function getStatus() {
 
-        return "Cadastrado"; // XGH
+        $situacao = DB::table('situacao')
+            ->select('situacao')
+            ->where('id', '=', $this->situacao_id)
+            ->first();
 
-
-        $situacao = DB::table('situacao')->select('situacao')->where('id', '=', $this->id)->orderBy('count', 'desc')->first();
-        if(is_null($situacao)){
-            return "Não Revisado";
-        }else{
+        if(!is_null($situacao)){
             return $situacao->situacao;
         }
+
+        return "Cadastrado"; // XGH
 
     }
 

@@ -87,33 +87,39 @@
                     </thead>
 
                     <div>
-                        <ul class="tab-comissao nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
+                        <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
                             <li class="active">
-                                <a id="avaliador" role="tab" data-toggle="tab">
+                                <a id="situacao" class="tab-projetos" role="tab" data-toggle="tab">
                                     <i class="material-icons">assignment_ind</i>
                                     Todos
                                 </a>
                             </li>
                             <li>
-                                <a id="homologador" role="tab" data-toggle="tab">
+                                <a id="1" class="tab-projetos" role="tab" data-toggle="tab">
+                                    <i class="material-icons">description</i>
+                                    Cadastrados
+                                </a>
+                            </li>
+                            <li>
+                                <a id="2" class="tab-projetos" role="tab" data-toggle="tab">
                                     <i class="material-icons">description</i>
                                     Não Homologados
                                 </a>
                             </li>
                             <li>
-                                <a role="tab" data-toggle="tab">
+                                <a id="3" class="tab-projetos" role="tab" data-toggle="tab">
                                     <i class="material-icons">assignment_ind</i>
                                     Homologados
                                 </a>
                             </li>
                             <li>
-                                <a role="tab" data-toggle="tab">
+                                <a id="4" class="tab-projetos" role="tab" data-toggle="tab">
                                     <i class="material-icons">description</i>
                                     Não Avaliados
                                 </a>
                             </li>
                             <li>
-                                <a role="tab" data-toggle="tab">
+                                <a id="5" class="tab-projetos" role="tab" data-toggle="tab">
                                     <i class="material-icons">description</i>
                                     Avaliados
                                 </a>
@@ -121,9 +127,9 @@
                         </ul>
 
                         <tbody id="6">
-                        @foreach($projetos as $i => $projeto)
+                        @foreach($projetos as $projeto)
 
-                            <div id="6" class="project">
+                            <div id="6" class="project situacao-{{$projeto->situacao_id}}">
                                 <div class="project-title">
                                     <span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
                                 </div>
@@ -147,6 +153,8 @@
                                         @endif
                                     @endforeach
                                 </div>
+
+
 
                                 <div class="td-actions text-right">
                                     <a href=""><i class="material-icons blue-icon">remove_red_eye</i></a>
@@ -172,9 +180,43 @@
 
 
 @section('js')
+<script src="{{asset('js/main.js')}}"></script>
+<script type="application/javascript">
+$(document).ready(function () {
 
-    <script src="{{asset('js/main.js')}}"></script>
+    $('.tab-projetos').click(function (e) {
+        var target = $(this)[0];
 
+        console.log('div.project.situacao-'+target.id);
+        if(target.id=='situacao'){
+            showAll();
+        }else{
+            hideAll();
+
+            $('div.project.situacao-'+target.id).show();
+        }
+    });
+});
+
+function hideAll(){
+    $('div.project.situacao-1').hide();
+    $('div.project.situacao-2').hide();
+    $('div.project.situacao-3').hide();
+    $('div.project.situacao-4').hide();
+    $('div.project.situacao-5').hide();
+    $('div.project.situacao-6').hide();
+}
+
+function showAll(){
+    $('div.project.situacao-1').show();
+    $('div.project.situacao-2').show();
+    $('div.project.situacao-3').show();
+    $('div.project.situacao-4').show();
+    $('div.project.situacao-5').show();
+    $('div.project.situacao-6').show();
+}
+
+</script>
 
 @endsection
 

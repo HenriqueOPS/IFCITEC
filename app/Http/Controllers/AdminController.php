@@ -129,12 +129,13 @@ class AdminController extends Controller
     public function projetos() {
 
         $projetos = DB::table('projeto')
-            ->select('titulo', 'id')
+            ->select('titulo', 'id', 'situacao_id')
             ->orderBy('titulo')
             ->where('edicao_id', Edicao::getEdicaoId())
             ->get()
             ->keyBy('id')
             ->toArray();
+
         $numeroProjetos = count($projetos);
         $autores = array();
         $orientadores = array();

@@ -692,16 +692,27 @@ class ProjetoController extends Controller
     }
 
     public function vinculaHomologador(Request $request){
-        DB::table('revisao')->where('projeto_id', '=', $request->projeto_id)->delete();
+
+        DB::table('revisao')
+            ->where('projeto_id', '=', $request->projeto_id)
+            ->delete();
+
+        Projeto::find($request->projeto_id)
+            ->update(['situacao_id' => 1]); //cadastrado
+
         $revisores = explode(',',$request->revisores_id);
         if($revisores[0] != '') {
             foreach ($revisores as $revisor) {
                 $revisao = new Revisao();
                 $revisao->projeto_id = $request->projeto_id;
                 $revisao->pessoa_id = $revisor;
-                $revisao->situacao_id = 4;
+                $revisao->nota_final = 0;
+                $revisao->revisado = false;
                 $revisao->save();
             }
+
+            Projeto::find($request->projeto_id)
+                ->update(['situacao_id' => 2]); //não homologado
         }
 
         return redirect('home');
@@ -740,9 +751,6 @@ class ProjetoController extends Controller
                         ->orderBy('pessoa.titulacao')
                         ->get();
 
-
-
-
         $avaliadoresDoProjeto = DB::table('avaliacao')->select('pessoa_id')->where('projeto_id', '=', $id)->get();
 
         $avaliadoresValue = "";
@@ -763,7 +771,12 @@ class ProjetoController extends Controller
 
     public function vinculaAvaliador(Request $request)
     {
-        DB::table('avaliacao')->where('projeto_id', '=', $request->projeto_id)->delete();
+        DB::table('avaliacao')
+            ->where('projeto_id', '=', $request->projeto_id)
+            ->delete();
+        Projeto::find($request->projeto_id)
+            ->update(['situacao_id' => 3]); //Homologado
+
         $avaliadores = explode(',', $request->avaliadores_id);
         if ($avaliadores[0] != '') {
             foreach ($avaliadores as $avaliador) {
@@ -772,14 +785,15 @@ class ProjetoController extends Controller
                 $avaliacao->projeto_id = $request->projeto_id;
                 $avaliacao->nota_final = 0;
                 $avaliacao->observacao = '';
+                $avaliacao->avaliado = false;
                 $avaliacao->save();
             }
+
+            Projeto::find($request->projeto_id)
+                ->update(['situacao_id' => 4]); //Não Avaliado
         }
 
         return redirect('home');
     }
-
-
-
 
 }
