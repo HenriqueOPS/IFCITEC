@@ -26,10 +26,7 @@
 	}
 	
 	hr {
-      border: 1px solid #000;
-      color: #000;
-      background-color: #000;
-      height: 1px;
+      border: 1pt solid #000;
     }
     
 	}
