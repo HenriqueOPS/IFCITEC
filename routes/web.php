@@ -35,12 +35,8 @@ Route::get('/', function () {
 });
 
 // API
-Route::post('/api/login', 'ApiController@login');
-Route::post('/api/registra-presenca', 'ApiController@registraPresenca');
-
-Route::get('/api/projetos-avaliacao/{id}', 'ApiController@projetosAvaliacao');
-Route::get('/api/campos-avaliacao/{id}', 'ApiController@camposAvaliacao');
-Route::get('/api/salva-avaliacao/{id}', 'ApiController@salvaAvaliacao');
+Route::post('/api/salva-homologacao/', 'ApiController@salvaHomologacao');
+Route::post('/api/salva-avaliacao/', 'ApiController@salvaAvaliacao');
 
 
 Auth::routes();

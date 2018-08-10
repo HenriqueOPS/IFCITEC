@@ -16,11 +16,11 @@
                     <div id="projeto-show">
                         <div class="col-md-7 col-md-offset-1">
                             <div id="status">
-                                @if($projeto->getStatus() == "Não Revisado")
+                                @if($projeto->getStatus() == "Não Homologado" || $projeto->getStatus() == "Não Avaliado")
                                     <span class="label label-info">{{$projeto->getStatus()}}</span>
-                                @elseif ($projeto->getStatus() == "Homologado")
+                                @elseif ($projeto->getStatus() == "Homologado" || $projeto->getStatus() == "Avaliado")
                                     <span class="label label-success">{{$projeto->getStatus()}}</span>
-                                @elseif ($projeto->getStatus() == "Reprovado")
+                                @elseif ($projeto->getStatus() == "Não Compareceu")
                                     <span class="label label-danger">{{$projeto->getStatus()}}</span>
                                 @else
                                     <span class="label label-default">{{$projeto->getStatus()}}</span>
@@ -41,7 +41,17 @@
                             @endif
                         </div>
                         <div class="col-md-3">
-                            @if(Auth::user()->temFuncao('Avaliador'))
+                            @if(Auth::user()->temFuncao('Avaliador') || Auth::user()->temFuncao('Homologador'))
+
+                                @if((\App\Edicao::consultaPeriodo('Homologação')))
+
+                                    <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScLFxQtDdtnOc2TMBPabNIRRlsk28AGMLOpeOrEDBmz0slg8g/viewform?usp=pp_url&entry.1142594772={{Auth::user()->nome}}&entry.1360361282={{Auth::user()->email}}&entry.1378712210={{Auth::user()->cpf}}&entry.2040078585={{$projeto->titulo}}&entry.1001736854={{$projeto->id}}&entry.442913637={{$projeto->areaConhecimento->area_conhecimento}}&entry.529425973" id="novo-integrante" class="btn btn-success">
+                                        Homologar
+                                    </a>
+
+                                @endif
+
+
                                 @if($projeto->getStatus() != "Avaliado")
                                     @if($projeto->nivel->nivel == "Ensino Fundamental")
 
