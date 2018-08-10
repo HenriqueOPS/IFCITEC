@@ -6,7 +6,7 @@
         <h2 style="margin-top: 5mm; margin-left: 70mm;">RELATÓRIO DE NÍVEIS</h2>
 
         <table style="margin-left: 25mm; margin-top: 10mm;">
-        	<thead">
+        	<thead>
         		<tr>
     				<th>Nível</th>
     				<th>Descrição</th> 
