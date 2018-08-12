@@ -59,6 +59,10 @@ body{
     margin-top: 25px;
 }
 
+.list-projects .project .actions .status{
+    margin-bottom: 10px;
+}
+
 
 .resumo{
     text-align: justify;
