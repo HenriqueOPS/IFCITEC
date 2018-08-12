@@ -401,45 +401,15 @@
 <script type="text/javascript" src="{{asset('js/selectize.min.js')}}"></script>
 <script type="text/javascript">
 $(document).ready(function () {
-/*
-    //salva o projeto via ajax
+
     let frm = $('#cadastroProjeto');
 
     frm.submit(function(event) {
 
         $('#loadCadastro').removeClass('hide');
 
-        //dispara a requisição
-        $.ajax({
-            type: frm.attr('method'),
-            url: frm.attr('action'),
-            data: frm.serialize(),
-            success: function (data) {
-                console.log('Projeto cadastrado com Sucesso!');
-                console.log(data);
-
-                setTimeout(function () {
-                    $('#loadCadastro').addClass('hide');
-                }, 2000);
-
-
-            },
-            error: function (data) {
-                console.log('An error occurred.');
-                console.log(data.responseJSON);
-
-                setTimeout(function () {
-                    $('#loadCadastro').addClass('hide');
-                }, 2000);
-
-            },
-        });
-
-        event.preventDefault();
-
-
     });
-*/
+
 
     $('#resumo').keyup(function () {
         $('#total-char').html($('#resumo').val().length);

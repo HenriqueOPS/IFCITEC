@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Projeto;
 use Illuminate\Http\Request;
 use App\Pessoa;
 use Illuminate\Support\Facades\DB;
@@ -9,61 +10,58 @@ use Illuminate\Support\Facades\DB;
 class ApiController extends Controller
 {
 
-	public function login(Request $req, PeriodosController $p) {
+    public function salvaAvaliacao(Request $req) {
 
-		$data = $req->all();
-		$res = array();
+        if($req->header('authorization') == 'bmFvbWVqdWxndWU='){
 
-		$getPessoa = Pessoa::where('email', $data['email'])->get();
+            $data = $req->all();
 
-		if($getPessoa) {
-			if (password_verify($data['senha'], $getPessoa[0]->senha)) {
+            DB::table('avaliacao')
+                ->where('projeto_id','=',$data['idProjeto'])
+                ->where('pessoa_id','=',$data['idPessoa'])
+                ->update([
+                    'nota_final' => $data['notaFinal'],
+                    'observacao' => $data['observacao'],
+                    'avaliado' => true
+                ]);
 
-				$funcoes = DB::table('funcao_pessoa')->select('funcao_id')
-					->where('pessoa_id','=', $getPessoa[0]->id)->get();
+            //verifica se o projeto já foi avaliado por todos avaliadores
+            $cont = DB::table('avaliacao')
+                ->select('id')
+                ->where('projeto_id','=',$data['idProjeto'])
+                ->where('avaliado','=',false)
+                ->get();
 
-				dd($funcoes);
+            if($cont->count() == 0)
+                Projeto::find($data['idProjeto'])->update(['situacao_id' => 5]);
 
-				$res['id'] = $getPessoa[0]->id;
-				$res['nome'] = $getPessoa[0]->nome;
-				$res['funcao'] = '';
+            return response()->json('ok', 200);
+        }
 
-				return response()->json($res);
+        return response()->json('erro', 400);
 
-			}else{
-				$res['result'] = 0;
-				$res['msg'] = 'Email ou senha invalidos';
-			}
-		}else{
-			$res['result'] = 0;
-			$res['msg'] = 'Email ou senha invalidos';
-		}
+    }
 
-		return response()->json($res);
+    public function salvaHomologacao(Request $req) {
 
-	}
+        if($req->header('authorization') == 'bmFvbWVqdWxndWU='){
 
-	public function registraPresenca(Request $req) {
+            $data = $req->all();
 
+            DB::table('revisao')
+                ->where('projeto_id','=',$data['idProjeto'])
+                ->where('pessoa_id','=',$data['idPessoa'])
+                ->update([
+                    'nota_final' => $data['notaFinal'],
+                    'observacao' => $data['observacao'],
+                    'revisado' => true
+                ]);
 
-		return 'registra-presenca';
+            return response()->json('ok', 200);
+        }
 
+        return response()->json('erro', 400);
 
-	}
-
-	public function projetosAvaliacao($id) {
-
-		return 'projetos-avaliacao '.$id;
-
-
-	}
-
-	public function camposAvaliacao($id) {
-		return 'campos-avaliacao '.$id;
-	}
-
-	public function salvaAvaliacao($id) {
-		return 'salva-avaliacao '.$id;
-	}
+    }
 
 }

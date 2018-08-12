@@ -6,6 +6,8 @@ use App\Endereco;
 use App\Funcao;
 use App\Pessoa;
 use App\Edicao;
+use App\Projeto;
+use function foo\func;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -31,12 +33,57 @@ class ComissaoAvaliadoraController extends Controller
      */
     public function index()
     {
-        if (Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador') ||
+
+        if ((Edicao::consultaPeriodo('Homologação') &&
+            Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Homologador'))) {
+
+            $idOk = DB::table('revisao')
+                ->select('revisao.projeto_id')
+                ->where('pessoa_id', '=', Auth::user()->id)
+                ->where('revisado','=',true)
+                ->get()
+                ->toArray();
+
+            $idOk = array_column($idOk, 'projeto_id');
+
+            $projetos = Projeto::select('projeto.id', 'projeto.titulo', 'projeto.situacao_id')
+                ->join('revisao', function($query){
+                    $query->on('projeto.id','=','revisao.projeto_id');
+                    $query->where('revisao.pessoa_id','=',Auth::user()->id);
+                })
+                ->orderBy('revisao.revisado','asc')
+                ->get();
+
+            return view('comissao.home', compact('idOk'))->withProjetos($projetos);
+
+        } elseif (Edicao::consultaPeriodo('Avaliação') &&
+                  Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador')){
+
+            $idOk = DB::table('avaliacao')
+                ->select('avaliacao.projeto_id')
+                ->where('pessoa_id', '=', Auth::user()->id)
+                ->where('avaliado','=',true)
+                ->get()
+                ->toArray();
+
+            $idOk = array_column($idOk, 'projeto_id');
+
+            $projetos = Projeto::select('projeto.id', 'projeto.titulo', 'projeto.situacao_id')
+                ->join('avaliacao', function($query){
+                    $query->on('projeto.id','=','avaliacao.projeto_id');
+                    $query->where('avaliacao.pessoa_id','=',Auth::user()->id);
+                })
+                ->orderBy('avaliacao.avaliado','asc')
+                ->get();
+
+            return view('comissao.home', compact('idOk'))->withProjetos($projetos);
+
+
+        }elseif (Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador') ||
             Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Homologador')) {
             return view('inscricaoEnviada');
         } else{
             //@TODO: redirecionar de acordo com a função e o período
-
             return redirect()->route('comissaoAvaliadora');
         }
     }
@@ -60,31 +107,36 @@ class ComissaoAvaliadoraController extends Controller
                                     ->get()
                                     ->toArray();
 
-        $projetosNiveis = DB::table('nivel')->join('projeto', 'nivel.id', '=', 'projeto.nivel_id')
-                                    ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
-                                    ->select('nivel.nivel', 'nivel.id')
-                                    ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
-                                    ->where('pessoa_id', Auth::user()->id)
-                                    ->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id)
-                                    ->orWhere('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id)
-                                    ->orderBy('nivel.id', 'asc')
-                                    ->get()
-                                    ->keyBy('id')
-                                    ->toArray();
+        $projetosNiveis = DB::table('nivel')
+                            ->join('projeto', 'nivel.id', '=', 'projeto.nivel_id')
+                            ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+                            ->select('nivel.nivel', 'nivel.id')
+                            ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
+                            ->where('pessoa_id', Auth::user()->id)
+                            //cria a condição entre parenteses
+                            ->where(function ($q){
+                                //Coorientador HARD CODED
+                                $q->where('escola_funcao_pessoa_projeto.funcao_id', 6);
+                                //Orientador HARD CODED
+                                $q->orWhere('escola_funcao_pessoa_projeto.funcao_id', 7);
+                            })
+                            ->orderBy('nivel.id', 'asc')
+                            ->get()
+                            ->keyBy('id')
+                            ->toArray();
                                     
         $projetosNiveis = array_keys($projetosNiveis);
 
         foreach ($niveis as $n) {
             if (!in_array($n->id, $projetosNiveis)) {
-                    if(! isset($nivel)){
+                if(!isset($nivel)){ //inicia o array
+                    $nivel[] = $n;
+                }else{
+                    $array = array_pluck($nivel, 'id');
+                    if(!in_array($n->id, $array)){
                         $nivel[] = $n;
                     }
-                   else{
-                        $array = array_pluck($nivel, 'id');
-                        if(! in_array($n->id, $array)){
-                            $nivel[] = $n;
-                        }
-                    }
+                }
             }
         }
 
@@ -213,13 +265,21 @@ class ComissaoAvaliadoraController extends Controller
 			->get()
 			->toArray();
 
-        $projetosNiveis = DB::table('nivel')->join('projeto', 'nivel.id', '=', 'projeto.nivel_id')
+
+
+        $projetosNiveis = DB::table('nivel')
+            ->join('projeto', 'nivel.id', '=', 'projeto.nivel_id')
             ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
             ->select('nivel.nivel', 'nivel.id')
             ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
             ->where('pessoa_id', $comissaoEdicao->pessoa_id)
-            ->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id)
-            ->orWhere('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id)
+            //cria a condição entre parenteses
+            ->where(function ($q){
+                //Coorientador HARD CODED
+                $q->where('escola_funcao_pessoa_projeto.funcao_id', 6);
+                //Orientador HARD CODED
+                $q->orWhere('escola_funcao_pessoa_projeto.funcao_id', 7);
+            })
             ->orderBy('nivel.id', 'asc')
             ->get()
             ->keyBy('id')
