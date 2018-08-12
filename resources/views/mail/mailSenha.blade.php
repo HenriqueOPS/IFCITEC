@@ -248,7 +248,7 @@
 			<div class="content">
 
 				<!-- START CENTERED WHITE CONTAINER -->
-				
+
 				<table class="main">
 
 					<!-- START MAIN CONTENT AREA -->
@@ -263,9 +263,9 @@
 								</tr>
 								<tr>
 									<td>
-										<p>Você está recebendo esse e-mail porque nós recebemos um pedido de redefinição de senha da sua conta.</p>
+										<p>Você está recebendo esse e-mail pois recebemos um pedido de redefinição de senha da sua conta.</p>
 										<br>
-										<p>Se você não quiser redefinir sua senha, ignore esse e-mail.</p>
+										<p>Se você não deseja redefinir sua senha, ignore este e-mail.</p>
 									</td>
 								</tr>
 								<tr>
@@ -291,7 +291,7 @@
 									<td>
 										<br>
 										<p>Um abraço,</p>
-										<p>Comissão Origanizadora - IFCITEC</p>
+										<p>Comissão Organizadora - IFCITEC</p>
 									</td>
 								</tr>
 							</table>
@@ -306,7 +306,7 @@
 					<table border="0" cellpadding="0" cellspacing="0">
 						<tr>
 							<td class="content-block">
-								<span class="apple-link">IFICTEC - IFRS Câmpus Canoas</span>
+								<span class="apple-link">IFCITEC - IFRS Câmpus Canoas</span>
 							</td>
 						</tr>
 					</table>

@@ -35,12 +35,8 @@ Route::get('/', function () {
 });
 
 // API
-Route::post('/api/login', 'ApiController@login');
-Route::post('/api/registra-presenca', 'ApiController@registraPresenca');
-
-Route::get('/api/projetos-avaliacao/{id}', 'ApiController@projetosAvaliacao');
-Route::get('/api/campos-avaliacao/{id}', 'ApiController@camposAvaliacao');
-Route::get('/api/salva-avaliacao/{id}', 'ApiController@salvaAvaliacao');
+Route::post('/api/salva-homologacao/', 'ApiController@salvaHomologacao');
+Route::post('/api/salva-avaliacao/', 'ApiController@salvaAvaliacao');
 
 
 Auth::routes();
@@ -101,6 +97,8 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 
 
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
+	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');
+
 
 	Route::get('/gerenciar', 'AdminController@administrarUsuarios');
 	Route::post('/gerenciar-usuario/{id}', 'AdminController@editaFuncaoUsuario')->name('editaFuncaoUsuario');
@@ -176,6 +174,8 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
     //vincula Avaliador
     Route::get('/projeto/{id}/vinculaAvaliador/', 'ProjetoController@showFormVinculaAvaliador')->name('vinculaAvaliador');
     Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')->name('vinculaAvaliadorPost');
+
+    Route::get('/projeto/{id}/status/', 'ProjetoController@statusProjeto')->name('statusProjeto'); //Ajax
 
 });
 
