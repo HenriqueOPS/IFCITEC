@@ -72,7 +72,7 @@
                                 <input type="submit" class="btn btn-success" value="SALVAR">
                             </form>
                             <div class="text-center">
-                                <a href="{{route('home')}}" class="btn btn-default">Voltar</a>
+                                <a href="{{route('administrador.projetos')}}" class="btn btn-default">Voltar</a>
                             </div>
                         </div>
                         <div class="col-md-3">
