@@ -6,6 +6,8 @@ use App\Endereco;
 use App\Funcao;
 use App\Pessoa;
 use App\Edicao;
+use App\Projeto;
+use function foo\func;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -31,12 +33,57 @@ class ComissaoAvaliadoraController extends Controller
      */
     public function index()
     {
-        if (Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador') ||
+
+        if ((Edicao::consultaPeriodo('Homologação') &&
+            Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Homologador'))) {
+
+            $idOk = DB::table('revisao')
+                ->select('revisao.projeto_id')
+                ->where('pessoa_id', '=', Auth::user()->id)
+                ->where('revisado','=',true)
+                ->get()
+                ->toArray();
+
+            $idOk = array_column($idOk, 'projeto_id');
+
+            $projetos = Projeto::select('projeto.id', 'projeto.titulo', 'projeto.situacao_id')
+                ->join('revisao', function($query){
+                    $query->on('projeto.id','=','revisao.projeto_id');
+                    $query->where('revisao.pessoa_id','=',Auth::user()->id);
+                })
+                ->orderBy('revisao.revisado','asc')
+                ->get();
+
+            return view('comissao.home', compact('idOk'))->withProjetos($projetos);
+
+        } elseif (Edicao::consultaPeriodo('Avaliação') &&
+                  Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador')){
+
+            $idOk = DB::table('avaliacao')
+                ->select('avaliacao.projeto_id')
+                ->where('pessoa_id', '=', Auth::user()->id)
+                ->where('avaliado','=',true)
+                ->get()
+                ->toArray();
+
+            $idOk = array_column($idOk, 'projeto_id');
+
+            $projetos = Projeto::select('projeto.id', 'projeto.titulo', 'projeto.situacao_id')
+                ->join('avaliacao', function($query){
+                    $query->on('projeto.id','=','avaliacao.projeto_id');
+                    $query->where('avaliacao.pessoa_id','=',Auth::user()->id);
+                })
+                ->orderBy('avaliacao.avaliado','asc')
+                ->get();
+
+            return view('comissao.home', compact('idOk'))->withProjetos($projetos);
+
+
+        }elseif (Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador') ||
             Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Homologador')) {
             return view('inscricaoEnviada');
         } else{
             //@TODO: redirecionar de acordo com a função e o período
-
             return redirect()->route('comissaoAvaliadora');
         }
     }
@@ -225,7 +272,7 @@ class ComissaoAvaliadoraController extends Controller
             ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
             ->select('nivel.nivel', 'nivel.id')
             ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
-            ->where('pessoa_id', Auth::user()->id)
+            ->where('pessoa_id', $comissaoEdicao->pessoa_id)
             //cria a condição entre parenteses
             ->where(function ($q){
                 //Coorientador HARD CODED

@@ -91,11 +91,7 @@
 								<li><a href="{{ route('autor') }}">Projeto</a></li>
 
 								@if(\App\Edicao::consultaPeriodo('Comissão') || Auth::user()->temFuncao('Administrador'))
-									@if((Auth::user()->temFuncao('Avaliador') || Auth::user()->temFuncao('Homologador')))
-										<li><a href="{{route('comissaoHome')}}">Comissão Avaliadora</a></li>
-									@else
-										<li><a href="{{route('comissao')}}">Comissão Avaliadora</a></li>
-									@endif
+									<li><a href="{{route('comissao')}}">Comissão Avaliadora</a></li>
 								@endif
 
 								@if(\App\Edicao::consultaPeriodo('Voluntário') || Auth::user()->temFuncao('Administrador'))
