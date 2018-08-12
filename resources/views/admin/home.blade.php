@@ -51,7 +51,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="dashboard" id="6" class="tab" role="tab" data-toggle="tab">
+                    <a href="{{route('administrador.projetos')}}">
                         <i class="material-icons">list_alt</i>
                         Listar Projetos
                     </a>
@@ -302,44 +302,6 @@
                         
                             </td>
                         </tr>
-                        @endforeach
-                    </tbody>
-
-                    <thead id="6">
-                    <div id="6">
-                        <h5><b>Número de projetos: {{$numeroProjetos}} </b></h5>
-                    </div>
-                    </thead>
-
-                    <tbody id="6">
-                        @foreach($projetos as $i => $projeto)
-
-                        <div id="6" class="project">
-                        <div class="project-title">
-                             <span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
-                        </div>
-                        <div class="project-info">
-                            Integrantes:
-                            @foreach ($autores as $autor)
-								@if($autor->projeto_id == $projeto->id)
-								{{$autor->nome}},
-								@endif
-                            @endforeach
-
-                            @foreach ($orientadores as $orientador)
-								@if($orientador->projeto_id == $projeto->id)
-								{{$orientador->nome}},
-								@endif
-                            @endforeach
-
-                            @foreach($coorientadores as $coorientador)
-								@if($coorientador->projeto_id == $projeto->id)
-								{{$coorientador->nome}},
-								@endif
-                            @endforeach
-                        </div>
-                        </div>
-
                         @endforeach
                     </tbody>
 

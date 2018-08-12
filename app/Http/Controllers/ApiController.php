@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Projeto;
 use Illuminate\Http\Request;
 use App\Pessoa;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,16 @@ class ApiController extends Controller
                     'observacao' => $data['observacao'],
                     'avaliado' => true
                 ]);
+
+            //verifica se o projeto já foi avaliado por todos avaliadores
+            $cont = DB::table('avaliacao')
+                ->select('id')
+                ->where('projeto_id','=',$data['idProjeto'])
+                ->where('avaliado','=',false)
+                ->get();
+
+            if($cont->count() == 0)
+                Projeto::find($data['idProjeto'])->update(['situacao_id' => 5]);
 
             return response()->json('ok', 200);
         }

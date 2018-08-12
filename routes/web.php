@@ -93,7 +93,6 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');
 
 
-
 	Route::get('/gerenciar', 'AdminController@administrarUsuarios');
 	Route::post('/gerenciar-usuario/{id}', 'AdminController@editaFuncaoUsuario')->name('editaFuncaoUsuario');
 	Route::get('/gerenciar/usuario/{id}', 'AdminController@editarFuncaoUsuario')->name('editarFuncaoUsuario');
@@ -168,6 +167,8 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
     //vincula Avaliador
     Route::get('/projeto/{id}/vinculaAvaliador/', 'ProjetoController@showFormVinculaAvaliador')->name('vinculaAvaliador');
     Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')->name('vinculaAvaliadorPost');
+
+    Route::get('/projeto/{id}/status/', 'ProjetoController@statusProjeto')->name('statusProjeto'); //Ajax
 
 });
 
