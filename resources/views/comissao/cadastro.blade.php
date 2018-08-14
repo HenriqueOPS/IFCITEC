@@ -102,12 +102,12 @@
 									@endif
 								</div>
                                 <h4>Selecione as áreas do conhecimento que gostaria de avaliar/homologar, de acordo com o nível:</h4>
-                                @if(is_array($nivel))
-                                @foreach($nivel as $n)
+                                @if(is_array($niveis))
+                                @foreach($niveis as $n)
                                     <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
                                       <p>Nível {{$n->nivel}}:</p>
                                     </div>
-                                    @foreach($areas as $area)
+                                    @foreach($areasConhecimento as $area)
                                     @if($area->nivel_id == $n->id)
 
                                         <div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">
@@ -128,7 +128,7 @@
                                 	<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">        
                                       <p>Nível {{$nivel->nivel}}:</p>
                                     </div>
-                                    @foreach($areas as $area)
+                                    @foreach($areasConhecimento as $area)
                                     @if($area->nivel_id == $nivel->id)
 
                                         <div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">
