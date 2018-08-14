@@ -8,21 +8,27 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\MailVoluntario;
+use App\Mail\MailVinculaProjeto;
 use Illuminate\Support\Facades\Auth;
 
-class MailVoluntarioJob implements ShouldQueue
+
+class MailVinculaProjetoJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $email;
+    public $nome;
+    public $titulo;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($email, $nome, $titulo)
     {
-        //
+        $this->email = $email;
+        $this->nome = $nome;
+        $this->titulo = $titulo;
     }
 
     /**
@@ -33,6 +39,6 @@ class MailVoluntarioJob implements ShouldQueue
     public function handle()
     {
         Mail::to($this->email)
-            ->send(new MailVoluntario($this->nome, $this->titulo));
+            ->send(new MailVinculaProjeto($this->email, $this->nome, $this->titulo));
     }
 }

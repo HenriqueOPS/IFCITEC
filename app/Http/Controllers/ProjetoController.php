@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\MailVinculaProjetoJob;
+use App\Mail\MailVinculaProjeto;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ProjetoRequest;
 use Illuminate\Http\Request;
@@ -720,6 +722,17 @@ class ProjetoController extends Controller
                     $revisao->nota_final = 0;
                     $revisao->revisado = false;
                     $revisao->save();
+
+                    //dados projeto
+                    $projeto = Projeto::find($request->projeto_id);
+
+                    //homologador
+                    $pessoa = Pessoa::find($revisao->pessoa_id);
+
+                    $emailJob = (new MailVinculaProjetoJob($pessoa->email, $pessoa->nome, $projeto->titulo))
+                        ->delay(\Carbon\Carbon::now()->addSeconds(60));
+                    dispatch($emailJob);
+
                 }
             }
 
