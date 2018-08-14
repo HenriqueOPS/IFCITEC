@@ -59,6 +59,10 @@ body{
     margin-top: 25px;
 }
 
+.list-projects .project .actions .status{
+    margin-bottom: 10px;
+}
+
 
 .resumo{
     text-align: justify;
@@ -140,10 +144,12 @@ body{
 
 
 #loadCadastro{
-    width: 100%;
+    width: 100vw;
     margin: 0;
-    height: 1750px;
-    position: absolute;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
     display: flex;
     align-items: center;
     justify-content: center;
