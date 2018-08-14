@@ -12,9 +12,7 @@
           <tr>
               <th style="margin-left: 3pt; border-bottom:solid 1pt #000;">Município: </th>
               <td style="margin-left: 3pt; border-bottom:solid 1pt #000;">
-              @if($escola->enderecos)
-                {{$escola->enderecos->first()->municipio}}
-              @endif
+                {{$escola->municipio}}
               </td>
            </tr>
 
@@ -31,21 +29,18 @@
            <tr>
               <th style="margin-left: 3pt; border-bottom:solid 1pt #000;">CEP: </th>
               <td style="margin-left: 3pt; border-bottom:solid 1pt #000;">
-                @if($escola->enderecos)
-                {{$escola->enderecos->first()->cep}}
-                @endif
+                {{$escola->cep}}
               </td>
            </tr>
 
            <tr>
               <th style="margin-left: 3pt; border-bottom:solid 1pt #000;">Endereço: </th>
               <td style="margin-left: 3pt; border-bottom:solid 1pt #000;">
-                @if($escola->enderecos)
-                {{$escola->enderecos->first()->endereco}}, {{$escola->enderecos->first()->numero}}
-                @endif
+                {{$escola->endereco}}, {{$escola->numero}}
               </td>
            </tr>
         	
 		  </table> 
+      <br>
       @endforeach
 @endsection

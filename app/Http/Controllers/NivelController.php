@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Nivel;
+use App\Edicao;
 use Illuminate\Support\Facades\DB;
 
 class NivelController extends Controller {
@@ -88,7 +89,13 @@ class NivelController extends Controller {
         if(!($nivel instanceof Nivel)){
             abort(404);
         }
-        $areasConhecimento = DB::table('area_conhecimento')->select('area_conhecimento','id')->where('nivel_id', $nivel->id)->get();
+        $areasConhecimento = DB::table('area_edicao')
+            ->select(['area_conhecimento.id','area_conhecimento.area_conhecimento'])
+            ->where('edicao_id', '=',Edicao::getEdicaoId())
+            ->where('nivel_id', $nivel->id)
+            ->join('area_conhecimento','area_edicao.area_id','=','area_conhecimento.id')
+            ->get();
+        
         return response()->json($areasConhecimento, 200);
     }
 
