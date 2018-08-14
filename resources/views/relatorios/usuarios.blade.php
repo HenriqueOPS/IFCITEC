@@ -21,13 +21,11 @@
         <table style="margin-right: 3pt; margin-left: 3pt; width:100%; border: 1pt solid black; ">
         	<thead>
         		<tr>
-    				<th>Autores</th> 
-            <th>Orientadores</th> 
-    				<th>Coorientadores</th>
+    				<th>Autores</th>
   				</tr>
         	</thead>
   			<tbody>
-  				<tr>
+  			<tr>
             <td>
             @foreach($autores as $autor)
             @if($autor->edicao_id == $edicao->id)
@@ -37,76 +35,120 @@
             @endif
             @endforeach
             </td> 
-
+            </tr>		
+  			</tbody>	
+  
+		  </table>
+        <br>
+        <table style="margin-right: 3pt; margin-left: 3pt; width:100%; border: 1pt solid black; ">
+            <thead>
+                <tr>
+                    <th>Orientadores</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
             <td>
             @foreach($orientadores as $orientador)
             @if($orientador->edicao_id == $edicao->id)
-            {{$orientador->nome}}
+                    {{$orientador->nome}}
             <br>
             <hr>
             @endif
             @endforeach
             </td> 
-
+            </tr>       
+            </tbody>    
+  
+          </table>
+        <br>
+        <table style="margin-right: 3pt; margin-left: 3pt; width:100%; border: 1pt solid black; ">
+            <thead>
+                <tr>
+                    <th>Coorientadores</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
             <td>
             @foreach($coorientadores as $coorientador)
             @if($coorientador->edicao_id == $edicao->id)
-            {{$coorientador->nome}}
-            <br>
-            <hr>
-            @endif
-            @endforeach
-            </td>
-          </tr>
-    				
-  			</tbody>	
-  
-		    </table>
-        <br>
-        <table style="margin-right: 3pt; margin-left: 3pt; width:100%; border: 1pt solid black; ">
-          <thead>
-            <tr>
-            <th>Voluntários</th> 
-            <th>Homologadores</th> 
-            <th>Avaliadores</th>
-          </tr>
-          </thead>
-        <tbody>
-          <tr>
-            <td>
-            @foreach($voluntarios as $voluntario)
-            @if($voluntario->edicao_id == $edicao->id)
-            {{$voluntario->nome}}
+                    {{$coorientador->nome}}
             <br>
             <hr>
             @endif
             @endforeach
             </td> 
-
+            </tr>       
+            </tbody>    
+  
+          </table>
+        <br>
+        <table style="margin-right: 3pt; margin-left: 3pt; width:100%; border: 1pt solid black; ">
+            <thead>
+                <tr>
+                    <th>Homologadores</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
             <td>
             @foreach($homologadores as $homologador)
             @if($homologador->edicao_id == $edicao->id)
-            {{$homologador->nome}}
+                    {{$homologador->nome}}
             <br>
             <hr>
             @endif
             @endforeach
             </td> 
-
+            </tr>       
+            </tbody>    
+  
+          </table>
+        <br>
+        <table style="margin-right: 3pt; margin-left: 3pt; width:100%; border: 1pt solid black; ">
+            <thead>
+                <tr>
+                    <th>Avaliadores</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
             <td>
             @foreach($avaliadores as $avaliador)
             @if($avaliador->edicao_id == $edicao->id)
-            {{$avaliador->nome}}
+                    {{$avaliador->nome}}
             <br>
             <hr>
             @endif
             @endforeach
             </td> 
-          </tr>
-            
-        </tbody>  
+            </tr>       
+            </tbody>    
   
-        </table>
+          </table>
+        <br>
+        <table style="margin-right: 3pt; margin-left: 3pt; width:100%; border: 1pt solid black; ">
+            <thead>
+                <tr>
+                    <th>Voluntários</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td>
+            @foreach($voluntarios as $voluntario)
+            @if($voluntario->edicao_id == $edicao->id)
+                    {{$voluntario->nome}}
+            <br>
+            <hr>
+            @endif
+            @endforeach
+            </td> 
+            </tr>       
+            </tbody>    
+  
+          </table>
         <br>
         @endif
         @endforeach 

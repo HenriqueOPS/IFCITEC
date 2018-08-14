@@ -72,7 +72,11 @@ class RelatorioController extends Controller
 	}
 
 	public function escolas(){
-		$escolas = Escola::orderBy('nome_curto')->get();
+		$escolas = DB::table('escola')->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
+						->select('*')
+						->orderBy('escola.nome_curto')
+						->get();
+
 		return \PDF::loadView('relatorios.escolas', array('escolas' => $escolas))->stream('escolas.pdf');
 	}
 
@@ -82,19 +86,19 @@ class RelatorioController extends Controller
 		$autores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->select('funcao_pessoa.edicao_id', 'pessoa.nome')
 						->where('funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
-						->orderBy('pessoa.nome')
+						->orderBy('pessoa.nome', 'pessoa.email')
 						->get();
 
 		$orientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->select('funcao_pessoa.edicao_id', 'pessoa.nome')
 						->where('funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
-						->orderBy('pessoa.nome')
+						->orderBy('pessoa.nome', 'pessoa.email')
 						->get();
 
 		$coorientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->select('funcao_pessoa.edicao_id', 'pessoa.nome')
 						->where('funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
-						->orderBy('pessoa.nome')
+						->orderBy('pessoa.nome', 'pessoa.email')
 						->get();
 
 		$voluntarios = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
@@ -168,7 +172,7 @@ class RelatorioController extends Controller
 	public function areas(){
 		$areas = AreaConhecimento::orderBy('area_conhecimento')->get();
 
-		return \PDF::loadView('relatorios.areas', array('areas' => $areas))->stream('areas.pdf');
+		return \PDF::loadView('relatorios.areas', array('areas' => $areas))->setPaper('A4', 'landscape')->stream('areas.pdf');
 	}
 
 	public function edicoes(){
@@ -249,8 +253,8 @@ class RelatorioController extends Controller
 				->where('funcao_pessoa.edicao_id',Edicao::getEdicaoId())
 				->get()
 				->toArray();
-		
-		return \PDF::loadView('relatorios.homologadoresArea', array('areas' => $areas,'homologadores' => $homologadores))->stream('homologadores_area.pdf');
+		$cont = 0;
+		return \PDF::loadView('relatorios.homologadoresArea', array('areas' => $areas,'homologadores' => $homologadores, 'cont' => $cont))->stream('homologadores_area.pdf');
 	}
 
 	public function avaliadoresArea(){
@@ -264,7 +268,8 @@ class RelatorioController extends Controller
 				->get()
 				->toArray();
 		
-		return \PDF::loadView('relatorios.avaliadoresArea', array('areas' => $areas,'avaliadores' => $avaliadores))->stream('avaliadores_area.pdf');
+		$cont = 0;
+		return \PDF::loadView('relatorios.avaliadoresArea', array('areas' => $areas,'avaliadores' => $avaliadores, 'cont' => $cont))->stream('avaliadores_area.pdf');
 	}
 
 	public function homologadoresProjeto(){
