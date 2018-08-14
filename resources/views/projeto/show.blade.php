@@ -85,7 +85,10 @@
                             @endif
 
                             <br>
-                            <b> <i class="material-icons">group</i> Integrantes:</b><br>
+
+                            @if(!Auth::user()->temFuncao('Homologador') || (Auth::user()->temFuncao('Administrador') || Auth::user()->temFuncao('Organizador')))
+
+                            <b><i class="material-icons">group</i> Integrantes:</b><br>
 
                             @foreach($projeto->pessoas as $pessoa)
                                 <b>{{App\Funcao::find($pessoa->pivot->funcao_id)->funcao}}: </b>{{$pessoa->nome}}({{$pessoa->email}})<br>
@@ -102,6 +105,9 @@
                             <hr>
                             <b><i class="material-icons">today</i> Submetido em:</b><br>
                             {{date('d/m/Y H:i:s', strtotime($projeto->created_at))}}
+
+                            @endif
+
                         </div>
                     </div>
                 </div>
