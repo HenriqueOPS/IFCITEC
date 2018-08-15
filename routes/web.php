@@ -35,12 +35,8 @@ Route::get('/', function () {
 });
 
 // API
-Route::post('/api/login', 'ApiController@login');
-Route::post('/api/registra-presenca', 'ApiController@registraPresenca');
-
-Route::get('/api/projetos-avaliacao/{id}', 'ApiController@projetosAvaliacao');
-Route::get('/api/campos-avaliacao/{id}', 'ApiController@camposAvaliacao');
-Route::get('/api/salva-avaliacao/{id}', 'ApiController@salvaAvaliacao');
+Route::post('/api/salva-homologacao/', 'ApiController@salvaHomologacao');
+Route::post('/api/salva-avaliacao/', 'ApiController@salvaAvaliacao');
 
 
 Auth::routes();
@@ -70,6 +66,7 @@ Route::post('/editar-cadastro/', 'PessoaController@editaCadastro')->name('editaC
 
 //Relatórios
 //Route::get('/relatorio', 'ReportController@index')->name('relatorio');
+Route::get('/csv/{id}', 'RelatorioController@csv')->name('csv');
 Route::get('/relatorio/niveis', 'RelatorioController@niveis')->name('relatorioNivel');
 Route::get('/relatorio/niveis/projetos/{id}', 'RelatorioController@nivelProjetos')->name('nivelProjetos');
 Route::get('/relatorio/escolas', 'RelatorioController@escolas')->name('relatorioEscola');
@@ -80,6 +77,12 @@ Route::get('/relatorio/edicoes', 'RelatorioController@edicoes')->name('relatorio
 Route::get('/relatorio/funcoes/usuarios', 'RelatorioController@funcoesUsuarios')->name('relatorioFuncoesUsuarios');
 Route::get('/relatorio/voluntario/tarefa', 'RelatorioController@voluntarioTarefa')->name('relatorioVoluntarioTarefa');
 Route::get('/relatorio/tarefa/voluntarios/{id}', 'RelatorioController@tarefaVoluntarios')->name('tarefaVoluntarios');
+Route::get('/relatorio/projetos', 'RelatorioController@projetos')->name('relatorioProjetos');
+Route::get('/relatorio/usuarios', 'RelatorioController@usuarios')->name('relatorioUsuarios');
+Route::get('/relatorio/homologadores/area', 'RelatorioController@homologadoresArea')->name('homologadoresArea');
+Route::get('/relatorio/avaliadores/area', 'RelatorioController@avaliadoresArea')->name('avaliadoresArea');
+Route::get('/relatorio/homologadores/projeto', 'RelatorioController@homologadoresProjeto')->name('homologadoresProjeto');
+Route::get('/relatorio/avaliadores/projeto', 'RelatorioController@avaliadoresProjeto')->name('avaliadoresProjeto');
 
 
 
@@ -95,7 +98,6 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
 	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');
-
 
 
 	Route::get('/gerenciar', 'AdminController@administrarUsuarios');
@@ -172,6 +174,8 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
     //vincula Avaliador
     Route::get('/projeto/{id}/vinculaAvaliador/', 'ProjetoController@showFormVinculaAvaliador')->name('vinculaAvaliador');
     Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')->name('vinculaAvaliadorPost');
+
+    Route::get('/projeto/{id}/status/', 'ProjetoController@statusProjeto')->name('statusProjeto'); //Ajax
 
 });
 

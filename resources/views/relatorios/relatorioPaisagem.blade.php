@@ -17,9 +17,9 @@
 	}
 	body{
 		font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-		background-image: url("../../public/img/relatorio.png");
+		background-image: url("../../public/img/relatorio_paisagem.png");
 		padding-top: 30mm;
-		margin-left: 2mm;
+		margin-left: 3mm;
 		margin-right: 2mm;
 		background-size:100% 100%;
     	background-attachment: fixed;

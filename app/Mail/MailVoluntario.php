@@ -10,16 +10,22 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class MailVoluntario extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public $email;
+    public $nome;
+    public $titulo;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($email, $nome, $titulo)
     {
-        //
+        $this->email = $email;
+        $this->nome = $nome;
+        $this->titulo = $titulo;
     }
 
     /**

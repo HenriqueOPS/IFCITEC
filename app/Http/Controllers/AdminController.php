@@ -53,50 +53,6 @@ class AdminController extends Controller
 
 		$usuarios = Pessoa::orderBy('nome')->get();
 
-        $projetos = DB::table('projeto')
-            ->select('titulo', 'id')
-            ->orderBy('titulo')
-            ->where('edicao_id', Edicao::getEdicaoId())
-            ->get()
-            ->keyBy('id')
-            ->toArray();
-        $numeroProjetos = count($projetos);
-        $autores = array();
-        $orientadores = array();
-        $coorientadores = array();
-
-        //Participantes dos projetos
-        if ($projetos) {
-            $idAutor = Funcao::where('funcao', 'Autor')->first();
-            $idOrientador = Funcao::where('funcao', 'Orientador')->first();
-            $idCoorientador = Funcao::where('funcao', 'Coorientador')->first();
-
-            $ids = array_keys($projetos);
-
-            $autores = DB::table('escola_funcao_pessoa_projeto')
-                ->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
-                ->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
-                ->whereIn('projeto_id', $ids)
-                ->where('funcao_id', $idAutor->id)
-                ->get()
-                ->toArray();
-
-            $orientadores = DB::table('escola_funcao_pessoa_projeto')
-                ->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
-                ->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
-                ->whereIn('projeto_id', $ids)
-                ->where('funcao_id', $idOrientador->id)
-                ->get()
-                ->toArray();
-
-            $coorientadores = DB::table('escola_funcao_pessoa_projeto')
-                ->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
-                ->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
-                ->whereIn('projeto_id', $ids)->where('funcao_id', $idCoorientador->id)
-                ->get()
-                ->toArray();
-        }
-
 		$comissao = DB::table('funcao_pessoa')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->join('comissao_edicao', function ($join){
@@ -116,25 +72,19 @@ class AdminController extends Controller
 			'escolas' => $escolas,
 			'niveis' => $niveis,
 			'tarefas' => $tarefas,
-			'projetos' => $projetos,
-			'autores' => $autores,
-			'orientadores' => $orientadores,
-			'coorientadores' => $coorientadores,
-			'comissao' => $comissao,
-			'numeroProjetos' => $numeroProjetos
+			'comissao' => $comissao
 		]))->withUsuarios($usuarios)->withAreas($areas);
 
 	}
 
     public function projetos() {
 
-        $projetos = DB::table('projeto')
-            ->select('titulo', 'id')
+        $projetos = Projeto::select('titulo', 'id', 'situacao_id')
             ->orderBy('titulo')
             ->where('edicao_id', Edicao::getEdicaoId())
             ->get()
-            ->keyBy('id')
-            ->toArray();
+            ->keyBy('id');
+
         $numeroProjetos = count($projetos);
         $autores = array();
         $orientadores = array();
@@ -146,7 +96,8 @@ class AdminController extends Controller
             $idOrientador = Funcao::where('funcao', 'Orientador')->first();
             $idCoorientador = Funcao::where('funcao', 'Coorientador')->first();
 
-            $ids = array_keys($projetos);
+            $arrayIDs = $projetos;
+            $ids = array_keys($arrayIDs->toArray());
 
             $autores = DB::table('escola_funcao_pessoa_projeto')
                 ->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
@@ -172,14 +123,18 @@ class AdminController extends Controller
                 ->toArray();
         }
 
-
         return view('admin.projetos', collect([
-            'projetos' => $projetos,
             'autores' => $autores,
             'orientadores' => $orientadores,
             'coorientadores' => $coorientadores,
             'numeroProjetos' => $numeroProjetos
-        ]));
+        ]))->withProjetos($projetos);
+
+    }
+
+    public function homologarProjetos()
+    {
+
 
     }
 
