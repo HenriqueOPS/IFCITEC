@@ -64,11 +64,11 @@
 
 						<div class="row">
 
-							@foreach($niveis as $n)
+							@foreach($nivel as $n)
 								<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
 									<p>Nível {{$n->nivel}}:</p>
 								</div>
-								@foreach($areas as $area)
+								@foreach($areasConhecimento as $area)
 									@if($area->nivel_id == $n->id)
 
 										<div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">

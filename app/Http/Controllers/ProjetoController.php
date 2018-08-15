@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\MailVinculaProjetoJob;
+use App\Mail\MailVinculaProjeto;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ProjetoRequest;
 use Illuminate\Http\Request;
@@ -670,6 +672,7 @@ class ProjetoController extends Controller
                                 $join->where('funcao_pessoa.funcao_id', '=', 4);
                             })
                             ->where('area_id','=',$projeto->area_id)
+                            ->where('areas_comissao.homologado','=',true)
                             ->orderBy('pessoa.titulacao')
                             ->get();
 
@@ -692,19 +695,52 @@ class ProjetoController extends Controller
     }
 
     public function vinculaHomologador(Request $request){
-        DB::table('revisao')->where('projeto_id', '=', $request->projeto_id)->delete();
+
+        DB::table('revisao')
+            ->where('projeto_id', '=', $request->projeto_id)
+            ->where('revisado', '=', false)
+            ->delete();
+
+        Projeto::find($request->projeto_id)
+            ->update(['situacao_id' => 1]); //cadastrado
+
+        $idAnterior = DB::table('revisao')
+            ->select('revisao.pessoa_id')
+            ->where('projeto_id', '=', $request->projeto_id)
+            ->get()
+            ->toArray();
+
+        $idAnterior = array_column($idAnterior, 'pessoa_id');
+
         $revisores = explode(',',$request->revisores_id);
         if($revisores[0] != '') {
             foreach ($revisores as $revisor) {
-                $revisao = new Revisao();
-                $revisao->projeto_id = $request->projeto_id;
-                $revisao->pessoa_id = $revisor;
-                $revisao->situacao_id = 4;
-                $revisao->save();
+                if(!in_array($revisor, $idAnterior)) {
+                    $revisao = new Revisao();
+                    $revisao->projeto_id = $request->projeto_id;
+                    $revisao->pessoa_id = $revisor;
+                    $revisao->nota_final = 0;
+                    $revisao->revisado = false;
+                    $revisao->save();
+
+                    //dados projeto
+                    $projeto = Projeto::find($request->projeto_id);
+
+                    //homologador
+                    $pessoa = Pessoa::find($revisao->pessoa_id);
+
+                    $emailJob = (new MailVinculaProjetoJob($pessoa->email, $pessoa->nome, $projeto->titulo))
+                        ->delay(\Carbon\Carbon::now()->addSeconds(60));
+                    dispatch($emailJob);
+
+                }
             }
+
+            Projeto::find($request->projeto_id)
+                ->update(['situacao_id' => 2]); //não homologado
         }
 
-        return redirect('home');
+        return redirect(route('administrador.projetos'));
     }
 
 
@@ -737,11 +773,9 @@ class ProjetoController extends Controller
                             $join->where('funcao_pessoa.funcao_id', '=', 3);
                         })
                         ->where('area_id','=',$projeto->area_id)
+                        ->where('areas_comissao.homologado','=',true)
                         ->orderBy('pessoa.titulacao')
                         ->get();
-
-
-
 
         $avaliadoresDoProjeto = DB::table('avaliacao')->select('pessoa_id')->where('projeto_id', '=', $id)->get();
 
@@ -763,7 +797,13 @@ class ProjetoController extends Controller
 
     public function vinculaAvaliador(Request $request)
     {
-        DB::table('avaliacao')->where('projeto_id', '=', $request->projeto_id)->delete();
+        DB::table('avaliacao')
+            ->where('projeto_id', '=', $request->projeto_id)
+            ->where('avaliado', '=', false)
+            ->delete();
+        Projeto::find($request->projeto_id)
+            ->update(['situacao_id' => 3]); //Homologado
+
         $avaliadores = explode(',', $request->avaliadores_id);
         if ($avaliadores[0] != '') {
             foreach ($avaliadores as $avaliador) {
@@ -772,14 +812,57 @@ class ProjetoController extends Controller
                 $avaliacao->projeto_id = $request->projeto_id;
                 $avaliacao->nota_final = 0;
                 $avaliacao->observacao = '';
+                $avaliacao->avaliado = false;
                 $avaliacao->save();
             }
+
+            Projeto::find($request->projeto_id)
+                ->update(['situacao_id' => 4]); //Não Avaliado
         }
 
-        return redirect('home');
+        return redirect(route('administrador.projetos'));
     }
 
+    public function statusProjeto($id){
 
+	    $projeto = Projeto::find($id);
 
+	    $res = array();
+
+	    $res['titulo'] = $projeto->titulo;
+        $res['nivel'] = $projeto->nivel->nivel;
+        $res['area'] = $projeto->areaConhecimento->area_conhecimento;
+
+        $res['situacao'] = $projeto->getStatus();
+        $res['homologacao'] = array();
+        $res['avaliacao'] = array();
+
+        //Busca o nome dos Homologadores
+        if($res['situacao'] != "Cadastrado"){
+
+            $res['homologacao'] = DB::table('revisao')
+                ->select('pessoa.nome', 'revisao.nota_final', 'revisao.revisado')
+                ->join('pessoa', 'revisao.pessoa_id','=','pessoa.id')
+                ->where('projeto_id',$id)
+                ->get()
+                ->toArray();
+        }
+
+        //Busca o nome dos Avaliadores
+        if($res['situacao'] == "Não Avaliado" ||
+           $res['situacao'] == "Avaliado" ||
+           $res['situacao'] == "Não Compareceu"){
+
+            $res['avaliacao'] = DB::table('avaliacao')
+                ->select('pessoa.nome', 'avaliacao.nota_final', 'avaliacao.avaliado')
+                ->join('pessoa', 'avaliacao.pessoa_id','=','pessoa.id')
+                ->where('projeto_id',$id)
+                ->get()
+                ->toArray();
+        }
+
+        return response()->json($res, 200);
+
+    }
 
 }

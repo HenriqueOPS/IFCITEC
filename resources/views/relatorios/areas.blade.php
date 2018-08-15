@@ -1,9 +1,9 @@
-@extends('relatorios.relatorio')
+@extends('relatorios.relatorioPaisagem')
 
 @section('content')
 <div class="container">
     <div class="row">
-        <h2 style="margin-top: 3mm; margin-left: 35mm; margin-right: 20mm;">RELATÓRIO DE ÁREAS DO CONHECIMENTO</h2>
+        <h2 style="text-align: center;">RELATÓRIO DE ÁREAS DO CONHECIMENTO</h2>
 
         <table style="margin-left: 25mm; margin-top: 10mm; width: 100%">
         	<thead">

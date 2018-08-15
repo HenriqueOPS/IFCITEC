@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+
 @section('css')
 <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 @endsection
@@ -51,7 +52,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="dashboard" id="6" class="tab" role="tab" data-toggle="tab">
+                    <a href="{{route('administrador.projetos')}}">
                         <i class="material-icons">list_alt</i>
                         Listar Projetos
                     </a>
@@ -149,7 +150,7 @@
                             <td>{{ $escola['telefone'] }}</td>
 
                             <td class="td-actions text-right">
-                                <a href="{{ route('escolaProjetos', $escola['id']) }}"><i class="material-icons">description</i></a>
+                                <a href="{{ route('escolaProjetos', $escola['id']) }}" target="_blank"><i class="material-icons">description</i></a>
                                 <a href="javascript:void(0);" class="modalEscola"  data-toggle="modal" data-target="#modal0" id-escola="{{ $escola['id'] }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
                                 <a href="{{ route('escola', $escola['id']) }}"><i class="material-icons">edit</i></a>
                                 <a href="javascript:void(0);" class="exclusao" id-escola="{{ $escola['id'] }}"><i class="material-icons blue-icon">delete</i></a>
@@ -186,7 +187,7 @@
                             <td>{{ $nivel['descricao'] }}</td>
 
                             <td class="td-actions text-right">
-                                <a href="{{ route('nivelProjetos', $nivel['id']) }}"><i class="material-icons">description</i></a>
+                                <a href="{{ route('nivelProjetos', $nivel['id']) }}" target="_blank"><i class="material-icons">description</i></a>
 
                                 <a href="javascript:void(0);" class="modalNivel" data-toggle="modal" data-target="#modal1" id-nivel="{{ $nivel['id'] }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
 
@@ -225,7 +226,7 @@
                             <td>{{ $area->niveis()->first()->nivel }}</td>
 
                             <td class="td-actions text-right">
-                                <a href="{{ route('areaProjetos', $area['id']) }}"><i class="material-icons">description</i></a>
+                                <a href="{{ route('areaProjetos', $area['id']) }}" target="_blank"><i class="material-icons">description</i></a>
 
                                 <a href="javascript:void(0);" class="modalArea" data-toggle="modal" data-target="#modal2" id-area="{{ $area['id'] }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
 
@@ -263,7 +264,7 @@
                             <td>{{$tarefa->tarefa}}</td>
                             <td>{{$tarefa->vagas}}</td>
                             <td class="text-right">
-                            <a href="{{ route('tarefaVoluntarios', $tarefa->id) }}"><i class="material-icons">description</i></a>
+                            <a href="{{ route('tarefaVoluntarios', $tarefa->id) }}" target="_blank"><i class="material-icons">description</i></a>
 
                             <a href="javascript:void(0);" class="modalTarefa" data-toggle="modal" data-target="#modal7" id-tarefa="{{ $tarefa->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
                     
@@ -302,44 +303,6 @@
                         
                             </td>
                         </tr>
-                        @endforeach
-                    </tbody>
-
-                    <thead id="6">
-                    <div id="6">
-                        <h5><b>Número de projetos: {{$numeroProjetos}} </b></h5>
-                    </div>
-                    </thead>
-
-                    <tbody id="6">
-                        @foreach($projetos as $i => $projeto)
-
-                        <div id="6" class="project">
-                        <div class="project-title">
-                             <span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
-                        </div>
-                        <div class="project-info">
-                            Integrantes:
-                            @foreach ($autores as $autor)
-								@if($autor->projeto_id == $projeto->id)
-								{{$autor->nome}},
-								@endif
-                            @endforeach
-
-                            @foreach ($orientadores as $orientador)
-								@if($orientador->projeto_id == $projeto->id)
-								{{$orientador->nome}},
-								@endif
-                            @endforeach
-
-                            @foreach($coorientadores as $coorientador)
-								@if($coorientador->projeto_id == $projeto->id)
-								{{$coorientador->nome}},
-								@endif
-                            @endforeach
-                        </div>
-                        </div>
-
                         @endforeach
                     </tbody>
 
@@ -405,7 +368,6 @@
                         <tr>
                             <th class="text-center">#</th>
                             <th>Relatórios</th>
-                            <th>Escolha uma edição</th>
                             <th class="text-right">Ações</th>
                         </tr>
                     </div>
@@ -414,70 +376,115 @@
                     <tbody id="8">
                         <tr>
                             <td>1</td>
-                            <td>Relatório de Edições</td>
-                            <td>-</td>
+                            <td>CSV Avaliadores</td>
                             <td class="text-right">
-                                <a href="{{route('relatorioEdicao')}}"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('csv', 1)}}"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>2</td>
-                            <td>Relatório de Escolas</td>
-                            <td>-</td>
+                            <td>CSV Homologadores</td>
                             <td class="text-right">
-                                <a href="{{route('relatorioEscola')}}"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('csv', 2)}}"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>3</td>
-                            <td>Relatório de Níveis</td>
-                            <td>
-                            <ul class="dropdown-menu">
-                               
-                                <li><a></a></li>
-                               
-                            </ul>
-                            </td>
+                            <td>CSV Participantes de Projetos</td>
                             <td class="text-right">
-                                <a href="{{route('relatorioNivel')}}"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('csv', 3)}}"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>4</td>
-                            <td>Relatório de Áreas</td>
-                            <td>
-                            
-                            </td>
+                            <td>CSV Voluntários</td>
                             <td class="text-right">
-                                <a href="{{route('relatorioArea')}}"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('csv', 4)}}"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>5</td>
-                            <td>Relatório de Usuários e suas respectivas funções</td>
-                            <td>
-                            <ul class="dropdown-menu">
-                               
-                                <li><a></a></li>
-                               
-                            </ul>
-                            </td>
+                            <td>Relatório de Áreas do Conhecimento</td>
                             <td class="text-right">
-                                <a href="{{route('relatorioFuncoesUsuarios')}}"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioArea')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>6</td>
-                            <td>Relatório de Voluntários e suas respectivas tarefas</td>
-                            <td>
-                            <ul class="dropdown-menu">
-                               
-                                <li><a></a></li>
-                               
-                            </ul>
+                            <td>Relatório de Autores, Orientadores, Coorientadores, Voluntários, Homologadores e Avaliadores por Edição
                             </td>
                             <td class="text-right">
-                                <a href="{{route('relatorioVoluntarioTarefa')}}"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioUsuarios')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>Relatório de Avaliadores Por Área do Conhecimento</td>
+                            <td class="text-right">
+                                <a href="{{route('avaliadoresArea')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>Relatório de Avaliadores Por Projeto</td>
+                            <td class="text-right">
+                                <a href="{{route('avaliadoresProjeto')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>Relatório de Edições</td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioEdicao')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>Relatório de Escolas</td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioEscola')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>Relatório de Homologadores Por Área do Conhecimento</td>
+                            <td class="text-right">
+                                <a href="{{route('homologadoresArea')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>Relatório de Homologadores Por Projeto</td>
+                            <td class="text-right">
+                                <a href="{{route('homologadoresProjeto')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td>Relatório de Níveis</td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioNivel')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td>Relatório de Projetos</td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td>Relatório de Usuários e suas respectivas funções</td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioFuncoesUsuarios')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td>Relatório de Voluntários e suas respectivas tarefas</td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioVoluntarioTarefa')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>

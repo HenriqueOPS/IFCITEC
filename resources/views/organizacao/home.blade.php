@@ -85,7 +85,7 @@
 
                         <thead id="1">
                         <div id="1">
-
+                            <h5><b>Número de projetos: {{$numeroProjetos}} </b></h5>
                         </div>
 
                         </thead>
