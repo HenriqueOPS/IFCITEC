@@ -98,6 +98,11 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
 	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');
+    Route::get('/administrador/projetos/homologar-projetos', function (){
+        return view('comissao.homologaTrabalhos');
+    });
+
+
 
 
 	Route::get('/gerenciar', 'AdminController@administrarUsuarios');
