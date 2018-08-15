@@ -108,30 +108,38 @@ class ComissaoAvaliadoraController extends Controller
                                     ->toArray();
 
         $projetosAreas = DB::table('area_conhecimento')->join('projeto', 'area_conhecimento.id', '=', 'projeto.area_id')
-                                    ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
-                                    ->select('area_conhecimento.area_conhecimento', 'area_conhecimento.id')
-                                    ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
-                                    ->where('pessoa_id', Auth::user()->id)
-                                    ->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id)
-                                    ->orWhere('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id)
-                                    ->orderBy('area_conhecimento.id', 'asc')
-                                    ->get()
-                                    ->keyBy('id')
-                                    ->toArray();
+            ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+            ->select('area_conhecimento.area_conhecimento', 'area_conhecimento.id')
+            ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
+            ->where('pessoa_id', Auth::user()->id)
+            ->where(function ($q){
+                $q->where('escola_funcao_pessoa_projeto.funcao_id',
+                    Funcao::select(['id'])
+                        ->where('funcao', 'Orientador')
+                        ->first()->id);
+                $q->orWhere('escola_funcao_pessoa_projeto.funcao_id',
+                    Funcao::select(['id'])
+                        ->where('funcao', 'Coorientador')
+                        ->first()->id);
+
+            })
+            ->orderBy('area_conhecimento.id', 'asc')
+            ->get()
+            ->keyBy('id')
+            ->toArray();
 
         $projetosAreas = array_keys($projetosAreas);
 
         foreach ($areas as $a) {
             if (!in_array($a->id, $projetosAreas)) {
-                    if(! isset($areasConhecimento)){
+                if(! isset($areasConhecimento)){
+                    $areasConhecimento[] = $a;
+                }else{
+                    $array = array_pluck($areasConhecimento, 'id');
+                    if(! in_array($a->id, $array)){
                         $areasConhecimento[] = $a;
                     }
-                   else{
-                        $array = array_pluck($areasConhecimento, 'id');
-                        if(! in_array($a->id, $array)){
-                            $areasConhecimento[] = $a;
-                        }
-                    }
+                }
             }
         }
 
@@ -265,8 +273,17 @@ class ComissaoAvaliadoraController extends Controller
             ->select('area_conhecimento.area_conhecimento', 'area_conhecimento.id')
             ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
             ->where('pessoa_id', $comissaoEdicao->pessoa_id)
-            ->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id)
-            ->orWhere('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id)
+            ->where(function ($q){
+                $q->where('escola_funcao_pessoa_projeto.funcao_id',
+                    Funcao::select(['id'])
+                        ->where('funcao', 'Orientador')
+                        ->first()->id);
+                $q->orWhere('escola_funcao_pessoa_projeto.funcao_id',
+                    Funcao::select(['id'])
+                        ->where('funcao', 'Coorientador')
+                        ->first()->id);
+
+            })
             ->orderBy('area_conhecimento.id', 'asc')
             ->get()
             ->keyBy('id')
