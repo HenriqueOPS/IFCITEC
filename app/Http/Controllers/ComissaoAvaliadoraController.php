@@ -112,8 +112,14 @@ class ComissaoAvaliadoraController extends Controller
                                     ->select('area_conhecimento.area_conhecimento', 'area_conhecimento.id')
                                     ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
                                     ->where('pessoa_id', Auth::user()->id)
-                                    ->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id)
-                                    ->orWhere('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id)
+                                    ->where(function ($q){
+                                        $q->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])
+                                            ->where('funcao', 'Orientador')
+                                            ->first()->id);
+                                        $q->orWhere('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])
+                                            ->where('funcao', 'Coorientador')
+                                            ->first()->id);
+                                    })
                                     ->orderBy('area_conhecimento.id', 'asc')
                                     ->get()
                                     ->keyBy('id')
@@ -265,8 +271,14 @@ class ComissaoAvaliadoraController extends Controller
             ->select('area_conhecimento.area_conhecimento', 'area_conhecimento.id')
             ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
             ->where('pessoa_id', $comissaoEdicao->pessoa_id)
-            ->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id)
-            ->orWhere('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id)
+            ->where(function ($q){
+                $q->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])
+                    ->where('funcao', 'Orientador')
+                    ->first()->id);
+                $q->orWhere('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])
+                    ->where('funcao', 'Coorientador')
+                    ->first()->id);
+            })
             ->orderBy('area_conhecimento.id', 'asc')
             ->get()
             ->keyBy('id')

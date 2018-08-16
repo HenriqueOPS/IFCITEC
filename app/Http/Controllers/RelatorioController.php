@@ -68,7 +68,7 @@ class RelatorioController extends Controller
 	public function niveis(){
 		$niveis = Nivel::orderBy('nivel')->get();
 
-		return \PDF::loadView('relatorios.niveis', array('niveis' => $niveis))->stream('niveis.pdf');
+		return \PDF::loadView('relatorios.niveis', array('niveis' => $niveis))->setPaper('A4', 'landscape')->stream('niveis.pdf');
 	}
 
 	public function escolas(){
@@ -182,10 +182,24 @@ class RelatorioController extends Controller
 	}
 
 	public function funcoesUsuarios(){
-		$usuarios = Pessoa::all();
-		$funcoes = Funcao::all();
+		$usuarios = DB::table('pessoa')
+				->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
+				->get()
+				->toArray();
+
+		$funcoesUsuarios = DB::table('funcao_pessoa')
+				->select('funcao_pessoa.pessoa_id', 'funcao_pessoa.funcao_id')
+				->where('funcao_pessoa.edicao_id',Edicao::getEdicaoId())
+				->get()
+				->toArray();
+
+		$funcoes = DB::table('funcao')
+				->join('funcao_pessoa', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
+				->select('funcao.id', 'funcao.funcao', 'funcao_pessoa.pessoa_id')
+				->get()
+				->toArray();
 		
-		return \PDF::loadView('relatorios.funcoesUsuarios', array('usuarios' => $usuarios,'funcoes' => $funcoes))->stream('funcoes.pdf');
+		return \PDF::loadView('relatorios.funcoesUsuarios', array('usuarios' => $usuarios,'funcoes' => $funcoes, 'funcoesUsuarios' => $funcoesUsuarios))->stream('funcoes.pdf');
 	}
 
 	public function escolaProjetos($id){
@@ -273,27 +287,54 @@ class RelatorioController extends Controller
 	}
 
 	public function homologadoresProjeto(){
-		$projetos = Projeto::all();
-		$homologadores = Pessoa::all();
-		
-		foreach ($homologadores as $homologador) {
-			if ($homologador->temFuncao('Homologador')) {
-				$homologadores[] = $homologador;
-			}
-		}
-		return \PDF::loadView('relatorios.homologadoresProjeto', array('projetos' => $projetos,'homologadores' => $homologadores))->stream('homologadores_projeto.pdf');
+		$projetos = DB::table('projeto')
+				->select('projeto.id', 'projeto.titulo')
+				->where('projeto.edicao_id',Edicao::getEdicaoId())
+				->orderBy('projeto.titulo')
+				->get()
+				->toArray();
+		$homologadores = DB::table('funcao_pessoa')
+				->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+				->join('funcao', 'funcao_pessoa.funcao_id', '=', 'funcao.id')
+				->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
+				->where('funcao.funcao','Homologador')
+				->where('funcao_pessoa.edicao_id',Edicao::getEdicaoId())
+				->orderBy('pessoa.nome')
+				->get()
+				->toArray();
+
+		$revisoes = DB::table('pessoa') 
+				->join('revisao', 'pessoa.id', '=', 'revisao.pessoa_id')
+				->join('projeto', 'revisao.projeto_id', '=', 'projeto.id')
+				->get()
+				->toArray();
+		return \PDF::loadView('relatorios.homologadoresProjeto', array('projetos' => $projetos,'homologadores' => $homologadores, 'revisoes' => $revisoes))->stream('homologadores_projeto.pdf');
 	}
 
 	public function avaliadoresProjeto(){
-		$projetos = Projeto::all();
-		$avaliadores = Pessoa::all();
+		$projetos = DB::table('projeto')
+				->select('projeto.id', 'projeto.titulo')
+				->where('projeto.edicao_id',Edicao::getEdicaoId())
+				->orderBy('projeto.titulo')
+				->get()
+				->toArray();
+		$avaliadores = DB::table('funcao_pessoa')
+				->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+				->join('funcao', 'funcao_pessoa.funcao_id', '=', 'funcao.id')
+				->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
+				->where('funcao.funcao','Avaliador')
+				->where('funcao_pessoa.edicao_id',Edicao::getEdicaoId())
+				->orderBy('pessoa.nome')
+				->get()
+				->toArray();
+
+		$avaliacoes = DB::table('pessoa') 
+				->join('avaliacao', 'pessoa.id', '=', 'avaliacao.pessoa_id')
+				->join('projeto', 'avaliacao.projeto_id', '=', 'projeto.id')
+				->get()
+				->toArray();
 		
-		foreach ($avaliadores as $avaliador) {
-			if ($avaliador->temFuncao('Avaliador')) {
-				$avaliadores[] = $avaliador;
-			}
-		}
-		return \PDF::loadView('relatorios.avaliadoresProjeto', array('projetos' => $projetos,'avaliadores' => $avaliadores))->stream('avaliadores_projeto.pdf');
+		return \PDF::loadView('relatorios.avaliadoresProjeto', array('projetos' => $projetos,'avaliadores' => $avaliadores, 'avaliacoes' => $avaliacoes))->stream('avaliadores_projeto.pdf');
 	}
 
 }
