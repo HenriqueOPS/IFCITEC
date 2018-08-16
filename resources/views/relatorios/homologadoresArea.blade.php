@@ -9,7 +9,7 @@
         @foreach($areas as $area)
         <p style="text-align: center;"><b> {{$area->niveis->first()->nivel}} : {{$area->area_conhecimento}}</b></p>
         <br>
-        <table style="margin-right: 3pt; margin-left: 3pt; width:100%; border: 1pt solid black; ">
+        <table class="table" style="margin-right: 3pt; margin-left: 3pt; width:100%;">
           <thead>
             <tr>
               <th>Nome</th>

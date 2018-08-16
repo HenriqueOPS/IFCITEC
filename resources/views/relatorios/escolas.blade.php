@@ -7,8 +7,7 @@
         <br>
         @foreach($escolas as $escola)
         <p style="text-align: center;"><b>{{$escola->nome_curto}}</b></p>
-        <br>
-        <table style="margin-right: 3pt; margin-left: 3pt; width:100%; border: 1pt solid black; ">
+        <table id="hor-minimalist-a"  style="margin-right: 3pt; margin-left: 3pt; width:100%; border: 1pt solid black; ">
           <tr>
               <th style="margin-left: 3pt; border-bottom:solid 1pt #000;">Município: </th>
               <td style="margin-left: 3pt; border-bottom:solid 1pt #000;">
@@ -39,8 +38,7 @@
                 {{$escola->endereco}}, {{$escola->numero}}
               </td>
            </tr>
-        	
+        	<br>
 		  </table> 
-      <br>
       @endforeach
 @endsection
