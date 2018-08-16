@@ -217,7 +217,13 @@ class ProjetoController extends Controller
 		if (!($projeto instanceof Projeto)) {
 			abort(404);
 		}
-		return view('projeto.show')->withProjeto($projeto);
+
+        $ehHomologador = DB::table('revisao')
+            ->where('projeto_id',$projeto->id)
+            ->where('pessoa_id',Auth::user()->id)
+            ->get()->count();
+
+		return view('projeto.show', compact('ehHomologador'))->withProjeto($projeto);
 	}
 
 	/**
@@ -545,6 +551,7 @@ class ProjetoController extends Controller
 				}
 			}
 		}
+
 		return redirect()->route('projeto.show', ['projeto' => $projeto->id]);
 	}
 
