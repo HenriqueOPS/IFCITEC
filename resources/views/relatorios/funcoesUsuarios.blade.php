@@ -20,7 +20,7 @@
     				<td style="border-bottom:solid 1px #000;">{{$usuario->email}}</td> 
     				<td style="border-bottom:solid 1px #000;">
             @foreach($funcoes as $funcao)
-              @if($usuario->temFuncao($funcao->funcao))
+              @if($funcao->pessoa_id == $usuario->id)
                   {{$funcao->funcao}}
                   <br>
               @endif
