@@ -47,7 +47,7 @@
                         <div class="col-md-3">
                             @if(Auth::user()->temFuncao('Avaliador') || Auth::user()->temFuncao('Homologador'))
 
-                                @if((\App\Edicao::consultaPeriodo('Homologação')))
+                                @if((\App\Edicao::consultaPeriodo('Homologação')) && $ehHomologador)
 
                                     <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScwVSWWpbvwB6BKYk1Cz-SaObHgUrlMnkbiLxaBB3szdLmnZQ/viewform?usp=pp_url&entry.1051144494={{$projeto->titulo}}&entry.259386738={{$projeto->nivel->nivel}}&entry.1403982251={{$projeto->areaConhecimento->area_conhecimento}}&entry.1561957447={{$projeto->id}}&entry.276755517={{Auth::user()->nome}}&entry.846448634={{Auth::user()->id}}" id="novo-integrante" class="btn btn-success">
                                         Homologar
