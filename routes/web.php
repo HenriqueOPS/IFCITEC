@@ -24,7 +24,7 @@ Route::get('/version', function (){
 
 //Gera o
 Route::get('/cracha/gerar-crachas', 'CrachaController@generateCrachas');
-Route::get('/cracha/qr-code/{idPessoa}', 'CrachaController@generateQrCode');
+Route::get('/cracha/qr-code/{id}', 'CrachaController@generateQrCode');
 
 
 Route::get('/', function () {
@@ -60,6 +60,10 @@ Route::get('/debug', function (){
 	return view('admin.debug');
 });
 
+
+Route::get('/email/presenca', 'ProjetoController@confirmarPresenca')->name('confirmarPresenca');
+Route::get('/email/presenca/confirmada/{id}', 'ProjetoController@confirmaPresenca')->name('confirmaPresenca');
+
 //Edição dos dados pessoais
 Route::get('/editar-cadastro/', 'PessoaController@editarCadastro')->name('editarCadastro');
 Route::post('/editar-cadastro/', 'PessoaController@editaCadastro')->name('editaCadastro');
@@ -83,6 +87,7 @@ Route::get('/relatorio/homologadores/area', 'RelatorioController@homologadoresAr
 Route::get('/relatorio/avaliadores/area', 'RelatorioController@avaliadoresArea')->name('avaliadoresArea');
 Route::get('/relatorio/homologadores/projeto', 'RelatorioController@homologadoresProjeto')->name('homologadoresProjeto');
 Route::get('/relatorio/avaliadores/projeto', 'RelatorioController@avaliadoresProjeto')->name('avaliadoresProjeto');
+Route::get('/relatorio/projetos/confirma', 'RelatorioController@projetosConfirmaramPresenca')->name('relatorioProjetosConfirma');
 
 
 
@@ -98,6 +103,13 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
 	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');
+	Route::get('/administrador/escolas', 'AdminController@escolas')->name('administrador.escolas');
+	Route::get('/administrador/niveis', 'AdminController@niveis')->name('administrador.niveis');
+	Route::get('/administrador/areas', 'AdminController@areas')->name('administrador.areas');
+	Route::get('/administrador/tarefas', 'AdminController@tarefas')->name('administrador.tarefas');
+	Route::get('/administrador/usuario', 'AdminController@usuarios')->name('administrador.usuarios');
+	Route::get('/administrador/comissao', 'AdminController@comissao')->name('administrador.comissao');
+	Route::get('/administrador/relatorios', 'AdminController@relatorios')->name('administrador.relatorios');
 
 
 	Route::get('/gerenciar', 'AdminController@administrarUsuarios');

@@ -48,6 +48,13 @@ class RelatorioController extends Controller
 			->where('funcao_pessoa.funcao_id', Funcao::select(['id'])->where('funcao', 'Voluntário')->first()->id)
 			->get();
 			$filename = "Voluntarios.csv";
+		} else if ($id == 5) {
+			$resultados = DB::table('projeto')
+			->join('nivel','projeto.nivel_id','=','nivel.id')
+			->join('area_conhecimento','projeto.area_id','=','area_conhecimento.id')
+			->select('projeto.titulo', 'nivel.nivel', 'area_conhecimento.area_conhecimento')
+			->get();
+			$filename = "Projetos.csv";
 		}
 		$handle = fopen($filename, 'w+');
 		fputcsv($handle, array('Email'));
@@ -68,7 +75,7 @@ class RelatorioController extends Controller
 	public function niveis(){
 		$niveis = Nivel::orderBy('nivel')->get();
 
-		return \PDF::loadView('relatorios.niveis', array('niveis' => $niveis))->stream('niveis.pdf');
+		return \PDF::loadView('relatorios.niveis', array('niveis' => $niveis))->setPaper('A4', 'landscape')->stream('niveis.pdf');
 	}
 
 	public function escolas(){
@@ -86,24 +93,25 @@ class RelatorioController extends Controller
 		$autores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->select('funcao_pessoa.edicao_id', 'pessoa.nome')
 						->where('funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
-						->orderBy('pessoa.nome', 'pessoa.email')
+						->orderBy('pessoa.nome')
 						->get();
 
 		$orientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->select('funcao_pessoa.edicao_id', 'pessoa.nome')
 						->where('funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
-						->orderBy('pessoa.nome', 'pessoa.email')
+						->orderBy('pessoa.nome')
 						->get();
 
 		$coorientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->select('funcao_pessoa.edicao_id', 'pessoa.nome')
 						->where('funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
-						->orderBy('pessoa.nome', 'pessoa.email')
+						->orderBy('pessoa.nome')
 						->get();
 
 		$voluntarios = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->select('funcao_pessoa.edicao_id', 'pessoa.nome')
 						->where('funcao_id', Funcao::where('funcao', 'Voluntário')->first()->id)
+						->orderBy('pessoa.nome')
 						->get();
 
 		$homologadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
@@ -117,8 +125,9 @@ class RelatorioController extends Controller
 						->where('funcao_id', Funcao::where('funcao', 'Avaliador')->first()->id)
 						->orderBy('pessoa.nome')
 						->get();
+		$cont = 0;
 
-		return \PDF::loadView('relatorios.usuarios', array('autores' => $autores, 'orientadores' => $orientadores, 'coorientadores' => $coorientadores, 'voluntarios' => $voluntarios, 'homologadores' => $homologadores, 'avaliadores' => $avaliadores, 'edicoes' => $edicoes))->stream('usuarios.pdf');
+		return \PDF::loadView('relatorios.usuarios', array('autores' => $autores, 'orientadores' => $orientadores, 'coorientadores' => $coorientadores, 'voluntarios' => $voluntarios, 'homologadores' => $homologadores, 'avaliadores' => $avaliadores, 'edicoes' => $edicoes, 'cont' => $cont))->stream('usuarios.pdf');
 	}
 
 	public function projetos(){
@@ -182,10 +191,24 @@ class RelatorioController extends Controller
 	}
 
 	public function funcoesUsuarios(){
-		$usuarios = Pessoa::all();
-		$funcoes = Funcao::all();
+		$usuarios = DB::table('pessoa')
+				->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
+				->get()
+				->toArray();
+
+		$funcoesUsuarios = DB::table('funcao_pessoa')
+				->select('funcao_pessoa.pessoa_id', 'funcao_pessoa.funcao_id')
+				->where('funcao_pessoa.edicao_id',Edicao::getEdicaoId())
+				->get()
+				->toArray();
+
+		$funcoes = DB::table('funcao')
+				->join('funcao_pessoa', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
+				->select('funcao.id', 'funcao.funcao', 'funcao_pessoa.pessoa_id')
+				->get()
+				->toArray();
 		
-		return \PDF::loadView('relatorios.funcoesUsuarios', array('usuarios' => $usuarios,'funcoes' => $funcoes))->stream('funcoes.pdf');
+		return \PDF::loadView('relatorios.funcoesUsuarios', array('usuarios' => $usuarios,'funcoes' => $funcoes, 'funcoesUsuarios' => $funcoesUsuarios))->stream('funcoes.pdf');
 	}
 
 	public function escolaProjetos($id){
@@ -231,6 +254,7 @@ class RelatorioController extends Controller
 				->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
 				->where('funcao.funcao','Voluntário')
 				->where('funcao_pessoa.edicao_id',Edicao::getEdicaoId())
+				->orderBy('pessoa.nome')
 				->get()
 				->toArray();
 	
@@ -244,13 +268,19 @@ class RelatorioController extends Controller
 	}
 
 	public function homologadoresArea(){
-		$areas = AreaConhecimento::all();
+		$areas = DB::table('area_conhecimento')->join('nivel', 'area_conhecimento.nivel_id', '=', 'nivel.id')
+				->select('area_conhecimento.area_conhecimento', 'nivel.nivel', 'area_conhecimento.id')
+				->orderBy('nivel.nivel')
+				->get()
+				->toArray();
+
 		$homologadores = DB::table('pessoa')->join('comissao_edicao', 'pessoa.id', '=', 'comissao_edicao.pessoa_id')
 				->join('funcao_pessoa', 'pessoa.id', '=', 'funcao_pessoa.pessoa_id')
 				->join('areas_comissao', 'comissao_edicao.id', '=', 'areas_comissao.comissao_edicao_id')
 				->select('pessoa.nome', 'areas_comissao.area_id')
 				->where('funcao_pessoa.funcao_id', Funcao::select(['id'])->where('funcao', 'Homologador')->first()->id)
 				->where('funcao_pessoa.edicao_id',Edicao::getEdicaoId())
+				->orderBy('pessoa.nome')
 				->get()
 				->toArray();
 		$cont = 0;
@@ -258,13 +288,19 @@ class RelatorioController extends Controller
 	}
 
 	public function avaliadoresArea(){
-		$areas = AreaConhecimento::all();
+		$areas = DB::table('area_conhecimento')->join('nivel', 'area_conhecimento.nivel_id', '=', 'nivel.id')
+				->select('area_conhecimento.area_conhecimento', 'nivel.nivel', 'area_conhecimento.id')
+				->orderBy('nivel.nivel')
+				->get()
+				->toArray();
+
 		$avaliadores = DB::table('pessoa')->join('comissao_edicao', 'pessoa.id', '=', 'comissao_edicao.pessoa_id')
 				->join('funcao_pessoa', 'pessoa.id', '=', 'funcao_pessoa.pessoa_id')
 				->join('areas_comissao', 'comissao_edicao.id', '=', 'areas_comissao.comissao_edicao_id')
 				->select('pessoa.nome', 'areas_comissao.area_id')
 				->where('funcao_pessoa.funcao_id', Funcao::select(['id'])->where('funcao', 'Avaliador')->first()->id)
 				->where('funcao_pessoa.edicao_id',Edicao::getEdicaoId())
+				->orderBy('pessoa.nome')
 				->get()
 				->toArray();
 		
@@ -273,27 +309,72 @@ class RelatorioController extends Controller
 	}
 
 	public function homologadoresProjeto(){
-		$projetos = Projeto::all();
-		$homologadores = Pessoa::all();
-		
-		foreach ($homologadores as $homologador) {
-			if ($homologador->temFuncao('Homologador')) {
-				$homologadores[] = $homologador;
-			}
-		}
-		return \PDF::loadView('relatorios.homologadoresProjeto', array('projetos' => $projetos,'homologadores' => $homologadores))->stream('homologadores_projeto.pdf');
+		$projetos = DB::table('projeto')
+				->select('projeto.id', 'projeto.titulo')
+				->where('projeto.edicao_id',Edicao::getEdicaoId())
+				->orderBy('projeto.titulo')
+				->get()
+				->toArray();
+		$homologadores = DB::table('funcao_pessoa')
+				->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+				->join('funcao', 'funcao_pessoa.funcao_id', '=', 'funcao.id')
+				->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
+				->where('funcao.funcao','Homologador')
+				->where('funcao_pessoa.edicao_id',Edicao::getEdicaoId())
+				->orderBy('pessoa.nome')
+				->get()
+				->toArray();
+
+		$revisoes = DB::table('pessoa') 
+				->join('revisao', 'pessoa.id', '=', 'revisao.pessoa_id')
+				->join('projeto', 'revisao.projeto_id', '=', 'projeto.id')
+				->get()
+				->toArray();
+		return \PDF::loadView('relatorios.homologadoresProjeto', array('projetos' => $projetos,'homologadores' => $homologadores, 'revisoes' => $revisoes))->stream('homologadores_projeto.pdf');
 	}
 
+
 	public function avaliadoresProjeto(){
-		$projetos = Projeto::all();
-		$avaliadores = Pessoa::all();
+		$projetos = DB::table('projeto')
+				->select('projeto.id', 'projeto.titulo')
+				->where('projeto.edicao_id',Edicao::getEdicaoId())
+				->where(function ($q){
+                    $q->where('projeto.situacao_id', Situacao::select(['id'])->where('situacao', 'Não Avaliado')->first()->id);
+                    $q->orWhere('projeto.situacao_id', Situacao::select(['id'])->where('situacao', 'Avaliado')->first()->id);
+                })
+				->orderBy('projeto.titulo')
+				->get()
+				->toArray();
+
+		$avaliadores = DB::table('funcao_pessoa')
+				->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+				->join('funcao', 'funcao_pessoa.funcao_id', '=', 'funcao.id')
+				->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
+				->where('funcao.funcao','Avaliador')
+				->where('funcao_pessoa.edicao_id',Edicao::getEdicaoId())
+				->orderBy('pessoa.nome')
+				->get()
+				->toArray();
+
+		$avaliacoes = DB::table('pessoa') 
+				->join('avaliacao', 'pessoa.id', '=', 'avaliacao.pessoa_id')
+				->join('projeto', 'avaliacao.projeto_id', '=', 'projeto.id')
+				->get()
+				->toArray();
 		
-		foreach ($avaliadores as $avaliador) {
-			if ($avaliador->temFuncao('Avaliador')) {
-				$avaliadores[] = $avaliador;
-			}
-		}
-		return \PDF::loadView('relatorios.avaliadoresProjeto', array('projetos' => $projetos,'avaliadores' => $avaliadores))->stream('avaliadores_projeto.pdf');
+		return \PDF::loadView('relatorios.avaliadoresProjeto', array('projetos' => $projetos,'avaliadores' => $avaliadores, 'avaliacoes' => $avaliacoes))->stream('avaliadores_projeto.pdf');
+	}
+
+	public function projetosConfirmaramPresenca(){
+		$projetos = DB::table('projeto')
+				->select('projeto.id', 'projeto.titulo')
+				->where('projeto.edicao_id',Edicao::getEdicaoId())
+				->where('projeto.presenca', TRUE)
+				->orderBy('projeto.titulo')
+				->get()
+				->toArray();
+
+		return \PDF::loadView('relatorios.projetosConfirmaramPresenca', array('projetos' => $projetos))->stream('projetos_comparecerão.pdf');
 	}
 
 }
