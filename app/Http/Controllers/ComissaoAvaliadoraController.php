@@ -395,7 +395,7 @@ class ComissaoAvaliadoraController extends Controller
 
         }
 
-		return redirect()->route('administrador');
+		return redirect()->route('administrador.comissao');
 	}
 
 }

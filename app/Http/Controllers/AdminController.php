@@ -43,16 +43,6 @@ class AdminController extends Controller
 			'homologacao_abertura', 'homologacao_fechamento',
 			'avaliacao_abertura', 'avaliacao_fechamento'])->sortByDesc('ano');
 
-		$niveis = Nivel::orderBy('nivel')->get();
-
-		$areas = AreaConhecimento::all(['id', 'area_conhecimento', 'descricao', 'nivel_id']);
-		
-		$tarefas = DB::table('tarefa')->orderBy('tarefa')->get()->toArray();
-
-		$escolas = Escola::orderBy('nome_curto')->get();
-
-		$usuarios = Pessoa::orderBy('nome')->get();
-
 		$comissao = DB::table('funcao_pessoa')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->join('comissao_edicao', function ($join){
@@ -68,12 +58,7 @@ class AdminController extends Controller
 			->get()
 			->toArray();
 
-		return view('admin.home', collect(['edicoes' => $edicoes,
-			'escolas' => $escolas,
-			'niveis' => $niveis,
-			'tarefas' => $tarefas,
-			'comissao' => $comissao
-		]))->withUsuarios($usuarios)->withAreas($areas);
+		return view('admin.home', collect(['edicoes' => $edicoes, 'comissao' => $comissao]));
 
 	}
 
@@ -132,6 +117,61 @@ class AdminController extends Controller
 
     }
 
+    public function escolas(){
+    	$escolas = Escola::orderBy('nome_curto')->get();
+
+    	return view('admin.escolas', collect(['escolas' => $escolas]));
+    }
+
+    public function niveis(){
+    	$niveis = Nivel::orderBy('nivel')->get();
+
+    	return view('admin.niveis', collect(['niveis' => $niveis]));
+    }
+
+    public function areas(){
+    	$areas = AreaConhecimento::all(['id', 'area_conhecimento', 'descricao', 'nivel_id']);
+
+    	return view('admin.areas')->withAreas($areas);
+    }
+
+    public function tarefas(){
+    	$tarefas = DB::table('tarefa')->orderBy('tarefa')->get()->toArray();
+
+    	return view('admin.tarefas', collect(['tarefas' => $tarefas]));
+    }
+
+    public function usuarios(){
+    	$usuarios = Pessoa::orderBy('nome')->get();
+
+    	return view('admin.usuarios')->withUsuarios($usuarios);
+    }
+
+    public function comissao(){
+
+    	$comissao = DB::table('funcao_pessoa')
+			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+			->join('comissao_edicao', function ($join){
+				$join->on('comissao_edicao.pessoa_id', '=', 'pessoa.id');
+				$join->where('comissao_edicao.edicao_id', '=', Edicao::getEdicaoId());
+			})
+			->where('funcao_pessoa.edicao_id', '=', Edicao::getEdicaoId())
+			->whereRaw('(funcao_pessoa.funcao_id = 3 or funcao_pessoa.funcao_id = 4)')
+			->select('comissao_edicao.id','funcao_pessoa.homologado', 'funcao_pessoa.funcao_id',
+					 'pessoa.nome', 'pessoa.instituicao', 'pessoa.titulacao')
+			->orderBy('funcao_pessoa.homologado')
+			->orderBy('pessoa.nome')
+			->get()
+			->toArray();
+
+    	return view('admin.comissao', collect(['comissao' => $comissao]));
+    }
+
+    public function relatorios(){
+
+    	return view('admin.relatorios');
+    }
+
     public function homologarProjetos()
     {
 
@@ -163,7 +203,7 @@ class AdminController extends Controller
 			'palavras' => $data['palavras'],
 		]);
 
-		return redirect()->route('administrador');
+		return redirect()->route('administrador.niveis');
 
 	}
 
@@ -188,7 +228,7 @@ class AdminController extends Controller
 				'palavras' => $data['palavras'],
 			]);
 
-		return redirect()->route('administrador');
+		return redirect()->route('administrador.niveis');
 	}
 
 	public function excluiNivel($id, $s)
@@ -229,7 +269,7 @@ class AdminController extends Controller
 			'descricao' => $data['descricao'],
 		]);
 
-		return redirect()->route('administrador');
+		return redirect()->route('administrador.areas');
 
 	}
 
@@ -253,7 +293,7 @@ class AdminController extends Controller
 				'descricao' => $data['descricao']
 			]);
 
-		return redirect()->route('administrador');
+		return redirect()->route('administrador.areas');
 	}
 
 	public function excluiArea($id, $s)
@@ -332,7 +372,7 @@ class AdminController extends Controller
 				'endereco_id' => $id_endereco
 			]);
 
-		return redirect()->route('administrador');
+		return redirect()->route('administrador.escolas');
 	}
 
 	public function cadastroEscola()
@@ -361,7 +401,7 @@ class AdminController extends Controller
 			'endereco_id' => $idEndereco['original']['id']
 		]);
 
-		return redirect()->route('administrador');
+		return redirect()->route('administrador.escolas');
 
 	}
 
@@ -395,7 +435,7 @@ class AdminController extends Controller
 			'vagas' => $data['vagas']
 		]);
 
-		return redirect()->route('administrador');
+		return redirect()->route('administrador.tarefas');
 
 	}
 
@@ -418,7 +458,7 @@ class AdminController extends Controller
 				'vagas' => $data['vagas'],
 			]);
 
-		return redirect()->route('administrador');
+		return redirect()->route('administrador.tarefas');
 	}
 
 	public function dadosTarefa($id)

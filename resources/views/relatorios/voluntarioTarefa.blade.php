@@ -4,13 +4,11 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <h2 style="margin-top: 5mm; margin-left: 20mm;">RELATÓRIO DE VOLUNTÁRIOS E SUAS RESPECTIVAS</h2>
-        <h2 style="margin-left: 90mm;">TAREFAS</h2> 
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE VOLUNTÁRIOS E SUAS RESPECTIVAS TAREFAS</h2>
 
-        <table style="margin-left: 25mm; margin-top: 5mm; width: 100%;">
+        <table class="bordered striped centered" style="width: 100%;">
         	<thead">
         		<tr>
-            <th>#</th>
     				<th>Nome</th>
             <th>Email</th>
             <th>Tarefa</th>
@@ -19,10 +17,9 @@
   			<tbody>
   				@foreach($voluntarios as $id => $voluntario)
   				<tr>
-            <td style="border-bottom:solid 1px #000;">{{$id + 1}}</td>
-    				<td style="border-bottom:solid 1px #000;">{{$voluntario->nome}}</td>
-            <td style="border-bottom:solid 1px #000;">{{$voluntario->email}}</td>
-            <td style="border-bottom:solid 1px #000;">{{\App\Pessoa::find($voluntario->id)->tarefas()->first()->tarefa}}</td>
+    				<td>{{$voluntario->nome}}</td>
+            <td>{{$voluntario->email}}</td>
+            <td>{{\App\Pessoa::find($voluntario->id)->tarefas->first()->tarefa}}</td>
   				</tr>
   				@endforeach
   			</tbody>	
