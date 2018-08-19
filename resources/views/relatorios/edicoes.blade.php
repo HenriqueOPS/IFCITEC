@@ -3,13 +3,13 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <h2 style="text-align: center;">RELATÓRIO DE EDIÇÕES</h2>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE EDIÇÕES</h2>
         <br>
         @foreach($edicoes as $edicao)
         @if($edicao->ano > 5)
         <p style="text-align: center;"><b> Edição {{\App\Edicao::numeroEdicao($edicao->ano)}}</b></p>
         <br>
-        <table class="table" style="margin-right: 3pt; margin-left: 3pt; width:100%;">
+        <table class="bordered striped centered" style="margin-right: 3pt; margin-left: 3pt; width:100%;">
         <tr>
         <th>Período da Feira: </th>
         <td>{{ date('d/m/Y H:i:s', strtotime($edicao['feira_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['feira_fechamento'])) }}</td>
@@ -17,7 +17,7 @@
 
         <tr>
         <th>Período de Inscrições de Projetos: </th>
-        <td>{{ date('d/m/Y H:i:s', strtotime($edicao['incricao_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['inscricao_fechamento'])) }}</td>
+        <td>{{ date('d/m/Y H:i:s', strtotime($edicao['inscricao_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['inscricao_fechamento'])) }}</td>
         </tr>
 
         <tr>

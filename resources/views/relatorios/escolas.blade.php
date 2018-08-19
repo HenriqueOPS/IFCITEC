@@ -2,40 +2,47 @@
 
 
 @section('content')
-        <h2 style=" margin-left: 250px;">RELATÓRIO DE ESCOLAS</h2>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE ESCOLAS</h2>
 
         <br>
         @foreach($escolas as $escola)
-        <p style="text-align: center;"><b>{{$escola->nome_curto}}</b></p>
-        <table id="hor-minimalist-a"  style="margin-right: 3pt; margin-left: 3pt; width:100%; border: 1pt solid black; ">
+        <p style="text-align: center; text-transform: uppercase;"><b>{{$escola->nome_curto}}</b></p>
+        <table class="bordered striped centered"  style="width:100%;">
           <tr>
-              <th style="margin-left: 3pt; border-bottom:solid 1pt #000;">Município: </th>
-              <td style="margin-left: 3pt; border-bottom:solid 1pt #000;">
+              <th>Email: </th>
+              <td>{{$escola->email}}</td>
+          </tr>
+
+          <tr>
+              <th>Telefone: </th>
+              <td>{{$escola->telefone}}</td>
+          </tr>
+
+          <tr>
+              <th>Endereço: </th>
+              <td>
+                {{$escola->endereco}}, {{$escola->numero}}
+              </td>
+           </tr>
+
+          <tr>
+              <th>Município: </th>
+              <td>
                 {{$escola->municipio}}
               </td>
            </tr>
 
            <tr>
-              <th style="margin-left: 3pt; border-bottom:solid 1pt #000;">Email: </th>
-              <td style="margin-left: 3pt; border-bottom:solid 1pt #000;">{{$escola->email}}</td>
-           </tr>
-
-           <tr>
-              <th style="margin-left: 3pt; border-bottom:solid 1pt #000;">Telefone: </th>
-              <td style="margin-left: 3pt; border-bottom:solid 1pt #000;">{{$escola->telefone}}</td>
-           </tr>
-
-           <tr>
-              <th style="margin-left: 3pt; border-bottom:solid 1pt #000;">CEP: </th>
-              <td style="margin-left: 3pt; border-bottom:solid 1pt #000;">
-                {{$escola->cep}}
+              <th>Estado: </th>
+              <td>
+                {{$escola->uf}}
               </td>
            </tr>
 
            <tr>
-              <th style="margin-left: 3pt; border-bottom:solid 1pt #000;">Endereço: </th>
-              <td style="margin-left: 3pt; border-bottom:solid 1pt #000;">
-                {{$escola->endereco}}, {{$escola->numero}}
+              <th>CEP: </th>
+              <td>
+                {{$escola->cep}}
               </td>
            </tr>
         	<br>
