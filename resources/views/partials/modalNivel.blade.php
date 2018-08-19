@@ -59,7 +59,7 @@ $('.modalNivel').click(function(){
 	var idNivel = $(this).attr('id-nivel');
 
 	//monta a url de consulta
-	var urlConsulta = './nivel/dados-nivel/'+idNivel;
+	var urlConsulta = '.././nivel/dados-nivel/'+idNivel;
 	//faz a consulta via Ajax
 	$.get(urlConsulta, function (res){
 
@@ -112,7 +112,7 @@ $('.exclusaoNivel').click(function(){
 	$("#ModalDeleteNivel").modal();
 
 	$('.excluir').click(function(){
-		var urlConsulta = './nivel/exclui-nivel/'+idNivel+'/'+$('#passwordDeleteNivel').val();
+		var urlConsulta = '.././nivel/exclui-nivel/'+idNivel+'/'+$('#passwordDeleteNivel').val();
 		$.get(urlConsulta, function (res){
 			if(res == 'true'){
 				bootbox.alert("Nível excluído com sucesso");
