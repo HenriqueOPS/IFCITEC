@@ -1,7 +1,8 @@
+
 <html lang="pt-br">
 <head>
 	<meta charset="utf-8">
-   
+   	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
 <style>
 	@media all {
 	@page{
@@ -17,7 +18,7 @@
 	}
 	body{
 		font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-		background-image: url("../../public/img/relatorio.png");
+		background-image: url("{{ asset('img/relatorio.png') }}");
 		padding-top: 30mm;
 		margin-left: 2mm;
 		margin-right: 2mm;
@@ -28,6 +29,7 @@
 	hr {
       border: 1pt solid #000;
     }
+	
     
 	}
 </style>

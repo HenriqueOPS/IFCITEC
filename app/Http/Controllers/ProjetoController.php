@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Jobs\MailAutorJob;
 use App\Jobs\MailOrientadorJob;
 use App\Jobs\MailCoorientadorJob;
+use App\Jobs\MailProjetoHomologadoJob;
 //
 use App\Pessoa;
 use App\Nivel;
@@ -870,6 +871,18 @@ class ProjetoController extends Controller
 
         return response()->json($res, 200);
 
+    }
+
+    public function confirmarPresenca(){
+    	$emailJob = (new MailProjetoHomologadoJob('rafaellasbueno@gmail.com', 'Rafa', 'oi', 1))->delay(\Carbon\Carbon::now()->addSeconds(3));
+		dispatch($emailJob);
+    }
+
+    public function confirmaPresenca($id){
+    	Projeto::where('id', $id)
+			->update(['presenca' => TRUE,
+			]);
+    	return view('confirmaPresenca');
     }
 
 }
