@@ -25,12 +25,12 @@
 		align-content: center;
 	}
 	ul li{
-		width: 70mm;
-		height: 120mm;
+		width: 100mm;
+		height: 132mm;
 		padding: 5mm;
 		border: 1pt solid #000;
-		background: url("http://localhost:8088/img/bg-cracha.png");
-		background-size: 100%;
+		background: url("{{ asset('img/bg-cracha.png') }}");
+		background-size: 12px;
 	}
 
 	ul li.line-wrap{

@@ -3,9 +3,9 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <h2 style="margin-top: 5mm; margin-left: 12mm;">RELATÓRIO DE USUÁRIOS E SUAS RESPECTIVAS FUNÇÕES</h2>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE USUÁRIOS E SUAS RESPECTIVAS FUNÇÕES</h2>
 
-        <table style="margin-left: 25mm; margin-top: 10mm; width: 100%;">
+        <table class="bordered striped centered" style="width: 100%;">
         	<thead>
         		<tr>
     				<th>Usuário</th>
@@ -16,9 +16,9 @@
   			<tbody>
   				@foreach($usuarios as $usuario)
   				<tr>
-    				<td style="border-bottom:solid 1px #000;">{{$usuario->nome}}</td>
-    				<td style="border-bottom:solid 1px #000;">{{$usuario->email}}</td> 
-    				<td style="border-bottom:solid 1px #000;">
+    				<td>{{$usuario->nome}}</td>
+    				<td>{{$usuario->email}}</td> 
+    				<td>
             @foreach($funcoes as $funcao)
               @if($funcao->pessoa_id == $usuario->id)
                   {{$funcao->funcao}}

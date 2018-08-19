@@ -63,7 +63,7 @@ class Pessoa extends Authenticatable {
     }
 
     public function tarefas() {
-        return $this->belongsToMany('App\Tarefa');
+        return $this->belongsToMany('App\Tarefa', 'pessoa_tarefa', 'pessoa_id', 'tarefa_id');
     }
 
 	/**

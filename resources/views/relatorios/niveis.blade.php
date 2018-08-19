@@ -3,9 +3,9 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <h2 style="text-align: center;">RELATÓRIO DE NÍVEIS</h2>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE NÍVEIS</h2>
 
-        <table style="margin-left: 25mm; margin-top: 10mm; width: 100%">
+        <table class="bordered striped centered" style="width: 100%">
         	<thead>
         		<tr>
     				<th>Nível</th>
