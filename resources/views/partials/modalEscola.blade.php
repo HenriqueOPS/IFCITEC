@@ -67,7 +67,7 @@ $('.modalEscola').click(function(){
 	var idEscola = $(this).attr('id-escola');
 
 	//monta a url de consulta
-	var urlConsulta = './escola/dados-escola/'+idEscola;
+	var urlConsulta = '.././escola/dados-escola/'+idEscola;
 	//faz a consulta via Ajax
 	$.get(urlConsulta, function (res){
 
@@ -134,7 +134,7 @@ $('.exclusao').click(function(){
 	$("#ModalDeleteEscola").modal();
 
 	$('.excluir').click(function(){
-		var urlConsulta = './escola/exclui-escola/'+idEscola+'/'+$('#passwordDeleteEscola').val();
+		var urlConsulta = '.././escola/exclui-escola/'+idEscola+'/'+$('#passwordDeleteEscola').val();
 		$.get(urlConsulta, function (res){
 			if(res == 'true'){
 				bootbox.alert("Escola Excluída");

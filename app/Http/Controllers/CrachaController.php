@@ -9,8 +9,8 @@ use QRCode;
 class CrachaController extends Controller
 {
 
-	public function generateQrCode($idPessoa){
-		return QRCode::text($idPessoa)
+	public function generateQrCode($id){
+		return QRCode::text($id)
 				->setMargin(1)
 				->svg();
 	}
