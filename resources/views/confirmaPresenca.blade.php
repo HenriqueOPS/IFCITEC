@@ -12,20 +12,10 @@
             <div class="main main-raised">
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1">
-                        <center><h2>Sua alteração foi realizada com sucesso!</h2></center>
+                        <center><h2>A presença do seu projeto está confirmada!</h2></center>
                     </div>
                 </div>
                 <br><br><br>
-                <form name="f1" method="GET" action="{{ Redirect::back()}}">
-                <div class="row">
-                    <div class="col-md-offset-1">
-                        <button class="btn btn-primary btn-fab btn-fab-mini btn-round">
-                            <i class="material-icons">arrow_back</i>
-                        </button>
-                    </div>
-
-                </div>
-                </form>
             </div>
         </div>
     </div>

@@ -267,6 +267,8 @@
                                         <br>
                                         <p>Você é Homologador(a) do trabalho intitulado "{{$titulo}}" da Feira de Ciências e Inovação Tecnológica do IFRS - Campus Canoas.</p>
                                         <br>
+										<p>Para homologar o trabalho faça seu login e clique em Comissão Avaliadora.</p>
+										<br>
                                         <p>Fique atento para as datas importantes disponíveis no site do evento. Em caso de qualquer dúvida, faça contato conosco pelo e-mail ifcitec@canoas.ifrs.edu.br</p>
                                     </td>
                                 </tr>

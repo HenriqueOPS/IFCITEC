@@ -175,7 +175,7 @@ class PessoaController extends Controller {
         $data = $req->all();
         $data['dt_nascimento'] = implode('-',array_reverse(explode('/', $data['dt_nascimento'])));
         Pessoa::find($id)->update($data);
-        return redirect()->route('administrador');
+        return redirect()->route('administrador.usuarios');
 
     }
 

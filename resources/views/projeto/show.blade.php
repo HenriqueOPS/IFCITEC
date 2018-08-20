@@ -47,9 +47,9 @@
                         <div class="col-md-3">
                             @if(Auth::user()->temFuncao('Avaliador') || Auth::user()->temFuncao('Homologador'))
 
-                                @if((\App\Edicao::consultaPeriodo('Homologação')))
+                                @if((\App\Edicao::consultaPeriodo('Homologação')) && $ehHomologador)
 
-                                    <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScwVSWWpbvwB6BKYk1Cz-SaObHgUrlMnkbiLxaBB3szdLmnZQ/viewform?usp=pp_url&entry.1051144494={{$projeto->titulo}}&entry.259386738={{$projeto->nivel->nivel}}&entry.1403982251={{$projeto->areaConhecimento->area_conhecimento}}&entry.1561957447={{$projeto->id}}&entry.276755517={{Auth::user()->nome}}&entry.846448634={{Auth::user()->id}}" id="novo-integrante" class="btn btn-success">
+                                    <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScwVSWWpbvwB6BKYk1Cz-SaObHgUrlMnkbiLxaBB3szdLmnZQ/viewform?usp=pp_url&entry.1051144494={{$projeto->titulo}}&entry.259386738={{$projeto->nivel->nivel}}&entry.1403982251={{$projeto->areaConhecimento->area_conhecimento}}&entry.1561957447={{$projeto->id}}&entry.276755517={{Auth::user()->nome}}&entry.846448634={{Auth::user()->id}}" id="homologar-projeto" class="btn btn-success">
                                         Homologar
                                     </a>
 
@@ -116,4 +116,30 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('js')
+
+@if(Auth::user()->temFuncao('Avaliador') || Auth::user()->temFuncao('Homologador'))
+
+    @if((\App\Edicao::consultaPeriodo('Homologação')) && $ehHomologador)
+
+    <script>
+    $('#homologar-projeto').click(function () {
+
+        //muda os atributos do botão depois de 5 segundos
+        setTimeout(function () {
+            $('#homologar-projeto').attr('href', '../../comissao-avaliadora');
+            $('#homologar-projeto').attr('target', '');
+            $('#homologar-projeto').html('Voltar')
+        },5000);
+
+    })
+    </script>
+
+    @endif
+
+@endif
+
+
 @endsection

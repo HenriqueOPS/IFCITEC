@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Jobs\MailAutorJob;
 use App\Jobs\MailOrientadorJob;
 use App\Jobs\MailCoorientadorJob;
+use App\Jobs\MailProjetoHomologadoJob;
 //
 use App\Pessoa;
 use App\Nivel;
@@ -217,7 +218,13 @@ class ProjetoController extends Controller
 		if (!($projeto instanceof Projeto)) {
 			abort(404);
 		}
-		return view('projeto.show')->withProjeto($projeto);
+
+        $ehHomologador = DB::table('revisao')
+            ->where('projeto_id',$projeto->id)
+            ->where('pessoa_id',Auth::user()->id)
+            ->get()->count();
+
+		return view('projeto.show', compact('ehHomologador'))->withProjeto($projeto);
 	}
 
 	/**
@@ -545,6 +552,7 @@ class ProjetoController extends Controller
 				}
 			}
 		}
+
 		return redirect()->route('projeto.show', ['projeto' => $projeto->id]);
 	}
 
@@ -863,6 +871,18 @@ class ProjetoController extends Controller
 
         return response()->json($res, 200);
 
+    }
+
+    public function confirmarPresenca(){
+    	$emailJob = (new MailProjetoHomologadoJob('rafaellasbueno@gmail.com', 'Rafa', 'oi', 1))->delay(\Carbon\Carbon::now()->addSeconds(3));
+		dispatch($emailJob);
+    }
+
+    public function confirmaPresenca($id){
+    	Projeto::where('id', $id)
+			->update(['presenca' => TRUE,
+			]);
+    	return view('confirmaPresenca');
     }
 
 }
