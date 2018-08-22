@@ -10,6 +10,7 @@ use App\Projeto;
 use App\Pessoa;
 use App\Funcao;
 use App\Tarefa;
+use App\Situacao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
@@ -75,7 +76,7 @@ class RelatorioController extends Controller
 	public function niveis(){
 		$niveis = Nivel::orderBy('nivel')->get();
 
-		return \PDF::loadView('relatorios.niveis', array('niveis' => $niveis))->setPaper('A4', 'landscape')->stream('niveis.pdf');
+		return \PDF::loadView('relatorios.niveis', array('niveis' => $niveis))->setPaper('A4', 'landscape')->download('niveis.pdf');
 	}
 
 	public function escolas(){
@@ -84,7 +85,7 @@ class RelatorioController extends Controller
 						->orderBy('escola.nome_curto')
 						->get();
 
-		return \PDF::loadView('relatorios.escolas', array('escolas' => $escolas))->stream('escolas.pdf');
+		return \PDF::loadView('relatorios.escolas', array('escolas' => $escolas))->download('escolas.pdf');
 	}
 
 	public function usuarios(){
@@ -127,7 +128,7 @@ class RelatorioController extends Controller
 						->get();
 		$cont = 0;
 
-		return \PDF::loadView('relatorios.usuarios', array('autores' => $autores, 'orientadores' => $orientadores, 'coorientadores' => $coorientadores, 'voluntarios' => $voluntarios, 'homologadores' => $homologadores, 'avaliadores' => $avaliadores, 'edicoes' => $edicoes, 'cont' => $cont))->stream('usuarios.pdf');
+		return \PDF::loadView('relatorios.usuarios', array('autores' => $autores, 'orientadores' => $orientadores, 'coorientadores' => $coorientadores, 'voluntarios' => $voluntarios, 'homologadores' => $homologadores, 'avaliadores' => $avaliadores, 'edicoes' => $edicoes, 'cont' => $cont))->download('usuarios.pdf');
 	}
 
 	public function projetos(){
@@ -175,19 +176,19 @@ class RelatorioController extends Controller
 				->toArray();
 		}
 		
-		return \PDF::loadView('relatorios.projetos', array('projetos' => $projetos,'autores' => $autores, 'orientadores' => $orientadores, 'coorientadores' => $coorientadores))->stream('escolas.pdf');
+		return \PDF::loadView('relatorios.projetos', array('projetos' => $projetos,'autores' => $autores, 'orientadores' => $orientadores, 'coorientadores' => $coorientadores))->download('escolas.pdf');
 	}
 
 	public function areas(){
 		$areas = AreaConhecimento::orderBy('area_conhecimento')->get();
 
-		return \PDF::loadView('relatorios.areas', array('areas' => $areas))->setPaper('A4', 'landscape')->stream('areas.pdf');
+		return \PDF::loadView('relatorios.areas', array('areas' => $areas))->setPaper('A4', 'landscape')->download('areas.pdf');
 	}
 
 	public function edicoes(){
 		$edicoes = Edicao::orderBy('ano')->get();
 		
-		return \PDF::loadView('relatorios.edicoes', array('edicoes' => $edicoes))->stream('edicoes.pdf');
+		return \PDF::loadView('relatorios.edicoes', array('edicoes' => $edicoes))->download('edicoes.pdf');
 	}
 
 	public function funcoesUsuarios(){
@@ -208,7 +209,7 @@ class RelatorioController extends Controller
 				->get()
 				->toArray();
 		
-		return \PDF::loadView('relatorios.funcoesUsuarios', array('usuarios' => $usuarios,'funcoes' => $funcoes, 'funcoesUsuarios' => $funcoesUsuarios))->stream('funcoes.pdf');
+		return \PDF::loadView('relatorios.funcoesUsuarios', array('usuarios' => $usuarios,'funcoes' => $funcoes, 'funcoesUsuarios' => $funcoesUsuarios))->download('funcoes.pdf');
 	}
 
 	public function escolaProjetos($id){
@@ -224,7 +225,7 @@ class RelatorioController extends Controller
 			->toArray();
 		$numeroProjetos = count($projetos);
 
-		return \PDF::loadView('relatorios.escolaProjetos', array('escola' => $escola, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->stream('areas.pdf');
+		return \PDF::loadView('relatorios.escolaProjetos', array('escola' => $escola, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->download('areas.pdf');
 	}
 
 	public function nivelProjetos($id){
@@ -234,7 +235,7 @@ class RelatorioController extends Controller
 		
 		$numeroProjetos = count($projetos);
 
-		return \PDF::loadView('relatorios.nivelProjetos', array('nivel' => $nivel, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->stream('nivelProjetos.pdf');
+		return \PDF::loadView('relatorios.nivelProjetos', array('nivel' => $nivel, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->download('nivelProjetos.pdf');
 	}
 
 	public function areaProjetos($id){
@@ -244,7 +245,7 @@ class RelatorioController extends Controller
 		
 		$numeroProjetos = count($projetos);
 
-		return \PDF::loadView('relatorios.areaProjetos', array('area' => $area, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->stream('areaProjetos.pdf');
+		return \PDF::loadView('relatorios.areaProjetos', array('area' => $area, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->download('areaProjetos.pdf');
 	}
 
 	public function voluntarioTarefa(){
@@ -258,13 +259,13 @@ class RelatorioController extends Controller
 				->get()
 				->toArray();
 	
-		return \PDF::loadView('relatorios.voluntarioTarefa', array('voluntarios' => $voluntarios))->stream('areaProjetos.pdf');
+		return \PDF::loadView('relatorios.voluntarioTarefa', array('voluntarios' => $voluntarios))->download('areaProjetos.pdf');
 	}
 
 	public function tarefaVoluntarios($id){
 		$tarefa = Tarefa::find($id);
 
-		return \PDF::loadView('relatorios.tarefaVoluntarios', array('tarefa' => $tarefa))->stream('tarefaVoluntarios.pdf');
+		return \PDF::loadView('relatorios.tarefaVoluntarios', array('tarefa' => $tarefa))->download('tarefaVoluntarios.pdf');
 	}
 
 	public function homologadoresArea(){
@@ -284,7 +285,7 @@ class RelatorioController extends Controller
 				->get()
 				->toArray();
 		$cont = 0;
-		return \PDF::loadView('relatorios.homologadoresArea', array('areas' => $areas,'homologadores' => $homologadores, 'cont' => $cont))->stream('homologadores_area.pdf');
+		return \PDF::loadView('relatorios.homologadoresArea', array('areas' => $areas,'homologadores' => $homologadores, 'cont' => $cont))->download('homologadores_area.pdf');
 	}
 
 	public function avaliadoresArea(){
@@ -305,7 +306,7 @@ class RelatorioController extends Controller
 				->toArray();
 		
 		$cont = 0;
-		return \PDF::loadView('relatorios.avaliadoresArea', array('areas' => $areas,'avaliadores' => $avaliadores, 'cont' => $cont))->stream('avaliadores_area.pdf');
+		return \PDF::loadView('relatorios.avaliadoresArea', array('areas' => $areas,'avaliadores' => $avaliadores, 'cont' => $cont))->download('avaliadores_area.pdf');
 	}
 
 	public function homologadoresProjeto(){
@@ -330,7 +331,7 @@ class RelatorioController extends Controller
 				->join('projeto', 'revisao.projeto_id', '=', 'projeto.id')
 				->get()
 				->toArray();
-		return \PDF::loadView('relatorios.homologadoresProjeto', array('projetos' => $projetos,'homologadores' => $homologadores, 'revisoes' => $revisoes))->stream('homologadores_projeto.pdf');
+		return \PDF::loadView('relatorios.homologadoresProjeto', array('projetos' => $projetos,'homologadores' => $homologadores, 'revisoes' => $revisoes))->download('homologadores_projeto.pdf');
 	}
 
 
@@ -362,7 +363,7 @@ class RelatorioController extends Controller
 				->get()
 				->toArray();
 		
-		return \PDF::loadView('relatorios.avaliadoresProjeto', array('projetos' => $projetos,'avaliadores' => $avaliadores, 'avaliacoes' => $avaliacoes))->stream('avaliadores_projeto.pdf');
+		return \PDF::loadView('relatorios.avaliadoresProjeto', array('projetos' => $projetos,'avaliadores' => $avaliadores, 'avaliacoes' => $avaliacoes))->download('avaliadores_projeto.pdf');
 	}
 
 	public function projetosConfirmaramPresenca(){
@@ -374,7 +375,7 @@ class RelatorioController extends Controller
 				->get()
 				->toArray();
 
-		return \PDF::loadView('relatorios.projetosConfirmaramPresenca', array('projetos' => $projetos))->stream('projetos_comparecerão.pdf');
+		return \PDF::loadView('relatorios.projetosConfirmaramPresenca', array('projetos' => $projetos))->download('projetos_comparecerão.pdf');
 	}
 
 }
