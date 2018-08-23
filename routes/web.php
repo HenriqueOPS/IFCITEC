@@ -166,6 +166,9 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
     Route::get('/usuario/{id}/editar/', 'PessoaController@editarUsuario')->name('editarUsuario');
     Route::post('/usuario/{id}/editar-cadastro/', 'PessoaController@editaUsuario')->name('editaUsuario');
 
+    //Administrador
+    Route::get('/projetos/homologar-projetos', 'ProjetoController@homologarProjetos');
+
 });
 
 
