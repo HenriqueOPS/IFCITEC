@@ -873,6 +873,28 @@ class ProjetoController extends Controller
 
     }
 
+    public function homologarProjetos(){
+
+	    //subquery para pegar a média da homologação
+	    $subQuery = DB::table('revisao')
+            ->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
+            ->where('revisao.projeto_id','=',DB::raw('projeto.id'))
+            ->toSql();
+
+	    $projetos = Projeto::select('projeto.id', 'titulo', 'situacao_id',
+            'nivel_id', 'area_id', DB::raw('('.$subQuery.') as nota'))
+            ->where('edicao_id','=',Edicao::getEdicaoId())
+            ->orderBy('nota','desc')
+            ->get();
+
+        return view('comissao.homologarProjetos')->withProjetos($projetos);
+
+    }
+
+
+
+
+
     public function confirmarPresenca(){
     	$emailJob = (new MailProjetoHomologadoJob('rafaellasbueno@gmail.com', 'Rafa', 'oi', 1))->delay(\Carbon\Carbon::now()->addSeconds(3));
 		dispatch($emailJob);
