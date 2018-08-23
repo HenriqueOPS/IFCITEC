@@ -90,7 +90,11 @@
 							<ul class="nav navbar-nav navbar-left">
 								<li><a href="{{ route('autor') }}">Projeto</a></li>
 
-								@if(\App\Edicao::consultaPeriodo('Comissão') || Auth::user()->temFuncao('Administrador'))
+								@if(\App\Edicao::consultaPeriodo('Comissão') ||
+									\App\Edicao::consultaPeriodo('Homologação') ||
+									\App\Edicao::consultaPeriodo('Avaliação') ||
+									Auth::user()->temFuncao('Administrador') ||
+									Auth::user()->temFuncao('Homologador'))
 									<li><a href="{{route('comissao')}}">Comissão Avaliadora</a></li>
 								@endif
 
