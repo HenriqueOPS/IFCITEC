@@ -23,7 +23,7 @@ class AreaConhecimento extends Model {
     ];
 
     public function projetos() {
-        return $this->hasMany('App\Projeto');
+        return $this->hasMany('App\Projeto', 'area_id');
     }
 
 

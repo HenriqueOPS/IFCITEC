@@ -29,11 +29,11 @@ class Projeto extends Model {
     }
 
     public function avaliacoes() {
-        return $this->hasMany('App\Avaliacao');
+        return $this->hasMany('App\Avaliacao', 'projeto_id');
     }
 
     public function revisoes() {
-        return $this->hasMany('App\Revisao');
+        return $this->hasMany('App\Revisao', 'projeto_id');
     }
 
     public function areaConhecimento() {
@@ -65,6 +65,21 @@ class Projeto extends Model {
 
         return "Cadastrado"; // XGH
 
+    }
+
+    public function getNotaRevisao($id){
+        $subQuery = DB::table('revisao')
+            ->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
+            ->where('revisao.projeto_id','=',DB::raw('projeto.id'))
+            ->toSql();
+
+        $projeto = Projeto::select(DB::raw('('.$subQuery.') as nota'))
+            ->join('situacao','projeto.situacao_id','=','situacao.id')
+            ->where('edicao_id','=',Edicao::getEdicaoId())
+            ->where('projeto.id','=',$id)
+           // ->where('situacao.situacao','=','Homologado')
+            ->get();
+        return $projeto->first()->nota;
     }
 
     public function getTotalFuncoes($funcoes) {

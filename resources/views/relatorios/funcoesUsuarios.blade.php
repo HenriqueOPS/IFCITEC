@@ -19,11 +19,9 @@
     				<td>{{$usuario->nome}}</td>
     				<td>{{$usuario->email}}</td> 
     				<td>
-            @foreach($funcoes as $funcao)
-              @if($funcao->pessoa_id == $usuario->id)
-                  {{$funcao->funcao}}
-                  <br>
-              @endif
+            @foreach($usuario->funcoes as $funcao)
+                {{$funcao->funcao}}
+                <br>
             @endforeach    
             </td>
   				</tr>
