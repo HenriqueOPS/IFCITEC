@@ -3,25 +3,25 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <h2 style="text-align: center;">RELATÓRIO DE AVALIADORES POR PROJETO</h2>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE AVALIADORES POR PROJETO</h2>
 
-        @foreach($projetos as $projeto)
-        <p style="text-align: center; margin-top: 5mm;"><b>{{$projeto->titulo}}</b></p>
-        <br>
-        <table style="width: 100%; border: 1pt solid black;">
-          <tr>
-          <th style="margin-left: 3pt; border-bottom:solid 1pt #000;">Avaliadores: </th>
-          <td style="margin-left: 3pt; border-bottom:solid 1pt #000;">
-              @foreach($avaliadores as $avaliador)
-              @foreach($avaliacoes as $avaliacao) 
-                @if($avaliacao->projeto_id == $projeto->id && $avaliador->id == $avaliacao->pessoa_id)
-                    {{$avaliador->nome}}
-                    <br>
-                @endif
-              @endforeach
-              @endforeach  
-          </td>
-          </tr>
+        @foreach($projetos as $projeto)]
+        <table class="bordered striped centered" style="width: 100%;">
+          <thead>
+            <tr>
+              <th>{{$projeto->titulo}}</th> 
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                  <a style="color: #000;">Avaliadores: </a>
+                  @foreach($projeto->avaliacoes as $avaliacao)
+                        <a style="color: #000;">{{$avaliacao->pessoa->nome}}, </a>
+                  @endforeach  
+              </td>
+            </tr>
+          </tbody>
 		    </table>
         <br>
         @endforeach

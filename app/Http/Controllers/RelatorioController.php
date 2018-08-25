@@ -73,6 +73,74 @@ class RelatorioController extends Controller
 		return Response::download($filename, $filename, $headers);
 	}
 
+	public function csvProjetos()
+	{
+		$subQuery = DB::table('revisao')
+            ->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
+            ->where('revisao.projeto_id','=',DB::raw('projeto.id'))
+            ->toSql();
+
+	    $resultados = Projeto::select('projeto.id', 'titulo', 'situacao_id',
+            'nivel.nivel', 'area_conhecimento.area_conhecimento', DB::raw('('.$subQuery.') as nota'))
+	    	->join('nivel','projeto.nivel_id','=','nivel.id')
+			->join('area_conhecimento','projeto.area_id','=','area_conhecimento.id')
+            ->where('edicao_id','=',Edicao::getEdicaoId())
+            ->orderBy('nivel','asc')
+            ->orderBy('area_conhecimento','asc')
+            ->orderBy('nota','desc')
+            ->get();
+
+		$filename = "ProjetosNotasHomologadores.csv";
+
+		$handle = fopen($filename, 'w+');
+		$nivel = utf8_decode('Nível');
+		$area = utf8_decode('Área do Conhecimento');
+		fputcsv($handle, array('Projeto',$nivel,$area,'Nota Final'), ';');
+
+		foreach ($resultados as $row) {
+			$titulo = utf8_decode($row->titulo);
+			$nivel = utf8_decode($row->nivel);
+			$area = utf8_decode($row->area_conhecimento);
+			fputcsv($handle, array($titulo,$nivel,$area,$row->nota), ';');
+		}
+
+		fclose($handle);
+
+		$headers = array(
+			'Content-Type' => 'text/csv',
+		);
+
+		return Response::download($filename, $filename, $headers);
+	}
+
+	public function notaProjetosArea(){
+		$subQuery = DB::table('revisao')
+            ->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
+            ->where('revisao.projeto_id','=',DB::raw('projeto.id'))
+            ->toSql();
+
+	    $projetos = Projeto::select('projeto.id', 'titulo', 'situacao_id',
+            'nivel.nivel', 'area_conhecimento.area_conhecimento', DB::raw('('.$subQuery.') as nota'))
+	    	->join('nivel','projeto.nivel_id','=','nivel.id')
+			->join('area_conhecimento','projeto.area_id','=','area_conhecimento.id')
+            ->where('edicao_id','=',Edicao::getEdicaoId())
+            ->orderBy('nivel','asc')
+            ->orderBy('area_conhecimento','asc')
+            ->orderBy('nota','desc')
+            ->get();
+
+        return \PDF::loadView('relatorios.notaProjetosArea', array('projetos' => $projetos))->setPaper('A4', 'landscape')->download('nota_projetos_cadastrados.pdf');
+
+	}
+
+	public function projetosClassificados(){
+
+        $areas = AreaConhecimento::all();
+
+        return \PDF::loadView('relatorios.projetosClassificados', array('areas' => $areas))->setPaper('A4', 'landscape')->download('projetos_classificados.pdf');
+	}
+
+
 	public function niveis(){
 		$niveis = Nivel::orderBy('nivel')->get();
 
@@ -176,7 +244,7 @@ class RelatorioController extends Controller
 				->toArray();
 		}
 		
-		return \PDF::loadView('relatorios.projetos', array('projetos' => $projetos,'autores' => $autores, 'orientadores' => $orientadores, 'coorientadores' => $coorientadores))->download('escolas.pdf');
+		return \PDF::loadView('relatorios.projetos', array('projetos' => $projetos,'autores' => $autores, 'orientadores' => $orientadores, 'coorientadores' => $coorientadores))->download('projetos.pdf');
 	}
 
 	public function areas(){
@@ -192,24 +260,10 @@ class RelatorioController extends Controller
 	}
 
 	public function funcoesUsuarios(){
-		$usuarios = DB::table('pessoa')
-				->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
-				->get()
-				->toArray();
-
-		$funcoesUsuarios = DB::table('funcao_pessoa')
-				->select('funcao_pessoa.pessoa_id', 'funcao_pessoa.funcao_id')
-				->where('funcao_pessoa.edicao_id',Edicao::getEdicaoId())
-				->get()
-				->toArray();
-
-		$funcoes = DB::table('funcao')
-				->join('funcao_pessoa', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
-				->select('funcao.id', 'funcao.funcao', 'funcao_pessoa.pessoa_id')
-				->get()
-				->toArray();
+		$usuarios = Pessoa::select('pessoa.id', 'pessoa.nome', 'pessoa.email')
+				->get();
 		
-		return \PDF::loadView('relatorios.funcoesUsuarios', array('usuarios' => $usuarios,'funcoes' => $funcoes, 'funcoesUsuarios' => $funcoesUsuarios))->download('funcoes.pdf');
+		return \PDF::loadView('relatorios.funcoesUsuarios', array('usuarios' => $usuarios))->download('funcoes.pdf');
 	}
 
 	public function escolaProjetos($id){
@@ -225,7 +279,7 @@ class RelatorioController extends Controller
 			->toArray();
 		$numeroProjetos = count($projetos);
 
-		return \PDF::loadView('relatorios.escolaProjetos', array('escola' => $escola, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->download('areas.pdf');
+		return \PDF::loadView('relatorios.escolaProjetos', array('escola' => $escola, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->download('escola_projetos.pdf');
 	}
 
 	public function nivelProjetos($id){
@@ -259,7 +313,7 @@ class RelatorioController extends Controller
 				->get()
 				->toArray();
 	
-		return \PDF::loadView('relatorios.voluntarioTarefa', array('voluntarios' => $voluntarios))->download('areaProjetos.pdf');
+		return \PDF::loadView('relatorios.voluntarioTarefa', array('voluntarios' => $voluntarios))->download('voluntarios_tarefas.pdf');
 	}
 
 	public function tarefaVoluntarios($id){
@@ -310,60 +364,22 @@ class RelatorioController extends Controller
 	}
 
 	public function homologadoresProjeto(){
-		$projetos = DB::table('projeto')
-				->select('projeto.id', 'projeto.titulo')
+		$projetos = Projeto::select('projeto.id', 'projeto.titulo')
 				->where('projeto.edicao_id',Edicao::getEdicaoId())
 				->orderBy('projeto.titulo')
-				->get()
-				->toArray();
-		$homologadores = DB::table('funcao_pessoa')
-				->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-				->join('funcao', 'funcao_pessoa.funcao_id', '=', 'funcao.id')
-				->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
-				->where('funcao.funcao','Homologador')
-				->where('funcao_pessoa.edicao_id',Edicao::getEdicaoId())
-				->orderBy('pessoa.nome')
-				->get()
-				->toArray();
+				->get();
 
-		$revisoes = DB::table('pessoa') 
-				->join('revisao', 'pessoa.id', '=', 'revisao.pessoa_id')
-				->join('projeto', 'revisao.projeto_id', '=', 'projeto.id')
-				->get()
-				->toArray();
-		return \PDF::loadView('relatorios.homologadoresProjeto', array('projetos' => $projetos,'homologadores' => $homologadores, 'revisoes' => $revisoes))->download('homologadores_projeto.pdf');
+		return \PDF::loadView('relatorios.homologadoresProjeto', array('projetos' => $projetos))->download('homologadores_projeto.pdf');
 	}
 
 
 	public function avaliadoresProjeto(){
-		$projetos = DB::table('projeto')
-				->select('projeto.id', 'projeto.titulo')
+		$projetos = Projeto::select('projeto.id', 'projeto.titulo')
 				->where('projeto.edicao_id',Edicao::getEdicaoId())
-				->where(function ($q){
-                    $q->where('projeto.situacao_id', Situacao::select(['id'])->where('situacao', 'Não Avaliado')->first()->id);
-                    $q->orWhere('projeto.situacao_id', Situacao::select(['id'])->where('situacao', 'Avaliado')->first()->id);
-                })
 				->orderBy('projeto.titulo')
-				->get()
-				->toArray();
-
-		$avaliadores = DB::table('funcao_pessoa')
-				->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-				->join('funcao', 'funcao_pessoa.funcao_id', '=', 'funcao.id')
-				->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
-				->where('funcao.funcao','Avaliador')
-				->where('funcao_pessoa.edicao_id',Edicao::getEdicaoId())
-				->orderBy('pessoa.nome')
-				->get()
-				->toArray();
-
-		$avaliacoes = DB::table('pessoa') 
-				->join('avaliacao', 'pessoa.id', '=', 'avaliacao.pessoa_id')
-				->join('projeto', 'avaliacao.projeto_id', '=', 'projeto.id')
-				->get()
-				->toArray();
+				->get();
 		
-		return \PDF::loadView('relatorios.avaliadoresProjeto', array('projetos' => $projetos,'avaliadores' => $avaliadores, 'avaliacoes' => $avaliacoes))->download('avaliadores_projeto.pdf');
+		return \PDF::loadView('relatorios.avaliadoresProjeto', array('projetos' => $projetos))->download('avaliadores_projeto.pdf');
 	}
 
 	public function projetosConfirmaramPresenca(){

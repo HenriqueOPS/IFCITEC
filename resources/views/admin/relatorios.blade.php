@@ -183,27 +183,42 @@
                         </tr>
                         <tr>
                             <td>14</td>
+                            <td>Relatório de Projetos Classificaos Para a {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} Edição</td>
+                            <td class="text-right">
+                                <a href="{{route('projetosClassificados')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td>Relatório de Projetos Por Nota de Homologadores</td>
+                            <td class="text-right">
+                                <a href="{{route('notaProjetosArea')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('csvProjetos')}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
                             <td>Relatório de Projetos Que Comparecerão na IFCITEC</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioProjetosConfirma')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>15</td>
+                            <td>17</td>
                             <td>Relatório de Usuários e suas respectivas funções</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioFuncoesUsuarios')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>16</td>
+                            <td>18</td>
                             <td>Relatório de Voluntários</td>
                             <td class="text-right">
                                 <a href="{{route('csv', 4)}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>17</td>
+                            <td>19</td>
                             <td>Relatório de Voluntários e suas respectivas tarefas</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioVoluntarioTarefa')}}" target="_blank"><i class="material-icons">visibility</i></a>

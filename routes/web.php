@@ -68,29 +68,6 @@ Route::get('/email/presenca/confirmada/{id}', 'ProjetoController@confirmaPresenc
 Route::get('/editar-cadastro/', 'PessoaController@editarCadastro')->name('editarCadastro');
 Route::post('/editar-cadastro/', 'PessoaController@editaCadastro')->name('editaCadastro');
 
-//Relatórios
-//Route::get('/relatorio', 'ReportController@index')->name('relatorio');
-Route::get('/csv/{id}', 'RelatorioController@csv')->name('csv');
-Route::get('/relatorio/niveis', 'RelatorioController@niveis')->name('relatorioNivel');
-Route::get('/relatorio/niveis/projetos/{id}', 'RelatorioController@nivelProjetos')->name('nivelProjetos');
-Route::get('/relatorio/escolas', 'RelatorioController@escolas')->name('relatorioEscola');
-Route::get('/relatorio/escolas/projetos/{id}', 'RelatorioController@escolaProjetos')->name('escolaProjetos');
-Route::get('/relatorio/areas', 'RelatorioController@areas')->name('relatorioArea');
-Route::get('/relatorio/areas/projetos/{id}', 'RelatorioController@areaProjetos')->name('areaProjetos');
-Route::get('/relatorio/edicoes', 'RelatorioController@edicoes')->name('relatorioEdicao');
-Route::get('/relatorio/funcoes/usuarios', 'RelatorioController@funcoesUsuarios')->name('relatorioFuncoesUsuarios');
-Route::get('/relatorio/voluntario/tarefa', 'RelatorioController@voluntarioTarefa')->name('relatorioVoluntarioTarefa');
-Route::get('/relatorio/tarefa/voluntarios/{id}', 'RelatorioController@tarefaVoluntarios')->name('tarefaVoluntarios');
-Route::get('/relatorio/projetos', 'RelatorioController@projetos')->name('relatorioProjetos');
-Route::get('/relatorio/usuarios', 'RelatorioController@usuarios')->name('relatorioUsuarios');
-Route::get('/relatorio/homologadores/area', 'RelatorioController@homologadoresArea')->name('homologadoresArea');
-Route::get('/relatorio/avaliadores/area', 'RelatorioController@avaliadoresArea')->name('avaliadoresArea');
-Route::get('/relatorio/homologadores/projeto', 'RelatorioController@homologadoresProjeto')->name('homologadoresProjeto');
-Route::get('/relatorio/avaliadores/projeto', 'RelatorioController@avaliadoresProjeto')->name('avaliadoresProjeto');
-Route::get('/relatorio/projetos/confirma', 'RelatorioController@projetosConfirmaramPresenca')->name('relatorioProjetosConfirma');
-
-
-
 //Autor
 Route::get('/autor', 'AutorController@index')->name('autor');
 
@@ -100,6 +77,29 @@ Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 /* Rotas Administrador */
 Route::group(['middleware' => ['IsAdministrador']], function () {
 
+//Relatórios
+//Route::get('/relatorio', 'ReportController@index')->name('relatorio');
+	Route::get('/csv/{id}', 'RelatorioController@csv')->name('csv');
+	Route::get('/projetos/csv', 'RelatorioController@csvProjetos')->name('csvProjetos');
+	Route::get('/relatorio/niveis', 'RelatorioController@niveis')->name('relatorioNivel');
+	Route::get('/relatorio/niveis/projetos/{id}', 'RelatorioController@nivelProjetos')->name('nivelProjetos');
+	Route::get('/relatorio/escolas', 'RelatorioController@escolas')->name('relatorioEscola');
+	Route::get('/relatorio/projetos/classificados', 'RelatorioController@projetosClassificados')->name('projetosClassificados');
+	Route::get('/relatorio/projetos/notas/homologadores', 'RelatorioController@notaProjetosArea')->name('notaProjetosArea');
+	Route::get('/relatorio/escolas/projetos/{id}', 'RelatorioController@escolaProjetos')->name('escolaProjetos');
+	Route::get('/relatorio/areas', 'RelatorioController@areas')->name('relatorioArea');
+	Route::get('/relatorio/areas/projetos/{id}', 'RelatorioController@areaProjetos')->name('areaProjetos');
+	Route::get('/relatorio/edicoes', 'RelatorioController@edicoes')->name('relatorioEdicao');
+	Route::get('/relatorio/funcoes/usuarios', 'RelatorioController@funcoesUsuarios')->name('relatorioFuncoesUsuarios');
+	Route::get('/relatorio/voluntario/tarefa', 'RelatorioController@voluntarioTarefa')->name('relatorioVoluntarioTarefa');
+	Route::get('/relatorio/tarefa/voluntarios/{id}', 'RelatorioController@tarefaVoluntarios')->name('tarefaVoluntarios');
+	Route::get('/relatorio/projetos', 'RelatorioController@projetos')->name('relatorioProjetos');
+	Route::get('/relatorio/usuarios', 'RelatorioController@usuarios')->name('relatorioUsuarios');
+	Route::get('/relatorio/homologadores/area', 'RelatorioController@homologadoresArea')->name('homologadoresArea');
+	Route::get('/relatorio/avaliadores/area', 'RelatorioController@avaliadoresArea')->name('avaliadoresArea');
+	Route::get('/relatorio/homologadores/projeto', 'RelatorioController@homologadoresProjeto')->name('homologadoresProjeto');
+	Route::get('/relatorio/avaliadores/projeto', 'RelatorioController@avaliadoresProjeto')->name('avaliadoresProjeto');
+	Route::get('/relatorio/projetos/confirma', 'RelatorioController@projetosConfirmaramPresenca')->name('relatorioProjetosConfirma');
 
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
 	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');
