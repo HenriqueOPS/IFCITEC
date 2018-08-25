@@ -83,14 +83,68 @@
 
                                     <center><span>Arraste o <b>Projeto</b> para este local</span></center>
 
+                                    @if($projetosHomologados->count())
 
+                                    @foreach($projetosHomologados as $projeto)
+
+                                        <div class="card no-select" data-id="{{$projeto->id}}">
+                                            <div class="content">
+
+                                                <div class="text-right" style="margin-bottom: 5px">
+                                                    @if($projeto->getStatus() == "Não Homologado" || $projeto->getStatus() == "Não Avaliado")
+                                                        <span class="label label-info">{{$projeto->getStatus()}}</span>
+                                                    @elseif ($projeto->getStatus() == "Homologado" || $projeto->getStatus() == "Avaliado")
+                                                        <span class="label label-success">{{$projeto->getStatus()}}</span>
+                                                    @elseif ($projeto->getStatus() == "Não Compareceu")
+                                                        <span class="label label-danger">{{$projeto->getStatus()}}</span>
+                                                    @else
+                                                        <span class="label label-default">{{$projeto->getStatus()}}</span>
+                                                    @endif
+                                                </div>
+
+                                                <div>
+                                                    <div>
+                                                        <i class="material-icons">turned_in</i>
+                                                        <span>{{$projeto->titulo}}</span>
+                                                    </div>
+
+                                                    <div>
+                                                        <i class="material-icons">school</i>
+                                                        <span>{{$projeto->nivel->nivel}}</span>
+                                                    </div>
+
+                                                    <div>
+                                                        <i class="material-icons">public</i>
+                                                        <span>{{$projeto->areaConhecimento->area_conhecimento}}</span>
+                                                    </div>
+
+                                                    <div>
+                                                        <i class="material-icons">show_chart</i>
+                                                        <span><b>{{ $projeto->nota }}</b></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-right">
+                                                    @if($projeto->statusHomologacao())
+                                                        <span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+                                                    @else
+                                                        <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+                                                    @endif
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    @endforeach
+
+                                    @endif
 
 
                                 </div>
 
                                 <form method="POST" class="text-center" action="{{route('homologa-projetos')}}">
                                     {{ csrf_field() }}
-                                    <input type="hidden" id="projetosID" name="projetos_id" value="">
+                                    <input type="hidden" id="projetosID" name="projetos_id" value="{{$IDhomologados}}">
                                     <input type="submit" class="btn btn-success" value="SALVAR">
                                 </form>
                             </div>
@@ -102,17 +156,26 @@
             </div>
         </div>
     </div>
+
 @endsection
 
 @section('js')
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js"></script>
     <script type="text/javascript">
+
         // Pre initialized by Backend
+        @if($projetosHomologados->count())
 
-        var projects = {{ count($projetos) }};
+        var projects = {{ $projetos->count() }};
+        var selectedCount = {{ $projetosHomologados->count() }};
 
+        @else
 
+        var projects = {{ $projetos->count() }};
         var selectedCount = 0;
+
+        @endif
+
 
         var maxSelectedCards = {{\App\Edicao::numeroProjetos()}};
 
@@ -132,7 +195,7 @@
 
 
         //inicializa os contadores
-        $('b#unselectedCont').html(projects - selectedCount);
+        $('b#unselectedCont').html(projects);
         $('b#selectedCont').html(selectedCount);
 
 
@@ -158,17 +221,21 @@
 
                 if (value.length > 0) value = value.concat(',');
                 formHomologadorID.value = value.concat(id);
+
                 selectedCount++;
+                projects--;
             } else {
                 var values = formHomologadorID.value.split(',');
                 values.splice(values.indexOf(id), 1);
                 formHomologadorID.value = values.join(',');
+
                 selectedCount--;
+                projects++;
             }
 
             //manipula os contadores
-            $('b#unselectedCont').html(projects - selectedCount);
-            $('b#selectedCont').html(' '+selectedCount);
+            $('b#unselectedCont').html(projects);
+            $('b#selectedCont').html(selectedCount);
 
         });
 
