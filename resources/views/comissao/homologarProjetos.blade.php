@@ -18,7 +18,7 @@
 
                                 <span><b id="unselectedCont">--</b> Projetos</span>
 
-                                <div id="list" class="drop-area" style="max-height: 60vh;overflow: auto;">
+                                <div id="list" class="drop-area" style="max-height: 70vh;overflow: auto;">
 
                                 @foreach($projetos as $projeto)
 
@@ -72,14 +72,6 @@
 
                                 @endforeach
 
-
-
-
-
-
-
-
-
                                 </div>
                             </div>
 
@@ -87,7 +79,7 @@
 
                                 <span><b id="selectedCont">--</b> Projetos</span>
 
-                                <div id="selected" class="drop-area" style="max-height: 60vh; overflow: auto; background: #f1f1f1;">
+                                <div id="selected" class="drop-area" style="max-height: 70vh; overflow: auto; background: #f1f1f1;">
 
                                     <center><span>Arraste o <b>Projeto</b> para este local</span></center>
 
@@ -96,7 +88,7 @@
 
                                 </div>
 
-                                <form method="POST" class="text-center" action="">
+                                <form method="POST" class="text-center" action="{{route('homologa-projetos')}}">
                                     {{ csrf_field() }}
                                     <input type="hidden" id="projetosID" name="projetos_id" value="">
                                     <input type="submit" class="btn btn-success" value="SALVAR">
@@ -122,7 +114,7 @@
 
         var selectedCount = 0;
 
-        var maxSelectedCards = 110;
+        var maxSelectedCards = {{\App\Edicao::numeroProjetos()}};
 
         var cardsList = document.querySelector('#list');
         var selectedCardsList = document.querySelector('#selected');

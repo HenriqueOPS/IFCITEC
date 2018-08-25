@@ -224,7 +224,27 @@ class ProjetoController extends Controller
             ->where('pessoa_id',Auth::user()->id)
             ->get()->count();
 
-		return view('projeto.show', compact('ehHomologador'))->withProjeto($projeto);
+        $ehAvaliador = DB::table('avaliacao')
+            ->where('projeto_id',$projeto->id)
+            ->where('pessoa_id',Auth::user()->id)
+            ->get()->count();
+
+		//Busca pelas observações dos Homologadores
+		$obsHomologadores = DB::table('revisao')
+                                ->select('observacao')
+                                ->where('projeto_id',$projeto->id)
+                                ->where('revisado', true)
+                                ->get();
+
+		//Busca pelas observações dos Avaliadores
+        $obsAvaliadores = DB::table('avaliacao')
+                                ->select('observacao')
+                                ->where('projeto_id',$projeto->id)
+                                ->where('avaliado', true)
+                                ->get();
+
+		return view('projeto.show', compact('ehHomologador', 'ehAvaliador', 'obsHomologadores', 'obsAvaliadores'))
+            ->withProjeto($projeto);
 	}
 
 	/**
@@ -681,7 +701,7 @@ class ProjetoController extends Controller
                             })
                             ->where('area_id','=',$projeto->area_id)
                             ->where('areas_comissao.homologado','=',true)
-                            ->orderBy('pessoa.titulacao')
+                            ->orderBy('pessoa.nome')
                             ->get();
 
         $revisoresProjeto = DB::table('revisao')->where('projeto_id', '=', $id)->get();
@@ -782,7 +802,7 @@ class ProjetoController extends Controller
                         })
                         ->where('area_id','=',$projeto->area_id)
                         ->where('areas_comissao.homologado','=',true)
-                        ->orderBy('pessoa.titulacao')
+                        ->orderBy('pessoa.nome')
                         ->get();
 
         $avaliadoresDoProjeto = DB::table('avaliacao')->select('pessoa_id')->where('projeto_id', '=', $id)->get();
@@ -891,7 +911,11 @@ class ProjetoController extends Controller
 
     }
 
+    public function homologaProjetos(Request $req){
 
+	    dd($req);
+
+    }
 
 
 

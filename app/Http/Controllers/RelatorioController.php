@@ -331,6 +331,11 @@ class RelatorioController extends Controller
 				->join('projeto', 'revisao.projeto_id', '=', 'projeto.id')
 				->get()
 				->toArray();
+
+		$array = array($projetos, $homologadores, $revisoes);
+
+		dd($array);
+
 		return \PDF::loadView('relatorios.homologadoresProjeto', array('projetos' => $projetos,'homologadores' => $homologadores, 'revisoes' => $revisoes))->download('homologadores_projeto.pdf');
 	}
 
