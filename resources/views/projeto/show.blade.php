@@ -47,7 +47,7 @@
 
                             <hr>
 
-                            @if(count($obsHomologadores))
+                            @if(count($obsHomologadores) && (!(\App\Edicao::consultaPeriodo('Homologação')) || Auth::user()->temFuncao('Administrador')))
                                 <h3>Homologação:</h3>
                                 @foreach($obsHomologadores as $obs)
                                     <b>Observação do Homologador {{$loop->index + 1}}:</b><br>
@@ -57,7 +57,7 @@
                                 @endforeach
                             @endif
 
-                            @if(count($obsAvaliadores))
+                            @if(count($obsAvaliadores) && (!(\App\Edicao::consultaPeriodo('Avaliação')) || Auth::user()->temFuncao('Administrador')))
                                 <h3>Avaliação:</h3>
                                 @foreach($obsAvaliadores as $obs)
                                     <b>Observação do Avaliador {{$loop->index + 1}}:</b><br>
@@ -160,12 +160,12 @@
     <script>
     $('#homologar-projeto').click(function () {
 
-        //muda os atributos do botão depois de 5 segundos
+        //muda os atributos do botão depois de 3 segundos
         setTimeout(function () {
             $('#homologar-projeto').attr('href', '../../comissao-avaliadora');
             $('#homologar-projeto').attr('target', '');
             $('#homologar-projeto').html('Voltar')
-        },5000);
+        },3000);
 
     })
     </script>
