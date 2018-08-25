@@ -33,6 +33,19 @@ class Edicao extends Model
 		return 0;
 	}
 
+	public static function numeroProjetos(){
+
+	    $edicao = Edicao::select(['projetos'])
+            ->where('id','=', Edicao::getEdicaoId())
+            ->get();
+
+        if($edicao->count())
+            return $edicao[0]->projetos;
+
+        return false;
+
+    }
+
 	//Pega o ANO da edição atual em números romanos
 	public static function getAnoEdicao() {
 
