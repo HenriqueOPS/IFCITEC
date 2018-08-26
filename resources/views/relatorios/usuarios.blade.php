@@ -14,6 +14,9 @@
         	<thead>
         		<tr>
     				<th>Autores</th>
+                    <th>RG</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
   				</tr>
         	</thead>
   			<tbody>
@@ -22,8 +25,17 @@
             @if($autor->edicao_id == $edicao->id)
             <tr>
             <td>
-    		{{$autor->nome}}
+    		<a style="color: #000;">{{$autor->nome}}</a>
             </td> 
+            <td>
+            <a style="color: #000;">{{$autor->rg}}</a>
+            </td> 
+            <td>
+            <a style="color: #000;">{{$autor->cpf}}</a>
+            </td>
+            <td>
+            <a style="color: #000;">{{$autor->telefone}}</a>
+            </td>  
             {{$cont++}}
              </tr>  
             @endif
@@ -36,6 +48,9 @@
             <thead>
                 <tr>
                     <th>Orientadores</th>
+                    <th>RG</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,8 +59,17 @@
             @if($orientador->edicao_id == $edicao->id)
             <tr>
             <td>
-                    {{$orientador->nome}}
+                    <a style="color: #000;">{{$orientador->nome}}</a>
             </td> 
+            <td>
+            <a style="color: #000;">{{$orientador->rg}}</a>
+            </td> 
+            <td>
+            <a style="color: #000;">{{$orientador->cpf}}</a>
+            </td>
+            <td>
+            <a style="color: #000;">{{$orientador->telefone}}</a>
+            </td>  
             {{$cont++}}
             </tr> 
             @endif
@@ -58,6 +82,9 @@
             <thead>
                 <tr>
                     <th>Coorientadores</th>
+                    <th>RG</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,8 +93,17 @@
             @if($coorientador->edicao_id == $edicao->id)
             <tr>
             <td>
-                    {{$coorientador->nome}}
+                    <a style="color: #000;">{{$coorientador->nome}}</a>
             </td> 
+            <td>
+            <a style="color: #000;">{{$coorientador->rg}}</a>
+            </td> 
+            <td>
+            <a style="color: #000;">{{$coorientador->cpf}}</a>
+            </td>
+            <td>
+            <a style="color: #000;">{{$coorientador->telefone}}</a>
+            </td>  
             {{$cont++}}
             </tr>
             @endif
@@ -80,6 +116,9 @@
             <thead>
                 <tr>
                     <th>Homologadores</th>
+                    <th>RG</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
                 </tr>
             </thead>
             <tbody>
@@ -88,8 +127,17 @@
             @if($homologador->edicao_id == $edicao->id)
             <tr>
             <td>
-                    {{$homologador->nome}}
+                    <a style="color: #000;">{{$homologador->nome}}</a>
             </td> 
+            <td>
+            <a style="color: #000;">{{$homologador->rg}}</a>
+            </td> 
+            <td>
+            <a style="color: #000;">{{$homologador->cpf}}</a>
+            </td>
+            <td>
+            <a style="color: #000;">{{$homologador->telefone}}</a>
+            </td>  
             {{$cont++}}
             </tr>  
             @endif
@@ -102,6 +150,9 @@
             <thead>
                 <tr>
                     <th>Avaliadores</th>
+                    <th>RG</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
                 </tr>
             </thead>
             <tbody>
@@ -110,8 +161,17 @@
             @if($avaliador->edicao_id == $edicao->id)
             <tr>
             <td>
-                    {{$avaliador->nome}}
+                    <a style="color: #000;">{{$avaliador->nome}}</a>
             </td> 
+            <td>
+            <a style="color: #000;">{{$avaliador->rg}}</a>
+            </td> 
+            <td>
+            <a style="color: #000;">{{$avaliador->cpf}}</a>
+            </td>
+            <td>
+            <a style="color: #000;">{{$avaliador->telefone}}</a>
+            </td>  
             {{$cont++}}
             </tr>  
             @endif
@@ -124,6 +184,9 @@
             <thead>
                 <tr>
                     <th>Voluntários</th>
+                    <th>RG</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
                 </tr>
             </thead>
             <tbody>
@@ -132,8 +195,17 @@
             @if($voluntario->edicao_id == $edicao->id)
             <tr>
             <td>
-                    {{$voluntario->nome}}
+                    <a style="color: #000;">{{$voluntario->nome}}</a>
+            </td>
+            <td>
+            <a style="color: #000;">{{$voluntario->rg}}</a>
             </td> 
+            <td>
+            <a style="color: #000;">{{$voluntario->cpf}}</a>
+            </td>
+            <td>
+            <a style="color: #000;">{{$voluntario->telefone}}</a>
+            </td>   
             {{$cont++}}
             </tr>
             @endif

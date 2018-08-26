@@ -67,6 +67,7 @@ class Projeto extends Model {
 
     }
 
+
     public function getNotaRevisao($id){
         $subQuery = DB::table('revisao')
             ->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
@@ -77,8 +78,22 @@ class Projeto extends Model {
             ->join('situacao','projeto.situacao_id','=','situacao.id')
             ->where('edicao_id','=',Edicao::getEdicaoId())
             ->where('projeto.id','=',$id)
-           // ->where('situacao.situacao','=','Homologado')
             ->get();
+        return $projeto->first()->nota;
+    }
+
+    public function getNotaAvaliacao($id){
+        $subQuery = DB::table('avaliacao')
+            ->select(DB::raw('COALESCE(AVG(avaliacao.nota_final),0)'))
+            ->where('avaliacao.projeto_id','=',DB::raw('projeto.id'))
+            ->toSql();
+
+        $projeto = Projeto::select(DB::raw('('.$subQuery.') as nota'))
+            ->join('situacao','projeto.situacao_id','=','situacao.id')
+            ->where('edicao_id','=',Edicao::getEdicaoId())
+            ->where('projeto.id','=',$id)
+            ->get();
+            
         return $projeto->first()->nota;
     }
 

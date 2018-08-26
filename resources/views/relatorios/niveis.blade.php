@@ -18,11 +18,11 @@
   			<tbody>
   				@foreach($niveis as $nivel)
   				<tr>
-    				<td>{{$nivel->nivel}}</td>
-    				<td>{{$nivel->descricao}}</td> 
-    				<td>{{$nivel->palavras}}</td>
-    				<td>{{$nivel->min_ch}}</td>
-    				<td>{{$nivel->max_ch}}</td>
+    				<td><a style="color: #000;">{{$nivel->nivel}}</a></td>
+    				<td><a style="color: #000;">{{$nivel->descricao}}</a></td> 
+    				<td><a style="color: #000;">{{$nivel->palavras}}</a></td>
+    				<td><a style="color: #000;">{{$nivel->min_ch}}</a></td>
+    				<td><a style="color: #000;">{{$nivel->max_ch}}</a></td>
   				</tr>
   				@endforeach
   			</tbody>	

@@ -82,6 +82,9 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/csv/{id}', 'RelatorioController@csv')->name('csv');
 	Route::get('/projetos/csv', 'RelatorioController@csvProjetos')->name('csvProjetos');
 	Route::get('/relatorio/niveis', 'RelatorioController@niveis')->name('relatorioNivel');
+	Route::get('/relatorio/projetos/classificacao', 'RelatorioController@classificacaoProjetos')->name('classificacaoProjetos');
+	Route::get('/relatorio/projetos/status', 'RelatorioController@statusProjetos')->name('statusProjetos');
+	Route::get('/relatorio/projetos/premiacao', 'RelatorioController@premiacaoProjetos')->name('premiacaoProjetos');
 	Route::get('/relatorio/niveis/projetos/{id}', 'RelatorioController@nivelProjetos')->name('nivelProjetos');
 	Route::get('/relatorio/escolas', 'RelatorioController@escolas')->name('relatorioEscola');
 	Route::get('/relatorio/projetos/classificados', 'RelatorioController@projetosClassificados')->name('projetosClassificados');
