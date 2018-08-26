@@ -16,11 +16,12 @@
   			<tbody>
   				@foreach($usuarios as $usuario)
   				<tr>
-    				<td>{{$usuario->nome}}</td>
-    				<td>{{$usuario->email}}</td> 
+
+    				<td><a style="color: #000;">{{$usuario->nome}}</a></td>
+    				<td><a style="color: #000;">{{$usuario->email}}</a></td> 
     				<td>
             @foreach($usuario->funcoes as $funcao)
-                {{$funcao->funcao}}
+                <a style="color: #000;">{{$funcao->funcao}}</a>
                 <br>
             @endforeach    
             </td>

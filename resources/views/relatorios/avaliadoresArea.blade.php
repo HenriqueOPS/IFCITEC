@@ -20,7 +20,7 @@
           @foreach($avaliadores as $avaliador)
           @if($area->id == $avaliador->area_id)
           <tr>
-            <td>{{$avaliador->nome}}</td>
+            <td><a style="color: #000;">{{$avaliador->nome}}</a></td>
             {{$cont++}}
           </tr>
           @endif

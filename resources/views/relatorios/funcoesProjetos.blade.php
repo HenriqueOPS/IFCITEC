@@ -20,11 +20,11 @@
             @if($projeto->id == $autor->projeto_id)
             <tr>
             <td>
-            {{$autor->nome}}
+            <a style="color: #000;">{{$autor->nome}}</a>
             </td> 
 
             <td>
-            {{$projeto->titulo}}
+            <a style="color: #000;">{{$projeto->titulo}}</a>
             </td> 
 
             
@@ -51,11 +51,11 @@
             @if($projeto->id == $orientador->projeto_id)
             <tr>
             <td>
-            {{$orientador->nome}}
+            <a style="color: #000;">{{$orientador->nome}}</a>
             </td> 
 
             <td>
-            {{$projeto->titulo}}
+            <a style="color: #000;">{{$projeto->titulo}}</a>
             </td> 
 
             
@@ -82,11 +82,11 @@
             @if($projeto->id == $coorientador->projeto_id)
             <tr>
             <td>
-            {{$coorientador->nome}}
+            <a style="color: #000;">{{$coorientador->nome}}</a>
             </td> 
 
             <td>
-            {{$projeto->titulo}}
+            <a style="color: #000;">{{$projeto->titulo}}</a>
             </td> 
 
             

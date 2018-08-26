@@ -18,10 +18,10 @@
   				@foreach($projetos as $projeto)
           
   				<tr>
-    				<td>{{$projeto->titulo}}</td>
-            <td>{{$projeto->nivel}}</td>
-            <td>{{$projeto->area_conhecimento}}</td>  
-    				<td>{{$projeto->nota}}</td>
+    				<td><a style="color: #000;">{{$projeto->titulo}}</a></td>
+            <td><a style="color: #000;">{{$projeto->nivel}}</a></td>
+            <td><a style="color: #000;">{{$projeto->area_conhecimento}}</a></td>  
+    				<td><a style="color: #000;">{{$projeto->nota}}</a></td>
 
   				</tr>
          

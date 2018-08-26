@@ -19,8 +19,8 @@
   			<tbody>
   				@foreach($projetos as $id => $projeto)
   				<tr>
-            <td>{{$id + 1}}</td>
-    				<td>{{$projeto->titulo}}</td>
+            <td><a style="color: #000;">{{$id + 1}}</a></td>
+    				<td><a style="color: #000;">{{$projeto->titulo}}</a></td>
   				</tr>
   				@endforeach
   			</tbody>	

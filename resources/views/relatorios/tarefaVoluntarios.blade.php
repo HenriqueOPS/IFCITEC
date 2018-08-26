@@ -19,9 +19,9 @@
   			<tbody>
   				@foreach($tarefa->pessoas as $id => $pessoa)
   				<tr>
-            <td>{{$id + 1}}</td>
-    				<td>{{$pessoa->nome}}</td>
-            <td>{{$pessoa->email}}</td>
+            <td><a style="color: #000;">{{$id + 1}}</a></td>
+    				<td><a style="color: #000;">{{$pessoa->nome}}</a></td>
+            <td><a style="color: #000;">{{$pessoa->email}}</a></td>
   				</tr>
   				@endforeach
   			</tbody>	
