@@ -98,8 +98,10 @@
 									<li><a href="{{route('comissao')}}">Comissão Avaliadora</a></li>
 								@endif
 
-								@if(\App\Edicao::consultaPeriodo('Voluntário') || Auth::user()->temFuncao('Administrador'))
+								@if(\App\Edicao::consultaPeriodo('Voluntário'))
+									@if(! Auth::user()->temTrabalho() || Auth::user()->temFuncao('Administrador'))
 									<li><a href="{{ route('voluntario') }}">Voluntário</a></li>
+									@endif
 								@endif
 
 								@if(Auth::user()->temFuncao('Organizador') || Auth::user()->temFuncao('Administrador'))
