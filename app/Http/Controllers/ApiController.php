@@ -25,6 +25,10 @@ class ApiController extends Controller
                     'avaliado' => true
                 ]);
 
+            //altera a média da nota de avaliação na tabela de projeto
+
+
+
             //verifica se o projeto já foi avaliado por todos avaliadores
             $cont = DB::table('avaliacao')
                 ->select('id')
@@ -56,6 +60,12 @@ class ApiController extends Controller
                     'observacao' => $data['observacao'],
                     'revisado' => true
                 ]);
+
+            //altera a média da nota de homologação na tabela de projeto
+
+
+
+
 
             return response()->json('ok', 200);
         }
