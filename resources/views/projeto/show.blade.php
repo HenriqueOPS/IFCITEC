@@ -74,7 +74,7 @@
 
                                 @if((\App\Edicao::consultaPeriodo('Homologação')) && $ehHomologador)
 
-                                    <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScwVSWWpbvwB6BKYk1Cz-SaObHgUrlMnkbiLxaBB3szdLmnZQ/viewform?usp=pp_url&entry.1051144494={{$projeto->titulo}}&entry.259386738={{$projeto->nivel->nivel}}&entry.1403982251={{$projeto->areaConhecimento->area_conhecimento}}&entry.1561957447={{$projeto->id}}&entry.276755517={{Auth::user()->nome}}&entry.846448634={{Auth::user()->id}}" id="homologar-projeto" class="btn btn-success">
+                                    <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScwVSWWpbvwB6BKYk1Cz-SaObHgUrlMnkbiLxaBB3szdLmnZQ/viewform?usp=pp_url&entry.1051144494={{urlencode($projeto->titulo)}}&entry.259386738={{urlencode($projeto->nivel->nivel)}}&entry.1403982251={{urlencode($projeto->areaConhecimento->area_conhecimento)}}&entry.1561957447={{$projeto->id}}&entry.276755517={{urlencode(Auth::user()->nome)}}&entry.846448634={{Auth::user()->id}}" id="homologar-projeto" class="btn btn-success">
                                         Homologar
                                     </a>
 
@@ -86,13 +86,13 @@
 
                                         @if($projeto->nivel->nivel == "Ensino Fundamental")
 
-                                        <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfCKdqjM1bo837QpS_yedl-NoLANx7A5sYUyKeCe9apVmSgpA/viewform?usp=pp_url&entry.750613590={{Auth::user()->nome}}&entry.120758124={{Auth::user()->email}}&entry.206285557={{Auth::user()->cpf}}&entry.1202356846={{$projeto->titulo}}&entry.1094928288={{$projeto->id}}&entry.1177766823={{$projeto->areaConhecimento->area_conhecimento}}&entry.1397554886" id="novo-integrante" class="btn btn-success">
+                                        <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScoHqGSMIyCde2zR4H3eogjLnjSO5h9gI_ZBbQElePQIgvcAA/viewform?usp=pp_url&entry.1937205043=&entry.1262812210={{urlencode($projeto->nivel->nivel)}}&entry.2140598612={{urlencode($projeto->areaConhecimento->area_conhecimento)}}&entry.1274479363={{$projeto->id}}&entry.1888254598={{urlencode(Auth::user()->nome)}}&entry.2083262699={{Auth::user()->id}}" id="novo-integrante" class="btn btn-success">
                                             Avaliar
                                         </a>
 
                                         @else
 
-                                        <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfCKdqjM1bo837QpS_yedl-NoLANx7A5sYUyKeCe9apVmSgpA/viewform?usp=pp_url&entry.750613590={{Auth::user()->nome}}&entry.120758124={{Auth::user()->email}}&entry.206285557={{Auth::user()->cpf}}&entry.1202356846={{$projeto->titulo}}&entry.1094928288={{$projeto->id}}&entry.1177766823={{$projeto->areaConhecimento->area_conhecimento}}&entry.1397554886" id="novo-integrante" class="btn btn-success">
+                                        <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfek9JgHhetqXhu1hZCLJpoCXGpNnYZsKClNF86dYFEOIWokw/viewform?usp=pp_url&entry.1937205043={{urlencode($projeto->titulo)}}&entry.609303703={{urlencode($projeto->nivel->nivel)}}&entry.152161166={{urlencode($projeto->areaConhecimento->area_conhecimento)}}&entry.970528430={{$projeto->id}}&entry.935053726={{urlencode(Auth::user()->nome)}}&entry.1538157001={{Auth::user()->id}}" id="novo-integrante" class="btn btn-success">
                                             Avaliar
                                         </a>
 
