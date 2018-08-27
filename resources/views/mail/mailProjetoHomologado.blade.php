@@ -267,7 +267,7 @@
 										<br>
 										<p>Seu trabalho intitulado "{{$titulo}}" foi homologado. Verifique as observações dos homologadores e em caso de alguma solicitação de mudança a mesma deverá ser realizada para a apresentação no dia da feira. Esperamos sua participação na Feira de Ciências e Inovação Tecnológica do IFRS - Campus Canoas.</p>
 										<br>
-										<p>ATENÇÃO! É necessária a confirmação de presença do projeto na feira, clique no botão abaixo se o seu projeto comparecerá a feira.</p>
+										<p>ATENÇÃO! É necessária a confirmação de presença do projeto na feira, clique no botão abaixo e faça seu login no site, se o seu projeto comparecerá a feira.</p>
 									</td>
 								</tr>
 								<tr>

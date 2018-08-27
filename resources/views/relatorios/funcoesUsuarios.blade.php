@@ -21,7 +21,9 @@
     				<td><a style="color: #000;">{{$usuario->email}}</a></td> 
     				<td>
             @foreach($usuario->funcoes as $funcao)
+                @if($usuario->temFuncao($funcao->funcao))
                 <a style="color: #000;">{{$funcao->funcao}}</a>
+                @endif
                 <br>
             @endforeach    
             </td>
