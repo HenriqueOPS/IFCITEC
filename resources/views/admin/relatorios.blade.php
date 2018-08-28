@@ -129,74 +129,81 @@
                             <td>6</td>
                             <td>Relatório de Classificação Geral dos Projetos</td>
                             <td class="text-right">
-                                <a href="{{route('classificacaoProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('classificacaoGeral')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>7</td>
+                            <td>Relatório de Classificação Geral dos Projetos Por Área do Conhecimento</td>
+                            <td class="text-right">
+                                <a href="{{route('classificacaoProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
                             <td>Relatório de Edições</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioEdicao')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>8</td>
+                            <td>9</td>
                             <td>Relatório de Escolas</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioEscola')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>9</td>
+                            <td>10</td>
                             <td>Relatório de Homologadores</td>
                             <td class="text-right">
                                 <a href="{{route('csv', 2)}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>10</td>
+                            <td>11</td>
                             <td>Relatório de Homologadores Por Área do Conhecimento</td>
                             <td class="text-right">
                                 <a href="{{route('homologadoresArea')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>11</td>
+                            <td>12</td>
                             <td>Relatório de Homologadores Por Projeto</td>
                             <td class="text-right">
                                 <a href="{{route('homologadoresProjeto')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>12</td>
+                            <td>13</td>
                             <td>Relatório de Níveis</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioNivel')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>13</td>
+                            <td>14</td>
                             <td>Reletório de Participantes de Projetos</td>
                             <td class="text-right">
                                 <a href="{{route('csv', 3)}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>14</td>
+                            <td>15</td>
                             <td>Relatório de Projetos</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>15</td>
+                            <td>16</td>
                             <td>Relatório de Projetos Classificados Para a {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} Edição</td>
                             <td class="text-right">
                                 <a href="{{route('projetosClassificados')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>16</td>
+                            <td>17</td>
                             <td>Relatório de Premiação dos Projetos</td>
                             <td class="text-right">
                                 <a href="{{route('premiacaoProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
@@ -204,14 +211,14 @@
                         </tr>
                         <tr>
                         <tr>
-                            <td>17</td>
+                            <td>18</td>
                             <td>Relatório de Projetos E Seus Status</td>
                             <td class="text-right">
                                 <a href="{{route('statusProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>18</td>
+                            <td>19</td>
                             <td>Relatório de Projetos Por Nota de Homologadores</td>
                             <td class="text-right">
                                 <a href="{{route('notaProjetosArea')}}" target="_blank"><i class="material-icons">visibility</i></a>
@@ -219,28 +226,35 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>19</td>
-                            <td>Relatório de Projetos Que Comparecerão na IFCITEC</td>
+                            <td>20</td>
+                            <td>Relatório de Projetos Que Comparecerão na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioProjetosConfirma')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>20</td>
+                            <td>21</td>
+                            <td>Relatório de Projetos Que Compareceram na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC</td>
+                            <td class="text-right">
+                                <a href="{{route('projetosCompareceram')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>22</td>
                             <td>Relatório de Usuários e suas respectivas funções</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioFuncoesUsuarios')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>21</td>
+                            <td>23</td>
                             <td>Relatório de Voluntários</td>
                             <td class="text-right">
                                 <a href="{{route('csv', 4)}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>22</td>
+                            <td>24</td>
                             <td>Relatório de Voluntários e suas respectivas tarefas</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioVoluntarioTarefa')}}" target="_blank"><i class="material-icons">visibility</i></a>

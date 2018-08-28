@@ -37,13 +37,18 @@ class AreaConhecimento extends Model {
     }
 
     public function getClassificacaoProjetos($id){
+        $subQuery = DB::table('revisao')
+            ->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
+            ->where('revisao.projeto_id','=',DB::raw('projeto.id'))
+            ->toSql();
 
-        $projetos = Projeto::select('projeto.nota_avaliacao', 'projeto.titulo', 'projeto.situacao_id')
+        $projetos = Projeto::select(DB::raw('('.$subQuery.') as nota'),'projeto.nota_avaliacao', 'projeto.titulo', 'projeto.situacao_id')
             ->where('projeto.edicao_id','=',Edicao::getEdicaoId())
             ->where('projeto.area_id','=',$id)
             ->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
             ->where('projeto.nota_avaliacao','<>',NULL)
             ->orderBy('projeto.nota_avaliacao', 'desc')
+            ->orderBy('nota', 'desc')
             ->orderBy('projeto.created_at', 'asc')
             ->get();
         return $projetos;
@@ -63,6 +68,12 @@ class AreaConhecimento extends Model {
             ->orderBy('projeto.created_at', 'asc')
             ->get();
             
+        return $projetos;
+    }
+
+    public function getProjetosCompareceram(){
+        $projetos = 'oi';
+
         return $projetos;
     }
 

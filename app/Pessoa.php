@@ -116,7 +116,6 @@ class Pessoa extends Authenticatable {
 			}
 
 			if($query->count()) {
-
 				//Verifica se não foi homologado como Homologador ou Avaliador
 				if(($funcao=='Homologador' || $funcao=='Avaliador')){
                     if(!$query->get()[0]->homologado && !$flag){
@@ -127,7 +126,7 @@ class Pessoa extends Authenticatable {
 				return true;
 			}
 		}
-
+        
 		return false;
 	}
 
@@ -267,6 +266,21 @@ class Pessoa extends Authenticatable {
             ->first();
 
         return $total->total;
+    }
+
+    public function temTrabalho(){
+        $total = DB::table('escola_funcao_pessoa_projeto')
+            ->select('escola_funcao_pessoa_projeto.projeto_id')
+            ->join('projeto','escola_funcao_pessoa_projeto.projeto_id','=','projeto.id')
+            ->where('escola_funcao_pessoa_projeto.pessoa_id','=',$this->id)
+            ->get();
+
+        if($total->count()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
 }
