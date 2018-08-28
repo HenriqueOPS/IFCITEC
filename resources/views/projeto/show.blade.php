@@ -18,6 +18,7 @@
 
                 <div class="row">
                     <div id="projeto-show">
+
                         <div class="col-md-7 col-md-offset-1">
                             <div id="status">
                                 @if($projeto->getStatus() == "Não Homologado" || $projeto->getStatus() == "Não Avaliado")
@@ -43,50 +44,81 @@
                                     {{($projeto->revisoes[0]->observacao)}}
                                 @endif
                             @endif
+
+                            <hr>
+
+                            @if(count($obsHomologadores) && (!(\App\Edicao::consultaPeriodo('Homologação')) || Auth::user()->temFuncao('Administrador')))
+                                <h3>Homologação:</h3>
+                                @foreach($obsHomologadores as $obs)
+                                    <b>Observação do Homologador {{$loop->index + 1}}:</b><br>
+                                    <p>{{$obs->observacao}}</p>
+
+                                    <hr>
+                                @endforeach
+                            @endif
+
+                            @if(count($obsAvaliadores) && (!(\App\Edicao::consultaPeriodo('Avaliação')) || Auth::user()->temFuncao('Administrador')))
+                                <h3>Avaliação:</h3>
+                                @foreach($obsAvaliadores as $obs)
+                                    <b>Observação do Avaliador {{$loop->index + 1}}:</b><br>
+                                    <p>{{$obs->observacao}}</p>
+
+                                    <hr>
+                                @endforeach
+                            @endif
+
                         </div>
+
                         <div class="col-md-3">
                             @if(Auth::user()->temFuncao('Avaliador') || Auth::user()->temFuncao('Homologador'))
 
                                 @if((\App\Edicao::consultaPeriodo('Homologação')) && $ehHomologador)
 
-                                    <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScwVSWWpbvwB6BKYk1Cz-SaObHgUrlMnkbiLxaBB3szdLmnZQ/viewform?usp=pp_url&entry.1051144494={{$projeto->titulo}}&entry.259386738={{$projeto->nivel->nivel}}&entry.1403982251={{$projeto->areaConhecimento->area_conhecimento}}&entry.1561957447={{$projeto->id}}&entry.276755517={{Auth::user()->nome}}&entry.846448634={{Auth::user()->id}}" id="homologar-projeto" class="btn btn-success">
+                                    <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScwVSWWpbvwB6BKYk1Cz-SaObHgUrlMnkbiLxaBB3szdLmnZQ/viewform?usp=pp_url&entry.1051144494={{urlencode($projeto->titulo)}}&entry.259386738={{urlencode($projeto->nivel->nivel)}}&entry.1403982251={{urlencode($projeto->areaConhecimento->area_conhecimento)}}&entry.1561957447={{$projeto->id}}&entry.276755517={{urlencode(Auth::user()->nome)}}&entry.846448634={{Auth::user()->id}}" id="homologar-projeto" class="btn btn-success">
                                         Homologar
                                     </a>
 
                                 @endif
 
-                                <!--
-                                @if((\App\Edicao::consultaPeriodo('Avaliação')))
+                                @if((\App\Edicao::consultaPeriodo('Avaliação')) && $ehAvaliador)
 
-                                    <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScLFxQtDdtnOc2TMBPabNIRRlsk28AGMLOpeOrEDBmz0slg8g/viewform?usp=pp_url&entry.1142594772={{Auth::user()->nome}}&entry.1360361282={{Auth::user()->email}}&entry.1378712210={{Auth::user()->cpf}}&entry.2040078585={{$projeto->titulo}}&entry.1001736854={{$projeto->id}}&entry.442913637={{$projeto->areaConhecimento->area_conhecimento}}&entry.529425973" id="novo-integrante" class="btn btn-success">
-                                        Avaliar
-                                    </a>
+                                    @if($projeto->getStatus() != "Avaliado")
+
+                                        @if($projeto->nivel->nivel == "Ensino Fundamental")
+
+                                        <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScoHqGSMIyCde2zR4H3eogjLnjSO5h9gI_ZBbQElePQIgvcAA/viewform?usp=pp_url&entry.1937205043=&entry.1262812210={{urlencode($projeto->nivel->nivel)}}&entry.2140598612={{urlencode($projeto->areaConhecimento->area_conhecimento)}}&entry.1274479363={{$projeto->id}}&entry.1888254598={{urlencode(Auth::user()->nome)}}&entry.2083262699={{Auth::user()->id}}" id="novo-integrante" class="btn btn-success">
+                                            Avaliar
+                                        </a>
+
+                                        @else
+
+                                        <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfek9JgHhetqXhu1hZCLJpoCXGpNnYZsKClNF86dYFEOIWokw/viewform?usp=pp_url&entry.1937205043={{urlencode($projeto->titulo)}}&entry.609303703={{urlencode($projeto->nivel->nivel)}}&entry.152161166={{urlencode($projeto->areaConhecimento->area_conhecimento)}}&entry.970528430={{$projeto->id}}&entry.935053726={{urlencode(Auth::user()->nome)}}&entry.1538157001={{Auth::user()->id}}" id="novo-integrante" class="btn btn-success">
+                                            Avaliar
+                                        </a>
+
+                                        @endif
+
+                                     @endif
 
                                 @endif
-
-                                @if($projeto->getStatus() != "Avaliado")
-                                    @if($projeto->nivel->nivel == "Ensino Fundamental")
-
-                                    <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfCKdqjM1bo837QpS_yedl-NoLANx7A5sYUyKeCe9apVmSgpA/viewform?usp=pp_url&entry.750613590={{Auth::user()->nome}}&entry.120758124={{Auth::user()->email}}&entry.206285557={{Auth::user()->cpf}}&entry.1202356846={{$projeto->titulo}}&entry.1094928288={{$projeto->id}}&entry.1177766823={{$projeto->areaConhecimento->area_conhecimento}}&entry.1397554886" id="novo-integrante" class="btn btn-success">
-                                        Avaliar
-                                    </a>
-                                    @else
-                                    <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScLFxQtDdtnOc2TMBPabNIRRlsk28AGMLOpeOrEDBmz0slg8g/viewform?usp=pp_url&entry.1142594772={{Auth::user()->nome}}&entry.1360361282={{Auth::user()->email}}&entry.1378712210={{Auth::user()->cpf}}&entry.2040078585={{$projeto->titulo}}&entry.1001736854={{$projeto->id}}&entry.442913637={{$projeto->areaConhecimento->area_conhecimento}}&entry.529425973" id="novo-integrante" class="btn btn-success">
-                                        Avaliar
-                                    </a>
-                                    @endif
-                                @endif
-                                -->
 
                             @else
-                                <a href="{{ route('editarProjeto', $projeto->id) }}" class="btn btn-success">
-                                    Editar informações
-                                </a>
+
+                                @if((\App\Edicao::consultaPeriodo('Inscrição')))
+
+                                    <a href="{{ route('editarProjeto', $projeto->id) }}" class="btn btn-success">
+                                        Editar informações
+                                    </a>
+
+                                @endif
+
                             @endif
 
                             <br>
 
-                            @if(!Auth::user()->temFuncao('Homologador') || (Auth::user()->temFuncao('Administrador') || Auth::user()->temFuncao('Organizador')))
+                            @if(!Auth::user()->temFuncao('Homologador') ||
+                                !Auth::user()->temFuncao('Avaliador') ||
+                                (Auth::user()->temFuncao('Administrador') || Auth::user()->temFuncao('Organizador')))
 
                             <b><i class="material-icons">group</i> Integrantes:</b><br>
 
@@ -109,6 +141,7 @@
                             @endif
 
                         </div>
+
                     </div>
                 </div>
 
@@ -127,12 +160,12 @@
     <script>
     $('#homologar-projeto').click(function () {
 
-        //muda os atributos do botão depois de 5 segundos
+        //muda os atributos do botão depois de 3 segundos
         setTimeout(function () {
             $('#homologar-projeto').attr('href', '../../comissao-avaliadora');
             $('#homologar-projeto').attr('target', '');
             $('#homologar-projeto').html('Voltar')
-        },5000);
+        },3000);
 
     })
     </script>
