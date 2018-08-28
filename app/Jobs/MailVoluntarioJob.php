@@ -32,7 +32,7 @@ class MailVoluntarioJob implements ShouldQueue
      */
     public function handle()
     {
-         Mail::to(Auth::user()->email)
-         ->send(new MailVoluntario());
+        Mail::to($this->email)
+            ->send(new MailVoluntario($this->nome, $this->titulo));
     }
 }

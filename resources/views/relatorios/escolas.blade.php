@@ -1,31 +1,50 @@
 @extends('relatorios.relatorio')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <h2 style="margin-top: 20px; margin-left: 250px;">RELATÓRIO DE ESCOLAS</h2>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE ESCOLAS</h2>
 
-        <table style="margin-left: 25px; margin-left: 25px; margin-top: 50px;">
-        	<thead">
-        		<tr>
-    				<th>Escola</th>
-    				<th>Município</th> 
-    				<th>Email</th>
-    				<th>Telefone</th>
-  				</tr>
-        	</thead>
-  			<tbody>
-  				@foreach($escolas as $escola)
-  				<tr>
-    				<td>{{$escola->nome_curto}}</td>
-    				<td>{{$escola->municipio}}</td> 
-    				<td>{{$escola->email}}</td>
-    				<td>{{$escola->telefone}}</td>
-  				</tr>
-  				@endforeach
-  			</tbody>	
-  
-		</table> 
-	</div>
-</div>
+        <br>
+        @foreach($escolas as $escola)
+        <p style="text-align: center; text-transform: uppercase;"><b>{{$escola->nome_curto}}</b></p>
+        <table class="bordered striped centered"  style="width:100%;">
+          <tr>
+              <th>Email: </th>
+              <td>{{$escola->email}}</td>
+          </tr>
+
+          <tr>
+              <th>Telefone: </th>
+              <td>{{$escola->telefone}}</td>
+          </tr>
+
+          <tr>
+              <th>Endereço: </th>
+              <td>
+                {{$escola->endereco}}, {{$escola->numero}}
+              </td>
+           </tr>
+
+          <tr>
+              <th>Município: </th>
+              <td>
+                {{$escola->municipio}}
+              </td>
+           </tr>
+
+           <tr>
+              <th>Estado: </th>
+              <td>
+                {{$escola->uf}}
+              </td>
+           </tr>
+
+           <tr>
+              <th>CEP: </th>
+              <td>
+                {{$escola->cep}}
+              </td>
+           </tr>
+        	<br>
+		  </table>
+      @endforeach
 @endsection

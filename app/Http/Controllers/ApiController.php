@@ -25,6 +25,18 @@ class ApiController extends Controller
                     'avaliado' => true
                 ]);
 
+
+            //altera a média da nota de avaliação na tabela de projeto
+            $subQuery = DB::table('avaliacao')
+                ->select(DB::raw('COALESCE(AVG(avaliacao.nota_final),0)'))
+                ->where('avaliacao.projeto_id','=',DB::raw('projeto.id'))
+                ->toSql();
+
+            Projeto::select('projeto.id')
+                ->where('projeto.id', '=', $data['idProjeto'])
+                ->update(['nota_avaliacao' =>  DB::raw('('.$subQuery.')')]);
+
+
             //verifica se o projeto já foi avaliado por todos avaliadores
             $cont = DB::table('avaliacao')
                 ->select('id')
@@ -56,6 +68,18 @@ class ApiController extends Controller
                     'observacao' => $data['observacao'],
                     'revisado' => true
                 ]);
+
+
+            //altera a média da nota de homologação na tabela de projeto
+            $subQuery = DB::table('revisao')
+                ->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
+                ->where('revisao.projeto_id','=',DB::raw('projeto.id'))
+                ->toSql();
+
+            Projeto::select('projeto.id')
+                ->where('projeto.id', '=', $data['idProjeto'])
+                ->update(['nota_revisao' =>  DB::raw('('.$subQuery.')')]);
+
 
             return response()->json('ok', 200);
         }

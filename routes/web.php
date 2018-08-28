@@ -24,7 +24,7 @@ Route::get('/version', function (){
 
 //Gera o
 Route::get('/cracha/gerar-crachas', 'CrachaController@generateCrachas');
-Route::get('/cracha/qr-code/{idPessoa}', 'CrachaController@generateQrCode');
+Route::get('/cracha/qr-code/{id}', 'CrachaController@generateQrCode');
 
 
 Route::get('/', function () {
@@ -60,12 +60,17 @@ Route::get('/debug', function (){
 	return view('admin.debug');
 });
 
+
+Route::get('/email/presenca', 'ProjetoController@confirmarPresenca')->name('confirmarPresenca');
+Route::get('/email/presenca/confirmada/{id}', 'ProjetoController@confirmaPresenca')->name('confirmaPresenca');
+
 //Edição dos dados pessoais
 Route::get('/editar-cadastro/', 'PessoaController@editarCadastro')->name('editarCadastro');
 Route::post('/editar-cadastro/', 'PessoaController@editaCadastro')->name('editaCadastro');
 
 //Relatórios
 //Route::get('/relatorio', 'ReportController@index')->name('relatorio');
+Route::get('/csv/{id}', 'RelatorioController@csv')->name('csv');
 Route::get('/relatorio/niveis', 'RelatorioController@niveis')->name('relatorioNivel');
 Route::get('/relatorio/niveis/projetos/{id}', 'RelatorioController@nivelProjetos')->name('nivelProjetos');
 Route::get('/relatorio/escolas', 'RelatorioController@escolas')->name('relatorioEscola');
@@ -76,6 +81,13 @@ Route::get('/relatorio/edicoes', 'RelatorioController@edicoes')->name('relatorio
 Route::get('/relatorio/funcoes/usuarios', 'RelatorioController@funcoesUsuarios')->name('relatorioFuncoesUsuarios');
 Route::get('/relatorio/voluntario/tarefa', 'RelatorioController@voluntarioTarefa')->name('relatorioVoluntarioTarefa');
 Route::get('/relatorio/tarefa/voluntarios/{id}', 'RelatorioController@tarefaVoluntarios')->name('tarefaVoluntarios');
+Route::get('/relatorio/projetos', 'RelatorioController@projetos')->name('relatorioProjetos');
+Route::get('/relatorio/usuarios', 'RelatorioController@usuarios')->name('relatorioUsuarios');
+Route::get('/relatorio/homologadores/area', 'RelatorioController@homologadoresArea')->name('homologadoresArea');
+Route::get('/relatorio/avaliadores/area', 'RelatorioController@avaliadoresArea')->name('avaliadoresArea');
+Route::get('/relatorio/homologadores/projeto', 'RelatorioController@homologadoresProjeto')->name('homologadoresProjeto');
+Route::get('/relatorio/avaliadores/projeto', 'RelatorioController@avaliadoresProjeto')->name('avaliadoresProjeto');
+Route::get('/relatorio/projetos/confirma', 'RelatorioController@projetosConfirmaramPresenca')->name('relatorioProjetosConfirma');
 
 
 
@@ -91,6 +103,13 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
 	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');
+	Route::get('/administrador/escolas', 'AdminController@escolas')->name('administrador.escolas');
+	Route::get('/administrador/niveis', 'AdminController@niveis')->name('administrador.niveis');
+	Route::get('/administrador/areas', 'AdminController@areas')->name('administrador.areas');
+	Route::get('/administrador/tarefas', 'AdminController@tarefas')->name('administrador.tarefas');
+	Route::get('/administrador/usuario', 'AdminController@usuarios')->name('administrador.usuarios');
+	Route::get('/administrador/comissao', 'AdminController@comissao')->name('administrador.comissao');
+	Route::get('/administrador/relatorios', 'AdminController@relatorios')->name('administrador.relatorios');
 
 
 	Route::get('/gerenciar', 'AdminController@administrarUsuarios');
@@ -146,6 +165,10 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
     //Edição dos dados de usuario
     Route::get('/usuario/{id}/editar/', 'PessoaController@editarUsuario')->name('editarUsuario');
     Route::post('/usuario/{id}/editar-cadastro/', 'PessoaController@editaUsuario')->name('editaUsuario');
+
+    //Administrador
+    Route::get('/projetos/homologar-projetos', 'ProjetoController@homologarProjetos')->name('homologar-projetos');
+    Route::post('/projetos/homologa-projetos', 'ProjetoController@homologaProjetos')->name('homologa-projetos');
 
 });
 
