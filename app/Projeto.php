@@ -67,11 +67,62 @@ class Projeto extends Model {
 
     }
 
+    /*
+     *
+     * Retorna TRUE quando todos homologadores já tiverem avaliado o projeto
+     *
+     */
+    public function statusHomologacao(){
+
+        $homologadores = DB::table('revisao')
+            ->select('revisado')
+            ->where('projeto_id','=',$this->id)
+            ->get()
+            ->toArray();
+
+        $count = 0;
+
+        foreach ($homologadores as $homologador){
+            if($homologador->revisado)
+                $count++;
+        }
+
+        if($count == count($homologadores) && count($homologadores) != 0)
+            return true;
+
+        return false;
+
+    }
+
+    public function statusAvaliacao(){
+
+        $avaliadores = DB::table('avaliacao')
+            ->select('avaliado')
+            ->where('projeto_id','=',$this->id)
+            ->get()
+            ->toArray();
+
+        $count = 0;
+
+        foreach ($avaliadores as $avaliador){
+            if($avaliador->avaliado)
+                $count++;
+        }
+
+        if($count == count($avaliadores) && count($avaliadores) != 0)
+            return true;
+
+        return false;
+
+    }
+
     public function getTotalFuncoes($funcoes) {
         foreach ($funcoes as $funcao) {
             $totalFuncoes[$funcao->funcao] = (DB::table('escola_funcao_pessoa_projeto')->where([['projeto_id', $this->id], ['funcao_id', $funcao->id]])->count('funcao_id'));
         }
         return $totalFuncoes;
     }
+
+
 
 }

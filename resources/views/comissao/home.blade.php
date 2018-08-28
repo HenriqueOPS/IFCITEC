@@ -42,12 +42,18 @@
                                 <span>{{$projeto->titulo}}</span>
                             @endif
                         </div>
+
+                        @if((\App\Edicao::consultaPeriodo('Avaliação')))
+
                         <div class="project-info">
                             Integrantes:
                             @foreach($projeto->pessoas as $pessoa)
                                 {{$pessoa->nome}},
                             @endforeach
                         </div>
+
+                        @endif
+
                     </div>
 
                     <div class="col-md-2 actions text-center">
@@ -72,6 +78,7 @@
                                 @else
                                     <span class="label label-default">{{$projeto->getStatus()}}</span>
                                 @endif
+
                             @endif
                         </div>
 

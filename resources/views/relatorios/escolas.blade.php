@@ -1,6 +1,5 @@
 @extends('relatorios.relatorio')
 
-
 @section('content')
         <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE ESCOLAS</h2>
 
@@ -46,6 +45,6 @@
               </td>
            </tr>
         	<br>
-		  </table> 
+		  </table>
       @endforeach
 @endsection
