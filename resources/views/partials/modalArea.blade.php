@@ -41,7 +41,7 @@ $('.modalArea').click(function(){
 	var idArea = $(this).attr('id-area');
 
 	//monta a url de consulta
-	var urlConsulta = './area/dados-area/'+idArea;
+	var urlConsulta = '.././area/dados-area/'+idArea;
 	//faz a consulta via Ajax
 	$.get(urlConsulta, function (res){
 
@@ -92,7 +92,7 @@ $('.modalArea').click(function(){
 		$("#ModalDeleteArea").modal();
 
 		$('.excluir').click(function(){
-			var urlConsulta = './area/exclui-area/'+idArea+'/'+$('#passwordDeleteArea').val();
+			var urlConsulta = '.././area/exclui-area/'+idArea+'/'+$('#passwordDeleteArea').val();
 			$.get(urlConsulta, function (res){
 				if(res == 'true'){
 					bootbox.alert("Área do conhecimento excluída com sucesso");

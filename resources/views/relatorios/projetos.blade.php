@@ -3,9 +3,9 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <h2 style="margin-top: 5mm; margin-left: 65mm;">RELATÓRIO DE PROJETOS</h2>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE PROJETOS</h2>
 
-        <table style="margin-top: 10mm; width: 100%;">
+        <table class="bordered striped centered" style="width: 100%;">
         	<thead>
         		<tr>
     				<th>Projeto</th> 
@@ -18,9 +18,9 @@
   			<tbody>
   				@foreach($projetos as $projeto)
   				<tr>
-    				<td style="margin-left: 3pt; border-bottom:solid 1pt #000;">{{$projeto->titulo}}</td> 
-    				<td style="margin-left: 3pt; border-bottom:solid 1pt #000;">{{(\App\Escola::find($projeto->escola_id))->nome_curto}}</td>
-    				<td style="margin-left: 3pt; border-bottom:solid 1pt #000;">
+    				<td>{{$projeto->titulo}}</td> 
+    				<td>{{(\App\Escola::find($projeto->escola_id))->nome_curto}}</td>
+    				<td>
               @foreach($autores as $autor)
               @if($autor->projeto_id == $projeto->id)
               {{$autor->nome}}
@@ -28,13 +28,13 @@
               @endif
               @endforeach
             </td>
-    				<td style="margin-left: 3pt; border-bottom:solid 1pt #000;">
+    				<td>
               @foreach($orientadores as $orientador)
               @if($orientador->projeto_id == $projeto->id)
               {{$orientador->nome}}</td>
               @endif
               @endforeach
-            <td style="margin-left: 3pt; border-bottom:solid 1pt #000;">
+            <td>
               @foreach($coorientadores as $coorientador)
               @if($coorientador->projeto_id == $projeto->id)
               {{$coorientador->nome}}
