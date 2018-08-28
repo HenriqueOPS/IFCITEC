@@ -4,11 +4,11 @@
 <div class="container">
     <div class="row">
         
-        <h2 style="margin-top: 5mm; margin-left: 35mm;">RELATÓRIO DE VOLUNTÁRIOS DA TAREFA</h2>
-        <h2 style="text-align: center;">{{$tarefa->tarefa}}</h2>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE VOLUNTÁRIOS DA TAREFA</h2>
+        <h2 style="text-align: center; font-size: 25px;">{{$tarefa->tarefa}}</h2>
 
         <div>
-        <table style="margin: auto; margin-top: 10mm; margin-left: 20mm; margin-right: 20mm; width: 100%;">
+        <table class="bordered striped centered" style="width: 100%;">
         	<thead">
         		<tr>
             <th>#</th>

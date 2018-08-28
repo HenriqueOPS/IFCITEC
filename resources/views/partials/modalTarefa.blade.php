@@ -41,7 +41,7 @@ $('.modalTarefa').click(function(){
 	var idTarefa = $(this).attr('id-tarefa');
 
 	//monta a url de consulta
-	var urlConsulta = './tarefa/dados-tarefa/'+idTarefa;
+	var urlConsulta = '.././tarefa/dados-tarefa/'+idTarefa;
 	//faz a consulta via Ajax
 	$.get(urlConsulta, function (res){
 
@@ -92,7 +92,7 @@ $('.modalTarefa').click(function(){
 		$("#ModalDeleteTarefa").modal();
 
 		$('.excluir').click(function(){
-			var urlConsulta = './tarefa/exclui-tarefa/'+idTarefa+'/'+$('#passwordDeleteTarefa').val();
+			var urlConsulta = '.././tarefa/exclui-tarefa/'+idTarefa+'/'+$('#passwordDeleteTarefa').val();
 			$.get(urlConsulta, function (res){
 				if(res == 'true'){
 					bootbox.alert("Tarefa excluída com sucesso");

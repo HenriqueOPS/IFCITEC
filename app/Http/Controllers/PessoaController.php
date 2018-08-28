@@ -172,7 +172,7 @@ class PessoaController extends Controller {
     public function editaUsuario(Request $req, $id) {
         $data = $req->all();
         Pessoa::find($id)->update($data);
-        return redirect()->route('administrador');
+        return redirect()->route('administrador.usuarios');
 
     }
 
