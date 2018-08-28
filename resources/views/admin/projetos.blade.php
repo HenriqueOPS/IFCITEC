@@ -65,7 +65,7 @@
 
                 <div>
 
-                    <button id="homologarTrabalhos" class="btn btn-sm btn-primary">Homologar Trabalhos</button>
+                    <a href="{{route('homologar-projetos')}}" id="homologarTrabalhos" class="btn btn-sm btn-primary">Homologar Trabalhos</a>
 
                     @foreach($projetos as $projeto)
 
@@ -106,6 +106,21 @@
                                     @else
                                         <span class="label label-default">{{$projeto->getStatus()}}</span>
                                     @endif
+
+                                    @if($projeto->getStatus() == "Não Homologado")
+                                        @if($projeto->statusHomologacao())
+                                            <span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+                                        @else
+                                            <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+                                        @endif
+                                    @elseif($projeto->getStatus() == "Não Avaliado")
+                                        @if($projeto->statusAvaliacao())
+                                            <span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+                                        @else
+                                            <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+                                        @endif
+                                    @endif
+
                                 </div>
 
                                 <a class="dados-projeto" projeto-id="{{$projeto->id}}"><i class="material-icons blue-icon">remove_red_eye</i></a>
