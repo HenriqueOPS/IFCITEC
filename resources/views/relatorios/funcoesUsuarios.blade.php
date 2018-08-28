@@ -3,10 +3,10 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <h2 style="margin-top: 20px; margin-left: 200px;">RELATÓRIO DE USUÁRIOS E SUAS RESPECTIVAS FUNÇÕES</h2>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE USUÁRIOS E SUAS RESPECTIVAS FUNÇÕES</h2>
 
-        <table style="margin-left: 25px; margin-left: 25px; margin-top: 50px; width: 100%;">
-        	<thead">
+        <table class="bordered striped centered" style="width: 100%;">
+        	<thead>
         		<tr>
     				<th>Usuário</th>
             <th>Email</th>
@@ -20,7 +20,7 @@
     				<td>{{$usuario->email}}</td> 
     				<td>
             @foreach($funcoes as $funcao)
-              @if($usuario->temFuncao($funcao->funcao))
+              @if($funcao->pessoa_id == $usuario->id)
                   {{$funcao->funcao}}
                   <br>
               @endif

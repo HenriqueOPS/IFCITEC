@@ -3,39 +3,71 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <h2 style="margin-top: 20px; margin-left: 250px;">RELATÓRIO DE EDIÇÕES</h2>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE EDIÇÕES</h2>
+        <br>
+        @foreach($edicoes as $edicao)
+        @if($edicao->ano > 5)
+        <p style="text-align: center;"><b> Edição {{\App\Edicao::numeroEdicao($edicao->ano)}}</b></p>
+        <br>
+        <table class="bordered striped centered" style="margin-right: 3pt; margin-left: 3pt; width:100%;">
+        <tr>
+        <th>Período da Feira: </th>
+        <td>{{ date('d/m/Y H:i:s', strtotime($edicao['feira_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['feira_fechamento'])) }}</td>
+        </tr>
 
-        <table style="margin-left: 25px; margin-left: 25px; margin-top: 50px; width: 100%;">
-        	<thead">
-        		<tr>
-    				<th>Ano</th>
-    				<th>Período da Feira</th> 
-    				<th>Níveis</th>
-    				<th>Áreas</th>
-  				</tr>
-        	</thead>
-  			<tbody>
-  				@foreach($edicoes as $edicao)
-  				<tr>
-    				<td>{{$edicao->ano}}</td>
-    				<td>{{ date('d/m/Y H:i:s', strtotime($edicao['feira_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['feira_fechamento'])) }}</td> 
-    				<td>
-            @foreach(($edicao->niveis()->orderBy('nivel')->get()) as $nivel)  
+        <tr>
+        <th>Período de Inscrições de Projetos: </th>
+        <td>{{ date('d/m/Y H:i:s', strtotime($edicao['inscricao_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['inscricao_fechamento'])) }}</td>
+        </tr>
+
+        <tr>
+        <th>Período de Homologação: </th>
+        <td>{{ date('d/m/Y H:i:s', strtotime($edicao['homologacao_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['homologacao_fechamento'])) }}</td>
+        </tr>
+        
+        <tr>
+        <th>Período de Credenciamento: </th>
+        <td>{{ date('d/m/Y H:i:s', strtotime($edicao['credenciamento_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['credenciamento_fechamento'])) }}</td>
+        </tr>
+        
+        <tr>
+        <th>Período de Avaliação: </th>
+        <td>{{ date('d/m/Y H:i:s', strtotime($edicao['avaliacao_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['avaliacao_fechamento'])) }}</td>
+        </tr>
+
+        <tr>
+        <th>Período de Inscrição de Voluntário: </th>
+        <td>{{ date('d/m/Y H:i:s', strtotime($edicao['voluntario_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['voluntario_fechamento'])) }}</td>
+        </tr>
+
+        <tr>
+        <th>Período de Inscrição de Comissão Avaliadora: </th>
+        <td>{{ date('d/m/Y H:i:s', strtotime($edicao['comissao_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['comissao_fechamento'])) }}</td>
+        </tr>  
+
+        <tr>
+        <th>Níveis: </th>
+        <td>
+          @foreach(($edicao->niveis()->orderBy('nivel')->get()) as $nivel)  
               {{$nivel->nivel}}
               <br>
-            @endforeach  
-            </td>
-    				<td>
-            @foreach(($edicao->areas()->orderBy('area_conhecimento')->get()) as $area)  
+          @endforeach  
+        </td>
+        </tr>    
+
+        <tr>
+        <th>Áreas do Conhecimento: </th>
+        <td>
+          @foreach(($edicao->areas()->orderBy('area_conhecimento')->get()) as $area)  
               {{$area->area_conhecimento}}
               <br>
-            @endforeach      
-            </td>
-  				</tr>
-  				@endforeach
-  			</tbody>	
-  
-		</table> 
+          @endforeach 
+        </td>
+        </tr>  
+        </table>   
+        <br>   
+        @endif
+        @endforeach
 	</div>
 </div>
 @endsection

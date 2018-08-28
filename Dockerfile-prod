@@ -7,6 +7,7 @@ RUN docker-php-ext-install zip pdo_pgsql pgsql gd
 RUN a2dissite * && a2enmod rewrite
 COPY laravel-virtualhost.conf /etc/apache2/sites-available/
 RUN a2ensite laravel-virtualhost.conf
+COPY ci/customphp.ini /usr/local/etc/php/conf.d/
 COPY ./ /var/www/html/
 RUN chmod 777 -R storage/ bootstrap/cache/ && chown -R www-data:www-data /var/www/ && \
     find /var/www/ -type d -exec chmod -R 755 {} \; && find /var/www/ -type f -exec chmod -R 644 {} \;

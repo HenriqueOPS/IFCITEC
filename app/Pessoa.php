@@ -63,7 +63,7 @@ class Pessoa extends Authenticatable {
     }
 
     public function tarefas() {
-        return $this->belongsToMany('App\Tarefa');
+        return $this->belongsToMany('App\Tarefa', 'pessoa_tarefa', 'pessoa_id', 'tarefa_id');
     }
 
 	/**
@@ -228,11 +228,11 @@ class Pessoa extends Authenticatable {
     }
 
     public function avaliacoes() {
-        return $this->hasMany('App\Avaliacao');
+        return $this->hasMany('App\Avaliacao', 'pessoa_id', 'id');
     }
 
     public function revisoes() {
-        return $this->hasMany('App\Revisao');
+        return $this->hasMany('App\Revisao', 'pessoa_id', 'id');
     }
 
     static function findByEmail($email) {

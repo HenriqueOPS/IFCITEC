@@ -1,12 +1,12 @@
-@extends('relatorios.relatorio')
+@extends('relatorios.relatorioPaisagem')
 
 @section('content')
 <div class="container">
     <div class="row">
-        <h2 style="margin-top: 20px; margin-left: 250px;">RELATÓRIO DE NÍVEIS</h2>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE NÍVEIS</h2>
 
-        <table style="margin-left: 25px; margin-left: 25px; margin-top: 50px;">
-        	<thead">
+        <table class="bordered striped centered" style="width: 100%">
+        	<thead>
         		<tr>
     				<th>Nível</th>
     				<th>Descrição</th> 

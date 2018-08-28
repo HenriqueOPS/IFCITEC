@@ -43,7 +43,7 @@
                                     <i class="material-icons">bookmark</i>
                                 </span>
 									<div class="form-group label-floating">
-										<label class="control-label">Titulacao</label>
+										<label class="control-label">Titulação Em...</label>
 										<input type="text" class="form-control" name="titulacao"
 											   value="{{isset($dados->titulacao) ? $dados->titulacao : ''}}">
 									</div>
@@ -75,7 +75,7 @@
                                     <i class="material-icons">assignment_ind</i>
                                 </span>
 									<div class="form-group label-floating">
-										<label class="control-label">Profissao</label>
+										<label class="control-label">Profissão</label>
 										<input type="text" class="form-control" name="profissao"
 											   value="{{isset($dados->profissao) ? $dados->profissao : ''}}" required>
 									</div>
@@ -91,7 +91,7 @@
                                     <i class="material-icons">school</i>
                                 </span>
 									<div class="form-group label-floating">
-										<label class="control-label">Instituicao</label>
+										<label class="control-label">Instituição</label>
 										<input type="text" class="form-control" name="instituicao"
 											   value="{{isset($dados->instituicao) ? $dados->instituicao : ''}}" required>
 									</div>
@@ -102,12 +102,12 @@
 									@endif
 								</div>
                                 <h4>Selecione as áreas do conhecimento que gostaria de avaliar/homologar, de acordo com o nível:</h4>
-                                @if(is_array($nivel))
-                                @foreach($nivel as $n)
+                                @if(is_array($niveis))
+                                @foreach($niveis as $n)
                                     <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
                                       <p>Nível {{$n->nivel}}:</p>
                                     </div>
-                                    @foreach($areas as $area)
+                                    @foreach($areasConhecimento as $area)
                                     @if($area->nivel_id == $n->id)
 
                                         <div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">
@@ -128,7 +128,7 @@
                                 	<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">        
                                       <p>Nível {{$nivel->nivel}}:</p>
                                     </div>
-                                    @foreach($areas as $area)
+                                    @foreach($areasConhecimento as $area)
                                     @if($area->nivel_id == $nivel->id)
 
                                         <div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">

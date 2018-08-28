@@ -107,41 +107,42 @@ class ComissaoAvaliadoraController extends Controller
                                     ->get()
                                     ->toArray();
 
-        $projetosNiveis = DB::table('nivel')
-                            ->join('projeto', 'nivel.id', '=', 'projeto.nivel_id')
-                            ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
-                            ->select('nivel.nivel', 'nivel.id')
-                            ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
-                            ->where('pessoa_id', Auth::user()->id)
-                            //cria a condição entre parenteses
-                            ->where(function ($q){
-                                //Coorientador HARD CODED
-                                $q->where('escola_funcao_pessoa_projeto.funcao_id', 6);
-                                //Orientador HARD CODED
-                                $q->orWhere('escola_funcao_pessoa_projeto.funcao_id', 7);
-                            })
-                            ->orderBy('nivel.id', 'asc')
-                            ->get()
-                            ->keyBy('id')
-                            ->toArray();
-                                    
-        $projetosNiveis = array_keys($projetosNiveis);
+        $projetosAreas = DB::table('area_conhecimento')->join('projeto', 'area_conhecimento.id', '=', 'projeto.area_id')
+                                    ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+                                    ->select('area_conhecimento.area_conhecimento', 'area_conhecimento.id')
+                                    ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
+                                    ->where('pessoa_id', Auth::user()->id)
+                                    ->where(function ($q){
+                                        $q->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])
+                                            ->where('funcao', 'Orientador')
+                                            ->first()->id);
+                                        $q->orWhere('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])
+                                            ->where('funcao', 'Coorientador')
+                                            ->first()->id);
+                                    })
+                                    ->orderBy('area_conhecimento.id', 'asc')
+                                    ->get()
+                                    ->keyBy('id')
+                                    ->toArray();
 
-        foreach ($niveis as $n) {
-            if (!in_array($n->id, $projetosNiveis)) {
-                if(!isset($nivel)){ //inicia o array
-                    $nivel[] = $n;
-                }else{
-                    $array = array_pluck($nivel, 'id');
-                    if(!in_array($n->id, $array)){
-                        $nivel[] = $n;
+        $projetosAreas = array_keys($projetosAreas);
+
+        foreach ($areas as $a) {
+            if (!in_array($a->id, $projetosAreas)) {
+                    if(! isset($areasConhecimento)){
+                        $areasConhecimento[] = $a;
                     }
-                }
+                   else{
+                        $array = array_pluck($areasConhecimento, 'id');
+                        if(! in_array($a->id, $array)){
+                            $areasConhecimento[] = $a;
+                        }
+                    }
             }
         }
 
-        if ($projetosNiveis == null) {
-            $nivel = $niveis;
+        if ($projetosAreas == null) {
+            $areasConhecimento = $areas;
         }
 
         $dados = Pessoa::find(Auth::id());
@@ -153,7 +154,7 @@ class ComissaoAvaliadoraController extends Controller
             $data = null;
         }
 
-        return view('comissao.cadastro', ['areas' => $areas,'nivel' => $nivel, 'dados' => $dados, 'data' => $data]);
+        return view('comissao.cadastro', ['areas' => $areas,'niveis' => $niveis, 'dados' => $dados, 'data' => $data, 'areasConhecimento' => $areasConhecimento]);
     }
 
     public function cadastraComissao(Request $req){
@@ -265,48 +266,44 @@ class ComissaoAvaliadoraController extends Controller
 			->get()
 			->toArray();
 
-
-
-        $projetosNiveis = DB::table('nivel')
-            ->join('projeto', 'nivel.id', '=', 'projeto.nivel_id')
+        $projetosAreas = DB::table('area_conhecimento')->join('projeto', 'area_conhecimento.id', '=', 'projeto.area_id')
             ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
-            ->select('nivel.nivel', 'nivel.id')
+            ->select('area_conhecimento.area_conhecimento', 'area_conhecimento.id')
             ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
             ->where('pessoa_id', $comissaoEdicao->pessoa_id)
-            //cria a condição entre parenteses
             ->where(function ($q){
-                //Coorientador HARD CODED
-                $q->where('escola_funcao_pessoa_projeto.funcao_id', 6);
-                //Orientador HARD CODED
-                $q->orWhere('escola_funcao_pessoa_projeto.funcao_id', 7);
+                $q->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])
+                    ->where('funcao', 'Orientador')
+                    ->first()->id);
+                $q->orWhere('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])
+                    ->where('funcao', 'Coorientador')
+                    ->first()->id);
             })
-            ->orderBy('nivel.id', 'asc')
+            ->orderBy('area_conhecimento.id', 'asc')
             ->get()
             ->keyBy('id')
             ->toArray();
 
-        $projetosNiveis = array_keys($projetosNiveis);
+        $projetosAreas = array_keys($projetosAreas);
 
-        $niveis = array();
-
-        foreach ($nivel as $n) {
-            if (!in_array($n->id, $projetosNiveis)) {
-                if(!isset($niveis)){
-                    $niveis[] = $n;
+        foreach ($areas as $a) {
+            if (!in_array($a->id, $projetosAreas)) {
+                if(!isset($areasConhecimento)){
+                    $areasConhecimento[] = $a;
                 }else{
-                    $array = array_pluck($niveis, 'id');
-                    if(!in_array($n->id, $array)){
-                        $niveis[] = $n;
+                    $array = array_pluck($areasConhecimento, 'id');
+                    if(!in_array($a->id, $array)){
+                        $areasConhecimento[] = $a;
                     }
                 }
             }
         }
 
-        if ($projetosNiveis == null) {
-            $niveis = $nivel;
+        if ($projetosAreas == null) {
+            $areasConhecimento = $areas;
         }
 
-		return view('comissao.homologar', compact('id', 'pessoa', 'idsAreas', 'areas', 'niveis'));
+		return view('comissao.homologar', compact('id', 'pessoa', 'idsAreas', 'areas', 'nivel', 'areasConhecimento'));
 
 	}
 
@@ -398,7 +395,7 @@ class ComissaoAvaliadoraController extends Controller
 
         }
 
-		return redirect()->route('administrador');
+		return redirect()->route('administrador.comissao');
 	}
 
 }
