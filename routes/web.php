@@ -27,7 +27,7 @@ Route::get('/', function () {
 
 // API
 Route::post('/api/login', 'ApiController@login');
-Route::post('/api/registra-presenca', 'ApiController@registraPresenca');
+Route::any('/api/registra-presenca', 'ApiController@registraPresenca');
 
 Route::get('/api/projetos-avaliacao/{id}', 'ApiController@projetosAvaliacao');
 Route::get('/api/campos-avaliacao/{id}', 'ApiController@camposAvaliacao');
@@ -122,7 +122,7 @@ Route::post('/comissao/cadastrar', 'ComissaoAvaliadoraController@cadastraComissa
 Route::get('/comissao/cadastrar/{s}', 'ComissaoAvaliadoraController@cadastrarComissao')->name('cadastraComissao'); //Ajax
 
 
-Route::resource('projeto', 'ProjetoController');
+//Route::resource('projeto', 'ProjetoController');
 
 Route::prefix('projeto')->group(function () {
     Route::post('vincula-integrante', 'ProjetoController@vinculaIntegrante')->name('projeto.vinculaIntegrante');
