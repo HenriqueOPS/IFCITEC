@@ -248,13 +248,20 @@
                         </tr>
                         <tr>
                             <td>23</td>
+                            <td>Relatório de Usuários e suas respectivas funções (Pós Homologação)</td>
+                            <td class="text-right">
+                                <a href="{{route('usuariosPosHomologacao')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>24</td>
                             <td>Relatório de Voluntários</td>
                             <td class="text-right">
                                 <a href="{{route('csv', 4)}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>24</td>
+                            <td>25</td>
                             <td>Relatório de Voluntários e suas respectivas tarefas</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioVoluntarioTarefa')}}" target="_blank"><i class="material-icons">visibility</i></a>
