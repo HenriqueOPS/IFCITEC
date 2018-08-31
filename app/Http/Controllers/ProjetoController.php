@@ -971,6 +971,9 @@ class ProjetoController extends Controller
                     //TODO: implementar o job do email
 
                     //Prezado $pessoa->nome, seu projeto "$projeto->titulo" foi Homologado
+					$emailJob = (new MailProjetoHomologadoJob($pessoa->email, $pessoa->nome, $projeto->titulo, $projeto->id))->delay(\Carbon\Carbon::now()->addSeconds(3));
+					dispatch($emailJob);
+
 
                 }
 
@@ -981,13 +984,6 @@ class ProjetoController extends Controller
 	    //dd($IDprojetos);
         return redirect(route('administrador.projetos'));
 
-    }
-
-
-
-    public function confirmarPresenca(){
-    	$emailJob = (new MailProjetoHomologadoJob('rafaellasbueno@gmail.com', 'Rafa', 'oi', 1))->delay(\Carbon\Carbon::now()->addSeconds(3));
-		dispatch($emailJob);
     }
 
     public function confirmaPresenca($id){
