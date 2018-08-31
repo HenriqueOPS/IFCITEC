@@ -139,7 +139,6 @@
 
                                     @endif
 
-
                                 </div>
 
                                 <form method="POST" class="text-center" action="{{route('homologa-projetos')}}">

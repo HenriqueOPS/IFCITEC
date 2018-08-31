@@ -293,6 +293,62 @@ class RelatorioController extends Controller
 		return \PDF::loadView('relatorios.usuarios', array('autores' => $autores, 'orientadores' => $orientadores, 'coorientadores' => $coorientadores, 'voluntarios' => $voluntarios, 'homologadores' => $homologadores, 'avaliadores' => $avaliadores, 'edicoes' => $edicoes, 'cont' => $cont))->download('usuarios.pdf');
 	}
 
+	public function usuariosPosHomologacao(){
+		$autores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+						->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
+						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+						->orderBy('pessoa.nome')
+						->get();
+
+		$orientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+						->select('funcao_pessoa.edicao_id', 'pessoa.nome','pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
+						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
+						->orderBy('pessoa.nome')
+						->get();
+
+		$coorientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+						->select('funcao_pessoa.edicao_id', 'pessoa.nome','pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
+						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
+						->orderBy('pessoa.nome')
+						->get();
+
+		$voluntarios = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+						->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
+						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Voluntário')->first()->id)
+						->orderBy('pessoa.nome')
+						->get();
+
+		$homologadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+						->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
+						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Homologador')->first()->id)
+						->orderBy('pessoa.nome')
+						->get();
+
+		$avaliadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')	
+						->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
+						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Avaliador')->first()->id)
+						->orderBy('pessoa.nome')
+						->get();
+		$cont = 0;
+
+		return \PDF::loadView('relatorios.usuariosPosHomologacao', array('autores' => $autores, 'orientadores' => $orientadores, 'coorientadores' => $coorientadores, 'voluntarios' => $voluntarios, 'homologadores' => $homologadores, 'avaliadores' => $avaliadores,'cont' => $cont))->download('usuarios.pdf');
+	}
+
 	public function projetos(){
 		$projetos = DB::table('projeto')->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
 			->select('projeto.titulo', 'projeto.id', 'escola_funcao_pessoa_projeto.escola_id')
@@ -547,6 +603,25 @@ class RelatorioController extends Controller
 				->toArray();
 
 		return \PDF::loadView('relatorios.projetosCompareceram', array('projetos' => $projetos))->download('projetos_compareceram.pdf');
+	}
+
+	public function gerarLocalizacaoProjetos(){
+		
+		return view('admin.gerarLocalizacaoProjetos');
+	}
+
+	public function geraLocalizacaoProjetos(Request $request){
+		$data = $req->all();
+		$projetos = DB::table('projeto')
+				->select('projeto.id', 'projeto.titulo')
+				->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+				->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+				->join('presenca', 'pessoa.id', '=', 'presenca.id')
+				->where('projeto.edicao_id',Edicao::getEdicaoId())
+				->orderBy('projeto.titulo')
+				->get()
+				->toArray();
+		//return \PDF::loadView('relatorios.projetosCompareceram', array('projetos' => $projetos))->download('projetos_compareceram.pdf');
 	}
 
 }
