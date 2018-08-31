@@ -163,7 +163,7 @@ class RelatorioController extends Controller
                         })
 						->orderBy('pessoa.nome')
 						->get();
-	    
+
 		$organizadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->select('pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email')
 						->where('edicao_id', Edicao::getEdicaoId())
@@ -181,7 +181,7 @@ class RelatorioController extends Controller
 		$filename = "RelatorioPresenca.csv";
 
 		$handle = fopen($filename, 'w+');
-		
+
 		fputcsv($handle, array('Nome','RG','CPF','Email'), ';');
 
 		foreach ($voluntarios as $row) {
@@ -230,7 +230,7 @@ class RelatorioController extends Controller
 	public function projetosClassificados(){
 
         $areas = Edicao::find(Edicao::getEdicaoId())->areas;
-        
+
         return \PDF::loadView('relatorios.projetosClassificados', array('areas' => $areas))->setPaper('A4', 'landscape')->download('projetos_classificados.pdf');
 	}
 
@@ -418,7 +418,7 @@ class RelatorioController extends Controller
 
 	public function escolaProjetos($id){
 		$escola = Escola::find($id);
-		
+
 		$projetos = DB::table('escola_funcao_pessoa_projeto')
 				->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 				->select('escola_funcao_pessoa_projeto.escola_id', 'projeto.id', 'projeto.titulo')
@@ -532,7 +532,7 @@ class RelatorioController extends Controller
 				->where('projeto.edicao_id',Edicao::getEdicaoId())
 				->orderBy('projeto.titulo')
 				->get();
-		
+
 		return \PDF::loadView('relatorios.avaliadoresProjeto', array('projetos' => $projetos))->download('avaliadores_projeto.pdf');
 	}
 
@@ -601,7 +601,7 @@ class RelatorioController extends Controller
 				->orderBy('projeto.titulo')
 				->get()
 				->toArray();
-		
+
 		return \PDF::loadView('relatorios.projetosCompareceram', array('projetos' => $projetos))->download('projetos_compareceram.pdf');
 	}
 
