@@ -62,7 +62,6 @@ class Nivel extends Model {
 			->where('projeto.edicao_id','=',Edicao::getEdicaoId())
 			->where('projeto.nivel_id','=',$id)
 			->orderBy('nota','desc')
-			->orderBy('projeto.titulo','asc')
 			->orderBy('projeto.created_at','asc')
 			->get();
 
