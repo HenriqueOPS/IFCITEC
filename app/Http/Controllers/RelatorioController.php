@@ -231,7 +231,25 @@ class RelatorioController extends Controller
 
         $areas = Edicao::find(Edicao::getEdicaoId())->areas;
 
-        return \PDF::loadView('relatorios.projetosClassificados', array('areas' => $areas))->setPaper('A4', 'landscape')->download('projetos_classificados.pdf');
+        return \PDF::loadView('relatorios.projetosClassificados', array('areas' => $areas))->setPaper('A4', 'landscape')->download('projetos_classificados_area.pdf');
+	}
+
+	public function projetosClassificadosNivel(){
+
+		$niveis = Edicao::find(Edicao::getEdicaoId())->niveis;
+
+		return \PDF::loadView('relatorios.projetosClassificadosNivel', array('niveis' => $niveis))->setPaper('A4', 'landscape')->download('projetos_classificados_nivel.pdf');
+	}
+
+	public function projetosClassificadosSemNota(){
+
+		$projetos = Projeto::select('projeto.titulo', 'projeto.situacao_id')
+			->where('projeto.edicao_id','=',Edicao::getEdicaoId())
+			->where('projeto.situacao_id','=', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+			->orderBy('projeto.titulo', 'asc')
+			->get();
+
+		return \PDF::loadView('relatorios.projetosClassificadosSemNota', array('projetos' => $projetos))->download('projetos_classificados.pdf');
 	}
 
 
@@ -338,7 +356,7 @@ class RelatorioController extends Controller
 						->orderBy('pessoa.nome')
 						->get();
 
-		$avaliadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')	
+		$avaliadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Avaliador')->first()->id)
@@ -393,7 +411,7 @@ class RelatorioController extends Controller
 				->get()
 				->toArray();
 		}
-		
+
 		return \PDF::loadView('relatorios.projetos', array('projetos' => $projetos,'autores' => $autores, 'orientadores' => $orientadores, 'coorientadores' => $coorientadores))->download('projetos.pdf');
 	}
 
@@ -405,14 +423,14 @@ class RelatorioController extends Controller
 
 	public function edicoes(){
 		$edicoes = Edicao::orderBy('ano')->get();
-		
+
 		return \PDF::loadView('relatorios.edicoes', array('edicoes' => $edicoes))->download('edicoes.pdf');
 	}
 
 	public function funcoesUsuarios(){
 		$usuarios = Pessoa::select('pessoa.id', 'pessoa.nome', 'pessoa.email')
 				->get();
-		
+
 		return \PDF::loadView('relatorios.funcoesUsuarios', array('usuarios' => $usuarios))->download('funcoes.pdf');
 	}
 
@@ -434,9 +452,9 @@ class RelatorioController extends Controller
 
 	public function nivelProjetos($id){
 		$nivel = Nivel::find($id);
-	
+
 		$projetos = Projeto::where('nivel_id', $id)->where('edicao_id', Edicao::getEdicaoId())->get();
-		
+
 		$numeroProjetos = count($projetos);
 
 		return \PDF::loadView('relatorios.nivelProjetos', array('nivel' => $nivel, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->download('nivelProjetos.pdf');
@@ -444,9 +462,9 @@ class RelatorioController extends Controller
 
 	public function areaProjetos($id){
 		$area = AreaConhecimento::find($id);
-	
+
 		$projetos = Projeto::where('area_id', $id)->where('edicao_id', Edicao::getEdicaoId())->get();
-		
+
 		$numeroProjetos = count($projetos);
 
 		return \PDF::loadView('relatorios.areaProjetos', array('area' => $area, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->download('areaProjetos.pdf');
@@ -462,7 +480,7 @@ class RelatorioController extends Controller
 				->orderBy('pessoa.nome')
 				->get()
 				->toArray();
-	
+
 		return \PDF::loadView('relatorios.voluntarioTarefa', array('voluntarios' => $voluntarios))->download('voluntarios_tarefas.pdf');
 	}
 
@@ -512,7 +530,7 @@ class RelatorioController extends Controller
 				->orderBy('pessoa.nome')
 				->get()
 				->toArray();
-		
+
 		$cont = 0;
 		return \PDF::loadView('relatorios.avaliadoresArea', array('areas' => $areas,'avaliadores' => $avaliadores, 'cont' => $cont))->download('avaliadores_area.pdf');
 	}
@@ -587,7 +605,7 @@ class RelatorioController extends Controller
 				->orderBy('projeto.titulo')
 				->get()
 				->toArray();
-		
+
 		return \PDF::loadView('relatorios.statusProjetos', array('projetos' => $projetos))->download('status_projetos.pdf');
 	}
 
@@ -606,7 +624,7 @@ class RelatorioController extends Controller
 	}
 
 	public function gerarLocalizacaoProjetos(){
-		
+
 		return view('admin.gerarLocalizacaoProjetos');
 	}
 

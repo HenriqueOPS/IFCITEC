@@ -90,7 +90,9 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/relatorio/projetos/premiacao', 'RelatorioController@premiacaoProjetos')->name('premiacaoProjetos');
 	Route::get('/relatorio/niveis/projetos/{id}', 'RelatorioController@nivelProjetos')->name('nivelProjetos');
 	Route::get('/relatorio/escolas', 'RelatorioController@escolas')->name('relatorioEscola');
-	Route::get('/relatorio/projetos/classificados', 'RelatorioController@projetosClassificados')->name('projetosClassificados');
+	Route::get('/relatorio/projetos/classificados/area', 'RelatorioController@projetosClassificados')->name('projetosClassificados');
+	Route::get('/relatorio/projetos/classificados/nivel', 'RelatorioController@projetosClassificadosNivel')->name('projetosClassificadosNivel');
+	Route::get('/relatorio/projetos/classificados', 'RelatorioController@projetosClassificadosSemNota')->name('projetosClassificadosSemNota');
 	Route::get('/relatorio/projetos/notas/homologadores', 'RelatorioController@notaProjetosArea')->name('notaProjetosArea');
 	Route::get('/relatorio/escolas/projetos/{id}', 'RelatorioController@escolaProjetos')->name('escolaProjetos');
 	Route::get('/relatorio/areas', 'RelatorioController@areas')->name('relatorioArea');
