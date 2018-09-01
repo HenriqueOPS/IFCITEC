@@ -94,6 +94,7 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/relatorio/projetos/classificados/nivel', 'RelatorioController@projetosClassificadosNivel')->name('projetosClassificadosNivel');
 	Route::get('/relatorio/projetos/classificados', 'RelatorioController@projetosClassificadosSemNota')->name('projetosClassificadosSemNota');
 	Route::get('/relatorio/projetos/notas/homologadores', 'RelatorioController@notaProjetosArea')->name('notaProjetosArea');
+	Route::get('/relatorio/projetos/notas/homologadores/niveis', 'RelatorioController@notaProjetosNivel')->name('notaProjetosNivel');
 	Route::get('/relatorio/escolas/projetos/{id}', 'RelatorioController@escolaProjetos')->name('escolaProjetos');
 	Route::get('/relatorio/areas', 'RelatorioController@areas')->name('relatorioArea');
 	Route::get('/relatorio/areas/projetos/{id}', 'RelatorioController@areaProjetos')->name('areaProjetos');
