@@ -90,13 +90,17 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/relatorio/projetos/premiacao', 'RelatorioController@premiacaoProjetos')->name('premiacaoProjetos');
 	Route::get('/relatorio/niveis/projetos/{id}', 'RelatorioController@nivelProjetos')->name('nivelProjetos');
 	Route::get('/relatorio/escolas', 'RelatorioController@escolas')->name('relatorioEscola');
-	Route::get('/relatorio/projetos/classificados', 'RelatorioController@projetosClassificados')->name('projetosClassificados');
+	Route::get('/relatorio/projetos/classificados/area', 'RelatorioController@projetosClassificados')->name('projetosClassificados');
+	Route::get('/relatorio/projetos/classificados/nivel', 'RelatorioController@projetosClassificadosNivel')->name('projetosClassificadosNivel');
+	Route::get('/relatorio/projetos/classificados', 'RelatorioController@projetosClassificadosSemNota')->name('projetosClassificadosSemNota');
 	Route::get('/relatorio/projetos/notas/homologadores', 'RelatorioController@notaProjetosArea')->name('notaProjetosArea');
+	Route::get('/relatorio/projetos/notas/homologadores/niveis', 'RelatorioController@notaProjetosNivel')->name('notaProjetosNivel');
 	Route::get('/relatorio/escolas/projetos/{id}', 'RelatorioController@escolaProjetos')->name('escolaProjetos');
 	Route::get('/relatorio/areas', 'RelatorioController@areas')->name('relatorioArea');
 	Route::get('/relatorio/areas/projetos/{id}', 'RelatorioController@areaProjetos')->name('areaProjetos');
 	Route::get('/relatorio/edicoes', 'RelatorioController@edicoes')->name('relatorioEdicao');
 	Route::get('/relatorio/funcoes/usuarios', 'RelatorioController@funcoesUsuarios')->name('relatorioFuncoesUsuarios');
+	Route::get('/relatorio/usuarios/homologados', 'RelatorioController@usuariosPosHomologacao')->name('usuariosPosHomologacao');
 	Route::get('/relatorio/voluntario/tarefa', 'RelatorioController@voluntarioTarefa')->name('relatorioVoluntarioTarefa');
 	Route::get('/relatorio/tarefa/voluntarios/{id}', 'RelatorioController@tarefaVoluntarios')->name('tarefaVoluntarios');
 	Route::get('/relatorio/projetos', 'RelatorioController@projetos')->name('relatorioProjetos');
@@ -106,6 +110,7 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/relatorio/homologadores/projeto', 'RelatorioController@homologadoresProjeto')->name('homologadoresProjeto');
 	Route::get('/relatorio/avaliadores/projeto', 'RelatorioController@avaliadoresProjeto')->name('avaliadoresProjeto');
 	Route::get('/relatorio/projetos/confirma', 'RelatorioController@projetosConfirmaramPresenca')->name('relatorioProjetosConfirma');
+	Route::get('/relatorio/gerar/localizacao/projetos', 'RelatorioController@gerarLocalizacaoProjetos')->name('gerarLocalizacaoProjetos');
 
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
 	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');

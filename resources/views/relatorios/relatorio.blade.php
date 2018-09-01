@@ -25,12 +25,12 @@
 		background-size:100% 100%;
     	background-attachment: fixed;
 	}
-	
+
 	hr {
       border: 1pt solid #000;
     }
-	
-    
+
+
 	}
 </style>
 </head>
@@ -38,9 +38,9 @@
 <div class="container">
     <div class="row" style="margin-bottom: 20mm;">
         <div id="gtm" class="container"></div>
-        
+
         @yield('content')
-        
+
 	</div>
 </div>
 
