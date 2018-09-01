@@ -51,4 +51,21 @@ class Nivel extends Model {
 
 		return $projetos;
 	}
+
+	public function getProjetos($id){
+		$subQuery = DB::table('revisao')
+			->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
+			->where('revisao.projeto_id','=',DB::raw('projeto.id'))
+			->toSql();
+
+		$projetos = Projeto::select('projeto.id', 'titulo', DB::raw('('.$subQuery.') as nota'))
+			->where('projeto.edicao_id','=',Edicao::getEdicaoId())
+			->where('projeto.nivel_id','=',$id)
+			->orderBy('nota','desc')
+			->orderBy('projeto.titulo','asc')
+			->orderBy('projeto.created_at','asc')
+			->get();
+
+		return $projetos;
+	}
 }

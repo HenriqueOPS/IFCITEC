@@ -239,43 +239,50 @@
                                 <a href="{{route('csvProjetos')}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
+						<tr>
+							<td>22</td>
+							<td>Relatório de Projetos Por Nota de Homologadores (Por Nível)</td>
+							<td class="text-right">
+								<a href="{{route('notaProjetosNivel')}}" target="_blank"><i class="material-icons">visibility</i></a>
+							</td>
+						</tr>
                         <tr>
-                            <td>22</td>
+                            <td>23</td>
                             <td>Relatório de Projetos Que Comparecerão na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioProjetosConfirma')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>23</td>
+                            <td>24</td>
                             <td>Relatório de Projetos Que Compareceram na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC</td>
                             <td class="text-right">
                                 <a href="{{route('projetosCompareceram')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>24</td>
+                            <td>25</td>
                             <td>Relatório de Usuários e suas respectivas funções</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioFuncoesUsuarios')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>25</td>
+                            <td>26</td>
                             <td>Relatório de Usuários e suas respectivas funções (Pós Homologação)</td>
                             <td class="text-right">
                                 <a href="{{route('usuariosPosHomologacao')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>26</td>
+                            <td>27</td>
                             <td>Relatório de Voluntários</td>
                             <td class="text-right">
                                 <a href="{{route('csv', 4)}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>27</td>
+                            <td>28</td>
                             <td>Relatório de Voluntários e suas respectivas tarefas</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioVoluntarioTarefa')}}" target="_blank"><i class="material-icons">visibility</i></a>

@@ -227,6 +227,14 @@ class RelatorioController extends Controller
 
 	}
 
+	public function notaProjetosNivel(){
+
+		$niveis = Edicao::find(Edicao::getEdicaoId())->niveis;
+
+		return \PDF::loadView('relatorios.notaProjetosNivel', array('niveis' => $niveis))->setPaper('A4', 'landscape')->download('nota_projetos_cadastrados.pdf');
+
+	}
+
 	public function projetosClassificados(){
 
         $areas = Edicao::find(Edicao::getEdicaoId())->areas;
