@@ -1,4 +1,4 @@
-@extends('relatorios.relatorio')
+@extends('relatorios.relatorioPaisagem')
 
 @section('content')
 <div class="container">
@@ -11,7 +11,7 @@
         	<thead>
         	<tr>
     				<th>Projeto</th>
-    				<th>Nota Final</th> 
+    				<th>Nota Final</th>
   				</tr>
         	</thead>
   			<tbody>
@@ -24,8 +24,8 @@
 
   				</tr>
           @endforeach
-  			</tbody>	
-		</table> 
+  			</tbody>
+		</table>
     <br><br>
     @endforeach
 	</div>
