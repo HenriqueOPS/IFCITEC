@@ -60,6 +60,12 @@
                                             </div>
 
                                             <div class="text-right">
+                                                @if($projeto->statusPresenca())
+                                                    <span class="label label-warning" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+                                                @else
+                                                    <span class="label label-default" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+                                                @endif
+
                                                 @if($projeto->statusHomologacao())
                                                     <span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
                                                 @else
@@ -125,6 +131,12 @@
                                                 </div>
 
                                                 <div class="text-right">
+                                                    @if($projeto->statusPresenca())
+                                                        <span class="label label-warning" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+                                                    @else
+                                                        <span class="label label-default" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+                                                    @endif
+
                                                     @if($projeto->statusHomologacao())
                                                         <span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
                                                     @else

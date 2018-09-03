@@ -21,7 +21,7 @@ class Projeto extends Model {
      * @var array
      */
     protected $fillable = [
-        'titulo', 'resumo', 'relatorio', 'situacao_id'
+        'titulo', 'resumo', 'relatorio', 'situacao_id', 'presenca'
     ];
 
     public function pessoas() {
@@ -144,6 +144,16 @@ class Projeto extends Model {
 
         return false;
 
+    }
+
+    public function statusPresenca(){
+        $projeto = Projeto::select('presenca')
+            ->where('id','=',$this->id)
+            ->get();
+        if($projeto->count() && $projeto[0]->presenca != null)
+            return true;
+
+        return false;
     }
 
     public function getTotalFuncoes($funcoes) {
