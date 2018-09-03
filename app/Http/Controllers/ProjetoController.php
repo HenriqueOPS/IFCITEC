@@ -968,12 +968,8 @@ class ProjetoController extends Controller
 
                 foreach ($projeto[0]->pessoas as $pessoa){
 
-                    //TODO: implementar o job do email
-
-                    //Prezado $pessoa->nome, seu projeto "$projeto->titulo" foi Homologado
-					$emailJob = (new MailProjetoHomologadoJob($pessoa->email, $pessoa->nome, $projeto->titulo, $projeto->id))->delay(\Carbon\Carbon::now()->addSeconds(3));
+					$emailJob = (new MailProjetoHomologadoJob($pessoa->email, $pessoa->nome, $projeto[0]->titulo, $projeto[0]->id))->delay(\Carbon\Carbon::now()->addSeconds(3));
 					dispatch($emailJob);
-
 
                 }
 
