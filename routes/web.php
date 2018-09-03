@@ -105,6 +105,15 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/relatorio/tarefa/voluntarios/{id}', 'RelatorioController@tarefaVoluntarios')->name('tarefaVoluntarios');
 	Route::get('/relatorio/projetos', 'RelatorioController@projetos')->name('relatorioProjetos');
 	Route::get('/relatorio/usuarios', 'RelatorioController@usuarios')->name('relatorioUsuarios');
+	Route::get('/relatorio/autores', 'RelatorioController@autores')->name('relatorioAutores');
+	Route::get('/relatorio/orientadores', 'RelatorioController@orientadores')->name('relatorioOrientadores');
+	Route::get('/relatorio/coorientadores', 'RelatorioController@coorientadores')->name('relatorioCoorientadores');
+	Route::get('/relatorio/voluntarios', 'RelatorioController@voluntarios')->name('relatorioVoluntarios');
+	Route::get('/relatorio/avaliadores', 'RelatorioController@avaliadores')->name('relatorioAvaliadores');
+	Route::get('/relatorio/homologadores', 'RelatorioController@homologadores')->name('relatorioHomologadores');
+	Route::get('/relatorio/autores/pos/homologacao', 'RelatorioController@autoresPosHomologacao')->name('relatorioAutoresPos');
+	Route::get('/relatorio/orientadores/pos/homologacao', 'RelatorioController@orientadoresPosHomologacao')->name('relatorioOrientadoresPos');
+	Route::get('/relatorio/coorientadores/pos/homologacao', 'RelatorioController@coorientadoresPosHomologacao')->name('relatorioCoorientadoresPos');
 	Route::get('/relatorio/homologadores/area', 'RelatorioController@homologadoresArea')->name('homologadoresArea');
 	Route::get('/relatorio/avaliadores/area', 'RelatorioController@avaliadoresArea')->name('avaliadoresArea');
 	Route::get('/relatorio/homologadores/projeto', 'RelatorioController@homologadoresProjeto')->name('homologadoresProjeto');

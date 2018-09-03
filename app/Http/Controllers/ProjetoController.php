@@ -26,6 +26,7 @@ use App\Projeto;
 use App\PalavraChave;
 use App\Revisao;
 use App\Avaliacao;
+use App\Situacao;
 
 class ProjetoController extends Controller
 {
@@ -987,10 +988,11 @@ class ProjetoController extends Controller
     }
 
     public function confirmaPresenca($id){
-    	Projeto::where('id', $id)
+    	$p = Projeto::where('id', $id)->where('situacao_id',Situacao::where('situacao', 'Homologado')->get()->first()->id)
 			->update(['presenca' => TRUE,
 			]);
-    	return view('confirmaPresenca');
+			
+    	return view('confirmaPresenca', ['p' => $p]);
     }
 
 }
