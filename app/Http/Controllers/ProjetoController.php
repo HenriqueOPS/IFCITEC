@@ -942,39 +942,60 @@ class ProjetoController extends Controller
 
     public function homologaProjetos(Request $req){
 
-	    //Quebra a string e pega o id dos projetos
-	    $IDprojetos = explode(',', $req->all()['projetos_id']);
+	    if($req->all()['projetos_id'] != '') {
 
-        //Muda o status de todos projetos da edição para Não Homologado
-        Projeto::where('edicao_id','=',Edicao::getEdicaoId())
-            ->where('situacao_id', '=', 3)
-            //Não Homologado - HARD CODED
-            ->update(['situacao_id' => 2]);
+            //Quebra a string e pega o id dos projetos
+            $IDprojetos = explode(',', $req->all()['projetos_id']);
 
-	    //Muda o status dos projetos selecionados para Homologado
-        Projeto::whereIn('id', $IDprojetos)
-            //Homologado - HARD CODED
-            ->update(['situacao_id' => 3]);
+	        //Busca o ID de todos os projetos homologados antes
+//	        $aprovadosEdicao = Projeto::select('id')
+//                ->where('edicao_id',Edicao::getEdicaoId())
+//                ->where('situacao_id', '=', 3)
+//                //Homologado - HARD CODED
+//                ->get()
+//                ->toArray();
+//
+//            $aprovadosEdicao = array_column($aprovadosEdicao, 'id');
 
-        //Dispara os emails dos projetos homologados
-        // É IMPORTANTE estar com a queue em "database" e não em "sync"
-        foreach ($IDprojetos as $IDprojeto){
 
-            $projeto = Projeto::select('id', 'titulo')
-                ->where('id', $IDprojeto)
-                ->get();
 
-            if($projeto->count()){
+            //Muda o status de todos projetos da edição para Não Homologado
+            Projeto::where('edicao_id', '=', Edicao::getEdicaoId())
+                ->where('situacao_id', '=', 3)
+                //Não Homologado - HARD CODED
+                ->update(['situacao_id' => 2]);
 
-                foreach ($projeto[0]->pessoas as $pessoa){
+            //Muda o status dos projetos selecionados para Homologado
+            Projeto::whereIn('id', $IDprojetos)
+                //Homologado - HARD CODED
+                ->update(['situacao_id' => 3]);
 
-					$emailJob = (new MailProjetoHomologadoJob($pessoa->email, $pessoa->nome, $projeto[0]->titulo, $projeto[0]->id))->delay(\Carbon\Carbon::now()->addSeconds(3));
-					dispatch($emailJob);
+            //Dispara os emails dos projetos homologados
+            // É IMPORTANTE estar com a queue em "database" e não em "sync"
+            foreach ($IDprojetos as $IDprojeto) {
+
+                $projeto = Projeto::select('id', 'titulo')
+                    ->where('id', $IDprojeto)
+                    ->get();
+
+                if ($projeto->count()) {
+
+                    foreach ($projeto[0]->pessoas as $pessoa) {
+
+                        $emailJob = (new MailProjetoHomologadoJob($pessoa->email, $pessoa->nome, $projeto[0]->titulo, $projeto[0]->id))->delay(\Carbon\Carbon::now()->addSeconds(3));
+                        dispatch($emailJob);
+
+                    }
 
                 }
 
             }
 
+        }else{
+            //Muda o status de todos projetos da edição para Não Homologado
+            Projeto::where('edicao_id', '=', Edicao::getEdicaoId())
+                //Não Homologado - HARD CODED
+                ->update(['situacao_id' => 2]);
         }
 
 	    //dd($IDprojetos);
