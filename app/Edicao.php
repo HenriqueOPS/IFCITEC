@@ -42,7 +42,7 @@ class Edicao extends Model
         if($edicao->count())
             return $edicao[0]->projetos;
 
-        return false;
+        return 0;
 
     }
 
