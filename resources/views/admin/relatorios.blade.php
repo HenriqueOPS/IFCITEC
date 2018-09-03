@@ -78,8 +78,53 @@
         <div class="col-md-12 main main-raised">
             <div class="list-projects">
                     <table class="table">
-                        <thead id="8">
-                    <div id="8">
+                    <ul class="tab-comissao nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
+                            <li>
+                                <a id="0" role="tab" class="tab" data-toggle="tab">
+                                    <i class="material-icons">description</i>
+                                    Avaliação
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a id="1" role="tab" class="tab" data-toggle="tab">
+                                    <i class="material-icons">assignment_ind</i>
+                                    Gerais
+                                </a>
+                            </li>
+                            <li>
+                                <a id="2" role="tab" class="tab" data-toggle="tab">
+                                    <i class="material-icons">description</i>
+                                    Homologação
+                                </a>
+                            </li>
+                            <li>
+                                <a id="3" role="tab" class="tab" data-toggle="tab">
+                                    <i class="material-icons">description</i>
+                                    Premiação
+                                </a>
+                            </li>
+                            <li>
+                                <a id="4" role="tab" class="tab" data-toggle="tab">
+                                    <i class="material-icons">description</i>
+                                    Projetos
+                                </a>
+                            </li>
+                            <li>
+                                <a id="5" role="tab" class="tab" data-toggle="tab">
+                                    <i class="material-icons">description</i>
+                                    Voluntários
+                                </a>
+                            </li>
+                            <li>
+                                <a id="6" role="tab" class="tab" data-toggle="tab">
+                                    <i class="material-icons">description</i>
+                                    Usuários
+                                </a>
+                            </li>
+                    </ul>
+
+                    <thead id="0">
+                    <div id="0">
                         <tr>
                             <th class="text-center">#</th>
                             <th>Relatórios</th>
@@ -88,7 +133,31 @@
                     </div>
                     </thead>
 
-                    <tbody id="8">
+                    <tbody id="0">
+                        <tr>
+                            <td>1</td>
+                            <td>Relatório de Avaliadores</td>
+                            <td class="text-right">
+                                <a href="{{route('csv', 1)}}"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Relatório de Avaliadores Por Área do Conhecimento</td>
+                            <td class="text-right">
+                                <a href="{{route('avaliadoresArea')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Relatório de Avaliadores Por Projeto</td>
+                            <td class="text-right">
+                                <a href="{{route('avaliadoresProjeto')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tbody id="1">
                         <tr>
                             <td>1</td>
                             <td>Relatório de Áreas do Conhecimento</td>
@@ -98,194 +167,234 @@
                         </tr>
                         <tr>
                             <td>2</td>
-                            <td>Relatório de Autores, Orientadores, Coorientadores, Voluntários, Homologadores e Avaliadores por Edição
-                            </td>
-                            <td class="text-right">
-                                <a href="{{route('relatorioUsuarios')}}" target="_blank"><i class="material-icons">visibility</i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Relatório de Avaliadores</td>
-                            <td class="text-right">
-                                <a href="{{route('csv', 1)}}"><i class="material-icons">arrow_downward</i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Relatório de Avaliadores Por Área do Conhecimento</td>
-                            <td class="text-right">
-                                <a href="{{route('avaliadoresArea')}}" target="_blank"><i class="material-icons">visibility</i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>Relatório de Avaliadores Por Projeto</td>
-                            <td class="text-right">
-                                <a href="{{route('avaliadoresProjeto')}}" target="_blank"><i class="material-icons">visibility</i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>Relatório de Classificação Geral dos Projetos</td>
-                            <td class="text-right">
-                                <a href="{{route('classificacaoGeral')}}" target="_blank"><i class="material-icons">visibility</i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>Relatório de Classificação Geral dos Projetos Por Área do Conhecimento</td>
-                            <td class="text-right">
-                                <a href="{{route('classificacaoProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
                             <td>Relatório de Edições</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioEdicao')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>9</td>
+                            <td>3</td>
                             <td>Relatório de Escolas</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioEscola')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>10</td>
-                            <td>Relatório de Homologadores</td>
-                            <td class="text-right">
-                                <a href="{{route('csv', 2)}}"><i class="material-icons">arrow_downward</i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>11</td>
-                            <td>Relatório de Homologadores Por Área do Conhecimento</td>
-                            <td class="text-right">
-                                <a href="{{route('homologadoresArea')}}" target="_blank"><i class="material-icons">visibility</i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>12</td>
-                            <td>Relatório de Homologadores Por Projeto</td>
-                            <td class="text-right">
-                                <a href="{{route('homologadoresProjeto')}}" target="_blank"><i class="material-icons">visibility</i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>13</td>
+                            <td>4</td>
                             <td>Relatório de Níveis</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioNivel')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>14</td>
-                            <td>Reletório de Participantes de Projetos</td>
-                            <td class="text-right">
-                                <a href="{{route('csv', 3)}}"><i class="material-icons">arrow_downward</i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>15</td>
-                            <td>Relatório de Projetos</td>
-                            <td class="text-right">
-                                <a href="{{route('relatorioProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>16</td>
-                            <td>Relatório de Projetos Classificados Para a {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} Edição (Por Área do Conhecimento)</td>
-                            <td class="text-right">
-                                <a href="{{route('projetosClassificados')}}" target="_blank"><i class="material-icons">visibility</i></a>
-                            </td>
-                        </tr>
-						<tr>
-							<td>17</td>
-							<td>Relatório de Projetos Classificados Para a {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} Edição (Por Nível)</td>
-							<td class="text-right">
-								<a href="{{route('projetosClassificadosNivel')}}" target="_blank"><i class="material-icons">visibility</i></a>
-							</td>
-						</tr>
-						<tr>
-							<td>18</td>
-							<td>Relatório de Projetos Classificados Para a {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} Edição (Sem Notas)</td>
-							<td class="text-right">
-								<a href="{{route('projetosClassificadosSemNota')}}" target="_blank"><i class="material-icons">visibility</i></a>
-							</td>
-						</tr>
-                        <tr>
-                            <td>19</td>
-                            <td>Relatório de Premiação dos Projetos</td>
-                            <td class="text-right">
-                                <a href="{{route('premiacaoProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                        <tr>
-                            <td>20</td>
-                            <td>Relatório de Projetos E Seus Status</td>
-                            <td class="text-right">
-                                <a href="{{route('statusProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>21</td>
-                            <td>Relatório de Projetos Por Nota de Homologadores</td>
-                            <td class="text-right">
-                                <a href="{{route('notaProjetosArea')}}" target="_blank"><i class="material-icons">visibility</i></a>
-                                <a href="{{route('csvProjetos')}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
-                            </td>
-                        </tr>
-						<tr>
-							<td>22</td>
-							<td>Relatório de Projetos Por Nota de Homologadores (Por Nível)</td>
-							<td class="text-right">
-								<a href="{{route('notaProjetosNivel')}}" target="_blank"><i class="material-icons">visibility</i></a>
-							</td>
-						</tr>
-                        <tr>
-                            <td>23</td>
+                            <td>5</td>
                             <td>Relatório de Projetos Que Comparecerão na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioProjetosConfirma')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>24</td>
+                            <td>6</td>
                             <td>Relatório de Projetos Que Compareceram na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC</td>
                             <td class="text-right">
                                 <a href="{{route('projetosCompareceram')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+                    </tbody>
+
+                    <tbody id="2">
                         <tr>
-                            <td>25</td>
-                            <td>Relatório de Usuários e suas respectivas funções</td>
+                            <td>1</td>
+                            <td>Relatório de Homologadores</td>
                             <td class="text-right">
-                                <a href="{{route('relatorioFuncoesUsuarios')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('csv', 2)}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>26</td>
-                            <td>Relatório de Usuários e suas respectivas funções (Pós Homologação)</td>
+                            <td>2</td>
+                            <td>Relatório de Homologadores Por Área do Conhecimento</td>
                             <td class="text-right">
-                                <a href="{{route('usuariosPosHomologacao')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('homologadoresArea')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>27</td>
+                            <td>3</td>
+                            <td>Relatório de Homologadores Por Projeto</td>
+                            <td class="text-right">
+                                <a href="{{route('homologadoresProjeto')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Relatório de Projetos Classificados Para a {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} Edição (Por Área do Conhecimento)</td>
+                            <td class="text-right">
+                                <a href="{{route('projetosClassificados')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Relatório de Projetos Classificados Para a {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} Edição (Por Nível)</td>
+                            <td class="text-right">
+                                <a href="{{route('projetosClassificadosNivel')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Relatório de Projetos Classificados Para a {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} Edição (Sem Notas)</td>
+                            <td class="text-right">
+                                <a href="{{route('projetosClassificadosSemNota')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tbody id="3">
+                        <tr>
+                            <td>1</td>
+                            <td>Relatório de Classificação Geral dos Projetos</td>
+                            <td class="text-right">
+                                <a href="{{route('classificacaoGeral')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Relatório de Classificação Geral dos Projetos Por Área do Conhecimento</td>
+                            <td class="text-right">
+                                <a href="{{route('classificacaoProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Relatório de Premiação dos Projetos</td>
+                            <td class="text-right">
+                                <a href="{{route('premiacaoProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>  
+                    </tbody>
+
+                    <tbody id="4">
+                        <tr>
+                            <td>1</td>
+                            <td>Relatório de Projetos</td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Relatório de Projetos E Seus Status</td>
+                            <td class="text-right">
+                                <a href="{{route('statusProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Relatório de Projetos Que Comparecerão na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC</td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioProjetosConfirma')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Relatório de Projetos Que Compareceram na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC</td>
+                            <td class="text-right">
+                                <a href="{{route('projetosCompareceram')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody id="5">
+                        <tr>
+                            <td>1</td>
                             <td>Relatório de Voluntários</td>
                             <td class="text-right">
                                 <a href="{{route('csv', 4)}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>28</td>
+                            <td>2</td>
                             <td>Relatório de Voluntários e suas respectivas tarefas</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioVoluntarioTarefa')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody id="6">
+                        <tr>
+                            <td>1</td>
+                            <td>Relatório de Autores
+                            </td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioAutores')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Relatório de Autores (Pós Homologação)
+                            </td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioAutoresPos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Relatório de Avaliadores
+                            </td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioAvaliadores')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Relatório de Coorientadores
+                            </td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioCoorientadores')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Relatório de Coorientadores (Pós Homologação)
+                            </td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioCoorientadoresPos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Relatório de Homologadores
+                            </td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioHomologadores')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>Relatório de Orientadores
+                            </td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioOrientadores')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>Relatório de Orientadores (Pós Homologação)
+                            </td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioOrientadoresPos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>Relatório de Voluntários
+                            </td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioVoluntarios')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>Reletório de Participantes de Projetos</td>
+                            <td class="text-right">
+                                <a href="{{route('csv', 3)}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -295,4 +404,69 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('js')
+
+<script src="{{asset('js/main.js')}}"></script>
+<script type="application/javascript">
+$(document).ready(function () {
+
+    hideBodys();
+    hideHeads();
+    $('tbody[id=0]').show();
+    $('thead[id=0]').show();
+    $('div[id=0]').show();
+    $('.tab').click(function (e) {
+        var target = $(this)[0];
+        hideBodys();
+        hideHeads();
+        $('tbody[id='+target.id+']').show();
+        $('thead[id='+target.id+']').show();
+        $('div[id='+target.id+']').show();
+    });
+});
+    function hideBodys(){
+    $('tbody[id=0]').hide();
+    $('tbody[id=1]').hide();
+    $('tbody[id=2]').hide();
+    $('tbody[id=3]').hide();
+    $('tbody[id=4]').hide();
+    $('tbody[id=5]').hide();
+    $('tbody[id=6]').hide();
+    $('tbody[id=7]').hide();
+    $('tbody[id=8]').hide();
+    $('div[id=0]').hide();
+    $('div[id=1]').hide();
+    $('div[id=2]').hide();
+    $('div[id=3]').hide();
+    $('div[id=4]').hide();
+    $('div[id=5]').hide();
+    $('div[id=6]').hide();
+    $('div[id=7]').hide();
+    $('div[id=8]').hide();
+}
+function hideHeads(){
+    $('thead[id=0]').hide();
+    $('thead[id=1]').hide();
+    $('thead[id=2]').hide();
+    $('thead[id=3]').hide();
+    $('thead[id=4]').hide();
+    $('thead[id=5]').hide();
+    $('thead[id=6]').hide();
+    $('thead[id=7]').hide();
+    $('thead[id=8]').hide();
+    $('div[id=0]').hide();
+    $('div[id=1]').hide();
+    $('div[id=2]').hide();
+    $('div[id=3]').hide();
+    $('div[id=4]').hide();
+    $('div[id=5]').hide();
+    $('div[id=6]').hide();
+    $('div[id=7]').hide();
+    $('div[id=8]').hide();
+}
+
+</script>
+
 @endsection
