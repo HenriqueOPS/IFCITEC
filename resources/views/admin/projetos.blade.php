@@ -107,6 +107,14 @@
                                         <span class="label label-default">{{$projeto->getStatus()}}</span>
                                     @endif
 
+                                    @if($projeto->getStatus() == "Homologado")
+                                        @if($projeto->statusPresenca())
+                                            <span class="label label-warning" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+                                        @else
+                                            <span class="label label-default" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+                                        @endif
+                                    @endif
+
                                     @if($projeto->getStatus() == "Não Homologado")
                                         @if($projeto->statusHomologacao())
                                             <span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
@@ -123,7 +131,7 @@
 
                                 </div>
 
-                                <a class="dados-projeto" projeto-id="{{$projeto->id}}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a class="dados-projeto" projeto-id="{{$projeto->id}}"><i class="material-icons blue-icon">pan_tool</i></a>
 
                                 @if($projeto->getStatus() == "Não Avaliado" || $projeto->getStatus() == "Homologado")
                                     <a href="{{route('vinculaAvaliador',$projeto->id)}}"><i class="material-icons">assignment_ind</i></a>
