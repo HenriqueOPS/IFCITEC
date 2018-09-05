@@ -120,6 +120,71 @@ class RelatorioController extends Controller
 		return Response::download($filename, $filename, $headers);
 	}
 
+	public function csvAutoresConfirmaramPresenca()
+	{
+		$resultados = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+						->select('pessoa.nome', 'pessoa.email')
+						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+						->where('projeto.presenca', TRUE)
+						->orderBy('pessoa.nome')
+						->distinct('pessoa.id')
+						->get();
+
+		$filename = "AutoresConfirmaramPresenca.csv";
+
+		$handle = fopen($filename, 'w+');
+		fputcsv($handle, array('Nome','Email'), ';');
+
+		foreach ($resultados as $row) {
+			$nome = utf8_decode($row->nome);
+			fputcsv($handle, array($nome,$row->email), ';');
+		}
+
+		fclose($handle);
+
+		$headers = array(
+			'Content-Type' => 'text/csv',
+		);
+
+		return Response::download($filename, $filename, $headers);
+	}
+
+	public function csvAutoresHomologados()
+	{
+		$resultados = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+						->select('pessoa.nome', 'pessoa.email')
+						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+						->orderBy('pessoa.nome')
+						->distinct('pessoa.id')
+						->get();
+
+		$filename = "AutoresHomologados.csv";
+
+		$handle = fopen($filename, 'w+');
+		fputcsv($handle, array('Nome','Email'), ';');
+
+		foreach ($resultados as $row) {
+			$nome = utf8_decode($row->nome);
+			fputcsv($handle, array($nome,$row->email), ';');
+		}
+
+		fclose($handle);
+
+		$headers = array(
+			'Content-Type' => 'text/csv',
+		);
+
+		return Response::download($filename, $filename, $headers);
+	}
+
 	public function csvCertificados()
 	{
 		$autores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
@@ -249,6 +314,13 @@ class RelatorioController extends Controller
 		return \PDF::loadView('relatorios.projetosClassificadosNivel', array('niveis' => $niveis))->setPaper('A4', 'landscape')->download('projetos_classificados_nivel.pdf');
 	}
 
+	public function projetosNaoHomologadosNivel(){
+
+		$niveis = Edicao::find(Edicao::getEdicaoId())->niveis;
+
+		return \PDF::loadView('relatorios.projetosNaoHomologadosNivel', array('niveis' => $niveis))->setPaper('A4', 'landscape')->download('projetos_nao_homologados_nivel.pdf');
+	}
+
 	public function projetosClassificadosSemNota(){
 
 		$projetos = Projeto::select('projeto.titulo', 'projeto.situacao_id')
@@ -350,9 +422,10 @@ class RelatorioController extends Controller
 		$autores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-						->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
+						->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.telefone', 'projeto.presenca')
 						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->where('projeto.presenca', TRUE)
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
 						->orderBy('pessoa.nome')
 						->distinct('pessoa.id')
@@ -369,6 +442,7 @@ class RelatorioController extends Controller
 						->select('funcao_pessoa.edicao_id', 'pessoa.nome','pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
 						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->where('projeto.presenca', TRUE)
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
 						->orderBy('pessoa.nome')
 						->distinct('pessoa.id')
@@ -384,6 +458,7 @@ class RelatorioController extends Controller
 						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 						->select('funcao_pessoa.edicao_id', 'pessoa.nome','pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
 						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+						->where('projeto.presenca', TRUE)
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
 						->orderBy('pessoa.nome')
