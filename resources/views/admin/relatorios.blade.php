@@ -79,13 +79,13 @@
             <div class="list-projects">
                     <table class="table">
                     <ul class="tab-comissao nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
-                            <li>
+                            <li class="active">
                                 <a id="0" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">description</i>
                                     Avaliação
                                 </a>
                             </li>
-                            <li class="active">
+                            <li>
                                 <a id="1" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">assignment_ind</i>
                                     Gerais
@@ -245,6 +245,13 @@
                                 <a href="{{route('projetosClassificadosSemNota')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>Relatório de Projetos Não Homologados Para a {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} Edição (Por Nível)</td>
+                            <td class="text-right">
+                                <a href="{{route('projetosNaoHomologadosNivel')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
                     </tbody>
 
                     <tbody id="3">
@@ -268,7 +275,7 @@
                             <td class="text-right">
                                 <a href="{{route('premiacaoProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
-                        </tr>  
+                        </tr>
                     </tbody>
 
                     <tbody id="4">
@@ -332,10 +339,19 @@
                             </td>
                             <td class="text-right">
                                 <a href="{{route('relatorioAutoresPos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('csvAutoresHomologados')}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>3</td>
+                            <td>Relatório de Autores Que Comparecerão na IFCITEC
+                            </td>
+                            <td class="text-right">
+                                <a href="{{route('csvAutoresConfirmaramPresenca')}}"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
                             <td>Relatório de Avaliadores
                             </td>
                             <td class="text-right">
@@ -343,7 +359,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>4</td>
+                            <td>5</td>
                             <td>Relatório de Coorientadores
                             </td>
                             <td class="text-right">
@@ -351,7 +367,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>5</td>
+                            <td>6</td>
                             <td>Relatório de Coorientadores (Pós Homologação)
                             </td>
                             <td class="text-right">
@@ -359,7 +375,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>6</td>
+                            <td>7</td>
                             <td>Relatório de Homologadores
                             </td>
                             <td class="text-right">
@@ -367,7 +383,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>7</td>
+                            <td>8</td>
                             <td>Relatório de Orientadores
                             </td>
                             <td class="text-right">
@@ -375,7 +391,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>8</td>
+                            <td>9</td>
                             <td>Relatório de Orientadores (Pós Homologação)
                             </td>
                             <td class="text-right">
@@ -383,7 +399,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>9</td>
+                            <td>10</td>
                             <td>Relatório de Voluntários
                             </td>
                             <td class="text-right">
@@ -391,7 +407,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>10</td>
+                            <td>11</td>
                             <td>Reletório de Participantes de Projetos</td>
                             <td class="text-right">
                                 <a href="{{route('csv', 3)}}"><i class="material-icons">arrow_downward</i></a>

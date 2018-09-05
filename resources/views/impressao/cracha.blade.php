@@ -62,7 +62,7 @@
 		height: 5mm;
 		font-size: 5mm;
 		overflow: hidden;
-		margin: 0;
+		margin: 0, 0, 0, 50;
 		color: #fff;
 	}
 	ul li .dados h2{

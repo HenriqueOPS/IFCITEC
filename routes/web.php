@@ -89,6 +89,8 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/csv/{id}', 'RelatorioController@csv')->name('csv');
 	Route::get('/projetos/csv', 'RelatorioController@csvCertificados')->name('csvCertificados');
 	Route::get('/pessoas/csv', 'RelatorioController@csvProjetos')->name('csvProjetos');
+	Route::get('/pessoas/csv/autores/homologados', 'RelatorioController@csvAutoresHomologados')->name('csvAutoresHomologados');
+	Route::get('/pessoas/csv/autores/confirmaram-presenca', 'RelatorioController@csvAutoresConfirmaramPresenca')->name('csvAutoresConfirmaramPresenca');
 	Route::get('/relatorio/niveis', 'RelatorioController@niveis')->name('relatorioNivel');
 	Route::get('/relatorio/projetos/classificacao/geral', 'RelatorioController@classificacaoGeral')->name('classificacaoGeral');
 	Route::get('/relatorio/projetos/compareceram', 'RelatorioController@projetosCompareceram')->name('projetosCompareceram');
@@ -100,6 +102,7 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/relatorio/projetos/classificados/area', 'RelatorioController@projetosClassificados')->name('projetosClassificados');
 	Route::get('/relatorio/projetos/classificados/nivel', 'RelatorioController@projetosClassificadosNivel')->name('projetosClassificadosNivel');
 	Route::get('/relatorio/projetos/classificados', 'RelatorioController@projetosClassificadosSemNota')->name('projetosClassificadosSemNota');
+	Route::get('/relatorio/projetos/nao-homologados/nivel', 'RelatorioController@projetosNaoHomologadosNivel')->name('projetosNaoHomologadosNivel');
 	Route::get('/relatorio/projetos/notas/homologadores', 'RelatorioController@notaProjetosArea')->name('notaProjetosArea');
 	Route::get('/relatorio/projetos/notas/homologadores/niveis', 'RelatorioController@notaProjetosNivel')->name('notaProjetosNivel');
 	Route::get('/relatorio/escolas/projetos/{id}', 'RelatorioController@escolaProjetos')->name('escolaProjetos');
