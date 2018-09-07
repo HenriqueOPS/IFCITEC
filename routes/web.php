@@ -24,7 +24,7 @@ Route::get('/version', function (){
 
 //Gera o
 Route::get('/cracha/gerar-crachas', 'CrachaController@generateCrachas');
-Route::get('/cracha/qr-code/{id}', 'CrachaController@generateQrCode');
+Route::get('/cracha/qr-code/{id}', 'CrachaController@generateQrCode')->name('qrcode');
 
 
 Route::get('/', function () {
@@ -121,6 +121,7 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/relatorio/voluntarios', 'RelatorioController@voluntarios')->name('relatorioVoluntarios');
 	Route::get('/relatorio/avaliadores', 'RelatorioController@avaliadores')->name('relatorioAvaliadores');
 	Route::get('/relatorio/homologadores', 'RelatorioController@homologadores')->name('relatorioHomologadores');
+	Route::get('/relatorio/autores/lanche', 'RelatorioController@autoresLanche')->name('relatorioAutoresLanche');
 	Route::get('/relatorio/autores/pos/homologacao', 'RelatorioController@autoresPosHomologacao')->name('relatorioAutoresPos');
 	Route::get('/relatorio/orientadores/pos/homologacao', 'RelatorioController@orientadoresPosHomologacao')->name('relatorioOrientadoresPos');
 	Route::get('/relatorio/coorientadores/pos/homologacao', 'RelatorioController@coorientadoresPosHomologacao')->name('relatorioCoorientadoresPos');
@@ -130,6 +131,7 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/relatorio/avaliadores/projeto', 'RelatorioController@avaliadoresProjeto')->name('avaliadoresProjeto');
 	Route::get('/relatorio/projetos/confirma', 'RelatorioController@projetosConfirmaramPresenca')->name('relatorioProjetosConfirma');
 	Route::get('/relatorio/gerar/localizacao/projetos', 'RelatorioController@gerarLocalizacaoProjetos')->name('gerarLocalizacaoProjetos');
+	Route::get('/relatorio/gera/localizacao/projetos', 'RelatorioController@geraLocalizacaoProjetos')->name('geraLocalizacaoProjetos');
 
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
 	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');

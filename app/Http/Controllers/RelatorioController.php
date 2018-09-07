@@ -418,6 +418,26 @@ class RelatorioController extends Controller
 		return \PDF::loadView('relatorios.avaliadores', array('avaliadores' => $avaliadores, 'cont' => $cont))->download('avaliadores.pdf');
 	}
 
+	public function autoresLanche(){
+		$autores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+			->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+			->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.telefone', 'projeto.presenca')
+			->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+			->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+			->where('projeto.presenca', TRUE)
+			->where('escola.nome_curto', '!=' , 'IFRS Canoas')
+			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+			->orderBy('pessoa.nome')
+			->distinct('pessoa.id')
+			->get();
+
+		$cont = 0;
+
+		return \PDF::loadView('relatorios.autoresLanche', array('autores' => $autores, 'cont' => $cont))->download('autores_lanche.pdf');
+	}
+
 	public function autoresPosHomologacao(){
 		$autores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
@@ -730,7 +750,12 @@ class RelatorioController extends Controller
 		return view('admin.gerarLocalizacaoProjetos');
 	}
 
-	public function geraLocalizacaoProjetos(Request $request){
+	public function geraLocalizacaoProjetos(){
+
+		return \PDF::loadView('relatorios.geraLocalizacaoProjetos')->setPaper('A4', 'landscape')->download('projetos_localizacao.pdf');
+	}
+
+	public function geraLocalizacaoProjetoss(Request $request){
 		$data = $req->all();
 
 		$de = $data['de'];

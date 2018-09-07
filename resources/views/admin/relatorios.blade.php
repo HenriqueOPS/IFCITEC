@@ -333,8 +333,16 @@
                                 <a href="{{route('relatorioAutores')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+						<tr>
+							<td>2</td>
+							<td>Relatório de Autores (Lanche)
+							</td>
+							<td class="text-right">
+								<a href="{{route('relatorioAutoresLanche')}}" target="_blank"><i class="material-icons">visibility</i></a>
+							</td>
+						</tr>
                         <tr>
-                            <td>2</td>
+                            <td>3</td>
                             <td>Relatório de Autores (Pós Homologação)
                             </td>
                             <td class="text-right">
@@ -343,7 +351,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>3</td>
+                            <td>4</td>
                             <td>Relatório de Autores Que Comparecerão na IFCITEC
                             </td>
                             <td class="text-right">
@@ -351,7 +359,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>4</td>
+                            <td>5</td>
                             <td>Relatório de Avaliadores
                             </td>
                             <td class="text-right">
@@ -359,7 +367,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>5</td>
+                            <td>6</td>
                             <td>Relatório de Coorientadores
                             </td>
                             <td class="text-right">
@@ -367,7 +375,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>6</td>
+                            <td>7</td>
                             <td>Relatório de Coorientadores (Pós Homologação)
                             </td>
                             <td class="text-right">
@@ -375,7 +383,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>7</td>
+                            <td>8</td>
                             <td>Relatório de Homologadores
                             </td>
                             <td class="text-right">
@@ -383,7 +391,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>8</td>
+                            <td>9</td>
                             <td>Relatório de Orientadores
                             </td>
                             <td class="text-right">
@@ -391,7 +399,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>9</td>
+                            <td>10</td>
                             <td>Relatório de Orientadores (Pós Homologação)
                             </td>
                             <td class="text-right">
@@ -399,7 +407,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>10</td>
+                            <td>11</td>
                             <td>Relatório de Voluntários
                             </td>
                             <td class="text-right">
@@ -407,7 +415,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>11</td>
+                            <td>12</td>
                             <td>Reletório de Participantes de Projetos</td>
                             <td class="text-right">
                                 <a href="{{route('csv', 3)}}"><i class="material-icons">arrow_downward</i></a>

@@ -15,6 +15,17 @@ class CrachaController extends Controller
 				->svg();
 	}
 
+	public function generateCrachas(){
+		$pessoas = Pessoa::all();
+
+		return view('impressao.cracha', compact('pessoas'));
+
+		//return \PDF::loadView('impressao.cracha', compact('pessoas'))
+			// Se quiser que fique no formato a4 retrato: ->setPaper('a4', 'landscape')
+			//->stream('crachas.pdf');
+
+	}
+
 	public function generateCrachasAutores(){
 		$pessoas = Pessoa::all();
 
