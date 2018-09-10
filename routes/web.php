@@ -21,9 +21,12 @@ Route::get('/version', function (){
 
 
 //Gera os crachás
-
-//Gera o
-Route::get('/cracha/gerar-crachas', 'CrachaController@generateCrachas');
+Route::get('/cracha/gerar-crachas/autores', 'CrachaController@generateCrachasAutores')->name('generateCrachasAutores');
+Route::get('/cracha/gerar-crachas/coorientadores', 'CrachaController@generateCrachasCoorientadores')->name('generateCrachasCoorientadores');
+Route::get('/cracha/gerar-crachas/comissao-avaliadora', 'CrachaController@generateCrachasComissaoAvaliadora')->name('generateCrachasComissaoAvaliadora');
+Route::get('/cracha/gerar-crachas/comissao-organizadora', 'CrachaController@generateCrachasComissaoOrganizadora')->name('generateCrachasComissaoOrganizadora');
+Route::get('/cracha/gerar-crachas/orientadores', 'CrachaController@generateCrachasOrientadores')->name('generateCrachasOrientadores');
+Route::get('/cracha/gerar-crachas/voluntarios', 'CrachaController@generateCrachasVoluntarios')->name('generateCrachasVoluntarios');
 Route::get('/cracha/qr-code/{id}', 'CrachaController@generateQrCode')->name('qrcode');
 
 
@@ -131,7 +134,7 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/relatorio/avaliadores/projeto', 'RelatorioController@avaliadoresProjeto')->name('avaliadoresProjeto');
 	Route::get('/relatorio/projetos/confirma', 'RelatorioController@projetosConfirmaramPresenca')->name('relatorioProjetosConfirma');
 	Route::get('/relatorio/gerar/localizacao/projetos', 'RelatorioController@gerarLocalizacaoProjetos')->name('gerarLocalizacaoProjetos');
-	Route::get('/relatorio/gera/localizacao/projetos', 'RelatorioController@geraLocalizacaoProjetos')->name('geraLocalizacaoProjetos');
+	Route::post('/relatorio/gera/localizacao/projetos', 'RelatorioController@geraLocalizacaoProjetos')->name('geraLocalizacaoProjetos');
 
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
 	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');

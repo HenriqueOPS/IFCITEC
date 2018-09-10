@@ -746,41 +746,97 @@ class RelatorioController extends Controller
 	}
 
 	public function gerarLocalizacaoProjetos(){
-
-		return view('admin.gerarLocalizacaoProjetos');
+		$niveis = DB::table('nivel_edicao')
+			->select(['nivel.id','nivel','min_ch','max_ch','palavras'])
+			->where('edicao_id', '=',Edicao::getEdicaoId())
+			->join('nivel','nivel_edicao.nivel_id','=','nivel.id')
+			->get();
+			
+		return view('admin.gerarLocalizacaoProjetos')->withNiveis($niveis);
 	}
 
-	public function geraLocalizacaoProjetos(){
+	public function geraLocalizacaoProjetos(Request $req){
+		$data = $req->all();
+		$ids = null;
+		$cont = 0;
+		foreach ($data['bloco'] as $key => $bloco) {
+			$numeroSalas = ($data['ate'][$key] - $data['de'][$key]) + 1;
+			$numeroProjetos = $data['num'][$key];
 
-		return \PDF::loadView('relatorios.geraLocalizacaoProjetos')->setPaper('A4', 'landscape')->download('projetos_localizacao.pdf');
+			for ($i = $data['de'][$key]; $i <= $data['ate'][$key]; $i++) {
+			if($cont == 0){
+					$projetos[$bloco][$i] = DB::table('projeto')
+						->select('projeto.id', 'projeto.titulo', 'area_conhecimento.area_conhecimento', 'nivel.nivel')
+						->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
+						->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
+						->where('projeto.edicao_id',Edicao::getEdicaoId())
+						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+						->where('projeto.presenca', TRUE)
+						->where('nivel.id', $data['nivel'][$key])
+						->orderBy('area_conhecimento.area_conhecimento')
+						->orderBy('nivel.nivel')
+						->orderBy('projeto.titulo')
+						->limit($numeroProjetos)
+						->get()
+						->toArray();
+
+				$id = DB::table('projeto')
+					->select('projeto.id')
+					->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
+					->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
+					->where('projeto.edicao_id',Edicao::getEdicaoId())
+					->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+					->where('projeto.presenca', TRUE)
+					->where('nivel.id', $data['nivel'][$key])
+					->limit($numeroProjetos)
+					->get()
+					->keyBy('id')
+					->toArray();
+					$cont++;
+					$ids = array_keys($id);
+			}
+			else{
+				$projetos[$bloco][$i] = DB::table('projeto')
+						->select('projeto.id', 'projeto.titulo', 'area_conhecimento.area_conhecimento', 'nivel.nivel')
+						->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
+						->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
+						->where('projeto.edicao_id',Edicao::getEdicaoId())
+						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+						->where('projeto.presenca', TRUE)
+						->whereNotIn('projeto.id', $ids)
+						->where('nivel.id', $data['nivel'][$key])
+						->orderBy('area_conhecimento.area_conhecimento')
+						->orderBy('nivel.nivel')
+						->orderBy('projeto.titulo')
+						->limit($numeroProjetos)
+						->get()
+						->toArray();
+
+						$id = DB::table('projeto')
+							->select('projeto.id')
+							->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
+							->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
+							->where('projeto.edicao_id',Edicao::getEdicaoId())
+							->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+							->where('projeto.presenca', TRUE)
+							->whereNotIn('projeto.id', $ids)
+							->where('nivel.id', $data['nivel'][$key])
+							->limit($numeroProjetos)
+							->get()
+							->keyBy('id')
+							->toArray();
+							$cont++;
+						$ids = array_merge($ids,array_keys($id));
+			}
+			}
+		}
+		$cont = 1;
+		return \PDF::loadView('relatorios.geraLocalizacaoProjetos',array('projetos' => $projetos, 'cont' => $cont))->setPaper('A4', 'landscape')->download('projetos_localizacao.pdf');
 	}
 
 	public function geraLocalizacaoProjetoss(Request $request){
-		$data = $req->all();
-
-		$de = $data['de'];
-		$ate = $data['ate'];
-
-		$numeroSalas = ($ate - $de) + 1;
-		$numeroProjetos = $data['num'];
-
-		for ($i = $de; $i <= $ate; $i++) {
-			$projetos[$i] = DB::table('projeto')
-				->select('projeto.id', 'projeto.titulo')
-				->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
-				->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
-				->where('projeto.edicao_id',Edicao::getEdicaoId())
-				->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
-				->where('projeto.presenca', TRUE)
-				->orderBy('area_conhecimento.area_conhecimento')
-				->orderBy('nivel.nivel')
-				->orderBy('projeto.titulo')
-				->limit($numeroProjetos)
-				->get()
-				->toArray();
-		}
-
-		return \PDF::loadView('relatorios.identificacaoProjetos', array('projetos' => $projetos))->setPaper('A4', 'landscape')->download('projetos_identificacao.pdf');
+		return \PDF::loadView('relatorios.geraLocalizacaoProjetos')->setPaper('A4', 'landscape')
+		->download('projetos_localizacao.pdf');
 	}
 
 }
