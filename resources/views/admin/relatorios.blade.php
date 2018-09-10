@@ -88,35 +88,41 @@
                             <li>
                                 <a id="1" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">assignment_ind</i>
-                                    Gerais
+                                    Crachás
                                 </a>
                             </li>
                             <li>
                                 <a id="2" role="tab" class="tab" data-toggle="tab">
-                                    <i class="material-icons">description</i>
-                                    Homologação
+                                    <i class="material-icons">assignment_ind</i>
+                                    Gerais
                                 </a>
                             </li>
                             <li>
                                 <a id="3" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">description</i>
-                                    Premiação
+                                    Homologação
                                 </a>
                             </li>
                             <li>
                                 <a id="4" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">description</i>
-                                    Projetos
+                                    Premiação
                                 </a>
                             </li>
                             <li>
                                 <a id="5" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">description</i>
-                                    Voluntários
+                                    Projetos
                                 </a>
                             </li>
                             <li>
                                 <a id="6" role="tab" class="tab" data-toggle="tab">
+                                    <i class="material-icons">description</i>
+                                    Voluntários
+                                </a>
+                            </li>
+                            <li>
+                                <a id="7" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">description</i>
                                     Usuários
                                 </a>
@@ -158,6 +164,51 @@
                     </tbody>
 
                     <tbody id="1">
+                        <tr>
+                            <td>1</td>
+                            <td>Crachás Autores</td>
+                            <td class="text-right">
+                                <a href="{{route('generateCrachasAutores')}}"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Crachás Coorientadores</td>
+                            <td class="text-right">
+                                <a href="{{route('generateCrachasCoorientadores')}}"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Crachás Comissão Avaliadora</td>
+                            <td class="text-right">
+                                <a href="{{route('generateCrachasComissaoAvaliadora')}}"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Crachás Comissão Organizadora</td>
+                            <td class="text-right">
+                                <a href="{{route('generateCrachasComissaoOrganizadora')}}"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>  
+                        <tr>
+                            <td>5</td>
+                            <td>Crachás Orientadores</td>
+                            <td class="text-right">
+                                <a href="{{route('generateCrachasOrientadores')}}"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Crachás Voluntários</td>
+                            <td class="text-right">
+                                <a href="{{route('generateCrachasVoluntarios')}}"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tbody id="2">
                         <tr>
                             <td>1</td>
                             <td>Relatório de Áreas do Conhecimento</td>
@@ -202,7 +253,7 @@
                         </tr>
                     </tbody>
 
-                    <tbody id="2">
+                    <tbody id="3">
                         <tr>
                             <td>1</td>
                             <td>Relatório de Homologadores</td>
@@ -254,7 +305,7 @@
                         </tr>
                     </tbody>
 
-                    <tbody id="3">
+                    <tbody id="4">
                         <tr>
                             <td>1</td>
                             <td>Relatório de Classificação Geral dos Projetos</td>
@@ -278,37 +329,44 @@
                         </tr>
                     </tbody>
 
-                    <tbody id="4">
+                    <tbody id="5">
                         <tr>
                             <td>1</td>
+                            <td>Gerar Localização dos Projetos</td>
+                            <td class="text-right">
+                                <a href="{{route('gerarLocalizacaoProjetos')}}"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
                             <td>Relatório de Projetos</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>2</td>
+                            <td>3</td>
                             <td>Relatório de Projetos E Seus Status</td>
                             <td class="text-right">
                                 <a href="{{route('statusProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>3</td>
+                            <td>4</td>
                             <td>Relatório de Projetos Que Comparecerão na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioProjetosConfirma')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>4</td>
+                            <td>5</td>
                             <td>Relatório de Projetos Que Compareceram na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC</td>
                             <td class="text-right">
                                 <a href="{{route('projetosCompareceram')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>
-                    <tbody id="5">
+                    <tbody id="6">
                         <tr>
                             <td>1</td>
                             <td>Relatório de Voluntários</td>
@@ -324,7 +382,7 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tbody id="6">
+                    <tbody id="7">
                         <tr>
                             <td>1</td>
                             <td>Relatório de Autores

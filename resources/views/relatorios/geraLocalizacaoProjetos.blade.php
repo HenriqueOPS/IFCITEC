@@ -28,14 +28,26 @@
 </style>
 </head>
 <body>
+@foreach($projetos as $bloco => $proj)
+@foreach($proj as $sala => $p)
+@foreach($p as $projeto)
 <div class="container">
     <div class="row" style="margin-bottom: 20mm;">
-        <div id="gtm" class="container"></div>
+    	<h2 class="bloco">{{$bloco}}{{$sala}}</h2>
+
+        <div class="dados">
+        		<h1>{{$cont++}}</h1>
+				<h2>{{$projeto->titulo}}</h2>
+				<h2>Escola</h2>
+				<h3>{{$projeto->area_conhecimento}}</h3>
+				<h3>{{$projeto->nivel}}</h3>
+		</div>
         
-        
-        
+    
 	</div>
 </div>
-
+@endforeach
+@endforeach
+@endforeach
 </body>
 </html>

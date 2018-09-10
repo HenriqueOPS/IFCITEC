@@ -18,9 +18,24 @@
 
             <div class="list-projects">
 
-                <div>
+                <div id="1">
                     <h5><b>Número de projetos: {{$numeroProjetos}} </b></h5>
                 </div>
+				<div id="2">
+					<h5><b>Número de projetos: {{\App\Situacao::find(\App\Situacao::where('situacao', 'Cadastrado')->get()->first()->id)->getNumProjetos(\App\Situacao::where('situacao', 'Cadastrado')->get()->first()->id)}} </b></h5>
+				</div>
+				<div id="3">
+					<h5><b>Número de projetos: {{\App\Situacao::find(\App\Situacao::where('situacao', 'Não Homologado')->get()->first()->id)->getNumProjetos(\App\Situacao::where('situacao', 'Não Homologado')->get()->first()->id)}} </b></h5>
+				</div>
+				<div id="4">
+					<h5><b>Número de projetos: {{\App\Situacao::find(\App\Situacao::where('situacao', 'Homologado')->get()->first()->id)->getNumProjetos(\App\Situacao::where('situacao', 'Homologado')->get()->first()->id)}} </b></h5>
+				</div>
+				<div id="5">
+					<h5><b>Número de projetos: {{\App\Situacao::find(\App\Situacao::where('situacao', 'Não Avaliado')->get()->first()->id)->getNumProjetos(\App\Situacao::where('situacao', 'Não Avaliado')->get()->first()->id)}} </b></h5>
+				</div>
+				<div id="6">
+					<h5><b>Número de projetos: {{\App\Situacao::find(\App\Situacao::where('situacao', 'Avaliado')->get()->first()->id)->getNumProjetos(\App\Situacao::where('situacao', 'Avaliado')->get()->first()->id)}} </b></h5>
+				</div>
 
                 <div>
                     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
@@ -291,6 +306,7 @@ $(document).ready(function () {
         }else{
             hideAll();
             $('div.project.situacao-'+target.id).show();
+			$('div[id='+target.id+']').show();
         }
     });
 });
@@ -302,6 +318,13 @@ function hideAll(){
     $('div.project.situacao-4').hide();
     $('div.project.situacao-5').hide();
     $('div.project.situacao-6').hide();
+	$('div[id=1]').hide();
+	$('div[id=2]').hide();
+	$('div[id=3]').hide();
+	$('div[id=4]').hide();
+	$('div[id=5]').hide();
+	$('div[id=6]').hide();
+
 }
 
 function showAll(){
@@ -311,6 +334,7 @@ function showAll(){
     $('div.project.situacao-4').show();
     $('div.project.situacao-5').show();
     $('div.project.situacao-6').show();
+
 }
 
 </script>
