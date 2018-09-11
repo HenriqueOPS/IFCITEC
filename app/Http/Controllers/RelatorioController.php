@@ -835,8 +835,8 @@ class RelatorioController extends Controller
 	}
 
 	public function geraLocalizacaoProjetoss(Request $request){
-		return \PDF::loadView('relatorios.geraLocalizacaoProjetos')->setPaper('A4', 'landscape')
-		->download('projetos_localizacao.pdf');
+		return \PDF::loadView('relatorios.identificacaoProjetos')->setPaper('A4', 'landscape')
+		->stream('projetos_localizacao.pdf');
 	}
 
 }

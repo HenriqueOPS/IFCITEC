@@ -8,6 +8,8 @@
 	@media all {
 	@page{
 		margin: 2mm;
+		width: 200mm;
+		height: 290mm;
 	}
 	*{
 		margin:0;
@@ -98,7 +100,7 @@
 
 	ul li .qrcode{
 		width: 30mm;
-		margin-top: 5mm;
+		margin-top: 10mm;
 		margin-left: 42mm;
 	}
 

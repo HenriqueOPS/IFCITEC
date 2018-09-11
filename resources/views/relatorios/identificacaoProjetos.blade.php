@@ -1,6 +1,7 @@
 <html lang="pt-br">
 <head>
 	<meta charset="utf-8">
+	<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 <style>
 	@media all {
 	@page{
@@ -23,31 +24,44 @@
 		background-size:100% 100%;
     	background-attachment: fixed;
 	}
+
+	ul li h2.bloco{
+		margin-left: 134mm;
+		font-size: 6mm;
+		border: 1px solid #FF0000;
+		border-radius:50px;
+		width:100px;
+		height:100px;
+		background-color: #FF0000;
+		line-height:50px;    
+		box-shadow: 2px 2px 5px #FF0000;
+		color: #FFF;
+		text-align: center;
+	}
+
+	ul li div.dados{
+		text-align: center;
+	}
     
 	}
 </style>
 </head>
 <body>
-@foreach($projetos as $bloco => $proj)
-@foreach($proj as $sala => $p)
-@foreach($p as $projeto)
-<div class="container">
-    <div class="row" style="margin-bottom: 20mm;">
-    	<h2 class="bloco">{{$bloco}}{{$sala}}</h2>
+<ul>
+    <li>
+    	<div class="content">
+	    	<h2 class="bloco">B12</h2>
 
-        <div class="dados">
-        		<h1>{{$cont++}}</h1>
-				<h2>{{$projeto->titulo}}</h2>
-				<h2>Escola</h2>
-				<h3>{{$projeto->area_conhecimento}}</h3>
-				<h3>{{$projeto->nivel}}</h3>
-		</div>
-        
+	        <div class="dados">
+	        		<h1 style="margin-top: 10mm;">1</h1>
+					<h1 style="margin-top: 10mm;">Titulo</h1>
+					<p style="margin-top: 10mm;">Escola</p>
+					<p style="margin-top: 5mm;">area</p>
+					<p style="margin-top: 5mm;">nivel</p>
+			</div>
+        </div>
     
-	</div>
-</div>
-@endforeach
-@endforeach
-@endforeach
+	</li>
+</ul>
 </body>
 </html>
