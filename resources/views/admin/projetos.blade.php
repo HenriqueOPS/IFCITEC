@@ -17,25 +17,7 @@
             </div>
 
             <div class="list-projects">
-
-                <div id="1">
-                    <h5><b>Número de projetos: {{$numeroProjetos}} </b></h5>
-                </div>
-				<div id="2">
-					<h5><b>Número de projetos: {{\App\Situacao::find(\App\Situacao::where('situacao', 'Cadastrado')->get()->first()->id)->getNumProjetos(\App\Situacao::where('situacao', 'Cadastrado')->get()->first()->id)}} </b></h5>
-				</div>
-				<div id="3">
-					<h5><b>Número de projetos: {{\App\Situacao::find(\App\Situacao::where('situacao', 'Não Homologado')->get()->first()->id)->getNumProjetos(\App\Situacao::where('situacao', 'Não Homologado')->get()->first()->id)}} </b></h5>
-				</div>
-				<div id="4">
-					<h5><b>Número de projetos: {{\App\Situacao::find(\App\Situacao::where('situacao', 'Homologado')->get()->first()->id)->getNumProjetos(\App\Situacao::where('situacao', 'Homologado')->get()->first()->id)}} </b></h5>
-				</div>
-				<div id="5">
-					<h5><b>Número de projetos: {{\App\Situacao::find(\App\Situacao::where('situacao', 'Não Avaliado')->get()->first()->id)->getNumProjetos(\App\Situacao::where('situacao', 'Não Avaliado')->get()->first()->id)}} </b></h5>
-				</div>
-				<div id="6">
-					<h5><b>Número de projetos: {{\App\Situacao::find(\App\Situacao::where('situacao', 'Avaliado')->get()->first()->id)->getNumProjetos(\App\Situacao::where('situacao', 'Avaliado')->get()->first()->id)}} </b></h5>
-				</div>
+                <h5><b>Número de projetos: <span id="nProjetos">{{$numeroProjetos}}</span> </b></h5>
 
                 <div>
                     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
@@ -308,7 +290,12 @@ $(document).ready(function () {
             $('div.project.situacao-'+target.id).show();
 			$('div[id='+target.id+']').show();
         }
+
+        $("#nProjetos").html($('div.project.situacao-'+target.id).length);
+
+
     });
+
 });
 
 function hideAll(){
@@ -334,7 +321,6 @@ function showAll(){
     $('div.project.situacao-4').show();
     $('div.project.situacao-5').show();
     $('div.project.situacao-6').show();
-
 }
 
 </script>

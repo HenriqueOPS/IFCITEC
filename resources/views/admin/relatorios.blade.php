@@ -168,42 +168,42 @@
                             <td>1</td>
                             <td>Crachás Autores</td>
                             <td class="text-right">
-                                <a href="{{route('generateCrachasAutores')}}"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('generateCrachasAutores')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>Crachás Coorientadores</td>
                             <td class="text-right">
-                                <a href="{{route('generateCrachasCoorientadores')}}"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('generateCrachasCoorientadores')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td>Crachás Comissão Avaliadora</td>
                             <td class="text-right">
-                                <a href="{{route('generateCrachasComissaoAvaliadora')}}"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('generateCrachasComissaoAvaliadora')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>4</td>
                             <td>Crachás Comissão Organizadora</td>
                             <td class="text-right">
-                                <a href="{{route('generateCrachasComissaoOrganizadora')}}"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('generateCrachasComissaoOrganizadora')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>  
                         <tr>
                             <td>5</td>
                             <td>Crachás Orientadores</td>
                             <td class="text-right">
-                                <a href="{{route('generateCrachasOrientadores')}}"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('generateCrachasOrientadores')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>6</td>
                             <td>Crachás Voluntários</td>
                             <td class="text-right">
-                                <a href="{{route('generateCrachasVoluntarios')}}"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('generateCrachasVoluntarios')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>

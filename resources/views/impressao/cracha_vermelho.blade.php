@@ -8,6 +8,8 @@
 	@media all {
 	@page{
 		margin: 2mm;
+		width: 200mm;
+		height: 290mm;
 	}
 	*{
 		margin:0;
@@ -16,6 +18,7 @@
 		-webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
 		color-adjust: exact !important;                 /*Firefox*/
 	}
+	
 	body{font-family: "Roboto", "Helvetica", "Arial", sans-serif;}
 	ul{
 		list-style-type: none;
@@ -98,7 +101,7 @@
 
 	ul li .qrcode{
 		width: 30mm;
-		margin-top: 5mm;
+		margin-top: 10mm;
 		margin-left: 42mm;
 	}
 
