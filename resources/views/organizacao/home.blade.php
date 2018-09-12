@@ -22,11 +22,11 @@
                         </a>
                     </li>
                     <li>
-                        <a href="dashboard" id="1" class="tab" role="tab" data-toggle="tab">
-                            <i class="material-icons">list_alt</i>
-                            Listar Projetos
-                        </a>
-                    </li>
+                    <a href="{{route('organizador.projetos')}}">
+                        <i class="material-icons">list_alt</i>
+                        Listar Projetos
+                    </a>
+                </li>
                 </ul>
             </div>
         </div>

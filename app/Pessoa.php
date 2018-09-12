@@ -269,10 +269,12 @@ class Pessoa extends Authenticatable {
     }
 
     public function temTrabalho(){
+        //VERRRR
         $total = DB::table('escola_funcao_pessoa_projeto')
             ->select('escola_funcao_pessoa_projeto.projeto_id')
             ->join('projeto','escola_funcao_pessoa_projeto.projeto_id','=','projeto.id')
             ->where('escola_funcao_pessoa_projeto.pessoa_id','=',$this->id)
+            ->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
             ->get();
 
         if($total->count()){

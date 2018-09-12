@@ -30,7 +30,7 @@
 	}
 	ul li{
 		width: 80mm;
-		height: 40mm;
+		height: 30mm;
 		padding: 1mm;
 		border: 1pt solid #000;
 		background: url("{{ asset('img/lanche.png') }}");
@@ -49,29 +49,17 @@
 		background: none;
 		border: 0;
 	}
-	ul li.line-wrap-4{
-		width: 100%;
-		height: calc(21mm);
-		display: block;
-		background: none;
-		border: 0;
-	}
-	ul li .content{
-		width: 100%;
-		margin-top: 0mm;
-	}
 	}
 </style>
 </head>
 <body>
+@for ($i = 1; $i <= 10; $i++)
 <ul>
+	
 	<li>
-		<div class="content">
-
-
-		</div>
+		
 	</li>
 </ul>
-
+@endfor
 </body>
 </html>
