@@ -25,12 +25,12 @@ class CrachaController extends Controller
 						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 						->select('pessoa.nome', 'pessoa.id')
-						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+						//->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
-						->where('projeto.presenca', TRUE)
-						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+						//->where('projeto.presenca', TRUE)
+						//->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
 						->orderBy('pessoa.nome')
-						->distinct('pessoa.id')
+						//->distinct('pessoa.id')
 						->get();
 		$funcao = 'Autor';
 		return Response::view('impressao.cracha_verde', compact('pessoas', 'funcao'));

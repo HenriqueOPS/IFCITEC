@@ -135,7 +135,7 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/relatorio/projetos/confirma', 'RelatorioController@projetosConfirmaramPresenca')->name('relatorioProjetosConfirma');
 	Route::get('/relatorio/gerar/localizacao/projetos', 'RelatorioController@gerarLocalizacaoProjetos')->name('gerarLocalizacaoProjetos');
 	Route::post('/relatorio/gera/localizacao/projetos', 'RelatorioController@geraLocalizacaoProjetos')->name('geraLocalizacaoProjetos');
-	Route::get('/relatorio/geraa', 'RelatorioController@geraLocalizacaoProjetoss');
+	Route::get('/relatorio/vale-lanche', 'RelatorioController@valeLanche')->name('valeLanche');
 
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
 	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');
