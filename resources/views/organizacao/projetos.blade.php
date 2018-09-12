@@ -12,7 +12,7 @@
         <div class="col-md-12 main main-raised">
 
             <div class="col-md-12 text-center">
-                <h2>Painel administrativo</h2>
+                <h2>Comissão Organizadora</h2>
                 <h3>Projetos</h3>
             </div>
 
@@ -295,7 +295,7 @@ $(document).ready(function () {
             $("#nProjetos").html($('div.project.situacao-'+target.id).length);
             hideAll();
             $('div.project.situacao-'+target.id).show();
-			$('div[id='+target.id+']').show();
+            $('div[id='+target.id+']').show();
         }
 
         
@@ -313,12 +313,12 @@ function hideAll(){
     $('div.project.situacao-4').hide();
     $('div.project.situacao-5').hide();
     $('div.project.situacao-6').hide();
-	$('div[id=1]').hide();
-	$('div[id=2]').hide();
-	$('div[id=3]').hide();
-	$('div[id=4]').hide();
-	$('div[id=5]').hide();
-	$('div[id=6]').hide();
+    $('div[id=1]').hide();
+    $('div[id=2]').hide();
+    $('div[id=3]').hide();
+    $('div[id=4]').hide();
+    $('div[id=5]').hide();
+    $('div[id=6]').hide();
 
 }
 
@@ -334,4 +334,3 @@ function showAll(){
 </script>
 
 @endsection
-

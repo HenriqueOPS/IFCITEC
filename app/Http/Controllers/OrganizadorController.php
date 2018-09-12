@@ -133,5 +133,60 @@ class OrganizadorController extends Controller
         return (collect($projetosAgrupados));
     }
 
+    public function projetos() {
+
+        $projetos = Projeto::select('titulo', 'id', 'situacao_id')
+            ->orderBy('titulo')
+            ->where('edicao_id', Edicao::getEdicaoId())
+            ->get()
+            ->keyBy('id');
+
+        $numeroProjetos = count($projetos);
+        $autores = array();
+        $orientadores = array();
+        $coorientadores = array();
+
+        //Participantes dos projetos
+        if ($projetos) {
+            $idAutor = Funcao::where('funcao', 'Autor')->first();
+            $idOrientador = Funcao::where('funcao', 'Orientador')->first();
+            $idCoorientador = Funcao::where('funcao', 'Coorientador')->first();
+
+            $arrayIDs = $projetos;
+            $ids = array_keys($arrayIDs->toArray());
+
+            $autores = DB::table('escola_funcao_pessoa_projeto')
+                ->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+                ->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
+                ->whereIn('projeto_id', $ids)
+                ->where('funcao_id', $idAutor->id)
+                ->get()
+                ->toArray();
+
+            $orientadores = DB::table('escola_funcao_pessoa_projeto')
+                ->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+                ->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
+                ->whereIn('projeto_id', $ids)
+                ->where('funcao_id', $idOrientador->id)
+                ->get()
+                ->toArray();
+
+            $coorientadores = DB::table('escola_funcao_pessoa_projeto')
+                ->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+                ->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
+                ->whereIn('projeto_id', $ids)->where('funcao_id', $idCoorientador->id)
+                ->get()
+                ->toArray();
+        }
+
+        return view('organizacao.projetos', collect([
+            'autores' => $autores,
+            'orientadores' => $orientadores,
+            'coorientadores' => $coorientadores,
+            'numeroProjetos' => $numeroProjetos
+        ]))->withProjetos($projetos);
+
+    }
+
 
 }

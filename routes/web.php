@@ -228,6 +228,7 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
     Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')->name('vinculaAvaliadorPost');
 
     Route::get('/projeto/{id}/status/', 'ProjetoController@statusProjeto')->name('statusProjeto'); //Ajax
+    Route::get('/organizador/projetos', 'OrganizadorController@projetos')->name('organizador.projetos');
 
 });
 
