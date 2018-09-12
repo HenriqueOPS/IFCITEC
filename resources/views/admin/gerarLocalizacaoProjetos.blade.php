@@ -70,7 +70,8 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 col-md-offset-3 text-center">
-                                <button class="btn btn-primary">Gerar</button>
+                                <button name="button" value="1" class="btn btn-primary">Gerar Identificação</button>
+                                <button name="button" value="2" class="btn btn-primary">Gerar Localização</button>
 
                             </div>
                         </div>

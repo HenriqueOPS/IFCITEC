@@ -6,6 +6,9 @@
 
 	@import "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700";
 	@media all {
+	div { float: none !important; position: static !important; display: inline; 
+          box-sizing: content-box !important;
+    }
 	@page{
 		margin: 2mm;
 		width: 200mm;
@@ -51,14 +54,13 @@
 	}
 	ul li.line-wrap-4{
 		width: 100%;
-		height: calc(21mm);
+		height: calc(40mm + 1pt);
 		display: block;
 		background: none;
 		border: 0;
 	}
 	ul li .content{
 		width: 100%;
-		margin-top: 0mm;
 	}
 	ul li h2.edicao{
 		margin-top: 15mm;
@@ -103,8 +105,6 @@
 		margin-top: 10mm;
 		margin-left: 42mm;
 	}
-
-	}
 </style>
 </head>
 <body>
@@ -135,7 +135,7 @@
 		<li class="line-wrap"></li>
 	@endif
 	@if($loop->iteration % 4 == 0)
-		<li class="line-wrap-4"></li>
+		<li class="line-wrap-4" style="page-break-before: always;"></li>
 	@endif
 
 @endforeach

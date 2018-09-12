@@ -93,37 +93,43 @@
                             </li>
                             <li>
                                 <a id="2" role="tab" class="tab" data-toggle="tab">
-                                    <i class="material-icons">assignment_ind</i>
+                                    <i class="material-icons">note</i>
                                     Gerais
                                 </a>
                             </li>
                             <li>
                                 <a id="3" role="tab" class="tab" data-toggle="tab">
-                                    <i class="material-icons">description</i>
-                                    Homologação
+                                    <i class="material-icons">fastfood</i>
+                                    Lanche
                                 </a>
                             </li>
                             <li>
                                 <a id="4" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">description</i>
-                                    Premiação
+                                    Homologação
                                 </a>
                             </li>
                             <li>
                                 <a id="5" role="tab" class="tab" data-toggle="tab">
-                                    <i class="material-icons">description</i>
-                                    Projetos
+                                    <i class="material-icons">star</i>
+                                    Premiação
                                 </a>
                             </li>
                             <li>
                                 <a id="6" role="tab" class="tab" data-toggle="tab">
-                                    <i class="material-icons">description</i>
-                                    Voluntários
+                                    <i class="material-icons">school</i>
+                                    Projetos
                                 </a>
                             </li>
                             <li>
                                 <a id="7" role="tab" class="tab" data-toggle="tab">
-                                    <i class="material-icons">description</i>
+                                    <i class="material-icons">directions_run</i>
+                                    Voluntários
+                                </a>
+                            </li>
+                            <li>
+                                <a id="8" role="tab" class="tab" data-toggle="tab">
+                                    <i class="material-icons">group</i>
                                     Usuários
                                 </a>
                             </li>
@@ -256,6 +262,16 @@
                     <tbody id="3">
                         <tr>
                             <td>1</td>
+                            <td>Vale Lanche</td>
+                            <td class="text-right">
+                                <a href="{{route('valeLanche')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tbody id="4">
+                        <tr>
+                            <td>1</td>
                             <td>Relatório de Homologadores</td>
                             <td class="text-right">
                                 <a href="{{route('csv', 2)}}"><i class="material-icons">arrow_downward</i></a>
@@ -305,7 +321,7 @@
                         </tr>
                     </tbody>
 
-                    <tbody id="4">
+                    <tbody id="5">
                         <tr>
                             <td>1</td>
                             <td>Relatório de Classificação Geral dos Projetos</td>
@@ -329,7 +345,7 @@
                         </tr>
                     </tbody>
 
-                    <tbody id="5">
+                    <tbody id="6">
                         <tr>
                             <td>1</td>
                             <td>Gerar Localização dos Projetos</td>
@@ -366,7 +382,7 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tbody id="6">
+                    <tbody id="7">
                         <tr>
                             <td>1</td>
                             <td>Relatório de Voluntários</td>
@@ -382,7 +398,7 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tbody id="7">
+                    <tbody id="8">
                         <tr>
                             <td>1</td>
                             <td>Relatório de Autores
