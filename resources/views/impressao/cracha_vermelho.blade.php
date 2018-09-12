@@ -4,13 +4,17 @@
 	
 <style>
 
-	@import "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700";
-	@media all {
-	@page{
-		margin: 2mm;
-		width: 200mm;
-		height: 290mm;
-	}
+@import "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700";
+
+@page{
+	size: A4 portrait;
+	width: 21cm;
+	height: 29.7cm;
+	margin: 0.5cm;
+}
+
+@media all {
+
 	*{
 		margin:0;
 		padding: 0;
@@ -18,63 +22,42 @@
 		-webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
 		color-adjust: exact !important;                 /*Firefox*/
 	}
-	
+
 	body{font-family: "Roboto", "Helvetica", "Arial", sans-serif;}
-	ul{
-		list-style-type: none;
-		width: 240mm;
-		display: flex;
-		justify-content: flex-start;
-		flex-wrap: wrap;
-		align-items: center;
-		align-content: center;
-	}
-	ul li{
-		width: 112mm;
-		height: 155mm;
-		padding: 1mm;
+
+	.cracha{
+		width: calc(99mm - 2pt);
+		height: 140mm;
 		border: 1pt solid #000;
 		background: url("{{ asset('img/bg-cracha.png') }}");
 		background-size: 100% 100%;
+		display: inline-flex;
+		padding: 0;
+		margin: 0;
+		overflow: hidden;
 	}
-	ul li.line-wrap{
-		width: 100%;
-		height: calc(1pt);
-		display: block;
-		background: none;
-		border: 0;
-	}
-	ul li.line-wrap-2{
-		width: calc(1pt);
-		display: block;
-		background: none;
-		border: 0;
-	}
-	ul li.line-wrap-4{
-		width: 100%;
-		height: calc(21mm);
-		display: block;
-		background: none;
-		border: 0;
-	}
-	ul li .content{
+
+	.cracha:nth-child(4n){page-break-before: always; }
+
+	.cracha .content{
 		width: 100%;
 		margin-top: 0mm;
 	}
-	ul li h2.edicao{
+	.cracha h2.edicao{
 		margin-top: 15mm;
+		margin-left: 5mm;
 		font-size: 6mm;
 		color: #d53835;
 	}
 
-	ul li .dados{
-		width: 70mm;
+	.cracha .dados{
+		width: 100%;
 		margin-top: 42mm;
 		text-align: center;
 	}
 
-	ul li .dados h2,
-	ul li .dados h3{
+	.cracha .dados h2,
+	.cracha.dados h3{
 		width: 100%;
 		height: 5mm;
 		font-size: 5mm;
@@ -82,43 +65,40 @@
 		margin: 0;
 		color: #fff;
 	}
-	ul li .dados h2{
-		width: 66mm;
+
+	.cracha .dados h2{
+		width: calc(100% - 12mm);
 		height: 8mm;
 		line-height: 8mm;
 		overflow: hidden;
 		padding: 1mm;
 		background: #d53835;
-		margin-left: 22mm;
-		margin-top: 60mm;
+		margin-left: 5mm;
+		margin-top: 50mm;
 		text-transform: uppercase;
 	}
-	ul li .dados h3{
+	.cracha .dados h3{
 		margin-top: 2mm;
-		margin-left: 22mm;
+		width: calc(100% - 12mm);
+		margin-left: 5mm;
+		text-align: center;
 		color: #424a4e;
 	}
 
-	ul li .qrcode{
-		width: 30mm;
-		margin-top: 10mm;
-		margin-left: 42mm;
+	.cracha .qrcode{
+		width: 28mm;
+		margin-top: 7mm;
+		margin-left: 35mm;
 	}
 
-	}
+}
 </style>
 </head>
 <body>
-<ul>
+
 @foreach($pessoas as $pessoa)
-	@if($loop->iteration % 1 == 0 && $loop->iteration % 2 != 0)
-		<li class="line-wrap-2"></li>
-		<li class="line-wrap-2"></li>
-	@endif
-	@if($loop->iteration % 2 == 0)
-		<li class="line-wrap-2"></li>
-	@endif
-	<li>
+
+	<div class="cracha">
 		<div class="content">
 
 			<h2 class="edicao">{{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC</h2>
@@ -131,16 +111,10 @@
 			<img src="{{route('qrcode',$pessoa->id)}}" class="qrcode">
 
 		</div>
-	</li>
-	@if($loop->iteration % 2 == 0 && $loop->iteration % 4 != 0)
-		<li class="line-wrap"></li>
-	@endif
-	@if($loop->iteration % 4 == 0)
-		<li class="line-wrap-4"></li>
-	@endif
+	</div>
 
 @endforeach
-</ul>
+
 
 </body>
 </html>
