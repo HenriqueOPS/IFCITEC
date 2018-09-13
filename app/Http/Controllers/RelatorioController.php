@@ -902,7 +902,7 @@ class RelatorioController extends Controller
 
 		$cont = $autores->count() * $dias;
 		
-		return \PDF::loadView('relatorios.valeLanche', array('cont' => $cont))->stream('vale_lanche.pdf');
+		return view('relatorios.valeLanche', array('cont' => $cont));
 	}
 
 	public function projetosConfirmaramPresencaArea(){
