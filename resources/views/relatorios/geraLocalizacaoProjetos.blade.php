@@ -77,7 +77,7 @@
 	        <div class="dados">
 	        		<h1 style="margin-top: 10mm; font-size: 10mm;">{{$cont++}}</h1>
 					<h1 style="margin-top: 10mm;">{{$projeto->titulo}}</h1>
-					<p style="margin-top: 10mm; font-size: 7mm;">IFRS Canoas</p>
+					<p style="margin-top: 10mm; font-size: 7mm;">{{$projeto->nome_curto}}</p>
 					<p style="margin-top: 7mm; font-size: 5mm;">{{$projeto->area_conhecimento}}</p>
 					<p style="margin-top: 5mm; font-size: 5mm;">{{$projeto->nivel}}</p>
 			</div>

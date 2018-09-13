@@ -84,11 +84,7 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 //Organizador
 Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 
-/* Rotas Administrador */
-Route::group(['middleware' => ['IsAdministrador']], function () {
-
 //Relatórios
-//Route::get('/relatorio', 'ReportController@index')->name('relatorio');
 	Route::get('/csv/{id}', 'RelatorioController@csv')->name('csv');
 	Route::get('/projetos/csv', 'RelatorioController@csvCertificados')->name('csvCertificados');
 	Route::get('/pessoas/csv', 'RelatorioController@csvProjetos')->name('csvProjetos');
@@ -128,14 +124,18 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/relatorio/autores/pos/homologacao', 'RelatorioController@autoresPosHomologacao')->name('relatorioAutoresPos');
 	Route::get('/relatorio/orientadores/pos/homologacao', 'RelatorioController@orientadoresPosHomologacao')->name('relatorioOrientadoresPos');
 	Route::get('/relatorio/coorientadores/pos/homologacao', 'RelatorioController@coorientadoresPosHomologacao')->name('relatorioCoorientadoresPos');
+	Route::get('/relatorio/autores/tamanho/camisa', 'RelatorioController@camisaTamanho')->name('camisaTamanho');
+	Route::get('/relatorio/autores/tamanho/camisa/assinatura', 'RelatorioController@camisaTamanhoAssinatura')->name('camisaTamanhoAssinatura');
 	Route::get('/relatorio/homologadores/area', 'RelatorioController@homologadoresArea')->name('homologadoresArea');
 	Route::get('/relatorio/avaliadores/area', 'RelatorioController@avaliadoresArea')->name('avaliadoresArea');
 	Route::get('/relatorio/homologadores/projeto', 'RelatorioController@homologadoresProjeto')->name('homologadoresProjeto');
 	Route::get('/relatorio/avaliadores/projeto', 'RelatorioController@avaliadoresProjeto')->name('avaliadoresProjeto');
 	Route::get('/relatorio/projetos/confirma', 'RelatorioController@projetosConfirmaramPresenca')->name('relatorioProjetosConfirma');
+	Route::get('/relatorio/projetos/confirma/area', 'RelatorioController@projetosConfirmaramPresencaArea')->name('relatorioProjetosConfirmaArea');
 	Route::get('/relatorio/gerar/localizacao/projetos', 'RelatorioController@gerarLocalizacaoProjetos')->name('gerarLocalizacaoProjetos');
 	Route::post('/relatorio/gera/localizacao/projetos', 'RelatorioController@geraLocalizacaoProjetos')->name('geraLocalizacaoProjetos');
-	Route::get('/relatorio/vale-lanche', 'RelatorioController@valeLanche')->name('valeLanche');
+	Route::post('/relatorio/vale-lanche', 'RelatorioController@valeLanche')->name('valeLanche');
+	Route::get('/relatorio/vale-lanche/gerar', 'RelatorioController@gerarValeLanche')->name('geraValeLanche');
 
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
 	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');
@@ -147,6 +147,8 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/administrador/comissao', 'AdminController@comissao')->name('administrador.comissao');
 	Route::get('/administrador/relatorios', 'AdminController@relatorios')->name('administrador.relatorios');
 
+/* Rotas Administrador */
+Route::group(['middleware' => ['IsAdministrador']], function () {
 
 	Route::get('/gerenciar', 'AdminController@administrarUsuarios');
 	Route::post('/gerenciar-usuario/{id}', 'AdminController@editaFuncaoUsuario')->name('editaFuncaoUsuario');
@@ -228,15 +230,14 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
     Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')->name('vinculaAvaliadorPost');
 
     Route::get('/projeto/{id}/status/', 'ProjetoController@statusProjeto')->name('statusProjeto'); //Ajax
-    Route::get('/organizador/projetos', 'OrganizadorController@projetos')->name('organizador.projetos');
+    Route::get('/organizador/projetos', 'OrganizadorController@projetos')->name('organizacao.projetos');
+
+    Route::get('/organizador/relatorios', 'OrganizadorController@relatorios')->name('organizacao.relatorios');
+	Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 
 });
 
 
-
-
-//Organizador
-Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 
 //Comissao Avaliadora
 Route::get('/comissao-avaliadora', 'ComissaoAvaliadoraController@index')->name('comissao');

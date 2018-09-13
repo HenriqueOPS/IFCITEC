@@ -1,4 +1,4 @@
-@extends('relatorios.relatorio')
+@extends('relatorios.relatorioPaisagem')
 
 @section('content')
 <div class="container">
@@ -9,6 +9,7 @@
         	<thead>
         	<tr>
     				<th>Projeto</th>
+            <th>Escola</th>
     				<th>Localização</th>
   				</tr>
         	</thead>
@@ -18,6 +19,7 @@
 				@foreach($p as $projeto)
   				<tr>
     				<td><a style="color: #000;">{{$projeto->titulo}}</a></td>
+            <td><a style="color: #000;">{{$projeto->nome_curto}}</a></td>
     				<td><a style="color: #000;">{{$bloco}}{{$sala}}</a></td>
   				</tr>
           		@endforeach
