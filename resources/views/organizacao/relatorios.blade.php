@@ -14,55 +14,19 @@
             <div id="page" class="col-md-12">
             <ul class="nav nav-pills nav-pills-primary"  role="tablist">
                 <li>
-                    <a href="{{route('administrador')}}">
-                        <i class="material-icons">adjust</i>
-                        Edições
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('administrador.escolas')}}">
+                    <a href="{{route('organizador')}}">
                         <i class="material-icons">account_balance</i>
                         Escolas
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('administrador.niveis')}}">
-                        <i class="material-icons">school</i>
-                        Níveis
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('administrador.areas')}}">
-                        <i class="material-icons">brightness_auto</i>
-                        Áreas
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('administrador.tarefas')}}">
-                        <i class="material-icons">title</i>
-                        Tarefas (Voluntários)
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('administrador.usuarios')}}">
-                        <i class="material-icons">person</i>
-                        Usuários
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('administrador.projetos')}}">
+                    <a href="{{route('organizacao.projetos')}}">
                         <i class="material-icons">list_alt</i>
                         Listar Projetos
                     </a>
                 </li>
-                <li>
-                    <a href="{{route('administrador.comissao')}}">
-                        <i class="material-icons">list_alt</i>
-                        Comissão Avaliadora
-                    </a>
-                </li>
                 <li class="active">
-                    <a href="{{route('administrador.relatorios')}}">
+                    <a href="{{route('organizacao.relatorios')}}">
                         <i class="material-icons">description</i>
                         Relatórios
                     </a>
@@ -441,14 +405,6 @@
                         </tr>
                         <tr>
                             <td>5</td>
-                            <td>Relatório de Autores (Tamanho Camisa - Assinatura)
-                            </td>
-                            <td class="text-right">
-                                <a href="{{route('camisaTamanhoAssinatura')}}" target="_blank"><i class="material-icons">visibility</i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
                             <td>Relatório de Autores Que Comparecerão na IFCITEC
                             </td>
                             <td class="text-right">
@@ -456,7 +412,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>7</td>
+                            <td>6</td>
                             <td>Relatório de Avaliadores
                             </td>
                             <td class="text-right">
@@ -464,7 +420,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>8</td>
+                            <td>7</td>
                             <td>Relatório de Coorientadores
                             </td>
                             <td class="text-right">
@@ -472,7 +428,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>9</td>
+                            <td>8</td>
                             <td>Relatório de Coorientadores (Pós Homologação)
                             </td>
                             <td class="text-right">
@@ -480,7 +436,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>10</td>
+                            <td>9</td>
                             <td>Relatório de Homologadores
                             </td>
                             <td class="text-right">
@@ -488,7 +444,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>11</td>
+                            <td>10</td>
                             <td>Relatório de Orientadores
                             </td>
                             <td class="text-right">
@@ -496,7 +452,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>12</td>
+                            <td>11</td>
                             <td>Relatório de Orientadores (Pós Homologação)
                             </td>
                             <td class="text-right">
@@ -504,7 +460,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>13</td>
+                            <td>12</td>
                             <td>Relatório de Voluntários
                             </td>
                             <td class="text-right">
@@ -512,7 +468,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>14</td>
+                            <td>13</td>
                             <td>Reletório de Participantes de Projetos</td>
                             <td class="text-right">
                                 <a href="{{route('csv', 3)}}"><i class="material-icons">arrow_downward</i></a>

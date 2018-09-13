@@ -51,7 +51,6 @@ class CrachaController extends Controller
 	public function generateCrachasComissaoOrganizadora(){
 		$pessoas = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->select('pessoa.nome', 'pessoa.id')
-						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
 						->where(function ($q){
                                         $q->where('funcao_pessoa.funcao_id', Funcao::select(['id'])
                                             ->where('funcao', 'Administrador')
@@ -103,12 +102,15 @@ class CrachaController extends Controller
 
 	public function generateCrachasVoluntarios(){
 		$pessoas = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-						->select('pessoa.nome', 'pessoa.id')
+						->select('pessoa.nome', 'pessoa.id', 'tarefa.tarefa')
+						->join('pessoa_tarefa', 'pessoa.id', '=', 'pessoa_tarefa.pessoa_id')
+						->join('tarefa', 'pessoa_tarefa.tarefa_id', '=', 'tarefa.id')
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Voluntário')->first()->id)
 						->orderBy('pessoa.nome')
 						->distinct('pessoa.id')
 						->get();
+						
 		return view('impressao.cracha_azul', compact('pessoas'));
 	}
 

@@ -22,11 +22,17 @@
                         </a>
                     </li>
                     <li>
-                    <a href="{{route('organizador.projetos')}}">
-                        <i class="material-icons">list_alt</i>
-                        Listar Projetos
-                    </a>
-                </li>
+                        <a href="{{route('organizador.projetos')}}">
+                            <i class="material-icons">list_alt</i>
+                            Listar Projetos
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('organizacao.relatorios')}}">
+                            <i class="material-icons">description</i>
+                            Relatórios
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

@@ -455,6 +455,38 @@ class RelatorioController extends Controller
 		return \PDF::loadView('relatorios.autoresPosHomologacao', array('autores' => $autores, 'cont' => $cont))->download('autores_pos_homologacao.pdf');
 	}
 
+	public function camisaTamanho(){
+		$autores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+						->select('pessoa.nome', 'pessoa.camisa')
+						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->where('projeto.presenca', TRUE)
+						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+						->orderBy('pessoa.nome')
+						->distinct('pessoa.id')
+						->get();
+
+		return \PDF::loadView('relatorios.camisaTamanho', array('autores' => $autores))->download('autores_tamanho_camisa.pdf');
+	}
+
+	public function camisaTamanhoAssinatura(){
+		$autores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+						->select('pessoa.nome', 'pessoa.camisa')
+						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->where('projeto.presenca', TRUE)
+						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+						->orderBy('pessoa.nome')
+						->distinct('pessoa.id')
+						->get();
+
+		return \PDF::loadView('relatorios.camisaTamanhoAssinatura', array('autores' => $autores))->setPaper('A4', 'landscape')->download('autores_tamanho_camisa_assinatura.pdf');
+	}
+
 	public function orientadoresPosHomologacao(){
 		$orientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
@@ -842,12 +874,42 @@ class RelatorioController extends Controller
 			return \PDF::loadView('relatorios.geraLocalizacaoProjetos',array('projetos' => $projetos, 'cont' => $cont))->setPaper('A4', 'landscape')->download('projetos_identificacao.pdf');
 		}
 		if ($num == 2) {
-			return \PDF::loadView('relatorios.identificacaoProjetos',array('projetos' => $projetos, 'cont' => $cont))->download('projetos_localizacao.pdf');
+			return \PDF::loadView('relatorios.identificacaoProjetos',array('projetos' => $projetos, 'cont' => $cont))->setPaper('A4', 'landscape')->download('projetos_localizacao.pdf');
 		}
 	}
 
-	public function valeLanche(){
-		return \PDF::loadView('relatorios.valeLanche')->stream('vale_lanche.pdf');
+	public function gerarValeLanche(){
+		return view('admin.gerarValeLanche');
+	}
+
+	public function valeLanche(Request $req){
+		$data = $req->all();
+		$dias = $data['dias'];
+
+		$autores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+			->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+			->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.telefone', 'projeto.presenca')
+			->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+			->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+			->where('projeto.presenca', TRUE)
+			->where('escola.nome_curto', '!=' , 'IFRS Canoas')
+			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+			->orderBy('pessoa.nome')
+			->distinct('pessoa.id')
+			->get();
+
+		$cont = $autores->count() * $dias;
+		
+		return \PDF::loadView('relatorios.valeLanche', array('cont' => $cont))->stream('vale_lanche.pdf');
+	}
+
+	public function projetosConfirmaramPresencaArea(){
+		$areas = Edicao::find(Edicao::getEdicaoId())->areas;
+
+		
+		return \PDF::loadView('relatorios.projetosConfirmaramPresencaArea', array('areas' => $areas))->download('projetos_presenca_nivel.pdf');
 	}
 
 }

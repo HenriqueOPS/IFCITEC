@@ -87,7 +87,7 @@
 
 	.cracha .qrcode{
 		width: 28mm;
-		margin-top: 7mm;
+		margin-top: 0mm;
 		margin-left: 35mm;
 	}
 
@@ -106,6 +106,7 @@
 			<div class="dados">
 				<h2>Voluntário</h2>
 				<h3>{{$pessoa->nome}}</h3>
+				<h3>{{$pessoa->tarefa}}</h3>
 			</div>
 
 			<img src="{{route('qrcode',$pessoa->id)}}" class="qrcode">

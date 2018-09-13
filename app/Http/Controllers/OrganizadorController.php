@@ -188,5 +188,10 @@ class OrganizadorController extends Controller
 
     }
 
+    public function relatorios(){
+
+        return view('organizacao.relatorios');
+    }
+
 
 }
