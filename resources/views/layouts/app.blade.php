@@ -10,6 +10,8 @@
 
         <title>{{ config('app.name', 'IFCITEC') }}</title>
 
+		<link rel="manifest" href="{{ asset('manifest.json') }}">
+
         <!-- Fonts and icons -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />

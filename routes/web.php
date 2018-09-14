@@ -41,6 +41,8 @@ Route::get('/', function () {
 Route::post('/api/login', 'ApiController@login');
 Route::any('/api/registra-presenca', 'ApiController@registraPresenca');
 
+Route::post('/api/presenca', 'ApiController@presenca')->name('presenca-sistema');
+
 Route::get('/api/projetos-avaliacao/{id}', 'ApiController@projetosAvaliacao');
 Route::get('/api/campos-avaliacao/{id}', 'ApiController@camposAvaliacao');
 
@@ -81,8 +83,7 @@ Route::post('/editar-cadastro/', 'PessoaController@editaCadastro')->name('editaC
 //Autor
 Route::get('/autor', 'AutorController@index')->name('autor');
 
-//Organizador
-Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
+
 
 //Relatórios
 	Route::get('/csv/{id}', 'RelatorioController@csv')->name('csv');
@@ -230,9 +231,10 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
     Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')->name('vinculaAvaliadorPost');
 
     Route::get('/projeto/{id}/status/', 'ProjetoController@statusProjeto')->name('statusProjeto'); //Ajax
-    Route::get('/organizador/projetos', 'OrganizadorController@projetos')->name('organizacao.projetos');
 
+    Route::get('/organizador/presenca', 'OrganizadorController@presenca')->name('organizacao.presenca');
     Route::get('/organizador/relatorios', 'OrganizadorController@relatorios')->name('organizacao.relatorios');
+    Route::get('/organizador/projetos', 'OrganizadorController@projetos')->name('organizacao.projetos');
 	Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 
 });

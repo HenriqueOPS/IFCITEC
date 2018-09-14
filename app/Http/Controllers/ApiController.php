@@ -150,4 +150,24 @@ class ApiController extends Controller
 
     }
 
+
+    public function presenca(Request $req) {
+
+        $data = $req->all();
+
+        if(is_numeric($data['id'])){
+
+            $results = Presenca::where('id_pessoa', $data['id'])->get();
+
+            if($results->count())
+                return response()->json('warning', 200);
+
+            Presenca::insert(['id_pessoa' => $data['id'], 'created_at' => date('Y-m-d H:i:s')]);
+            return response()->json('ok', 200);
+        }
+
+        return response()->json('erro', 400);
+
+    }
+
 }
