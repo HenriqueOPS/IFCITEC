@@ -733,21 +733,9 @@ class RelatorioController extends Controller
 	}
 
 	public function classificacaoGeral(){
-		$subQuery = DB::table('revisao')
-            ->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
-            ->where('revisao.projeto_id','=',DB::raw('projeto.id'))
-            ->toSql();
+		$niveis = Edicao::find(Edicao::getEdicaoId())->niveis;
 
-		$projetos = Projeto::select(DB::raw('('.$subQuery.') as nota'),'projeto.nota_avaliacao', 'projeto.titulo', 'projeto.situacao_id')
-            ->where('projeto.edicao_id','=',Edicao::getEdicaoId())
-            ->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
-            ->where('projeto.nota_avaliacao','<>',NULL)
-            ->orderBy('projeto.nota_avaliacao', 'desc')
-            ->orderBy('nota', 'desc')
-            ->orderBy('projeto.created_at', 'asc')
-            ->get();
-
-        return \PDF::loadView('relatorios.classificacaoGeral', array('projetos' => $projetos))->setPaper('A4', 'landscape')->download('classificacao_geral.pdf');
+        return \PDF::loadView('relatorios.classificacaoGeral', array('niveis' => $niveis))->setPaper('A4', 'landscape')->download('classificacao_geral.pdf');
 	}
 
 	public function statusProjetos(){
@@ -768,9 +756,10 @@ class RelatorioController extends Controller
 				->select('projeto.id', 'projeto.titulo')
 				->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
 				->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
-				->join('presenca', 'pessoa.id', '=', 'presenca.id')
+				->join('presenca', 'pessoa.id', '=', 'presenca.pessoa_id')
 				->where('projeto.edicao_id',Edicao::getEdicaoId())
 				->orderBy('projeto.titulo')
+				->distinct('projeto.id')
 				->get()
 				->toArray();
 
@@ -910,6 +899,36 @@ class RelatorioController extends Controller
 
 		
 		return \PDF::loadView('relatorios.projetosConfirmaramPresencaArea', array('areas' => $areas))->download('projetos_presenca_nivel.pdf');
+	}
+
+	public function premiacaoCertificados(){
+		$areas = Edicao::find(Edicao::getEdicaoId())->areas;
+
+		$subQuery = DB::table('revisao')
+            ->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
+            ->where('revisao.projeto_id','=',DB::raw('projeto.id'))
+            ->toSql();
+
+        $projetos = Projeto::select(DB::raw('('.$subQuery.') as nota'),'projeto.nota_avaliacao', 'projeto.titulo', 'projeto.situacao_id', 'escola.nome_curto', 'projeto.id', 'area_conhecimento.area_conhecimento')
+            ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+            ->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
+            ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+            ->where('projeto.edicao_id','=',Edicao::getEdicaoId())
+            ->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
+            ->where('projeto.nota_avaliacao','<>',NULL)
+            ->groupBy('projeto.id')
+            ->groupBy('area_conhecimento.area_conhecimento')
+            ->groupBy('escola.nome_curto')
+            ->orderBy('projeto.nota_avaliacao', 'desc')
+            ->orderBy('nota', 'desc')
+            ->orderBy('projeto.created_at', 'asc')
+            ->get();
+
+        $data = Edicao::select('feira_fechamento')
+        	->where('id',Edicao::getEdicaoId())->get();
+        $data = date('d/m/Y', strtotime($data->first()->feira_fechamento));
+        
+		return \PDF::loadView('relatorios.premiacaoCertificados', array('areas' => $areas, 'projetos' => $projetos, 'data' => $data))->setPaper('A4', 'landscape')->download('premiacao_certificados.pdf');
 	}
 
 }

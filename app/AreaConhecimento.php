@@ -42,14 +42,19 @@ class AreaConhecimento extends Model {
             ->where('revisao.projeto_id','=',DB::raw('projeto.id'))
             ->toSql();
 
-        $projetos = Projeto::select(DB::raw('('.$subQuery.') as nota'),'projeto.nota_avaliacao', 'projeto.titulo', 'projeto.situacao_id')
+        $projetos = Projeto::select(DB::raw('('.$subQuery.') as nota'),'projeto.nota_avaliacao', 'projeto.titulo', 'projeto.situacao_id', 'escola.nome_curto', 'projeto.id')
+            ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+            ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
             ->where('projeto.edicao_id','=',Edicao::getEdicaoId())
             ->where('projeto.area_id','=',$id)
             ->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
             ->where('projeto.nota_avaliacao','<>',NULL)
+            ->groupBy('projeto.id')
+            ->groupBy('escola.nome_curto')
             ->orderBy('projeto.nota_avaliacao', 'desc')
             ->orderBy('nota', 'desc')
             ->orderBy('projeto.created_at', 'asc')
+            ->limit(3)
             ->get();
         return $projetos;
     }

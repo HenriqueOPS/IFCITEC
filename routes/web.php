@@ -136,6 +136,7 @@ Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
 	Route::post('/relatorio/gera/localizacao/projetos', 'RelatorioController@geraLocalizacaoProjetos')->name('geraLocalizacaoProjetos');
 	Route::post('/relatorio/vale-lanche', 'RelatorioController@valeLanche')->name('valeLanche');
 	Route::get('/relatorio/vale-lanche/gerar', 'RelatorioController@gerarValeLanche')->name('geraValeLanche');
+	Route::get('/relatorio/premiacao/certificados', 'RelatorioController@premiacaoCertificados')->name('premiacaoCertificados');
 
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
 	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');

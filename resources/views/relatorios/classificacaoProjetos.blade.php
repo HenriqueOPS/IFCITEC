@@ -11,6 +11,7 @@
         	<thead>
         	<tr>
     				<th>Projeto</th>
+            <th>Escola</th>
     				<th>Nota Final</th> 
   				</tr>
         	</thead>
@@ -19,6 +20,7 @@
   				@foreach($projetos as $projeto)
   				<tr>
     				<td><a style="color: #000;">{{$projeto->titulo}}</a></td>
+            <td><a style="color: #000;">{{$projeto->nome_curto}}</a></td>
     				<td><a style="color: #000;">{{$projeto->nota_avaliacao}}</a></td>
   				</tr>
           @endforeach
