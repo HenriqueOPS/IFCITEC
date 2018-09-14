@@ -193,5 +193,9 @@ class OrganizadorController extends Controller
         return view('organizacao.relatorios');
     }
 
+    public function presenca(){
+
+        return view('organizacao.presenca');
+    }
 
 }

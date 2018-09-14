@@ -32,6 +32,13 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{route('organizacao.presenca')}}">
+                        <i class="material-icons">account_circle</i>
+                        Presença
+                    </a>
+                </li>
+
             </ul>
         </div>
     </div>
