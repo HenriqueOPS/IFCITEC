@@ -190,6 +190,32 @@ class Pessoa extends Authenticatable {
         return false;
     }
 
+    public function temFuncaoProjeto($funcao, $projeto, $pessoa) {
+
+        //pega o id da edição
+        $EdicaoId = Edicao::getEdicaoId();
+
+        if($EdicaoId){
+
+            $query = DB::table('escola_funcao_pessoa_projeto')
+                            //Busca pela Função
+                            ->where('funcao_id','=',Funcao::where('funcao', $funcao)->get()->first()->id)
+                            //Busca pela Pessoa
+                            ->where('pessoa_id',$pessoa)
+                            //Busca pelo Projeto
+                            ->where('projeto_id',$projeto)
+                            //Busca pela Edição
+                            ->where('edicao_id', $EdicaoId)
+                            ->get();
+
+            if($query->count()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function comissaoNivel($nivel, $pessoa) {
 
         //pega o id da edição

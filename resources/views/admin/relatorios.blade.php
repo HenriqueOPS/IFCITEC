@@ -343,6 +343,13 @@
                                 <a href="{{route('premiacaoProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Relatório de Premiação dos Projetos (Certificados)</td>
+                            <td class="text-right">
+                                <a href="{{route('premiacaoCertificados')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
                     </tbody>
 
                     <tbody id="6">
