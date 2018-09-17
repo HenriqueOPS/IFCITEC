@@ -756,7 +756,7 @@ class RelatorioController extends Controller
 				->select('projeto.id', 'projeto.titulo')
 				->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
 				->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
-				->join('presenca', 'pessoa.id', '=', 'presenca.pessoa_id')
+				->join('presenca', 'pessoa.id', '=', 'presenca.id_pessoa')
 				->where('projeto.edicao_id',Edicao::getEdicaoId())
 				->orderBy('projeto.titulo')
 				->distinct('projeto.id')
