@@ -781,7 +781,7 @@ class ProjetoController extends Controller
         }
 
         $numProjetos = DB::raw('SELECT count(*) 
-                                FROM revisao 
+                                FROM avaliacao 
                                 WHERE pessoa_id = pessoa.id');
 
         $avaliadores = DB::table('areas_comissao')
