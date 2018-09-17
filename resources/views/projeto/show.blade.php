@@ -102,6 +102,14 @@
 
                                 @endif
 
+                                @if(Auth::user()->temFuncao('Administrador'))
+
+                                    <a href="{{ route('editarProjeto', $projeto->id) }}" class="btn btn-success">
+                                        Editar informações
+                                    </a>
+
+                                @endif
+
                             @else
 
                                 @if((\App\Edicao::consultaPeriodo('Inscrição')))
