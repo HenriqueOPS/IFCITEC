@@ -22,9 +22,22 @@
                         </a>
                     </li>
                     <li>
-                        <a href="dashboard" id="1" class="tab" role="tab" data-toggle="tab">
+                        <a href="{{route('organizacao.projetos')}}">
                             <i class="material-icons">list_alt</i>
                             Listar Projetos
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('organizacao.relatorios')}}">
+                            <i class="material-icons">description</i>
+                            Relatórios
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{route('organizacao.presenca')}}">
+                            <i class="material-icons">account_circle</i>
+                            Presença
                         </a>
                     </li>
                 </ul>
@@ -89,38 +102,6 @@
                         </div>
 
                         </thead>
-
-                        <tbody id="1">
-                        @foreach($projetos as $i => $projeto)
-
-                            <div id="1" class="project">
-                                <div class="project-title">
-                                    <span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
-                                </div>
-                                <div class="project-info">
-                                    Integrantes:
-                                    @foreach ($autores as $autor)
-                                        @if($autor->projeto_id == $projeto->id)
-                                            {{$autor->nome}},
-                                        @endif
-                                    @endforeach
-
-                                    @foreach ($orientadores as $orientador)
-                                        @if($orientador->projeto_id == $projeto->id)
-                                            {{$orientador->nome}},
-                                        @endif
-                                    @endforeach
-
-                                    @foreach($coorientadores as $coorientador)
-                                        @if($coorientador->projeto_id == $projeto->id)
-                                            {{$coorientador->nome}},
-                                        @endif
-                                    @endforeach
-                                </div>
-                            </div>
-
-                        @endforeach
-                        </tbody>
 
                     </table>
                 </div>

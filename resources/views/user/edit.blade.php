@@ -2,6 +2,7 @@
 
 @section('css')
 <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
+<link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
 <link href="{{ asset('css/datepicker/bootstrap-datepicker.standdalone.css') }}" rel="stylesheet">
 @endsection
 
@@ -115,6 +116,27 @@
                                 @endif
                             </div>
 
+                            <div class="input-group{{ $errors->has('camisa') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <img class="gray-icon" src="{{ asset('img/tshirt-crew.svg') }}"  />
+                                </span>
+                                <div class="form-group">
+                                    <label class="control-label">Camisa</label>
+                                    <select id="camisa-select" name="camisa" value="{{isset($dados->camisa) ? $dados->camisa : ''}}" required>
+                                      <option value="P">P</option>
+                                      <option value="M">M</option>
+                                      <option value="G">G</option>
+                                      <option value="GG">GG</option>
+                                      <option value="X1">X1</option>
+                                    </select>
+                                    @if ($errors->has('camisa'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('camisa') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
                             @if($dados->temFuncao('Avaliador', TRUE) || $dados->temFuncao('Homologador', TRUE))
                                 <div class="input-group{{ $errors->has('titulacao') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
@@ -127,10 +149,10 @@
                                     </div>
                                     @if ($errors->has('titulacao'))
                                         <span class="help-block">
-                                    <strong>{{ $errors->first('titulacao') }}</strong>
-                                </span>
+                                        <strong>{{ $errors->first('titulacao') }}</strong>
+                                        </span>
                                     @endif
-                                </div>
+                                 </div>
 
                                 <div class="input-group{{ $errors->has('lattes') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
@@ -199,8 +221,21 @@
 
 @section('js')
 <script type="text/javascript" src="{{asset('js/datepicker/bootstrap-datepicker.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/selectize.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/datepicker/locales/bootstrap-datepicker.pt-BR.js')}}"></script>
 <script type="text/javascript">
+$(document).ready(function () {
+    var oldCamisa = $('#camisa-select').attr("value");
+    $('#camisa-select').selectize({
+        placeholder: 'Selecione o tamanho da sua camisa...',
+        onInitialize: function () {
+            this.setValue(oldCamisa, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+});  
+
 $('.datepicker').datepicker({
     format: 'dd/mm/yyyy',
     language: 'pt-BR',

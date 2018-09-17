@@ -21,8 +21,17 @@ class Situacao extends Model {
     protected $fillable = [
         'situacao', 'descricao',
     ];
-    
+
     public function revisoes(){
         return $this->hasMany('App\Revisao');
     }
+
+	public function getNumProjetos($id){
+		$projetos = Projeto::select('projeto.titulo')
+			->where('projeto.edicao_id','=',Edicao::getEdicaoId())
+			->where('projeto.situacao_id','=',$id)
+			->get();
+		//dd($projetos);
+		return $projetos->count();
+	}
 }

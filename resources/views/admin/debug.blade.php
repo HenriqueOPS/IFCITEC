@@ -39,9 +39,14 @@
 
 				</ul>
 
+				@if(Auth::user()->temFuncao('Administrador'))
+
 				@php
 					phpinfo();
 				@endphp
+
+				@endif
+
 
 			</div>
 

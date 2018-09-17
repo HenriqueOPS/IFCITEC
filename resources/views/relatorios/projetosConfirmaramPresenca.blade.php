@@ -14,7 +14,7 @@
   			<tbody>
   				@foreach($projetos as $projeto)
   				<tr>
-    				<td>{{$projeto->titulo}}</td>
+    				<td><a style="color: #000;">{{$projeto->titulo}}</a></td>
   				</tr>
   				@endforeach
   			</tbody>	

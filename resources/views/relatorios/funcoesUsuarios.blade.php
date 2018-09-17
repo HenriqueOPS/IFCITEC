@@ -16,14 +16,15 @@
   			<tbody>
   				@foreach($usuarios as $usuario)
   				<tr>
-    				<td>{{$usuario->nome}}</td>
-    				<td>{{$usuario->email}}</td> 
+
+    				<td><a style="color: #000;">{{$usuario->nome}}</a></td>
+    				<td><a style="color: #000;">{{$usuario->email}}</a></td> 
     				<td>
-            @foreach($funcoes as $funcao)
-              @if($funcao->pessoa_id == $usuario->id)
-                  {{$funcao->funcao}}
-                  <br>
-              @endif
+            @foreach($usuario->funcoes as $funcao)
+                @if($usuario->temFuncao($funcao->funcao))
+                <a style="color: #000;">{{$funcao->funcao}}</a>
+                @endif
+                <br>
             @endforeach    
             </td>
   				</tr>

@@ -17,10 +17,8 @@
             </div>
 
             <div class="list-projects">
-
-                <div>
-                    <h5><b>Número de projetos: {{$numeroProjetos}} </b></h5>
-                </div>
+                <h5><b id="geral">Número de projetos: <span id="nProjetos">{{$numeroProjetos}}</span> </b></h5>
+                <h5><b id="situacao">Número de projetos: <span>{{$numeroProjetos}}</span> </b></h5>
 
                 <div>
                     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
@@ -65,7 +63,7 @@
 
                 <div>
 
-                    <button id="homologarTrabalhos" class="btn btn-sm btn-primary">Homologar Trabalhos</button>
+                    <a href="{{route('homologar-projetos')}}" id="homologarTrabalhos" class="btn btn-sm btn-primary">Homologar Trabalhos</a>
 
                     @foreach($projetos as $projeto)
 
@@ -106,9 +104,32 @@
                                     @else
                                         <span class="label label-default">{{$projeto->getStatus()}}</span>
                                     @endif
+
+                                    @if($projeto->getStatus() == "Homologado")
+                                        @if($projeto->statusPresenca())
+                                            <span class="label label-warning" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+                                        @else
+                                            <span class="label label-default" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+                                        @endif
+                                    @endif
+
+                                    @if($projeto->getStatus() == "Não Homologado")
+                                        @if($projeto->statusHomologacao())
+                                            <span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+                                        @else
+                                            <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+                                        @endif
+                                    @elseif($projeto->getStatus() == "Não Avaliado")
+                                        @if($projeto->statusAvaliacao())
+                                            <span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+                                        @else
+                                            <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+                                        @endif
+                                    @endif
+
                                 </div>
 
-                                <a class="dados-projeto" projeto-id="{{$projeto->id}}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a class="dados-projeto" projeto-id="{{$projeto->id}}"><i class="material-icons blue-icon">pan_tool</i></a>
 
                                 @if($projeto->getStatus() == "Não Avaliado" || $projeto->getStatus() == "Homologado")
                                     <a href="{{route('vinculaAvaliador',$projeto->id)}}"><i class="material-icons">assignment_ind</i></a>
@@ -251,6 +272,7 @@ $('.dados-projeto').click(function(){
 <script type="application/javascript">
 $(document).ready(function () {
     $('#homologarTrabalhos').hide();
+    $("#situacao").hide();
 
     $('.tab-projetos').click(function (e) {
         var target = $(this)[0];
@@ -264,12 +286,24 @@ $(document).ready(function () {
         }
 
         if(target.id=='situacao'){
+            $("#geral").hide();
+            $("#situacao").show();
             showAll();
         }else{
+            $("#situacao").hide();
+            $("#geral").show();
+            $("#nProjetos").html($('div.project.situacao-'+target.id).length);
             hideAll();
             $('div.project.situacao-'+target.id).show();
+			$('div[id='+target.id+']').show();
         }
+
+        
+        console.log(target.id);
+
+
     });
+
 });
 
 function hideAll(){
@@ -279,6 +313,13 @@ function hideAll(){
     $('div.project.situacao-4').hide();
     $('div.project.situacao-5').hide();
     $('div.project.situacao-6').hide();
+	$('div[id=1]').hide();
+	$('div[id=2]').hide();
+	$('div[id=3]').hide();
+	$('div[id=4]').hide();
+	$('div[id=5]').hide();
+	$('div[id=6]').hide();
+
 }
 
 function showAll(){

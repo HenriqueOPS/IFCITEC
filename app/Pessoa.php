@@ -116,7 +116,6 @@ class Pessoa extends Authenticatable {
 			}
 
 			if($query->count()) {
-
 				//Verifica se não foi homologado como Homologador ou Avaliador
 				if(($funcao=='Homologador' || $funcao=='Avaliador')){
                     if(!$query->get()[0]->homologado && !$flag){
@@ -127,7 +126,7 @@ class Pessoa extends Authenticatable {
 				return true;
 			}
 		}
-
+        
 		return false;
 	}
 
@@ -184,6 +183,32 @@ class Pessoa extends Authenticatable {
                             ->get();
 
             if(!$query->count()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function temFuncaoProjeto($funcao, $projeto, $pessoa) {
+
+        //pega o id da edição
+        $EdicaoId = Edicao::getEdicaoId();
+
+        if($EdicaoId){
+
+            $query = DB::table('escola_funcao_pessoa_projeto')
+                            //Busca pela Função
+                            ->where('funcao_id','=',Funcao::where('funcao', $funcao)->get()->first()->id)
+                            //Busca pela Pessoa
+                            ->where('pessoa_id',$pessoa)
+                            //Busca pelo Projeto
+                            ->where('projeto_id',$projeto)
+                            //Busca pela Edição
+                            ->where('edicao_id', $EdicaoId)
+                            ->get();
+
+            if($query->count()) {
                 return true;
             }
         }
@@ -267,6 +292,23 @@ class Pessoa extends Authenticatable {
             ->first();
 
         return $total->total;
+    }
+
+    public function temTrabalho(){
+        //VERRRR
+        $total = DB::table('escola_funcao_pessoa_projeto')
+            ->select('escola_funcao_pessoa_projeto.projeto_id')
+            ->join('projeto','escola_funcao_pessoa_projeto.projeto_id','=','projeto.id')
+            ->where('escola_funcao_pessoa_projeto.pessoa_id','=',$this->id)
+            ->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+            ->get();
+
+        if($total->count()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
 }

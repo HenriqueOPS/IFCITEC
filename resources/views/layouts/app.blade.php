@@ -10,6 +10,8 @@
 
         <title>{{ config('app.name', 'IFCITEC') }}</title>
 
+		<link rel="manifest" href="{{ asset('manifest.json') }}">
+
         <!-- Fonts and icons -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
@@ -90,12 +92,18 @@
 							<ul class="nav navbar-nav navbar-left">
 								<li><a href="{{ route('autor') }}">Projeto</a></li>
 
-								@if(\App\Edicao::consultaPeriodo('Comissão') || Auth::user()->temFuncao('Administrador'))
+								@if(\App\Edicao::consultaPeriodo('Comissão') ||
+									\App\Edicao::consultaPeriodo('Homologação') ||
+									\App\Edicao::consultaPeriodo('Avaliação') ||
+									Auth::user()->temFuncao('Administrador') ||
+									Auth::user()->temFuncao('Homologador'))
 									<li><a href="{{route('comissao')}}">Comissão Avaliadora</a></li>
 								@endif
 
-								@if(\App\Edicao::consultaPeriodo('Voluntário') || Auth::user()->temFuncao('Administrador'))
+								@if(\App\Edicao::consultaPeriodo('Voluntário'))
+									@if(! Auth::user()->temTrabalho() || Auth::user()->temFuncao('Administrador'))
 									<li><a href="{{ route('voluntario') }}">Voluntário</a></li>
+									@endif
 								@endif
 
 								@if(Auth::user()->temFuncao('Organizador') || Auth::user()->temFuncao('Administrador'))
