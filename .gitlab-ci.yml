@@ -97,7 +97,7 @@ job-stop-stage:			# Job que permite parar a aplicação
   only:
     - stage
   script:
-    - curl -X POST https://jenkins.canoas.ifrs.edu.br/generic-webhook-trigger/invoke?token=$TOKEN_WEBHOOK_2
+    - curl -s -S -k -X POST https://jenkins.canoas.ifrs.edu.br:8443/generic-webhook-trigger/invoke?token=$TOKEN_WEBHOOK_2
   when: manual
   environment:
     name: $CI_COMMIT_REF_NAME
@@ -128,5 +128,6 @@ job-deploy-prod:
     policy: push        # Não utiliza cache global
   only:
     - master
-  script: echo '1'
+  script:
+    - curl -s -S -k -X POST https://jenkins.canoas.ifrs.edu.br:8443/generic-webhook-trigger/invoke?token=$TOKEN_WEBHOOK_3
   when: manual
