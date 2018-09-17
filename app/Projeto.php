@@ -21,7 +21,7 @@ class Projeto extends Model {
      * @var array
      */
     protected $fillable = [
-        'titulo', 'resumo', 'relatorio', 'situacao_id'
+        'titulo', 'resumo', 'relatorio', 'situacao_id', 'presenca'
     ];
 
     public function pessoas() {
@@ -29,11 +29,11 @@ class Projeto extends Model {
     }
 
     public function avaliacoes() {
-        return $this->hasMany('App\Avaliacao');
+        return $this->hasMany('App\Avaliacao', 'projeto_id');
     }
 
     public function revisoes() {
-        return $this->hasMany('App\Revisao');
+        return $this->hasMany('App\Revisao', 'projeto_id');
     }
 
     public function areaConhecimento() {
@@ -67,11 +67,138 @@ class Projeto extends Model {
 
     }
 
+
+    public function getNotaRevisao($id){
+        $subQuery = DB::table('revisao')
+            ->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
+            ->where('revisao.projeto_id','=',DB::raw('projeto.id'))
+            ->toSql();
+
+        $projeto = Projeto::select(DB::raw('('.$subQuery.') as nota'))
+            ->join('situacao','projeto.situacao_id','=','situacao.id')
+            ->where('edicao_id','=',Edicao::getEdicaoId())
+            ->where('projeto.id','=',$id)
+            ->get();
+        return $projeto->first()->nota;
+    }
+
+    public function getNotaAvaliacao($id){
+        $subQuery = DB::table('avaliacao')
+            ->select(DB::raw('COALESCE(AVG(avaliacao.nota_final),0)'))
+            ->where('avaliacao.projeto_id','=',DB::raw('projeto.id'))
+            ->toSql();
+
+        $projeto = Projeto::select(DB::raw('('.$subQuery.') as nota'))
+            ->join('situacao','projeto.situacao_id','=','situacao.id')
+            ->where('edicao_id','=',Edicao::getEdicaoId())
+            ->where('projeto.id','=',$id)
+            ->get();
+
+        return $projeto->first()->nota;
+    }
+
+    /*
+     *
+     * Retorna TRUE quando todos homologadores já tiverem avaliado o projeto
+     *
+     */
+    public function statusHomologacao(){
+
+        $homologadores = DB::table('revisao')
+            ->select('revisado')
+            ->where('projeto_id','=',$this->id)
+            ->get()
+            ->toArray();
+
+        $count = 0;
+
+        foreach ($homologadores as $homologador){
+            if($homologador->revisado)
+                $count++;
+        }
+
+        if($count == count($homologadores) && count($homologadores) != 0)
+            return true;
+
+        return false;
+
+    }
+
+    public function statusAvaliacao(){
+
+        $avaliadores = DB::table('avaliacao')
+            ->select('avaliado')
+            ->where('projeto_id','=',$this->id)
+            ->get()
+            ->toArray();
+
+        $count = 0;
+
+        foreach ($avaliadores as $avaliador){
+            if($avaliador->avaliado)
+                $count++;
+        }
+
+        if($count == count($avaliadores) && count($avaliadores) != 0)
+            return true;
+
+        return false;
+
+    }
+
+    public function statusPresenca(){
+        $projeto = Projeto::select('presenca')
+            ->where('id','=',$this->id)
+            ->get();
+        if($projeto->count() && $projeto[0]->presenca != null)
+            return true;
+
+        return false;
+    }
+
     public function getTotalFuncoes($funcoes) {
         foreach ($funcoes as $funcao) {
             $totalFuncoes[$funcao->funcao] = (DB::table('escola_funcao_pessoa_projeto')->where([['projeto_id', $this->id], ['funcao_id', $funcao->id]])->count('funcao_id'));
         }
         return $totalFuncoes;
     }
+
+    public function getAutores($id) {
+        $autores = DB::table('pessoa')
+                ->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+                ->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
+                ->where('escola_funcao_pessoa_projeto.projeto_id',$id)
+                ->where('escola_funcao_pessoa_projeto.funcao_id',Funcao::where('funcao', 'Autor')->get()->first()->id)
+                ->where('escola_funcao_pessoa_projeto.edicao_id',Edicao::getEdicaoId())
+                ->orderBy('pessoa.nome')
+                ->get();
+        return $autores;
+    }
+
+    public function getOrientador($id) {
+        $orientador = DB::table('pessoa')
+                ->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+                ->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
+                ->where('escola_funcao_pessoa_projeto.projeto_id',$id)
+                ->where('escola_funcao_pessoa_projeto.funcao_id',Funcao::where('funcao', 'Orientador')->get()->first()->id)
+                ->where('escola_funcao_pessoa_projeto.edicao_id',Edicao::getEdicaoId())
+                ->orderBy('pessoa.nome')
+                ->get();
+
+        return $orientador;
+    }
+
+    public function getCoorientadores($id) {
+        $coorientadores = DB::table('pessoa')
+                ->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+                ->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
+                ->where('escola_funcao_pessoa_projeto.projeto_id',$id)
+                ->where('escola_funcao_pessoa_projeto.funcao_id',Funcao::where('funcao', 'Coorientador')->get()->first()->id)
+                ->where('escola_funcao_pessoa_projeto.edicao_id',Edicao::getEdicaoId())
+                ->orderBy('pessoa.nome')
+                ->get();
+        return $coorientadores;
+    }
+
 
 }

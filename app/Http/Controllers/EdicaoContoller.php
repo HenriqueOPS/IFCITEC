@@ -109,7 +109,8 @@ class EdicaoController extends Controller {
               'comissao_abertura'         => $data['comissao_abertura'],
               'comissao_fechamento'       => $data['comissao_fechamento'],
 			  'feira_abertura'         	  => $data['feira_abertura'],
-			  'feira_fechamento'      	  => $data['feira_fechamento']
+			  'feira_fechamento'      	  => $data['feira_fechamento'],
+              'projetos'                  => $data['projetos'],
             ]);
 
         $nivel = DB::table('nivel_edicao')->select('nivel_id')->where('edicao_id', $id)->get();

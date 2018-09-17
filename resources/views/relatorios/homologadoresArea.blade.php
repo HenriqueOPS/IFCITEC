@@ -20,7 +20,7 @@
           @foreach($homologadores as $homologador)
           @if($area->id == $homologador->area_id)
           <tr>
-            <td>{{$homologador->nome}}</td>
+            <td><a style="color: #000;">{{$homologador->nome}}</a></td>
             {{$cont++}}
           </tr>
           @endif

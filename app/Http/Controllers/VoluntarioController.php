@@ -42,26 +42,30 @@ class VoluntarioController extends Controller
 
     public function cadastraVoluntario(Request $req){
         $data = $req->all();
+		if(! Auth::user()->temTrabalho()) {
+			DB::table('pessoa_tarefa')->insert(
+				['edicao_id' => Edicao::getEdicaoId(),
+					'tarefa_id' => $data['tarefa'],
+					'pessoa_id' => Auth::id(),
+				]
+			);
 
-        DB::table('pessoa_tarefa')->insert(
-                ['edicao_id' => Edicao::getEdicaoId(),
-                    'tarefa_id' => $data['tarefa'],
-                    'pessoa_id' => Auth::id(),
-                ]
-        );
+			DB::table('funcao_pessoa')->insert(
+				['edicao_id' => Edicao::getEdicaoId(),
+					'funcao_id' => Funcao::where('funcao', 'Voluntário')->first()->id,
+					'pessoa_id' => Auth::id(),
+					'homologado' => false
+				]
+			);
 
-        DB::table('funcao_pessoa')->insert(
-                ['edicao_id' => Edicao::getEdicaoId(),
-                    'funcao_id' => Funcao::where('funcao', 'Voluntário')->first()->id,
-                    'pessoa_id' => Auth::id(),
-                    'homologado' => false
-                ]
-        );
+			$emailJob = (new MailVoluntarioJob())->delay(\Carbon\Carbon::now()->addSeconds(3));
+			dispatch($emailJob);
 
-        $emailJob = (new MailVoluntarioJob())->delay(\Carbon\Carbon::now()->addSeconds(3));
-        dispatch($emailJob);
 
-        
-        return view('inscricaoEnviada');
+			return view('inscricaoEnviada');
+		}
+		else{
+			return redirect()->route('home');
+		}
     }
 }

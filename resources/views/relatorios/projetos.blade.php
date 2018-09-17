@@ -23,7 +23,7 @@
     				<td>
               @foreach($autores as $autor)
               @if($autor->projeto_id == $projeto->id)
-              {{$autor->nome}}
+              <a style="color: #000;">{{$autor->nome}}</a>
               <br>
               @endif
               @endforeach
@@ -31,13 +31,13 @@
     				<td>
               @foreach($orientadores as $orientador)
               @if($orientador->projeto_id == $projeto->id)
-              {{$orientador->nome}}</td>
+              <a style="color: #000;">{{$orientador->nome}}</a></td>
               @endif
               @endforeach
             <td>
               @foreach($coorientadores as $coorientador)
               @if($coorientador->projeto_id == $projeto->id)
-              {{$coorientador->nome}}
+              <a style="color: #000;">{{$coorientador->nome}}</a>
               <br>
               @endif
               @endforeach

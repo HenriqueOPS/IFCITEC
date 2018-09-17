@@ -17,9 +17,9 @@
   			<tbody>
   				@foreach($voluntarios as $id => $voluntario)
   				<tr>
-    				<td>{{$voluntario->nome}}</td>
-            <td>{{$voluntario->email}}</td>
-            <td>{{\App\Pessoa::find($voluntario->id)->tarefas->first()->tarefa}}</td>
+    				<td><a style="color: #000;">{{$voluntario->nome}}</a></td>
+            <td><a style="color: #000;">{{$voluntario->email}}</a></td>
+            <td><a style="color: #000;">{{\App\Pessoa::find($voluntario->id)->tarefas->first()->tarefa}}</a></td>
   				</tr>
   				@endforeach
   			</tbody>	

@@ -16,9 +16,9 @@
   			<tbody>
   				@foreach($areas as $area)
   				<tr>
-    				<td>{{$area->area_conhecimento}}</td>
-    				<td>{{$area->niveis()->first()->nivel}}</td> 
-    				<td>{{$area->descricao}}</td>
+    				<td><a style="color: #000;">{{$area->area_conhecimento}}</a></td>
+    				<td><a style="color: #000;">{{$area->niveis()->first()->nivel}}</a></td> 
+    				<td><a style="color: #000;">{{$area->descricao}}</a></td>
   				</tr>
   				@endforeach
   			</tbody>	

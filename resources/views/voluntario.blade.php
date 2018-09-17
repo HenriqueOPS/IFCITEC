@@ -47,7 +47,7 @@
                             <h4>Selecione a tarefa que você gostaria de realizar como voluntário da feira:</h4>
                                 @foreach($tarefas as $tarefa)
                                     <div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">
-                                         @if($tarefa->pessoas()->count() == $tarefa->vagas)
+                                         @if($tarefa->pessoas->count() >= $tarefa->vagas)
                                             <div class="radio">
                                                 <label>
                                                     <input type="radio"
