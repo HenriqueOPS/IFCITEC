@@ -418,6 +418,16 @@ class RelatorioController extends Controller
 		return \PDF::loadView('relatorios.avaliadores', array('avaliadores' => $avaliadores, 'cont' => $cont))->download('avaliadores.pdf');
 	}
 
+	public function projetosAvaliador(){
+		$avaliadores = Pessoa::select('pessoa.nome', 'pessoa.id')
+			->join('funcao_pessoa', 'pessoa.id', '=', 'funcao_pessoa.pessoa_id')
+			->where('funcao_id', Funcao::where('funcao', 'Avaliador')->first()->id)
+			->orderBy('pessoa.nome')
+			->get();
+
+		return \PDF::loadView('relatorios.projetosAvaliador', array('avaliadores' => $avaliadores))->download('projetos_avaliador.pdf');
+	}
+
 	public function autoresLanche(){
 		$autores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
@@ -771,7 +781,7 @@ class RelatorioController extends Controller
 			->where('edicao_id', '=',Edicao::getEdicaoId())
 			->join('nivel','nivel_edicao.nivel_id','=','nivel.id')
 			->get();
-			
+
 		return view('admin.gerarLocalizacaoProjetos')->withNiveis($niveis);
 	}
 
@@ -889,14 +899,14 @@ class RelatorioController extends Controller
 			->get();
 
 		$cont = $autores->count() * $dias;
-		
+
 		return view('relatorios.valeLanche', array('cont' => $cont));
 	}
 
 	public function projetosConfirmaramPresencaArea(){
 		$areas = Edicao::find(Edicao::getEdicaoId())->areas;
 
-		
+
 		return \PDF::loadView('relatorios.projetosConfirmaramPresencaArea', array('areas' => $areas))->download('projetos_presenca_nivel.pdf');
 	}
 
@@ -926,7 +936,7 @@ class RelatorioController extends Controller
         $data = Edicao::select('feira_fechamento')
         	->where('id',Edicao::getEdicaoId())->get();
         $data = date('d/m/Y', strtotime($data->first()->feira_fechamento));
-        
+
 		return \PDF::loadView('relatorios.premiacaoCertificados', array('areas' => $areas, 'projetos' => $projetos, 'data' => $data))->setPaper('A4', 'landscape')->download('premiacao_certificados.pdf');
 	}
 

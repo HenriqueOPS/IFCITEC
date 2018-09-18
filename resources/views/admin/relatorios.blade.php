@@ -167,6 +167,13 @@
                                 <a href="{{route('avaliadoresProjeto')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+						<tr>
+							<td>4</td>
+							<td>Relatório de Projetos Por Avaliador</td>
+							<td class="text-right">
+								<a href="{{route('projetosAvaliador')}}" target="_blank"><i class="material-icons">visibility</i></a>
+							</td>
+						</tr>
                     </tbody>
 
                     <tbody id="1">
@@ -197,7 +204,7 @@
                             <td class="text-right">
                                 <a href="{{route('generateCrachasComissaoOrganizadora')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
-                        </tr>  
+                        </tr>
                         <tr>
                             <td>5</td>
                             <td>Crachás Orientadores</td>
