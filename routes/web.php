@@ -21,6 +21,7 @@ Route::get('/version', function (){
 
 
 //Gera os crachás
+Route::get('/cracha/gerar-crachas/branco', 'CrachaController@generateCrachas')->name('generateCrachas');
 Route::get('/cracha/gerar-crachas/autores', 'CrachaController@generateCrachasAutores')->name('generateCrachasAutores');
 Route::get('/cracha/gerar-crachas/coorientadores', 'CrachaController@generateCrachasCoorientadores')->name('generateCrachasCoorientadores');
 Route::get('/cracha/gerar-crachas/comissao-avaliadora', 'CrachaController@generateCrachasComissaoAvaliadora')->name('generateCrachasComissaoAvaliadora');
@@ -127,6 +128,7 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 	Route::get('/relatorio/coorientadores/pos/homologacao', 'RelatorioController@coorientadoresPosHomologacao')->name('relatorioCoorientadoresPos');
 	Route::get('/relatorio/autores/tamanho/camisa', 'RelatorioController@camisaTamanho')->name('camisaTamanho');
 	Route::get('/relatorio/autores/tamanho/camisa/assinatura', 'RelatorioController@camisaTamanhoAssinatura')->name('camisaTamanhoAssinatura');
+	Route::get('/relatorio/participantes/assinatura', 'RelatorioController@participantesAssinatura')->name('participantesAssinatura');
 	Route::get('/relatorio/homologadores/area', 'RelatorioController@homologadoresArea')->name('homologadoresArea');
 	Route::get('/relatorio/avaliadores/area', 'RelatorioController@avaliadoresArea')->name('avaliadoresArea');
 	Route::get('/relatorio/homologadores/projeto', 'RelatorioController@homologadoresProjeto')->name('homologadoresProjeto');

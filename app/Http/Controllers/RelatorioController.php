@@ -126,7 +126,10 @@ class RelatorioController extends Controller
 						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 						->select('pessoa.nome', 'pessoa.email')
-						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+						->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                        })
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
 						->where('projeto.presenca', TRUE)
@@ -159,7 +162,10 @@ class RelatorioController extends Controller
 						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 						->select('pessoa.nome', 'pessoa.email')
-						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+						->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                        })
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
 						->orderBy('pessoa.nome')
@@ -497,12 +503,65 @@ class RelatorioController extends Controller
 		return \PDF::loadView('relatorios.camisaTamanhoAssinatura', array('autores' => $autores))->setPaper('A4', 'landscape')->download('autores_tamanho_camisa_assinatura.pdf');
 	}
 
+	public function participantesAssinatura(){
+		$autores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+						->select('pessoa.nome', 'pessoa.id')
+                        ->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                        })
+						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->where('projeto.presenca', TRUE)
+						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+						->orderBy('pessoa.nome')
+						->distinct('pessoa.id')
+						->get();
+
+		$orientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+						->select('pessoa.nome', 'pessoa.id')
+                        ->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                        })
+                        ->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->where('projeto.presenca', TRUE)
+						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
+						->orderBy('pessoa.nome')
+						->distinct('pessoa.id')
+						->get();
+
+		$coorientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+						->select('pessoa.nome', 'pessoa.id')
+                        ->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                        })
+                        ->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->where('projeto.presenca', TRUE)
+						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
+						->orderBy('pessoa.nome')
+						->distinct('pessoa.id')
+						->get();
+
+
+		return \PDF::loadView('relatorios.participantesAssinatura', array('autores' => $autores, 'orientadores' => $orientadores, 'coorientadores' => $coorientadores))->setPaper('A4', 'landscape')->download('participantes_assinatura.pdf');
+	}
+
 	public function orientadoresPosHomologacao(){
 		$orientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 						->select('funcao_pessoa.edicao_id', 'pessoa.nome','pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
-						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+						->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                        })
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
 						->where('projeto.presenca', TRUE)
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
@@ -519,7 +578,10 @@ class RelatorioController extends Controller
 						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 						->select('funcao_pessoa.edicao_id', 'pessoa.nome','pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
-						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+						->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                        })
 						->where('projeto.presenca', TRUE)
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
@@ -803,7 +865,10 @@ class RelatorioController extends Controller
 						->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
 						->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
 						->where('projeto.edicao_id',Edicao::getEdicaoId())
-						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+						->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                        })
 						->where('projeto.presenca', TRUE)
 						->where('nivel.id', $data['nivel'][$key])
 						->distinct('projeto.id')
@@ -819,7 +884,10 @@ class RelatorioController extends Controller
 					->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
 					->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
 					->where('projeto.edicao_id',Edicao::getEdicaoId())
-					->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+					->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                        })
 					->where('projeto.presenca', TRUE)
 					->where('nivel.id', $data['nivel'][$key])
 					->limit($numeroProjetos)
@@ -837,7 +905,10 @@ class RelatorioController extends Controller
 						->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
 						->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
 						->where('projeto.edicao_id',Edicao::getEdicaoId())
-						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+						->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                        })
 						->where('projeto.presenca', TRUE)
 						->whereNotIn('projeto.id', $ids)
 						->where('nivel.id', $data['nivel'][$key])
@@ -854,7 +925,10 @@ class RelatorioController extends Controller
 							->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
 							->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
 							->where('projeto.edicao_id',Edicao::getEdicaoId())
-							->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+							->where(function ($q){
+	                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
+	                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+	                        })
 							->where('projeto.presenca', TRUE)
 							->whereNotIn('projeto.id', $ids)
 							->where('nivel.id', $data['nivel'][$key])
@@ -889,7 +963,10 @@ class RelatorioController extends Controller
 			->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 			->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.telefone', 'projeto.presenca')
-			->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+			->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+             })
 			->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
 			->where('projeto.presenca', TRUE)
 			->where('escola.nome_curto', '!=' , 'IFRS Canoas')
