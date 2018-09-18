@@ -219,6 +219,13 @@
                                 <a href="{{route('generateCrachasVoluntarios')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>Crachás Backup</td>
+                            <td class="text-right">
+                                <a href="{{route('generateCrachas')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
                     </tbody>
 
                     <tbody id="2">
@@ -527,9 +534,16 @@
                         </tr>
                         <tr>
                             <td>14</td>
-                            <td>Reletório de Participantes de Projetos</td>
+                            <td>Relatório de Participantes de Projetos</td>
                             <td class="text-right">
                                 <a href="{{route('csv', 3)}}"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td>Relatório de Participantes (Assinatura)</td>
+                            <td class="text-right">
+                                <a href="{{route('participantesAssinatura')}}"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>

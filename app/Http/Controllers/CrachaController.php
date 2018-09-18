@@ -20,6 +20,11 @@ class CrachaController extends Controller
 				->svg();
 	}
 
+	public function generateCrachas(){
+		
+		return Response::view('impressao.crachas');
+	}
+
 	public function generateCrachasAutores(){
 		$pessoas = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')

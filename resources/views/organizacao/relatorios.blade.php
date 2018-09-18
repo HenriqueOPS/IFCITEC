@@ -190,6 +190,13 @@
                                 <a href="{{route('generateCrachasVoluntarios')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>Crachás Backup</td>
+                            <td class="text-right">
+                                <a href="{{route('generateCrachas')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
                     </tbody>
 
                     <tbody id="2">
@@ -426,6 +433,14 @@
                         </tr>
                         <tr>
                             <td>5</td>
+                            <td>Relatório de Autores (Tamanho Camisa - Assinatura)
+                            </td>
+                            <td class="text-right">
+                                <a href="{{route('camisaTamanhoAssinatura')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
                             <td>Relatório de Autores Que Comparecerão na IFCITEC
                             </td>
                             <td class="text-right">
@@ -433,7 +448,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>6</td>
+                            <td>7</td>
                             <td>Relatório de Avaliadores
                             </td>
                             <td class="text-right">
@@ -441,7 +456,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>7</td>
+                            <td>8</td>
                             <td>Relatório de Coorientadores
                             </td>
                             <td class="text-right">
@@ -449,7 +464,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>8</td>
+                            <td>9</td>
                             <td>Relatório de Coorientadores (Pós Homologação)
                             </td>
                             <td class="text-right">
@@ -457,7 +472,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>9</td>
+                            <td>10</td>
                             <td>Relatório de Homologadores
                             </td>
                             <td class="text-right">
@@ -465,7 +480,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>10</td>
+                            <td>11</td>
                             <td>Relatório de Orientadores
                             </td>
                             <td class="text-right">
@@ -473,7 +488,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>11</td>
+                            <td>12</td>
                             <td>Relatório de Orientadores (Pós Homologação)
                             </td>
                             <td class="text-right">
@@ -481,7 +496,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>12</td>
+                            <td>13</td>
                             <td>Relatório de Voluntários
                             </td>
                             <td class="text-right">
@@ -489,10 +504,17 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>13</td>
-                            <td>Reletório de Participantes de Projetos</td>
+                            <td>14</td>
+                            <td>Relatório de Participantes de Projetos</td>
                             <td class="text-right">
                                 <a href="{{route('csv', 3)}}"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>15x</td>
+                            <td>Relatório de Participantes (Assinatura)</td>
+                            <td class="text-right">
+                                <a href="{{route('participantesAssinatura')}}"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>
