@@ -625,15 +625,14 @@ class RelatorioController extends Controller
 	}
 
 	public function voluntarioTarefa(){
-		$voluntarios = DB::table('funcao_pessoa')
-				->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-				->join('funcao', 'funcao_pessoa.funcao_id', '=', 'funcao.id')
-				->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
-				->where('funcao.funcao','Voluntário')
-				->where('funcao_pessoa.edicao_id',Edicao::getEdicaoId())
-				->orderBy('pessoa.nome')
-				->get()
-				->toArray();
+
+		$voluntarios = Pessoa::select('pessoa.id', 'pessoa.nome', 'pessoa.email')
+            ->join('funcao_pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+            ->join('funcao', 'funcao_pessoa.funcao_id', '=', 'funcao.id')
+            ->where('funcao.funcao','Voluntário')
+            ->where('funcao_pessoa.edicao_id',Edicao::getEdicaoId())
+            ->orderBy('pessoa.nome')
+            ->get();
 
 		return \PDF::loadView('relatorios.voluntarioTarefa', array('voluntarios' => $voluntarios))->download('voluntarios_tarefas.pdf');
 	}
