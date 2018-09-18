@@ -250,7 +250,7 @@ $('.dados-projeto').click(function(){
             $("#avaliadores").html('');
 
             avaliadores.forEach(function (avaliador) {
-                if(avaliador.revisado)
+                if(avaliador.avaliado)
                     $("#avaliadores").append('<span>'+avaliador.nome+' => '+avaliador.nota_final+'</span><br>');
                 else
                     $("#avaliadores").append('<span>'+avaliador.nome+'</span><br>');
