@@ -862,97 +862,42 @@ class RelatorioController extends Controller
 	public function geraLocalizacaoProjetos(Request $req){
 		$data = $req->all();
 		$num = $data['button'];
-		$ids = null;
+		$ids = array();
 		$cont = 0;
+
 		foreach ($data['bloco'] as $key => $bloco) {
 			$numeroSalas = ($data['ate'][$key] - $data['de'][$key]) + 1;
 			$numeroProjetos = $data['num'][$key];
 
 			for ($i = $data['de'][$key]; $i <= $data['ate'][$key]; $i++) {
-			if($cont == 0){
-					$projetos[$bloco][$i] = DB::table('projeto')
-						->select('projeto.id', 'projeto.titulo', 'area_conhecimento.area_conhecimento', 'nivel.nivel', 'escola.nome_curto')
-						->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
-						->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
-						->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
-						->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
-						->where('projeto.edicao_id',Edicao::getEdicaoId())
-						->where(function ($q){
-                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-                        })
-						->where('projeto.presenca', TRUE)
-						->where('nivel.id', $data['nivel'][$key])
-						->distinct('projeto.id')
-						->orderBy('area_conhecimento.area_conhecimento')
-						->orderBy('nivel.nivel')
-						->orderBy('projeto.titulo')
-						->limit($numeroProjetos)
-						->get()
-						->toArray();
 
-				$id = DB::table('projeto')
-					->select('projeto.id')
-					->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
-					->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
-					->where('projeto.edicao_id',Edicao::getEdicaoId())
-					->where(function ($q){
-                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-                        })
-					->where('projeto.presenca', TRUE)
-					->where('nivel.id', $data['nivel'][$key])
-					->limit($numeroProjetos)
-					->get()
-					->keyBy('id')
-					->toArray();
-					$cont++;
-					$ids = array_keys($id);
-			}
-			else{
-				$projetos[$bloco][$i] = DB::table('projeto')
-						->select('projeto.id', 'projeto.titulo', 'area_conhecimento.area_conhecimento', 'nivel.nivel', 'escola.nome_curto')
-						->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
-						->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
-						->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
-						->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
-						->where('projeto.edicao_id',Edicao::getEdicaoId())
-						->where(function ($q){
-                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-                        })
-						->where('projeto.presenca', TRUE)
-						->whereNotIn('projeto.id', $ids)
-						->where('nivel.id', $data['nivel'][$key])
-						->distinct('projeto.id')
-						->orderBy('area_conhecimento.area_conhecimento')
-						->orderBy('nivel.nivel')
-						->orderBy('projeto.titulo')
-						->limit($numeroProjetos)
-						->get()
-						->toArray();
+                $projetos[$bloco][$i] = DB::table('projeto')
+                    ->select('projeto.id', 'projeto.titulo', 'area_conhecimento.area_conhecimento', 'nivel.nivel', 'escola.nome_curto')
+                    ->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
+                    ->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
+                    ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+                    ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+                    ->where('projeto.edicao_id',Edicao::getEdicaoId())
+                    ->where(function ($q){
+                        $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
+                        $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                    })
+                    ->where('projeto.presenca', TRUE)
+                    ->where('nivel.id', $data['nivel'][$key])
+                    ->whereNotIn('projeto.id', $ids)
+                    ->distinct('projeto.id')
+                    ->orderBy('area_conhecimento.area_conhecimento')
+                    ->orderBy('nivel.nivel')
+                    ->orderBy('projeto.titulo')
+                    ->limit($numeroProjetos)
+                    ->get()
+                    ->toArray();
 
-						$id = DB::table('projeto')
-							->select('projeto.id')
-							->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
-							->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
-							->where('projeto.edicao_id',Edicao::getEdicaoId())
-							->where(function ($q){
-	                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-	                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-	                        })
-							->where('projeto.presenca', TRUE)
-							->whereNotIn('projeto.id', $ids)
-							->where('nivel.id', $data['nivel'][$key])
-							->limit($numeroProjetos)
-							->get()
-							->keyBy('id')
-							->toArray();
-							$cont++;
-						$ids = array_merge($ids,array_keys($id));
-			}
+                $ids = array_merge($ids, array_column($projetos[$bloco][$i], 'id'));
+
 			}
 		}
+
 		$cont = 1;
 		if($num == 1){
 			return \PDF::loadView('relatorios.geraLocalizacaoProjetos',array('projetos' => $projetos, 'cont' => $cont))->setPaper('A4', 'landscape')->download('projetos_identificacao.pdf');
