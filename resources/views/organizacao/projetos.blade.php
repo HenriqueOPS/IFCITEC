@@ -129,7 +129,7 @@
 
                                 </div>
 
-                                <a class="dados-projeto" projeto-id="{{$projeto->id}}"><i class="material-icons blue-icon">pan_tool</i></a>
+                                <a class="dados-projeto" projeto-id="{{$projeto->id}}"><i class="material-icons blue-icon" href="#" >remove_red_eye</i></a>
 
                                 @if($projeto->getStatus() == "Não Avaliado" || $projeto->getStatus() == "Homologado")
                                     <a href="{{route('vinculaAvaliador',$projeto->id)}}"><i class="material-icons">assignment_ind</i></a>

@@ -3,22 +3,21 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE AVALIADORES POR PROJETO</h2>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE PROJETOS POR AVALIADOR</h2>
 
-        @foreach($projetos as $projeto)
+        @foreach($avaliadores as $avaliador)
         <table class="bordered striped centered" style="width: 100%;">
           <thead>
             <tr>
-              <th>{{$projeto->titulo}}</th> 
+              <th>{{$avaliador->nome}}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>
-                  <a style="color: #000;">Avaliadores: </a>
-                  @foreach($projeto->avaliacoes as $avaliacao)
-                        <a style="color: #000;">{{$avaliacao->pessoa->nome}}, </a>
-                  @endforeach  
+				  @foreach($avaliador->getProjetosAvaliador($avaliador->id) as $projeto)
+				  <p style="color: #000;">{{$projeto->titulo}}</p>
+				  @endforeach
               </td>
             </tr>
           </tbody>
@@ -28,4 +27,3 @@
 	</div>
 </div>
 @endsection
-
