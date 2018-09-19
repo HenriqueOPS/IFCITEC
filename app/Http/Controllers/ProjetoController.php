@@ -830,19 +830,31 @@ class ProjetoController extends Controller
             ->where('projeto_id', '=', $request->projeto_id)
             ->where('avaliado', '=', false)
             ->delete();
+
         Projeto::find($request->projeto_id)
             ->update(['situacao_id' => 3]); //Homologado
 
+        $ids = DB::table('avaliacao')
+            ->select('pessoa_id')
+            ->where('projeto_id', '=', $request->projeto_id)
+            ->get()->toArray();
+
+        $ids = array_column($ids, 'pessoa_id');
+
         $avaliadores = explode(',', $request->avaliadores_id);
         if ($avaliadores[0] != '') {
-            foreach ($avaliadores as $avaliador) {
-                $avaliacao = new Avaliacao();
-                $avaliacao->pessoa_id = $avaliador;
-                $avaliacao->projeto_id = $request->projeto_id;
-                $avaliacao->nota_final = 0;
-                $avaliacao->observacao = '';
-                $avaliacao->avaliado = false;
-                $avaliacao->save();
+            foreach ($avaliadores as $avaliador){
+
+                if(!in_array($avaliador, $ids)) {
+                    $avaliacao = new Avaliacao();
+                    $avaliacao->pessoa_id = $avaliador;
+                    $avaliacao->projeto_id = $request->projeto_id;
+                    $avaliacao->nota_final = 0;
+                    $avaliacao->observacao = '';
+                    $avaliacao->avaliado = false;
+                    $avaliacao->save();
+                }
+
             }
 
             Projeto::find($request->projeto_id)
