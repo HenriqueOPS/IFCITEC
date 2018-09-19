@@ -238,10 +238,11 @@ $('.dados-projeto').click(function(){
             $("#homologadores").html('');
 
             homologadores.forEach(function (homologador) {
-                if(homologador.revisado)
+                if(homologador.revisado) {
                     $("#homologadores").append('<span>'+homologador.nome+' => '+homologador.nota_final+'</span><br>');
-                else
+                }else {
                     $("#homologadores").append('<span>'+homologador.nome+'</span><br>');
+                }
             });
         }
 
@@ -250,10 +251,11 @@ $('.dados-projeto').click(function(){
             $("#avaliadores").html('');
 
             avaliadores.forEach(function (avaliador) {
-                if(avaliador.avaliado)
-                    $("#avaliadores").append('<span>'+avaliador.nome+' => '+avaliador.nota_final+'</span><br>');
-                else
+                if(avaliador.avaliado) {
+                    $("#avaliadores").append('<span>' + avaliador.nome + ' => ' + avaliador.nota_final + '</span><br>');
+                }else {
                     $("#avaliadores").append('<span>'+avaliador.nome+'</span><br>');
+                }
             });
         }
 
