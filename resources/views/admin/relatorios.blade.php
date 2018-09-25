@@ -117,18 +117,24 @@
                             </li>
                             <li>
                                 <a id="6" role="tab" class="tab" data-toggle="tab">
+                                    <i class="material-icons">location_on</i>
+                                    Presença (Certificados)
+                                </a>
+                            </li>
+                            <li>
+                                <a id="7" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">school</i>
                                     Projetos
                                 </a>
                             </li>
                             <li>
-                                <a id="7" role="tab" class="tab" data-toggle="tab">
+                                <a id="8" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">directions_run</i>
                                     Voluntários
                                 </a>
                             </li>
                             <li>
-                                <a id="8" role="tab" class="tab" data-toggle="tab">
+                                <a id="9" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">group</i>
                                     Usuários
                                 </a>
@@ -369,6 +375,58 @@
                     <tbody id="6">
                         <tr>
                             <td>1</td>
+                            <td>CSV Autores</td>
+                            <td class="text-right">
+                                <a href="{{route('csvPresencaAutores')}}"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>CSV Avaliadores</td>
+                            <td class="text-right">
+                                <a href="{{route('csvPresencaAvaliadores')}}"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>CSV Comissão Organizadora</td>
+                            <td class="text-right">
+                                <a href="{{route('csvPresencaComissao')}}"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>CSV Coorientadores</td>
+                            <td class="text-right">
+                                <a href="{{route('csvPresencaCoorientadores')}}"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>CSV Homologadores</td>
+                            <td class="text-right">
+                                <a href="{{route('csvPresencaHomologadores')}}"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>CSV Orientadores</td>
+                            <td class="text-right">
+                                <a href="{{route('csvPresencaOrientadores')}}"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>CSV Voluntários</td>
+                            <td class="text-right">
+                                <a href="{{route('csvPresencaVoluntarios')}}"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tbody id="7">
+                        <tr>
+                            <td>1</td>
                             <td>Gerar Localização dos Projetos</td>
                             <td class="text-right">
                                 <a href="{{route('gerarLocalizacaoProjetos')}}"><i class="material-icons">visibility</i></a>
@@ -410,7 +468,7 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tbody id="7">
+                    <tbody id="8">
                         <tr>
                             <td>1</td>
                             <td>Relatório de Voluntários</td>
@@ -426,7 +484,7 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tbody id="8">
+                    <tbody id="9">
                         <tr>
                             <td>1</td>
                             <td>Relatório de Autores
@@ -585,6 +643,7 @@ $(document).ready(function () {
     $('tbody[id=6]').hide();
     $('tbody[id=7]').hide();
     $('tbody[id=8]').hide();
+    $('tbody[id=9]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
@@ -594,6 +653,7 @@ $(document).ready(function () {
     $('div[id=6]').hide();
     $('div[id=7]').hide();
     $('div[id=8]').hide();
+    $('div[id=9]').hide();
 }
 function hideHeads(){
     $('thead[id=0]').hide();
@@ -605,6 +665,7 @@ function hideHeads(){
     $('thead[id=6]').hide();
     $('thead[id=7]').hide();
     $('thead[id=8]').hide();
+    $('thead[id=9]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
@@ -614,6 +675,7 @@ function hideHeads(){
     $('div[id=6]').hide();
     $('div[id=7]').hide();
     $('div[id=8]').hide();
+    $('div[id=9]').hide();
 }
 
 </script>
