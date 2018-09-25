@@ -85,9 +85,15 @@ Route::post('/editar-cadastro/', 'PessoaController@editaCadastro')->name('editaC
 Route::get('/autor', 'AutorController@index')->name('autor');
 
 
-
 //Relatórios
 	Route::get('/csv/{id}', 'RelatorioController@csv')->name('csv');
+	Route::get('/csv/presenca/autores', 'RelatorioController@csvPresencaAutores')->name('csvPresencaAutores');
+	Route::get('/csv/presenca/avaliadores', 'RelatorioController@csvPresencaAvaliadores')->name('csvPresencaAvaliadores');
+	Route::get('/csv/presenca/coorientadores', 'RelatorioController@csvPresencaCoorientadores')->name('csvPresencaCoorientadores');
+	Route::get('/csv/presenca/orientadores', 'RelatorioController@csvPresencaOrientadores')->name('csvPresencaOrientadores');
+	Route::get('/csv/presenca/voluntarios', 'RelatorioController@csvPresencaVoluntarios')->name('csvPresencaVoluntarios');
+	Route::get('/csv/presenca/comissao', 'RelatorioController@csvPresencaComissaoOrganizadora')->name('csvPresencaComissao');
+	Route::get('/csv/presenca/homologadores', 'RelatorioController@csvPresencaHomologadores')->name('csvPresencaHomologadores');
 	Route::get('/projetos/csv', 'RelatorioController@csvCertificados')->name('csvCertificados');
 	Route::get('/pessoas/csv', 'RelatorioController@csvProjetos')->name('csvProjetos');
 	Route::get('/pessoas/csv/autores/homologados', 'RelatorioController@csvAutoresHomologados')->name('csvAutoresHomologados');
