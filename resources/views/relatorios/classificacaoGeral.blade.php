@@ -1,4 +1,4 @@
-@extends('relatorios.relatorio')
+@extends('relatorios.relatorioPaisagem')
 
 @section('content')
 <div class="container">

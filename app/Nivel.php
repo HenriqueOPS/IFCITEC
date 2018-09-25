@@ -98,6 +98,8 @@ class Nivel extends Model {
             ->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
             ->where('projeto.nota_avaliacao','<>',NULL)
             ->where('projeto.nivel_id',$id)
+            ->groupBy('projeto.id')
+            ->groupBy('escola.nome_curto')
             ->orderBy('projeto.nota_avaliacao', 'desc')
             ->orderBy('nota', 'desc')
             ->orderBy('projeto.created_at', 'asc')
