@@ -19,6 +19,7 @@ class RelatorioController extends Controller
 {
 	public function csv($id)
 	{
+		
 		if ($id == 1) {
 			$resultados = DB::table('funcao_pessoa')
 			->join('pessoa','funcao_pessoa.pessoa_id','=','pessoa.id')
