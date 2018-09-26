@@ -195,8 +195,15 @@ class RelatorioController extends Controller
 	{
 		$autores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->join('presenca', 'pessoa.id', '=', 'presenca.id_pessoa')
+						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email')
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+						->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+						->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+             			})
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
 						->orderBy('pessoa.nome')
 						->distinct('pessoa.id')
@@ -265,8 +272,15 @@ class RelatorioController extends Controller
 	{
 		$coorientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->join('presenca', 'pessoa.id', '=', 'presenca.id_pessoa')
+						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email')
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
+						->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
+						->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+             			})
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
 						->orderBy('pessoa.nome')
 						->distinct('pessoa.id')
@@ -300,8 +314,15 @@ class RelatorioController extends Controller
 	{
 		$orientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->join('presenca', 'pessoa.id', '=', 'presenca.id_pessoa')
+						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email')
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
+						->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
+						->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+             			})
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
 						->orderBy('pessoa.nome')
 						->distinct('pessoa.id')
