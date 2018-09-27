@@ -497,10 +497,12 @@ class AdminController extends Controller
 	{
 		$usuario = Pessoa::find($id);
 		$funcoes = Funcao::all();
+		$tarefas = Tarefa::orderBy('tarefa')->get();
 
 		return view('admin.usuario.editarFuncao')
 			->withUsuario($usuario)
-			->withFuncoes($funcoes);
+			->withFuncoes($funcoes)
+			->withTarefas($tarefas);
 	}
 
 	public function editaFuncaoUsuario(Request $req, $id)
@@ -512,11 +514,33 @@ class AdminController extends Controller
 			->get()
 			->keyBy('funcao_id')
 			->toArray();
+
+		$usuario = Pessoa::find($id);
+
+		if(isset($data['tarefa'])){
+			if ($usuario->tarefas->first() != null) {
+				if($usuario->tarefas->first()->id != $data['tarefa']){
+					DB::table('pessoa_tarefa')->where('pessoa_id', $id)->update([
+						'tarefa_id' => $data['tarefa']]);
+				}
+			}
+			else {
+				DB::table('pessoa_tarefa')->insert(
+				['edicao_id' => Edicao::getEdicaoId(),
+					'tarefa_id' => $data['tarefa'],
+					'pessoa_id' => $id,
+				]
+			);
+			}
+		}
+		
 		if (!empty($funcoes)) {
 			$funcaoId = array_keys($funcoes);
 			foreach ($funcoes as $funcao) {
 				if($funcao->funcao_id == Funcao::select(['id'])->where('funcao', 'Voluntário')->first()->id){
-					DB::table('pessoa_tarefa')->where('edicao_id', Edicao::getEdicaoId())->where('pessoa_id', $id)->delete();
+					if (!isset($data['funcao']) || (!in_array($funcao->funcao_id, $data['funcao']))) {
+						DB::table('pessoa_tarefa')->where('edicao_id', Edicao::getEdicaoId())->where('pessoa_id', $id)->delete();
+					}
 				}
 				if ($funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Autor')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Avaliador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Homologador')->first()->id) {	
 					if (!isset($data['funcao']) || (!in_array($funcao->funcao_id, $data['funcao']))) {
@@ -549,10 +573,12 @@ class AdminController extends Controller
 		}
 
 		$usuario = Pessoa::find($id);
+		$tarefas = Tarefa::orderBy('tarefa')->get();
 		$funcoes = Funcao::all();
 		return view('admin.usuario.editarFuncao')
 			->withUsuario($usuario)
-			->withFuncoes($funcoes);
+			->withFuncoes($funcoes)
+			->withTarefas($tarefas);
 	}
 
 }

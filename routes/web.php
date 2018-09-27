@@ -88,6 +88,7 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 //Relatórios
 	Route::get('/csv/{id}', 'RelatorioController@csv')->name('csv');
 	Route::get('/csv/presenca/autores', 'RelatorioController@csvPresencaAutores')->name('csvPresencaAutores');
+	Route::get('/csv/projetos/premiacao', 'RelatorioController@csvPremiados')->name('csvPremiados');
 	Route::get('/csv/presenca/avaliadores', 'RelatorioController@csvPresencaAvaliadores')->name('csvPresencaAvaliadores');
 	Route::get('/csv/presenca/coorientadores', 'RelatorioController@csvPresencaCoorientadores')->name('csvPresencaCoorientadores');
 	Route::get('/csv/presenca/orientadores', 'RelatorioController@csvPresencaOrientadores')->name('csvPresencaOrientadores');
