@@ -361,6 +361,7 @@
                             <td>Relatório de Premiação dos Projetos</td>
                             <td class="text-right">
                                 <a href="{{route('premiacaoProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('csvPremiados')}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>

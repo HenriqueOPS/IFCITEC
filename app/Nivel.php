@@ -41,6 +41,7 @@ class Nivel extends Model {
 			->where('revisao.projeto_id','=',DB::raw('projeto.id'))
 			->toSql();
 
+
 		$projetos = Projeto::select(DB::raw('('.$subQuery.') as nota'),'projeto.titulo', 'projeto.situacao_id')
 			->where('projeto.edicao_id','=',Edicao::getEdicaoId())
 			->where('projeto.nivel_id','=',$id)

@@ -11,7 +11,26 @@
         <div class="col-md-12 text-center">
             <h2>Administrar Usuários</h2>
         </div>
-        <form method="post" action="{{ route('editaFuncaoUsuario', $usuario->id)}}">
+
+         <div class="row hide" id="loadCadastro">
+                    <div class="loader loader--style2" title="1">
+                        <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                             width="80px" height="80px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                          <path fill="#000" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+                              <animateTransform attributeType="xml"
+                                                attributeName="transform"
+                                                type="rotate"
+                                                from="0 25 25"
+                                                to="360 25 25"
+                                                dur="0.6s"
+                                                repeatCount="indefinite"/>
+                          </path>
+                          </svg>
+                    </div>
+
+        </div>
+
+        <form method="post" id="cadastraVoluntario" action="{{ route('editaFuncaoUsuario', $usuario->id)}}">
         {{ csrf_field() }}
 
 
@@ -25,6 +44,9 @@
                             <th class="text-center">#</th>
                             <th>Usuário</th>
                             <th>Funções</th>
+                            @if($usuario->temFuncao('Voluntário'))
+                            <th>Tarefa</th>
+                            @endif
                         </tr>
                     </thead>
 
@@ -90,7 +112,91 @@
                             @endif
                             @endforeach
                             </td>
-                        <tr>
+                            @if($usuario->temFuncao('Voluntário'))
+                            <td>
+                                @foreach($tarefas as $tarefa)
+
+                                    <div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">
+                                         @if($tarefa->pessoasTarefa($tarefa->id) >= $tarefa->vagas)
+                                            @if($usuario->tarefas->first() != null)
+                                                @if($usuario->tarefas->first()->id == $tarefa->id)
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio"
+                                                               class="tarefa"
+                                                                name="tarefa"
+                                                                value="{{$tarefa->id}}"
+                                                                disabled checked>
+                                                        {{$tarefa->tarefa}}
+                                                    </label>
+                                                </div>
+                                                @else
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio"
+                                                               class="tarefa"
+                                                                name="tarefa"
+                                                                value="{{$tarefa->id}}"
+                                                                disabled>
+                                                        {{$tarefa->tarefa}}
+                                                    </label>
+                                                </div>
+                                                @endif
+                                            @else
+                                            <div class="radio">
+                                                    <label>
+                                                        <input type="radio"
+                                                               class="tarefa"
+                                                                name="tarefa"
+                                                                value="{{$tarefa->id}}"
+                                                                disabled>
+                                                        {{$tarefa->tarefa}}
+                                                    </label>
+                                            </div>
+                                            @endif
+                                         @else
+                                            @if($usuario->tarefas->first() != null)
+                                                @if($usuario->tarefas->first()->id == $tarefa->id)
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio"
+                                                               class="tarefa"
+                                                                value="{{$tarefa->id}}"
+                                                                name="tarefa" checked 
+                                                                >
+                                                        {{$tarefa->tarefa}}
+                                                    </label>
+                                                </div>
+                                                @else
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio"
+                                                               class="tarefa"
+                                                                value="{{$tarefa->id}}"
+                                                                name="tarefa"
+                                                                >
+                                                        {{$tarefa->tarefa}}
+                                                    </label>
+                                                </div>
+                                                @endif
+                                            @else
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio"
+                                                               class="tarefa"
+                                                                value="{{$tarefa->id}}"
+                                                                name="tarefa"
+                                                                >
+                                                        {{$tarefa->tarefa}}
+                                                    </label>
+                                                </div>
+                                            @endif
+                                         @endif
+                                    </div>
+                                @endforeach  
+                            </td>
+                        @endif
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -107,4 +213,19 @@
     </div>
 </div>
 </div>
+@endsection
+
+@section('js')
+<script type="text/javascript">
+$(document).ready(function () {
+
+    let frm = $('#cadastraVoluntario');
+
+    frm.submit(function(event) {
+
+        $('#loadCadastro').removeClass('hide');
+
+    });
+});
+</script>
 @endsection
