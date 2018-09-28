@@ -129,7 +129,7 @@ class RelatorioController extends Controller
 		$area = utf8_decode('Área do Conhecimento');
 		$colocacao = utf8_decode('Colocação');
 		$funcao = utf8_decode('Função');
-		fputcsv($handle, array('Projeto',$nivel,$area,$colocacao,$funcao,'Integrante'), ';');
+		fputcsv($handle, array('Projeto',$nivel,$area,$colocacao,$funcao,'Integrante','Email'), ';');
 
 		foreach ($areas as $area) {
 			$cont = 0;
@@ -161,7 +161,8 @@ class RelatorioController extends Controller
 					$nivel = utf8_decode($area->niveis->nivel);
 					$area_conhecimento = utf8_decode($area->area_conhecimento);
 					$participante = utf8_decode($pessoa->nome);
-					fputcsv($handle, array($titulo,$nivel,$area_conhecimento,$colocacao,$funcao,$participante), ';');
+					$email = utf8_decode($pessoa->email);
+					fputcsv($handle, array($titulo,$nivel,$area_conhecimento,$colocacao,$funcao,$participante,$email), ';');
 				}
 			}
 		}
@@ -473,7 +474,7 @@ class RelatorioController extends Controller
 		$homologadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->join('revisao', 'pessoa.id', '=', 'revisao.pessoa_id')
 						->join('projeto', 'revisao.projeto_id', '=', 'projeto.id')
-						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email')
+						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Homologador')->first()->id)
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
 						->orderBy('pessoa.nome')
