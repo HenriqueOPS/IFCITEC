@@ -13,16 +13,16 @@
             <th>Colocação</th>
     				<th>Projeto</th>
             <th>Escola</th>
-    				<th>Nota Final</th> 
-            <th>Autor(es)</th> 
-            <th>Orientador</th> 
-            <th>Coorientador(es)</th> 
+    				<th>Nota Final</th>
+            <th>Autor(es)</th>
+            <th>Orientador</th>
+            <th>Coorientador(es)</th>
   				</tr>
         	</thead>
   			<tbody>
           {{$cont = 3}}
           {{$projetos = $area->getClassificacaoProjetosCertificados($area->id)}}
-  				@foreach($projetos as $projeto)
+		  @foreach($projetos as $projeto)
           @if($cont >= 3)
             @break
           @endif
@@ -45,7 +45,7 @@
             {{$o->nome}}
             @endforeach
             </td>
-            <td> 
+            <td>
             @foreach($coorientadores as $coorientador)
             @if(isset($coorientador->nome))
             {{$coorientador->nome}},
@@ -57,8 +57,8 @@
           {{$cont++}}
           @endif
           @endforeach
-  			</tbody>	
-		</table> 
+  			</tbody>
+		</table>
     <br><br>
     @endforeach
 	</div>

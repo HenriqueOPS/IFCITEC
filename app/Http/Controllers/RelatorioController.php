@@ -122,7 +122,7 @@ class RelatorioController extends Controller
 		$areas = Edicao::find(Edicao::getEdicaoId())->areas;
 
 
-		$filename = "ProjetosNotasHomologadores.csv";
+		$filename = "ProjetosPremiados.csv";
 
 		$handle = fopen($filename, 'w+');
 		$nivel = utf8_decode('Nível');
@@ -132,19 +132,20 @@ class RelatorioController extends Controller
 		fputcsv($handle, array('Projeto',$nivel,$area,$colocacao,$funcao,'Integrante'), ';');
 
 		foreach ($areas as $area) {
+			$cont = 0;
 			foreach($area->getClassificacaoProjetosCertificados($area->id) as $projeto){
-				if($loop->iteration == 1){
+				if($cont == 0){
 					$colocacao = 'TERCEIRO LUGAR';
 				}
 
-				if($loop->iteration == 2){
+				if($cont == 1){
 					$colocacao = 'SEGUNDO LUGAR';
 				}
 
-				if($loop->iteration == 3){
+				if($cont == 2){
 					$colocacao = 'PRIMEIRO LUGAR';
 				}
-
+				$cont++;
 				foreach($projeto->pessoas as $pessoa){
 					if($pessoa->temFuncaoProjeto('Autor', $projeto->id, $pessoa->id)){
 						$funcao = 'Autor';
@@ -155,12 +156,12 @@ class RelatorioController extends Controller
 					if($pessoa->temFuncaoProjeto('Coorientador', $projeto->id, $pessoa->id)){
 						$funcao = 'Coorientador';
 					}
-				
+
 					$titulo = utf8_decode($projeto->titulo);
 					$nivel = utf8_decode($area->niveis->nivel);
-					$area = utf8_decode($area->area_conhecimento);
-					$particiante = utf8_decode($pessoa->nome);
-					fputcsv($handle, array($titulo,$nivel,$area,$colocacao,$funcao,$participante), ';');
+					$area_conhecimento = utf8_decode($area->area_conhecimento);
+					$participante = utf8_decode($pessoa->nome);
+					fputcsv($handle, array($titulo,$nivel,$area_conhecimento,$colocacao,$funcao,$participante), ';');
 				}
 			}
 		}
@@ -329,7 +330,6 @@ class RelatorioController extends Controller
 		$avaliadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->join('avaliacao', 'pessoa.id', '=', 'avaliacao.pessoa_id')
 						->join('projeto', 'avaliacao.projeto_id', '=', 'projeto.id')
-						->join('presenca', 'pessoa.id', '=', 'presenca.id_pessoa')
 						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Avaliador')->first()->id)
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
@@ -483,12 +483,13 @@ class RelatorioController extends Controller
 
 		$handle = fopen($filename, 'w+');
 
-		fputcsv($handle, array('NOME_PARTICIPANTE','EMAIL_PARTICIPANTE','CPF_PARTICIPANTE'), ';');
+		fputcsv($handle, array('NOME_PARTICIPANTE','EMAIL_PARTICIPANTE','CPF_PARTICIPANTE','PROJETO_PARTICIPANTE'), ';');
 
 		foreach ($homologadores as $row) {
 			$nome = utf8_decode($row->nome);
 			$email = utf8_decode($row->email);
-			fputcsv($handle, array($nome,$email,$row->cpf), ';');
+			$titulo = utf8_decode($row->titulo);
+			fputcsv($handle, array($nome,$email,$row->cpf,$titulo), ';');
 		}
 
 		fclose($handle);

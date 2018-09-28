@@ -78,7 +78,8 @@ class AreaConhecimento extends Model {
             ->orderBy('projeto.created_at', 'asc')
             ->limit(3)
             ->get();
-        return array_reverse($projetos);
+
+        return $projetos->reverse();
     }
 
     public function getProjetosClassificados($id){
@@ -94,7 +95,7 @@ class AreaConhecimento extends Model {
             ->orderBy('nota', 'desc')
             ->orderBy('projeto.created_at', 'asc')
             ->get();
-            
+
         return $projetos;
     }
 
@@ -108,7 +109,7 @@ class AreaConhecimento extends Model {
             ->orderBy('titulo','asc')
             ->distinct('projeto.id')
             ->get();
-            
+
         return $projetos;
     }
 
