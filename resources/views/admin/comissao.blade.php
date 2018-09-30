@@ -129,6 +129,7 @@
                                 @endif
                             <td class="text-right">
                                 <a href="{{route('homologarComissao',$c->id)}}"><i class="material-icons">visibility</i></a>
+                                <a href="javascript:void(0);" class="exclusaoComissao" id-comissao="{{ $c->id }}" id-funcao="{{ $c->funcao_id }}"><i class="material-icons">delete</i></a>
                             </td>
                         </tr>
 
@@ -140,6 +141,30 @@
         </div>
     </div>
 </div>
+<!-- Modal Delete-->
+<div id="ModalDelete" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="ModalDelete">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Deletar Comissão</h5>
+            </div>
+
+            <div class="modal-body">
+                <span>Para deletar o usuário da comissão avaliadora, confirme sua senha.</span>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">lock_outline</i>
+                    </span>
+                    <input type="password" placeholder="Senha..." class="form-control" id="passwordDelete" name="password" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary excluir" data-dismiss="modal">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fim Modal -->
 @endsection
 
 @section('js')
@@ -163,7 +188,29 @@ $(document).ready(function () {
 
 
 });
+$('.exclusaoComissao').click(function(){
+    var idComissao= $(this).attr('id-comissao');
+    var idFuncao= $(this).attr('id-funcao');
 
+    $("#ModalDelete").modal();
+
+    $('.excluir').click(function(){
+        var urlConsulta = '.././comissao/excluir/'+idComissao+'/'+idFuncao+'/'+$('#passwordDelete').val();
+        $.get(urlConsulta, function (res){
+            if(res == 'true'){
+                bootbox.alert("Usuário excluído da comissão avaliadora com sucesso");
+                window.location.reload();
+            }else if (res == 'false'){
+                bootbox.alert("Senha incorreta");
+            }
+            else{
+                bootbox.alert("Não foi possível excluir usuário da comissão avaliadora.");
+            }
+
+        });
+    });
+
+});
 
 </script>
 

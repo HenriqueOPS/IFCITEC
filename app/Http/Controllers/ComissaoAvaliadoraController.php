@@ -7,6 +7,8 @@ use App\Funcao;
 use App\Pessoa;
 use App\Edicao;
 use App\Projeto;
+use App\Avaliacao;
+use App\Revisao;
 use function foo\func;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -311,6 +313,27 @@ class ComissaoAvaliadoraController extends Controller
 
 		$data = $req->all();
 
+        $pessoa = Pessoa::find($data['pessoa_id']);
+        if($data['avaliador'] && !$pessoa->temFuncao('Avaliador',TRUE)){
+            DB::table('funcao_pessoa')
+                    ->insert([
+                        'pessoa_id' => $data['pessoa_id'],
+                        'funcao_id' => Funcao::where('funcao', 'Avaliador')->first()->id,
+                        'edicao_id' => Edicao::getEdicaoId(),
+                        'homologado' => true
+                    ]);
+        }
+
+        if($data['homologador'] && !$pessoa->temFuncao('Homologador',TRUE)){
+            DB::table('funcao_pessoa')
+                    ->insert([
+                        'pessoa_id' => $data['pessoa_id'],
+                        'funcao_id' => Funcao::where('funcao', 'Homologador')->first()->id,
+                        'edicao_id' => Edicao::getEdicaoId(),
+                        'homologado' => true
+                    ]);
+        }
+
 		$areasComissao = DB::table('areas_comissao')
 			->select('area_id')
 			->where('comissao_edicao_id','=',$data['comissao_edicao_id'])
@@ -398,5 +421,46 @@ class ComissaoAvaliadoraController extends Controller
 		return redirect()->route('administrador.comissao');
 	}
 
+    public function excluiComissao($idC, $idF, $s)
+    {
+        if (password_verify($s, Auth::user()['attributes']['senha'])) {
+            $pessoa = DB::table('comissao_edicao')
+                ->join('pessoa', 'comissao_edicao.pessoa_id', '=', 'pessoa.id')
+                ->select('pessoa.id')
+                ->where('comissao_edicao.id', $idC)
+                ->get();
+
+            $revisoes = Revisao::select('id')
+                ->where('pessoa_id', $pessoa->first()->id)
+                ->get();
+
+            $avaliacoes = Avaliacao::select('id')
+                ->where('pessoa_id', $pessoa->first()->id)
+                ->get();
+            if ($revisoes->count() == 0 && $avaliacoes->count() == 0) {
+                DB::table('areas_comissao')->where('comissao_edicao_id', $idC)->delete();
+                DB::table('comissao_edicao')->where('id', $idC)->where('edicao_id', Edicao::getEdicaoId())->delete();
+                $usuario = Pessoa::find($pessoa->first()->id);
+                if($usuario->temFuncao('Homologador', TRUE)){
+                    DB::table('funcao_pessoa')->where('pessoa_id', $pessoa->first()->id)->where('funcao_id', Funcao::where('funcao', 'Homologador')->first()->id)->where('edicao_id', Edicao::getEdicaoId())->delete();
+                }
+                if($usuario->temFuncao('Avaliador', TRUE)){
+                    DB::table('funcao_pessoa')->where('pessoa_id', $pessoa->first()->id)->where('funcao_id', Funcao::where('funcao', 'Avaliador')->first()->id)->where('edicao_id', Edicao::getEdicaoId())->delete();
+                }
+                return 'true';
+            }
+            else if($idF == Funcao::where('funcao', 'Avaliador')->first()->id){
+                if ($revisoes->count() != 0 && $avaliacoes->count() == 0) {
+                    DB::table('funcao_pessoa')->where('pessoa_id', $pessoa->first()->id)->where('funcao_id', $idF)->where('edicao_id', Edicao::getEdicaoId())->delete();
+                    return 'true';
+                }
+            }
+            else{
+               return 'Não foi possível excluir usuário da comissão';
+            }
+        }
+
+        return 'false';
+    }
 }
 

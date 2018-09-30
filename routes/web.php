@@ -87,6 +87,7 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 
 //Relatórios
 	Route::get('/csv/{id}', 'RelatorioController@csv')->name('csv');
+	Route::get('/csv/anais/ifcitec', 'RelatorioController@csvAnais')->name('csvAnais');
 	Route::get('/csv/presenca/autores', 'RelatorioController@csvPresencaAutores')->name('csvPresencaAutores');
 	Route::get('/csv/projetos/premiacao', 'RelatorioController@csvPremiados')->name('csvPremiados');
 	Route::get('/csv/presenca/avaliadores', 'RelatorioController@csvPresencaAvaliadores')->name('csvPresencaAvaliadores');
@@ -102,6 +103,8 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 	Route::get('/relatorio/niveis', 'RelatorioController@niveis')->name('relatorioNivel');
 	Route::get('/relatorio/projetos/classificacao/geral', 'RelatorioController@classificacaoGeral')->name('classificacaoGeral');
 	Route::get('/relatorio/projetos/compareceram', 'RelatorioController@projetosCompareceram')->name('projetosCompareceram');
+	Route::get('/relatorio/projetos/compareceram/ifrs/canoas', 'RelatorioController@projetosCompareceramIFRSCanoas')->name('projetosCompareceramIFRSCanoas');
+	Route::get('/relatorio/projetos/compareceram/autor', 'RelatorioController@projetosCompareceramPorAutor')->name('projetosCompareceramAutor');
 	Route::get('/relatorio/projetos/classificacao', 'RelatorioController@classificacaoProjetos')->name('classificacaoProjetos');
 	Route::get('/relatorio/projetos/status', 'RelatorioController@statusProjetos')->name('statusProjetos');
 	Route::get('/relatorio/projetos/premiacao', 'RelatorioController@premiacaoProjetos')->name('premiacaoProjetos');
@@ -170,6 +173,7 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	// Comissão Avaliadora
 	Route::get('/comissao/homologar/{id}', 'ComissaoAvaliadoraController@homologarComissao')->name('homologarComissao');
 	Route::post('/comissao/homologar/', 'ComissaoAvaliadoraController@homologaComissao')->name('homologaComissao');
+	Route::get('/comissao/excluir/{idC}/{idF}/{s}', 'ComissaoAvaliadoraController@excluiComissao'); 
 
 	// Nivel
 	Route::get('/nivel/cadastrar', 'AdminController@cadastroNivel')->name('cadastroNivel');
