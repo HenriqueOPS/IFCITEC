@@ -70,7 +70,7 @@ class AreaConhecimento extends Model {
             ->where('projeto.edicao_id','=',Edicao::getEdicaoId())
             ->where('projeto.area_id','=',$id)
             ->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
-            ->where('escola.nome_curto','=', Escola::where('nome_curto', 'IFRS Canoas')->get()->first()->id)
+            ->where('escola.id','=', Escola::where('nome_curto', 'IFRS Canoas')->get()->first()->id)
             ->where('projeto.nota_avaliacao','<>',NULL)
             ->groupBy('projeto.id')
             ->groupBy('escola.nome_curto')
@@ -78,6 +78,7 @@ class AreaConhecimento extends Model {
             ->orderBy('nota', 'desc')
             ->orderBy('projeto.created_at', 'asc')
             ->get();
+       
         return $projetos;
     }
 

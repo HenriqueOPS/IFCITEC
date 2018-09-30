@@ -21,7 +21,6 @@
   			<tbody>
       {{$projetos = $area->getClassificacaoProjetosIFRSCanoas($area->id)}}
 		  @foreach($projetos as $projeto)
-          @if($projeto->situacao_id == \App\Situacao::where('situacao', 'Avaliado')->get()->first()->id)
   				<tr>
     				<td><a style="color: #000;">{{$projeto->titulo}}</a></td>
             <td><a style="color: #000;">{{$projeto->nome_curto}}</a></td>
@@ -48,7 +47,6 @@
             </td>
 
   				</tr>
-          @endif
           @endforeach
   			</tbody>
 		</table>
