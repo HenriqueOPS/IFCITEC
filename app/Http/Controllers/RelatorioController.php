@@ -63,6 +63,8 @@ class RelatorioController extends Controller
 			->get();
 			$filename = "Projetos.csv";
 		}
+
+
 		$handle = fopen($filename, 'w+');
 
 		fputcsv($handle, array('Nome','Email'), ';');
@@ -84,11 +86,11 @@ class RelatorioController extends Controller
 
 	public function csvAnais()
 	{
-		$projetos = DB::table('projeto')->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+		$projetos = Projeto::select( 'projeto.id', 'projeto.titulo', 'escola.nome_completo', 'nivel.nivel', 'area_conhecimento.area_conhecimento', 'projeto.resumo')
+						->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
 						->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
 						->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
-						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-						->select( 'projeto.id', 'projeto.titulo', 'escola.nome_completo', 'nivel.nivel', 'area_conhecimento')
+						->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
 						->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
 						->orderBy('projeto.titulo')
 						->distinct('projeto.id')
@@ -98,14 +100,39 @@ class RelatorioController extends Controller
 
 		$handle = fopen($filename, 'w+');
 
-		fputcsv($handle, array('TITULO','ESCOLA','NÍVEL', 'ÁREA DO CONHECIMENTO'), ';');
+		$handle = fopen($filename, 'w+');
 
-		foreach ($projetos as $row) {
-			$titulo = utf8_decode($row->titulo);
-			$escola = utf8_decode($row->escola);
-			$nivel = utf8_decode($row->nivel);
-			$area = utf8_decode($row->area_conhecimento);
-			fputcsv($handle, array($titulo,$escola,$nivel,$area), ';');
+		$nivel = utf8_decode('Nível');
+		$area = utf8_decode('Área do Conhecimento');
+		
+		fputcsv($handle, array('Projeto','Integrantes','Escola',$nivel,$area,'Resumo'), ';');
+
+		foreach ($projetos as $projeto) {
+					$integrantes = '';
+					$cont = 0;
+					foreach ($projeto->getAutores($projeto->id) as $autor) {
+						if ($cont != 0) {
+							$integrantes = $integrantes.', ';
+						}
+						$integrantes = $integrantes.$autor->nome.' (Autor)';
+						$cont++;
+					}
+					foreach ($projeto->getOrientador($projeto->id) as $orientador) {
+						$integrantes = $integrantes.', '.$orientador->nome.' (Coordenador)';
+					}
+					foreach ($projeto->getCoorientadores($projeto->id) as $coorientador) {
+						$integrantes = $integrantes.', '.$coorientador->nome.' (Coorientador)';
+					}	
+
+					$titulo = utf8_decode($projeto->titulo);
+					$integrantes = utf8_decode($integrantes);
+					$nivel = utf8_decode($projeto->nivel);
+					$area_conhecimento = utf8_decode($projeto->area_conhecimento);
+					$escola = utf8_decode($projeto->nome_completo);
+					$resumo = utf8_decode($projeto->resumo);
+					
+					fputcsv($handle, array($titulo,$integrantes,$escola,$nivel,$area_conhecimento,$resumo), ';');
+
 		}
 
 		fclose($handle);
@@ -290,12 +317,12 @@ class RelatorioController extends Controller
 	public function csvPresencaAutores()
 	{
 		$autores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-						->join('presenca', 'pessoa.id', '=', 'presenca.id_pessoa')
 						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
 						->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+						->where('projeto.nota_avaliacao','<>',0)
 						->where(function ($q){
                             $q->where('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
                             $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
@@ -362,7 +389,6 @@ class RelatorioController extends Controller
 	public function csvPresencaCoorientadores()
 	{
 		$coorientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-						->join('presenca', 'pessoa.id', '=', 'presenca.id_pessoa')
 						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email','projeto.titulo')
@@ -372,6 +398,7 @@ class RelatorioController extends Controller
                             $q->where('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
                             $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
              			})
+             			->where('projeto.nota_avaliacao','<>',0)
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
 						->orderBy('pessoa.nome')
 						->get();
@@ -401,7 +428,6 @@ class RelatorioController extends Controller
 	public function csvPresencaOrientadores()
 	{
 		$orientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-						->join('presenca', 'pessoa.id', '=', 'presenca.id_pessoa')
 						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
@@ -411,6 +437,7 @@ class RelatorioController extends Controller
                             $q->where('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
                             $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
              			})
+             			->where('projeto.nota_avaliacao','<>',0)
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
 						->orderBy('pessoa.nome')
 						->get();
@@ -442,7 +469,7 @@ class RelatorioController extends Controller
 		$voluntarios = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->join('presenca', 'pessoa.id', '=', 'presenca.id_pessoa')
 						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email')
-						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Voluntario')->first()->id)
+						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Voluntário')->first()->id)
 						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
 						->orderBy('pessoa.nome')
 						->distinct('pessoa.id')
@@ -514,7 +541,6 @@ class RelatorioController extends Controller
                                             ->where('funcao', 'Organizador')
                                             ->first()->id);
                         })
-						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
 						->orderBy('pessoa.nome')
 						->distinct('pessoa.id')
 						->get();
@@ -1111,6 +1137,31 @@ class RelatorioController extends Controller
 		return \PDF::loadView('relatorios.projetosCompareceram', array('projetos' => $projetos))->download('projetos_compareceram.pdf');
 	}
 
+	public function projetosCompareceramPorAutor(){
+		$autores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
+						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+						->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+						->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+             			})
+						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->orderBy('pessoa.nome')
+						->get();
+
+		return \PDF::loadView('relatorios.projetosCompareceramPorAutor', array('autores' => $autores))->download('projetos_compareceram_autor.pdf');
+	}
+
+	public function projetosCompareceramIFRSCanoas(){
+
+        $areas = Edicao::find(Edicao::getEdicaoId())->areas;
+
+        return \PDF::loadView('relatorios.projetosCompareceramIFRSCanoas', array('areas' => $areas))->setPaper('A4', 'landscape')->download('projetos_compareceram_ifrs_canoas.pdf');
+	}
+
 	public function gerarLocalizacaoProjetos(){
 		$niveis = DB::table('nivel_edicao')
 			->select(['nivel.id','nivel','min_ch','max_ch','palavras'])
@@ -1235,5 +1286,6 @@ class RelatorioController extends Controller
 
 		return \PDF::loadView('relatorios.premiacaoCertificados', array('areas' => $areas, 'projetos' => $projetos, 'data' => $data))->setPaper('A4', 'landscape')->download('premiacao_certificados.pdf');
 	}
+
 
 }

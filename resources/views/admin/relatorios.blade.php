@@ -237,44 +237,37 @@
                     <tbody id="2">
                         <tr>
                             <td>1</td>
+                            <td>Anais (Edição Corrente)</td>
+                            <td class="text-right">
+                                <a href="{{route('csvAnais')}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
                             <td>Relatório de Áreas do Conhecimento</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioArea')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>2</td>
+                            <td>3</td>
                             <td>Relatório de Edições</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioEdicao')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>3</td>
+                            <td>4</td>
                             <td>Relatório de Escolas</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioEscola')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>4</td>
+                            <td>5</td>
                             <td>Relatório de Níveis</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioNivel')}}" target="_blank"><i class="material-icons">visibility</i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>Relatório de Projetos Que Comparecerão na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC</td>
-                            <td class="text-right">
-                                <a href="{{route('relatorioProjetosConfirma')}}" target="_blank"><i class="material-icons">visibility</i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>Relatório de Projetos Que Compareceram na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC</td>
-                            <td class="text-right">
-                                <a href="{{route('projetosCompareceram')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -313,28 +306,28 @@
                         </tr>
                         <tr>
                             <td>4</td>
-                            <td>Relatório de Projetos Classificados Para a {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} Edição (Por Área do Conhecimento)</td>
+                            <td>Relatório de Projetos Classificados Para a Edição Corrente (Por Área do Conhecimento)</td>
                             <td class="text-right">
                                 <a href="{{route('projetosClassificados')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>5</td>
-                            <td>Relatório de Projetos Classificados Para a {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} Edição (Por Nível)</td>
+                            <td>Relatório de Projetos Classificados Para a Edição Corrente (Por Nível)</td>
                             <td class="text-right">
                                 <a href="{{route('projetosClassificadosNivel')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>6</td>
-                            <td>Relatório de Projetos Classificados Para a {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} Edição (Sem Notas)</td>
+                            <td>Relatório de Projetos Classificados Para a Edição Corrente (Sem Notas)</td>
                             <td class="text-right">
                                 <a href="{{route('projetosClassificadosSemNota')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>7</td>
-                            <td>Relatório de Projetos Não Homologados Para a {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} Edição (Por Nível)</td>
+                            <td>Relatório de Projetos Não Homologados Para a Edição Corrente (Por Nível)</td>
                             <td class="text-right">
                                 <a href="{{route('projetosNaoHomologadosNivel')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
@@ -449,23 +442,37 @@
                         </tr>
                         <tr>
                             <td>4</td>
-                            <td>Relatório de Projetos Que Comparecerão na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC</td>
+                            <td>Relatório de Projetos Que Comparecerão (Edição Corrente)</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioProjetosConfirma')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>5</td>
-                            <td>Relatório de Projetos Que Comparecerão na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC (Por Área do Conhecimento)</td>
+                            <td>Relatório de Projetos Que Comparecerão na Edição Corrente (Por Área do Conhecimento)</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioProjetosConfirmaArea')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>6</td>
-                            <td>Relatório de Projetos Que Compareceram na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC</td>
+                            <td>Relatório de Projetos Que Compareceram (Edição Corrente)</td>
                             <td class="text-right">
                                 <a href="{{route('projetosCompareceram')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>Relatório de Projetos Que Compareceram do IFRS Canoas (Edição Corrente)</td>
+                            <td class="text-right">
+                                <a href="{{route('projetosCompareceramIFRSCanoas')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>Relatório de Projetos Que Compareceram Por Autor (Edição Corrente)</td>
+                            <td class="text-right">
+                                <a href="{{route('projetosCompareceramAutor')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>
