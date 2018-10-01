@@ -78,7 +78,7 @@ class AreaConhecimento extends Model {
             ->orderBy('nota', 'desc')
             ->orderBy('projeto.created_at', 'asc')
             ->get();
-       
+
         return $projetos;
     }
 
