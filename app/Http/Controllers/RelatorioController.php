@@ -92,6 +92,8 @@ class RelatorioController extends Controller
 						->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
 						->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
 						->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
+			            ->orderBy('nivel.nivel')
+						->orderBy('area_conhecimento.area_conhecimento')
 						->orderBy('projeto.titulo')
 						->distinct('projeto.id')
 						->get();
@@ -104,7 +106,7 @@ class RelatorioController extends Controller
 
 		$nivel = utf8_decode('Nível');
 		$area = utf8_decode('Área do Conhecimento');
-		
+
 		fputcsv($handle, array('Projeto','Integrantes','Escola',$nivel,$area,'Resumo'), ';');
 
 		foreach ($projetos as $projeto) {
@@ -122,7 +124,7 @@ class RelatorioController extends Controller
 					}
 					foreach ($projeto->getCoorientadores($projeto->id) as $coorientador) {
 						$integrantes = $integrantes.', '.$coorientador->nome.' (Coorientador)';
-					}	
+					}
 
 					$titulo = utf8_decode($projeto->titulo);
 					$integrantes = utf8_decode($integrantes);
@@ -130,7 +132,7 @@ class RelatorioController extends Controller
 					$area_conhecimento = utf8_decode($projeto->area_conhecimento);
 					$escola = utf8_decode($projeto->nome_completo);
 					$resumo = utf8_decode($projeto->resumo);
-					
+
 					fputcsv($handle, array($titulo,$integrantes,$escola,$nivel,$area_conhecimento,$resumo), ';');
 
 		}
