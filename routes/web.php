@@ -53,6 +53,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/sucesso', 'HomeController@sucesso')->name('sucesso');
 
+
+Route::get('/ficha-avaliacao/cadastrar', 'AdminController@fichaAvaliacao')->name('fichaAvaliacao');
+
+
 //Edição dos dados pessoais
 Route::get('/editar-cadastro', 'PessoaController@editarCadastro')->name('editarCadastro');
 Route::post('/editar-cadastro', 'PessoaController@editaCadastro')->name('editaCadastro');
