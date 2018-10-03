@@ -10,24 +10,18 @@ use DateTime;
 
 class ApiController extends Controller
 {
-
 	public function login(Request $req, PeriodosController $p) {
 		$data = $req->all();
 		$res = array();
 		$getPessoa = Pessoa::where('email', $data['email'])->get();
-
 		if($getPessoa->count()) {
 			if (password_verify($data['senha'], $getPessoa[0]->senha)) {
-
 				$funcoes = DB::table('funcao_pessoa')->select('funcao_id')->where('pessoa_id','=', $getPessoa[0]->id)->get();
 				$funcao = DB::table('funcao')->select('funcao')->where('id','=',$funcoes[0]->funcao_id)->get();
-
 				$res['id'] = $getPessoa[0]->id;
 				$res['nome'] = $getPessoa[0]->nome;
 				$res['funcao'] = $funcao[0]->funcao;
-
 				return response()->json($res);
-
 			}else{
 				$res['result'] = 0;
 				$res['msg'] = 'EMAIL OU SENHA INVÁLIDOS!!!';
@@ -36,9 +30,7 @@ class ApiController extends Controller
 			$res['result'] = 0;
 			$res['msg'] = 'EMAIL OU SENHA INVÁLIDOS!!!';
 		}
-
 		return response()->json($res);
-
 	}
 
 	public function registraPresenca(Request $req) {
@@ -70,14 +62,24 @@ class ApiController extends Controller
 	}
 
 	public function projetosAvaliacao($id) {
-
-		return 'projetos-avaliacao '.$id;
-
-
+    	$res = array();
+    	$dados = DB::table('avaliacao')->select('projeto_id')->where('pessoa_id','=',$id)->get();
+    	foreach($dados as $key => $val){
+    		$dados[$key]->rows = DB::table('projeto')->select('titulo')->where('id','=',$dados[$key]->projeto_id)->get();
+    	}
+		return $dados;
 	}
 
 	public function camposAvaliacao($id) {
-		return 'campos-avaliacao '.$id;
+		$res = array();
+		$res = DB::table('categoria_avaliacao')->select('id','descricao', 'tipo')->get();
+		foreach($res as $key => $val){
+			$res[$key]->rows = DB::table('campos_avaliacao')->select('campo','descricao','val_0','val_25','val_50','val_75','val_100')->where('categoria_id','=',$res[$key]->id)->get();
+		}
+		//$res = 
+
+		return $res;//response()->json($res);		
+		//return 'campos-avaliacao '.$id;
 	}
 
 	public function salvaAvaliacao($id) {

@@ -344,4 +344,9 @@ class AdminController extends Controller
 		return view('admin.administrarUsuarios');
 	}
 
+	public function fichaAvaliacao()
+	{
+		return view('fichaAvaliacao');
+	}
+
 }
