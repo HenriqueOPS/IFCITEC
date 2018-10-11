@@ -65,7 +65,7 @@ class ApiController extends Controller
     	$res = array();
     	$dados = DB::table('avaliacao')->select('projeto_id')->where('pessoa_id','=',$id)->get();
     	foreach($dados as $key => $val){
-    		$dados[$key]->rows = DB::table('projeto')->select('titulo')->where('id','=',$dados[$key]->projeto_id)->get();
+    		$dados[$key]->rows = DB::table('projeto')->select('titulo','nivel_id','id')->where('id','=',$dados[$key]->projeto_id)->get();
     	}
 		return $dados;
 	}
@@ -76,14 +76,11 @@ class ApiController extends Controller
 		foreach($res as $key => $val){
 			$res[$key]->rows = DB::table('campos_avaliacao')->select('campo','descricao','val_0','val_25','val_50','val_75','val_100')->where('categoria_id','=',$res[$key]->id)->get();
 		}
-		//$res = 
-
-		return $res;//response()->json($res);		
-		//return 'campos-avaliacao '.$id;
+		return $res;
 	}
 
-	public function salvaAvaliacao($id) {
-		return 'salva-avaliacao '.$id;
+	public function salvaAvaliacao(Request $req) {
+		return 'salva-avaliacao '.$idAvaliador;
 	}
 
 }
