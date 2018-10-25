@@ -30,6 +30,7 @@ class CamposAvaliacaoTable extends Migration
             //Foreign Keys Constraints
             $table->foreign('edicao_id')->references('id')->on(env('DB_SCHEMA').'.edicao');
             $table->foreign('categoria_id')->references('id')->on(env('DB_SCHEMA').'.categoria_avaliacao');
+            $table->foreing('nivel_id')->references('id')->on(env('DB_SCHEMA').'nivel');
         });
     }
 
