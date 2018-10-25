@@ -567,4 +567,9 @@ class AdminController extends Controller
 			->withFuncoes($funcoes);
 	}
 
+	public function fichaAvaliacao()
+	{
+		return view('fichaAvaliacao');
+	}
+
 }

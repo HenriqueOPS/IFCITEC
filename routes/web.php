@@ -45,6 +45,7 @@ Route::post('/api/presenca', 'ApiController@presenca')->name('presenca-sistema')
 
 Route::get('/api/projetos-avaliacao/{id}', 'ApiController@projetosAvaliacao');
 Route::get('/api/campos-avaliacao/{id}', 'ApiController@camposAvaliacao');
+Route::post('/api/salva-avaliacao/{id}', 'ApiController@salvaAvaliacao');
 
 
 Route::post('/api/salva-homologacao/', 'ApiController@salvaHomologacao');
@@ -53,7 +54,6 @@ Route::post('/api/salva-avaliacao/', 'ApiController@salvaAvaliacao');
 
 Auth::routes();
 Route::post('/recuperar/senha/', 'Auth\ForgotPasswordController@emailSenha')->name('recuperar.senha');
-
 
 // Cria as rotas de cadastro no braço e em Português
 Route::get('cadastro', [
@@ -75,6 +75,10 @@ Route::get('/debug', function (){
 
 Route::get('/email/presenca', 'ProjetoController@confirmarPresenca')->name('confirmarPresenca');
 Route::get('/email/presenca/confirmada/{id}', 'ProjetoController@confirmaPresenca')->name('confirmaPresenca');
+
+
+Route::get('/ficha-avaliacao/cadastrar', 'AdminController@fichaAvaliacao')->name('fichaAvaliacao');
+
 
 //Edição dos dados pessoais
 Route::get('/editar-cadastro/', 'PessoaController@editarCadastro')->name('editarCadastro');
