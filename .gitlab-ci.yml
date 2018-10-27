@@ -1,10 +1,10 @@
 stages:
-  - build
-  - test
-  - stage
-  - deploy-stage
-  - production
-  - deploy-production
+- build
+- test
+- stage
+- deploy-stage
+- production
+- deploy-production
 
 cache:
   paths:
@@ -15,11 +15,11 @@ job-composer:
   stage: build
   image: php:7.1.7-apache
   script:
-    - apt-get update && apt-get install git zlib1g-dev libpq-dev unzip libpng-dev -yqq --no-install-recommends
-    - docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
-    - docker-php-ext-install zip gd pdo_pgsql pgsql
-    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-    - composer install
+  - apt-get update && apt-get install git zlib1g-dev libpq-dev unzip libpng-dev -yqq --no-install-recommends
+  - docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
+  - docker-php-ext-install zip gd pdo_pgsql pgsql
+  - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+  - composer install
 
 #jod-code-test:
 #  stage: test
@@ -32,36 +32,36 @@ job-db-generate:
   stage: test
   image: php:7.1.7-apache
   services:
-    - postgres:latest
+  - postgres:latest
   variables:
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: secret
     POSTGRES_DB: ifcitec
   script:
-    - apt-get update -yqq
-    - apt-get install -y libpq-dev
-    - docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
-    - docker-php-ext-install pdo pdo_pgsql pgsql
-    - cp .env.example .env
-    - php artisan key:generate
-    - php artisan env
-    - php artisan --env=local migrate
-    - php artisan db:seed
+  - apt-get update -yqq
+  - apt-get install -y libpq-dev
+  - docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
+  - docker-php-ext-install pdo pdo_pgsql pgsql
+  - cp .env.example .env
+  - php artisan key:generate
+  - php artisan env
+  - php artisan --env=local migrate
+  - php artisan db:seed
 
 # Cria um container para stage, disponível no menu Registry
 job-stage-container:
   stage: stage
   image: docker:latest
   services:
-    - docker:dind
+  - docker:dind
   script:
-    - echo "$CI_COMMIT_SHA:$CI_PIPELINE_ID" > ./public/version.txt
-    - export IMAGE_TAG=$(echo -en $CI_COMMIT_REF_NAME | tr -c '[:alnum:]_.-' '-')
-    - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
-    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" -f ./Dockerfile-stage .
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+  - echo "$CI_COMMIT_SHA:$CI_PIPELINE_ID" > ./public/version.txt
+  - export IMAGE_TAG=$(echo -en $CI_COMMIT_REF_NAME | tr -c '[:alnum:]_.-' '-')
+  - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
+  - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" -f ./Dockerfile-stage .
+  - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
-    - stage
+  - stage
 
 # Sobe a aplicação no servidor
 job-deploy-stage:
@@ -71,16 +71,16 @@ job-deploy-stage:
   cache:
     policy: push        # Não utiliza cache global
   only:
-    - stage
+  - stage
   script:
-    - apt-get update -yqq && apt-get install jq -yqq						# Instala jq para manipular a resposta do webhook disparado.
-    - echo randompw=$(cat /dev/urandom | tr -dc 'a-np-z1-79' | fold -w 6 | head -n 1)		# Gera uma senha aleatória para o banco de dados. WIP.
-    - >-
-        curl -s -S -k
-        -X POST
-        -H "Content-Type: application/json"
-        -d "{ 'project': '$CI_PROJECT_NAME', 'commit': '$CI_COMMIT_SHA', 'branch': '$CI_COMMIT_REF_NAME', 'pipeline' : '$CI_PIPELINE_ID', 'job': '$CI_JOB_ID', 'randompw': '$RANDOMPW'}"
-        https://jenkins.canoas.ifrs.edu.br:8443/generic-webhook-trigger/invoke?token=$TOKEN_WEBHOOK | jq .status
+  - apt-get update -yqq && apt-get install jq -yqq						# Instala jq para manipular a resposta do webhook disparado.
+  - echo randompw=$(cat /dev/urandom | tr -dc 'a-np-z1-79' | fold -w 6 | head -n 1)		# Gera uma senha aleatória para o banco de dados. WIP.
+  - >-
+    curl -s -S -k
+    -X POST
+    -H "Content-Type: application/json"
+    -d "{ 'project': '$CI_PROJECT_NAME', 'commit': '$CI_COMMIT_SHA', 'branch': '$CI_COMMIT_REF_NAME', 'pipeline' : '$CI_PIPELINE_ID', 'job': '$CI_JOB_ID', 'randompw': '$RANDOMPW'}"
+    https://jenkins.canoas.ifrs.edu.br:8443/generic-webhook-trigger/invoke?token=$TOKEN_WEBHOOK | jq .status
 
   environment:									# Mostra no gitlab o link para acessar o projeto
     name: $CI_COMMIT_REF_NAME
@@ -95,9 +95,9 @@ job-stop-stage:			# Job que permite parar a aplicação
   cache:
     policy: push
   only:
-    - stage
+  - stage
   script:
-    - curl -X POST https://jenkins.canoas.ifrs.edu.br/generic-webhook-trigger/invoke?token=$TOKEN_WEBHOOK_2
+  - curl -s -S -k -X POST https://jenkins.canoas.ifrs.edu.br:8443/generic-webhook-trigger/invoke?token=$TOKEN_WEBHOOK_2
   when: manual
   environment:
     name: $CI_COMMIT_REF_NAME
@@ -109,15 +109,15 @@ job-container-prod:
   stage: production
   image: docker:latest
   services:
-    - docker:dind
+  - docker:dind
   script:
-    - echo "$CI_COMMIT_SHA:$CI_PIPELINE_ID" > ./public/version.txt
-    - export IMAGE_TAG=$(echo -en $CI_COMMIT_REF_NAME | tr -c '[:alnum:]_.-' '-')
-    - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
-    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" -f ./Dockerfile-prod .
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+  - echo "$CI_COMMIT_SHA:$CI_PIPELINE_ID" > ./public/version.txt
+  - export IMAGE_TAG=$(echo -en $CI_COMMIT_REF_NAME | tr -c '[:alnum:]_.-' '-')
+  - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
+  - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" -f ./Dockerfile-prod .
+  - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
-    - master
+  - master
 
 # Sobe a aplicação no servidor
 job-deploy-prod:
@@ -127,6 +127,7 @@ job-deploy-prod:
   cache:
     policy: push        # Não utiliza cache global
   only:
-    - master
-  script: echo '1'
+  - master
+  script:
+  - curl -s -S -k -X POST https://jenkins.canoas.ifrs.edu.br:8443/generic-webhook-trigger/invoke?token=$TOKEN_WEBHOOK_3
   when: manual
