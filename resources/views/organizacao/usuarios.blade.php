@@ -60,7 +60,6 @@
                             <th class="text-center">#</th>
                             <th>Usuários</th>
                             <th>E-mail</th>
-                            <th class="text-right">Ações</th>
                         </tr>
                     </div>
                     </thead>
@@ -71,14 +70,6 @@
                             <td class="text-center">{{$key + 1}}</td>
                             <td>{{$usuario->nome}}</td>
                             <td>{{$usuario->email}}</td>
-                            <td class="text-right">
-                            <a href="{{route('orgEditarUsuario',$usuario->id)}}"><i class="material-icons">edit</i></a>
-                    
-                            <a href="{{route('orgEditarFuncaoUsuario',$usuario->id)}}"><i class="material-icons">star</i></a>
-                        
-                            <a href="javascript:void(0);" class="exclusaoUsuario" id-usuario="{{ $usuario['id'] }}"><i class="material-icons blue-icon">delete</i></a>
-                        
-                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -123,7 +114,7 @@
 
         $('.excluir').click(function(){
             var urlConsulta = '.././usuario/exclui-usuario/'+idUsuario+'/'+$('#passwordDeleteUsuário').val();
-            
+
             $.get(urlConsulta, function (res){
                 if(res == 'true'){
                     bootbox.alert("Usuário excluído com sucesso");
@@ -133,11 +124,11 @@
                     window.location.reload();
                 }
             });
-    
+
         });
 
     });
 </script>
-   
+
 
 @endsection
