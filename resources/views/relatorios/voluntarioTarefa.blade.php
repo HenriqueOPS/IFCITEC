@@ -15,11 +15,11 @@
   				</tr>
         	</thead>
   			<tbody>
-  				@foreach($voluntarios as $id => $voluntario)
+  				@foreach($voluntarios as $voluntario)
   				<tr>
     				<td><a style="color: #000;">{{$voluntario->nome}}</a></td>
-            <td><a style="color: #000;">{{$voluntario->email}}</a></td>
-            <td><a style="color: #000;">{{\App\Pessoa::find($voluntario->id)->tarefas->first()->tarefa}}</a></td>
+					<td><a style="color: #000;">{{$voluntario->email}}</a></td>
+					<td><a style="color: #000;">{{$voluntario->tarefa}}</a></td>
   				</tr>
   				@endforeach
   			</tbody>	

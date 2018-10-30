@@ -89,11 +89,8 @@ use RegistersUsers;
                     'senha' => bcrypt($data['senha']),
                     'dt_nascimento' => Carbon::createFromFormat('d/m/Y', $data['dt_nascimento']),
                     'cpf' => isset($data['cpf']) ? $data['cpf'] : null,
-                    'rg' => isset($data['rg']) ? $data['rg'] : null
-                    //COMECO do código que necessitará um refact issue #40
-                    //'cpf' => isset($data['cpf']) ? $data['cpf'] : null,
-                    //'lattes' => isset($data['lattes']) ? $data['lattes'] : null,
-                    //FIM do código que necessitará um refact issue #40
+                    'rg' => isset($data['rg']) ? $data['rg'] : null,
+                    'camisa' => isset($data['camisa']) ? $data['camisa'] : null
         ]);
     
     }

@@ -20,13 +20,21 @@ class CrachaController extends Controller
 				->svg();
 	}
 
-	public function generateCrachasAutores(){
+	public function generateCrachas(){
+		
+		return Response::view('impressao.crachas');
+	}
+
+	public function generateCrachasAutores($edicao){
 		$pessoas = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 						->select('pessoa.nome', 'pessoa.id')
-						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
-						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+                        ->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                        })
+						->where('funcao_pessoa.edicao_id', $edicao)
 						->where('projeto.presenca', TRUE)
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
 						->orderBy('pessoa.nome')
@@ -36,10 +44,10 @@ class CrachaController extends Controller
 		return Response::view('impressao.cracha_verde', compact('pessoas', 'funcao'));
 	}
 
-	public function generateCrachasComissaoAvaliadora(){
+	public function generateCrachasComissaoAvaliadora($edicao){
 		$pessoas = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->select('pessoa.nome', 'pessoa.id')
-						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->where('funcao_pessoa.edicao_id', $edicao)
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Avaliador')->first()->id)
 						->orderBy('pessoa.nome')
 						->distinct('pessoa.id')
@@ -67,13 +75,16 @@ class CrachaController extends Controller
 		return view('impressao.cracha_vermelho', compact('pessoas', 'funcao'));
 	}
 
-	public function generateCrachasOrientadores(){
+	public function generateCrachasOrientadores($edicao){
 		$pessoas = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 						->select('pessoa.nome', 'pessoa.id')
-						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
-						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+                        ->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                        })
+                        ->where('funcao_pessoa.edicao_id', $edicao)
 						->where('projeto.presenca', TRUE)
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
 						->orderBy('pessoa.nome')
@@ -84,13 +95,16 @@ class CrachaController extends Controller
 		return view('impressao.cracha_verde', compact('pessoas','funcao'));
 	}
 
-	public function generateCrachasCoorientadores(){
+	public function generateCrachasCoorientadores($edicao){
 		$pessoas = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 						->select('pessoa.nome', 'pessoa.id')
-						->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
-						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+                        ->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                        })
+                        ->where('funcao_pessoa.edicao_id', $edicao)
 						->where('projeto.presenca', TRUE)
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
 						->orderBy('pessoa.nome')
@@ -100,12 +114,12 @@ class CrachaController extends Controller
 		return view('impressao.cracha_verde', compact('pessoas', 'funcao'));
 	}
 
-	public function generateCrachasVoluntarios(){
+	public function generateCrachasVoluntarios($edicao){
 		$pessoas = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->select('pessoa.nome', 'pessoa.id', 'tarefa.tarefa')
 						->join('pessoa_tarefa', 'pessoa.id', '=', 'pessoa_tarefa.pessoa_id')
 						->join('tarefa', 'pessoa_tarefa.tarefa_id', '=', 'tarefa.id')
-						->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
+						->where('funcao_pessoa.edicao_id', $edicao)
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Voluntário')->first()->id)
 						->orderBy('pessoa.nome')
 						->distinct('pessoa.id')

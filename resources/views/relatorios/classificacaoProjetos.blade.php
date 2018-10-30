@@ -16,7 +16,7 @@
   				</tr>
         	</thead>
   			<tbody>
-          {{$projetos = $area->getClassificacaoProjetos($area->id)}}
+          {{$projetos = $area->getClassificacaoProjetos($area->id, $edicao)}}
   				@foreach($projetos as $projeto)
   				<tr>
     				<td><a style="color: #000;">{{$projeto->titulo}}</a></td>

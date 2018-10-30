@@ -163,38 +163,38 @@ class Projeto extends Model {
         return $totalFuncoes;
     }
 
-    public function getAutores($id) {
+    public function getAutores($id, $edicao) {
         $autores = DB::table('pessoa')
                 ->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
                 ->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
                 ->where('escola_funcao_pessoa_projeto.projeto_id',$id)
                 ->where('escola_funcao_pessoa_projeto.funcao_id',Funcao::where('funcao', 'Autor')->get()->first()->id)
-                ->where('escola_funcao_pessoa_projeto.edicao_id',Edicao::getEdicaoId())
+                ->where('escola_funcao_pessoa_projeto.edicao_id',$edicao)
                 ->orderBy('pessoa.nome')
                 ->get();
         return $autores;
     }
 
-    public function getOrientador($id) {
+    public function getOrientador($id, $edicao) {
         $orientador = DB::table('pessoa')
                 ->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
                 ->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
                 ->where('escola_funcao_pessoa_projeto.projeto_id',$id)
                 ->where('escola_funcao_pessoa_projeto.funcao_id',Funcao::where('funcao', 'Orientador')->get()->first()->id)
-                ->where('escola_funcao_pessoa_projeto.edicao_id',Edicao::getEdicaoId())
+                ->where('escola_funcao_pessoa_projeto.edicao_id',$edicao)
                 ->orderBy('pessoa.nome')
                 ->get();
 
         return $orientador;
     }
 
-    public function getCoorientadores($id) {
+    public function getCoorientadores($id, $edicao) {
         $coorientadores = DB::table('pessoa')
                 ->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
                 ->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
                 ->where('escola_funcao_pessoa_projeto.projeto_id',$id)
                 ->where('escola_funcao_pessoa_projeto.funcao_id',Funcao::where('funcao', 'Coorientador')->get()->first()->id)
-                ->where('escola_funcao_pessoa_projeto.edicao_id',Edicao::getEdicaoId())
+                ->where('escola_funcao_pessoa_projeto.edicao_id',$edicao)
                 ->orderBy('pessoa.nome')
                 ->get();
         return $coorientadores;
