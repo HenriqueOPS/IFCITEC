@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
+
 @section('css')
 <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 <link href="{{ asset('css/organization.css') }}" rel="stylesheet">
 <link href="{{ asset('css/datepicker/bootstrap-datepicker.standdalone.css') }}" rel="stylesheet">
+<link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -132,6 +134,27 @@
                                 </span>
                                 @endif
                             </div>
+
+                            <div class="input-group{{ $errors->has('camisa') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <img class="gray-icon" src="{{ asset('img/tshirt-crew.svg') }}"  />
+                                </span>
+                                <div class="form-group">
+                                    <label class="control-label">Camisa</label>
+                                    <select id="camisa-select" name="camisa" value="{{ old('camisa') }}" required>
+                                      <option value="P">P</option>
+                                      <option value="M">M</option>
+                                      <option value="G">G</option>
+                                      <option value="GG">GG</option>
+                                      <option value="X1">X1</option>
+                                    </select>
+                                    @if ($errors->has('camisa'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('camisa') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
                             
                             
                             <div class="input-group{{ $errors->has('senha') ? ' has-error' : '' }}">
@@ -176,8 +199,20 @@
 
 @section('js')
 <script type="text/javascript" src="{{asset('js/datepicker/bootstrap-datepicker.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/selectize.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/datepicker/locales/bootstrap-datepicker.pt-BR.js')}}"></script>
 <script type="text/javascript">
+$(document).ready(function () {
+    var oldCamisa = $('#camisa-select').attr("value");
+    $('#camisa-select').selectize({
+        placeholder: 'Selecione o tamanho da sua camisa...',
+        onInitialize: function () {
+            this.setValue(oldCamisa, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+});  
 
 $('.datepicker').datepicker({
     format: 'dd/mm/yyyy',

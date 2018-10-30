@@ -25,17 +25,22 @@
                         Listar Projetos
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('organizacao.presenca')}}">
+                        <i class="material-icons">account_circle</i>
+                        Presença
+                    </a>
+                </li>
                 <li class="active">
                     <a href="{{route('organizacao.relatorios')}}">
                         <i class="material-icons">description</i>
                         Relatórios
                     </a>
                 </li>
-
                 <li>
-                    <a href="{{route('organizacao.presenca')}}">
-                        <i class="material-icons">account_circle</i>
-                        Presença
+                    <a href="{{route('organizacao.usuarios')}}">
+                        <i class="material-icons">person</i>
+                        Usuários
                     </a>
                 </li>
 
@@ -127,28 +132,28 @@
                             <td>1</td>
                             <td>Relatório de Avaliadores</td>
                             <td class="text-right">
-                                <a href="{{route('csv', 1)}}"><i class="material-icons">arrow_downward</i></a>
+                                <a href="{{route('csv', ['id' => 1, 'edicao' => $edicao])}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>Relatório de Avaliadores Por Área do Conhecimento</td>
                             <td class="text-right">
-                                <a href="{{route('avaliadoresArea')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('avaliadoresArea', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td>Relatório de Avaliadores Por Projeto</td>
                             <td class="text-right">
-                                <a href="{{route('avaliadoresProjeto')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('avaliadoresProjeto', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>4</td>
                             <td>Relatório de Projetos Por Avaliador</td>
                             <td class="text-right">
-                                <a href="{{route('projetosAvaliador')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('projetosAvaliador', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -158,21 +163,21 @@
                             <td>1</td>
                             <td>Crachás Autores</td>
                             <td class="text-right">
-                                <a href="{{route('generateCrachasAutores')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('generateCrachasAutores', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>Crachás Coorientadores</td>
                             <td class="text-right">
-                                <a href="{{route('generateCrachasCoorientadores')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('generateCrachasCoorientadores', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td>Crachás Comissão Avaliadora</td>
                             <td class="text-right">
-                                <a href="{{route('generateCrachasComissaoAvaliadora')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('generateCrachasComissaoAvaliadora', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -186,14 +191,14 @@
                             <td>5</td>
                             <td>Crachás Orientadores</td>
                             <td class="text-right">
-                                <a href="{{route('generateCrachasOrientadores')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('generateCrachasOrientadores', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>6</td>
                             <td>Crachás Voluntários</td>
                             <td class="text-right">
-                                <a href="{{route('generateCrachasVoluntarios')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('generateCrachasVoluntarios', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -210,14 +215,14 @@
                             <td>1</td>
                             <td>Anais (Edição Corrente)</td>
                             <td class="text-right">
-                                <a href="{{route('csvAnais')}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
+                                <a href="{{route('csvAnais', $edicao)}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>Relatório de Áreas do Conhecimento</td>
                             <td class="text-right">
-                                <a href="{{route('relatorioArea')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioArea', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -238,7 +243,7 @@
                             <td>5</td>
                             <td>Relatório de Níveis</td>
                             <td class="text-right">
-                                <a href="{{route('relatorioNivel')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioNivel', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -248,7 +253,7 @@
                             <td>1</td>
                             <td>Vale Lanche</td>
                             <td class="text-right">
-                                <a href="{{route('geraValeLanche')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('geraValeLanche', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -258,49 +263,49 @@
                             <td>1</td>
                             <td>Relatório de Homologadores</td>
                             <td class="text-right">
-                                <a href="{{route('csv', 2)}}"><i class="material-icons">arrow_downward</i></a>
+                                <a href="{{route('csv',['id' => 2, 'edicao' => $edicao])}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>Relatório de Homologadores Por Área do Conhecimento</td>
                             <td class="text-right">
-                                <a href="{{route('homologadoresArea')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('homologadoresArea', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td>Relatório de Homologadores Por Projeto</td>
                             <td class="text-right">
-                                <a href="{{route('homologadoresProjeto')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('homologadoresProjeto', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>4</td>
                             <td>Relatório de Projetos Classificados Para a Edição Corrente (Por Área do Conhecimento)</td>
                             <td class="text-right">
-                                <a href="{{route('projetosClassificados')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('projetosClassificados', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>5</td>
                             <td>Relatório de Projetos Classificados Para a Edição Corrente (Por Nível)</td>
                             <td class="text-right">
-                                <a href="{{route('projetosClassificadosNivel')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('projetosClassificadosNivel', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>6</td>
                             <td>Relatório de Projetos Classificados Para a Edição Corrente (Sem Notas)</td>
                             <td class="text-right">
-                                <a href="{{route('projetosClassificadosSemNota')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('projetosClassificadosSemNota', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>7</td>
                             <td>Relatório de Projetos Não Homologados Para a Edição Corrente (Por Nível)</td>
                             <td class="text-right">
-                                <a href="{{route('projetosNaoHomologadosNivel')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('projetosNaoHomologadosNivel', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -310,29 +315,29 @@
                             <td>1</td>
                             <td>Relatório de Classificação Geral dos Projetos</td>
                             <td class="text-right">
-                                <a href="{{route('classificacaoGeral')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('classificacaoGeral', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>Relatório de Classificação Geral dos Projetos Por Área do Conhecimento</td>
                             <td class="text-right">
-                                <a href="{{route('classificacaoProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('classificacaoProjetos', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td>Relatório de Premiação dos Projetos</td>
                             <td class="text-right">
-                                <a href="{{route('premiacaoProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
-                                <a href="{{route('csvPremiados')}}"><i class="material-icons">arrow_downward</i></a>
+                                <a href="{{route('premiacaoProjetos', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('csvPremiados', $edicao)}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>4</td>
                             <td>Relatório de Premiação dos Projetos (Certificados)</td>
                             <td class="text-right">
-                                <a href="{{route('premiacaoCertificados')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('premiacaoCertificados', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -342,14 +347,14 @@
                             <td>1</td>
                             <td>CSV Autores</td>
                             <td class="text-right">
-                                <a href="{{route('csvPresencaAutores')}}"><i class="material-icons">arrow_downward</i></a>
+                                <a href="{{route('csvPresencaAutores', $edicao)}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>CSV Avaliadores</td>
                             <td class="text-right">
-                                <a href="{{route('csvPresencaAvaliadores')}}"><i class="material-icons">arrow_downward</i></a>
+                                <a href="{{route('csvPresencaAvaliadores', $edicao)}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -363,28 +368,35 @@
                             <td>4</td>
                             <td>CSV Coorientadores</td>
                             <td class="text-right">
-                                <a href="{{route('csvPresencaCoorientadores')}}"><i class="material-icons">arrow_downward</i></a>
+                                <a href="{{route('csvPresencaCoorientadores', $edicao)}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>5</td>
                             <td>CSV Homologadores</td>
                             <td class="text-right">
-                                <a href="{{route('csvPresencaHomologadores')}}"><i class="material-icons">arrow_downward</i></a>
+                                <a href="{{route('csvPresencaHomologadores', $edicao)}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>6</td>
                             <td>CSV Orientadores</td>
                             <td class="text-right">
-                                <a href="{{route('csvPresencaOrientadores')}}"><i class="material-icons">arrow_downward</i></a>
+                                <a href="{{route('csvPresencaOrientadores', $edicao)}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>7</td>
                             <td>CSV Voluntários</td>
                             <td class="text-right">
-                                <a href="{{route('csvPresencaVoluntarios')}}"><i class="material-icons">arrow_downward</i></a>
+                                <a href="{{route('csvPresencaVoluntarios', $edicao)}}"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>Autores, Coorientadores, Orientadores e Voluntários que Compareceram na IFCITEC</td>
+                            <td class="text-right">
+                                <a href="{{route('participantesCompareceram', $edicao)}}"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -394,42 +406,56 @@
                             <td>1</td>
                             <td>Gerar Localização dos Projetos</td>
                             <td class="text-right">
-                                <a href="{{route('gerarLocalizacaoProjetos')}}"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('gerarLocalizacaoProjetos', $edicao)}}"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>Relatório de Projetos</td>
                             <td class="text-right">
-                                <a href="{{route('relatorioProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioProjetos', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td>Relatório de Projetos E Seus Status</td>
                             <td class="text-right">
-                                <a href="{{route('statusProjetos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('statusProjetos', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>4</td>
                             <td>Relatório de Projetos Que Comparecerão (Edição Corrente)</td>
                             <td class="text-right">
-                                <a href="{{route('relatorioProjetosConfirma')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioProjetosConfirma', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>5</td>
                             <td>Relatório de Projetos Que Comparecerão na Edição Corrente (Por Área do Conhecimento)</td>
                             <td class="text-right">
-                                <a href="{{route('relatorioProjetosConfirmaArea')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioProjetosConfirmaArea', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>6</td>
                             <td>Relatório de Projetos Que Compareceram (Edição Corrente)</td>
                             <td class="text-right">
-                                <a href="{{route('projetosCompareceram')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('projetosCompareceram', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>Relatório de Projetos Que Compareceram do IFRS Canoas (Edição Corrente)</td>
+                            <td class="text-right">
+                                <a href="{{route('projetosCompareceramIFRSCanoas', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>Relatório de Projetos Que Compareceram Por Autor (Edição Corrente)</td>
+                            <td class="text-right">
+                                <a href="{{route('projetosCompareceramAutor', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -438,14 +464,14 @@
                             <td>1</td>
                             <td>Relatório de Voluntários</td>
                             <td class="text-right">
-                                <a href="{{route('csv', 4)}}"><i class="material-icons">arrow_downward</i></a>
+                                <a href="{{route('csv',['id' => 4, 'edicao' => $edicao])}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>Relatório de Voluntários e suas respectivas tarefas</td>
                             <td class="text-right">
-                                <a href="{{route('relatorioVoluntarioTarefa')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioVoluntarioTarefa', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -455,7 +481,7 @@
                             <td>Relatório de Autores
                             </td>
                             <td class="text-right">
-                                <a href="{{route('relatorioAutores')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioAutores', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -463,7 +489,7 @@
                             <td>Relatório de Autores (Lanche)
                             </td>
                             <td class="text-right">
-                                <a href="{{route('relatorioAutoresLanche')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioAutoresLanche', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -471,7 +497,7 @@
                             <td>Relatório de Autores (Pós Homologação)
                             </td>
                             <td class="text-right">
-                                <a href="{{route('relatorioAutoresPos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioAutoresPos', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                                 <a href="{{route('csvAutoresHomologados')}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
@@ -480,7 +506,7 @@
                             <td>Relatório de Autores (Tamanho Camisa)
                             </td>
                             <td class="text-right">
-                                <a href="{{route('camisaTamanho')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('camisaTamanho', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -488,7 +514,7 @@
                             <td>Relatório de Autores (Tamanho Camisa - Assinatura)
                             </td>
                             <td class="text-right">
-                                <a href="{{route('camisaTamanhoAssinatura')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('camisaTamanhoAssinatura', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -496,7 +522,7 @@
                             <td>Relatório de Autores Que Comparecerão na IFCITEC
                             </td>
                             <td class="text-right">
-                                <a href="{{route('csvAutoresConfirmaramPresenca')}}"><i class="material-icons">arrow_downward</i></a>
+                                <a href="{{route('csvAutoresConfirmaramPresenca', $edicao)}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -504,7 +530,7 @@
                             <td>Relatório de Avaliadores
                             </td>
                             <td class="text-right">
-                                <a href="{{route('relatorioAvaliadores')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioAvaliadores',$edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -512,7 +538,7 @@
                             <td>Relatório de Coorientadores
                             </td>
                             <td class="text-right">
-                                <a href="{{route('relatorioCoorientadores')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioCoorientadores', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -520,7 +546,7 @@
                             <td>Relatório de Coorientadores (Pós Homologação)
                             </td>
                             <td class="text-right">
-                                <a href="{{route('relatorioCoorientadoresPos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioCoorientadoresPos', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -528,7 +554,7 @@
                             <td>Relatório de Homologadores
                             </td>
                             <td class="text-right">
-                                <a href="{{route('relatorioHomologadores')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioHomologadores', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -536,7 +562,7 @@
                             <td>Relatório de Orientadores
                             </td>
                             <td class="text-right">
-                                <a href="{{route('relatorioOrientadores')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioOrientadores', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -544,7 +570,7 @@
                             <td>Relatório de Orientadores (Pós Homologação)
                             </td>
                             <td class="text-right">
-                                <a href="{{route('relatorioOrientadoresPos')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioOrientadoresPos', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -552,21 +578,21 @@
                             <td>Relatório de Voluntários
                             </td>
                             <td class="text-right">
-                                <a href="{{route('relatorioVoluntarios')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('relatorioVoluntarios', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>14</td>
                             <td>Relatório de Participantes de Projetos</td>
                             <td class="text-right">
-                                <a href="{{route('csv', 3)}}"><i class="material-icons">arrow_downward</i></a>
+                                <a href="{{route('csv', ['id' => 3, 'edicao' => $edicao])}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>15</td>
                             <td>Relatório de Participantes (Assinatura)</td>
                             <td class="text-right">
-                                <a href="{{route('participantesAssinatura')}}"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('participantesAssinatura', $edicao)}}"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>

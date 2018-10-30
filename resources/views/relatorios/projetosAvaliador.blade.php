@@ -1,5 +1,6 @@
 @extends('relatorios.relatorio')
 
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -15,7 +16,7 @@
           <tbody>
             <tr>
               <td>
-				  @foreach($avaliador->getProjetosAvaliador($avaliador->id) as $projeto)
+				  @foreach($avaliador->getProjetosAvaliador($avaliador->id, $edicao) as $projeto)
 				  <p style="color: #000;">{{$projeto->titulo}}</p>
 				  @endforeach
               </td>

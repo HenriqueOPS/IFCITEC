@@ -3,6 +3,7 @@
 @section('css')
 <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 <link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 @endsection
 
 @section('content')
@@ -96,6 +97,16 @@
                                 </div>
                             </div>
 
+                            <br>
+
+                            <div class="col-md-offset-1">
+                             <p>Dica para os dois próximos tópicos:
+                                <a href="javascript:void(0);" class="atualizar btn btn-primary btn-fab btn-fab-mini btn-round" role="button">
+                                    <i class="fas fa-lightbulb"></i>
+                                </a>
+                            </p>
+                            </div>
+
                             <div class="input-group{{ $errors->has('resumo') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">format_align_justify</i>
@@ -156,7 +167,18 @@
                         </div>
                     </div>
 
-                    <div class="row">
+
+                <hr>
+                <div class="col-md-offset-1">
+                             <p>Dica para os dois próximos tópicos:
+                                <a href="javascript:void(0);" class="info btn btn-primary btn-fab btn-fab-mini btn-round" role="button">
+                                    <i class="fas fa-lightbulb"></i>
+                                </a>
+                            </p>
+                </div>
+
+
+                <div class="row">
                         <div class="col-md-10 col-md-offset-1">
                             <h3>Autor(es)</h3>
                         </div>
@@ -339,12 +361,71 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Info -->
+<div id="ModalInfo" class="modal fade bd-example-modal-lg" role="dialog3" aria-labelledby="ModalInfo">
+    <div class="modal-dialog3" role="document3">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Info</h5>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <p>Todos os participantes devem estar cadastrados no sistema para a vinculação abaixo. O projeto deve conter no mínimo um autor e um orientador, como previsto no regulamento.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fim Modal Info -->
+
+<!-- Modal Nível -->
+<div id="ModalNivel" class="modal fade bd-example-modal-lg" role="dialog2" aria-labelledby="ModalNivel">
+    <div class="modal-dialog" role="document2">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nivelModal"></h5>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <p>Segundo o regulamento, um projeto desse nível deve ter um resumo com no mínimo <a id="min_chModal"></a> caracteres e no máximo <a id="max_chModal"></a> caracteres, e também deve conter no mínimo <a id="palavrasModal"></a> palavras-chave.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fim Modal Nível -->
 @endsection
 
 @section('js')
 <script type="text/javascript" src="{{asset('js/selectize.min.js')}}"></script>
 <script type="text/javascript">
 $(document).ready(function () {
+
+    $('.atualizar').click(function () {
+        var nivel = $('#nivel-select').val();
+        var urlConsulta = '../.././projeto/nivel/dados-nivel/'+ nivel;
+        $.get(urlConsulta, function (res) {
+            $("#nivelModal").html(res.nivel);
+            $("#min_chModal").html(res.min_ch);
+            $("#max_chModal").html(res.max_ch);
+            $("#palavrasModal").html(res.palavras);
+
+            $("#ModalNivel").modal();
+        });
+
+    });
+
+    $('.info').click(function () {
+            
+        $("#ModalInfo").modal();
+    });
 
     $('#resumo').keyup(function () {
         $('#total-char').html($('#resumo').val().length);

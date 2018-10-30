@@ -30,7 +30,7 @@
 
         </div>
 
-        <form method="post" id="cadastraVoluntario" action="{{ route('editaFuncaoUsuario', $usuario->id)}}">
+        <form method="post" id="cadastraVoluntario" action="{{ route('orgEditaFuncaoUsuario', $usuario->id)}}">
         {{ csrf_field() }}
 
 
@@ -117,6 +117,7 @@
                                 @foreach($tarefas as $tarefa)
 
                                     <div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">
+                                         @if($tarefa->pessoasTarefa($tarefa->id) >= $tarefa->vagas)
                                             @if($usuario->tarefas->first() != null)
                                                 @if($usuario->tarefas->first()->id == $tarefa->id)
                                                 <div class="radio">
@@ -125,7 +126,7 @@
                                                                class="tarefa"
                                                                 name="tarefa"
                                                                 value="{{$tarefa->id}}"
-                                                                checked>
+                                                                disabled checked>
                                                         {{$tarefa->tarefa}}
                                                     </label>
                                                 </div>
@@ -136,7 +137,7 @@
                                                                class="tarefa"
                                                                 name="tarefa"
                                                                 value="{{$tarefa->id}}"
-                                                                >
+                                                                disabled>
                                                         {{$tarefa->tarefa}}
                                                     </label>
                                                 </div>
@@ -148,11 +149,49 @@
                                                                class="tarefa"
                                                                 name="tarefa"
                                                                 value="{{$tarefa->id}}"
-                                                                >
+                                                                disabled>
                                                         {{$tarefa->tarefa}}
                                                     </label>
                                             </div>
                                             @endif
+                                         @else
+                                            @if($usuario->tarefas->first() != null)
+                                                @if($usuario->tarefas->first()->id == $tarefa->id)
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio"
+                                                               class="tarefa"
+                                                                value="{{$tarefa->id}}"
+                                                                name="tarefa" checked 
+                                                                >
+                                                        {{$tarefa->tarefa}}
+                                                    </label>
+                                                </div>
+                                                @else
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio"
+                                                               class="tarefa"
+                                                                value="{{$tarefa->id}}"
+                                                                name="tarefa"
+                                                                >
+                                                        {{$tarefa->tarefa}}
+                                                    </label>
+                                                </div>
+                                                @endif
+                                            @else
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio"
+                                                               class="tarefa"
+                                                                value="{{$tarefa->id}}"
+                                                                name="tarefa"
+                                                                >
+                                                        {{$tarefa->tarefa}}
+                                                    </label>
+                                                </div>
+                                            @endif
+                                         @endif
                                     </div>
                                 @endforeach  
                             </td>

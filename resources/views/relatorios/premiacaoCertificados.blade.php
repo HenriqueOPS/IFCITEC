@@ -65,7 +65,7 @@
 </style>
 </head>
 @foreach($areas as $area)
-@foreach($area->getClassificacaoProjetosCertificados($area->id) as $projeto)
+@foreach($area->getClassificacaoProjetosCertificados($area->id, $edicao) as $projeto)
 @if($loop->iteration == 1)
 <p style="color: #FFF">{{$colocacao = 'TERCEIRO LUGAR' }}</p>
 @endif

@@ -19,7 +19,7 @@
   				<tr>
     				<td><a style="color: #000;">{{$voluntario->nome}}</a></td>
 					<td><a style="color: #000;">{{$voluntario->email}}</a></td>
-					<td><a style="color: #000;">{{$voluntario->tarefas->first()['tarefa']}}</a></td>
+					<td><a style="color: #000;">{{$voluntario->tarefa}}</a></td>
   				</tr>
   				@endforeach
   			</tbody>	

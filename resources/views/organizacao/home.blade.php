@@ -10,7 +10,7 @@
         <div class="row">
 
             <div class="col-md-12 text-center">
-                <h2>Painel administrativo</h2>
+                <h2>Painel do Organizador</h2>
             </div>
 
             <div id="page" class="col-md-12">
@@ -28,16 +28,21 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('organizacao.relatorios')}}">
+                        <a href="{{route('organizacao.presenca')}}">
+                            <i class="material-icons">account_circle</i>
+                            Presença
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('organizacao.relatoriosEdicao')}}">
                             <i class="material-icons">description</i>
                             Relatórios
                         </a>
                     </li>
-
                     <li>
-                        <a href="{{route('organizacao.presenca')}}">
-                            <i class="material-icons">account_circle</i>
-                            Presença
+                        <a href="{{route('organizacao.usuarios')}}">
+                            <i class="material-icons">person</i>
+                            Usuários
                         </a>
                     </li>
                 </ul>

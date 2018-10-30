@@ -311,10 +311,10 @@ class Pessoa extends Authenticatable {
         }
     }
 
-	public function getProjetosAvaliador($id){
+	public function getProjetosAvaliador($id, $edicao){
 		$projetos = Projeto::select('projeto.id', 'titulo')
 			->join('avaliacao', 'projeto.id', '=', 'avaliacao.projeto_id')
-			->where('projeto.edicao_id','=',Edicao::getEdicaoId())
+			->where('projeto.edicao_id','=',$edicao)
 			->where('avaliacao.pessoa_id','=',$id)
 			->orderBy('projeto.titulo','asc')
 			->get();

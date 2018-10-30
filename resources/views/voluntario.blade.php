@@ -61,8 +61,8 @@
                                         <span aria-hidden="true"><i class="material-icons">clear</i></span>
                                     </button>
                                     <b>ATENÇÃO: </b>Você receberá mais informações em breve!
-                                </div>
                             </div>
+                        </div>
                     </div>
                     <div class="row">
                             <div class="col-md-6 col-md-offset-3 text-center">
