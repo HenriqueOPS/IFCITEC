@@ -62,7 +62,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('administrador.relatorios')}}">
+                    <a href="{{route('administrador.relatoriosEdicao')}}">
                         <i class="material-icons">description</i>
                         Relatórios
                     </a>
@@ -90,7 +90,7 @@
                         <tr>
                             <th class="text-center">#</th>
                             <th>Tarefa</th>
-                            <th>Número</th>
+                            <th>Descrição</th>
                             <th class="text-right">Ações</th>
                         </tr>
                     </div>
@@ -101,7 +101,7 @@
                         <tr>
                             <td class="text-center">{{$id+1}}</td>
                             <td>{{$tarefa->tarefa}}</td>
-                            <td>{{$tarefa->vagas}}</td>
+                            <td>{{$tarefa->descricao}}</td>
                             <td class="text-right">
                             <a href="{{ route('tarefaVoluntarios', $tarefa->id) }}" target="_blank"><i class="material-icons">description</i></a>
 

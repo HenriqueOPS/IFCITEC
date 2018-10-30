@@ -1,4 +1,4 @@
-@extends('relatorios.relatorio')
+@extends('relatorios.relatorioPaisagem')
 
 @section('content')
 <div class="container">
@@ -16,7 +16,7 @@
   				</tr>
         	</thead>
   			<tbody>
-          {{$projetos = $nivel->getClassificacao($nivel->id)}}
+          {{$projetos = $nivel->getClassificacao($nivel->id, $edicao)}}
   				@foreach($projetos as $projeto)
   				<tr>
     				<td><a style="color: #000;">{{$projeto->titulo}}</a></td>

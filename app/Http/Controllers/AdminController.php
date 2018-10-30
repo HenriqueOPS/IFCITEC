@@ -4,20 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AreaRequest;
 use App\Http\Requests\NivelRequest;
-use App\Projeto;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-
-use App\Funcao;
+use Illuminate\Support\Facades\Redirect;
+use App\AreaConhecimento;
 use App\Edicao;
-use App\Escola;
 use App\Endereco;
+use App\Escola;
+use App\Funcao;
 use App\Nivel;
 use App\Pessoa;
+use App\Projeto;
+use App\Situacao;
 use App\Tarefa;
-use App\AreaConhecimento;
 
 class AdminController extends Controller
 {
@@ -167,9 +168,19 @@ class AdminController extends Controller
     	return view('admin.comissao', collect(['comissao' => $comissao]));
     }
 
-    public function relatorios(){
+    public function relatorios($edicao){
+    	return view('admin.relatorios', array('edicao' => $edicao));
+    }
 
-    	return view('admin.relatorios');
+    public function relatoriosEdicao(){
+    	$edicoes = Edicao::all();
+    	return view('relatoriosEdicao')->withEdicoes($edicoes);
+    }
+
+    public function relatoriosEscolheEdicao(Request $req){
+    	$data = $req->all();
+    	$edicao = $data['edicao'];
+    	return redirect()->route('administrador.relatorios', ['edicao' => $edicao]);
     }
 
     public function homologarProjetos()
@@ -431,8 +442,7 @@ class AdminController extends Controller
 
 		Tarefa::create([
 			'tarefa' => $data['tarefa'],
-			'descricao' => $data['descricao'],
-			'vagas' => $data['vagas']
+			'descricao' => $data['descricao']
 		]);
 
 		return redirect()->route('administrador.tarefas');
@@ -455,7 +465,6 @@ class AdminController extends Controller
 		Tarefa::where('id', $id)
 			->update(['tarefa' => $data['tarefa'],
 				'descricao' => $data['descricao'],
-				'vagas' => $data['vagas'],
 			]);
 
 		return redirect()->route('administrador.tarefas');
@@ -497,10 +506,12 @@ class AdminController extends Controller
 	{
 		$usuario = Pessoa::find($id);
 		$funcoes = Funcao::all();
+		$tarefas = Tarefa::orderBy('tarefa')->get();
 
 		return view('admin.usuario.editarFuncao')
 			->withUsuario($usuario)
-			->withFuncoes($funcoes);
+			->withFuncoes($funcoes)
+			->withTarefas($tarefas);
 	}
 
 	public function editaFuncaoUsuario(Request $req, $id)
@@ -512,25 +523,35 @@ class AdminController extends Controller
 			->get()
 			->keyBy('funcao_id')
 			->toArray();
-		$cont = 0;
+
+		$usuario = Pessoa::find($id);
+
+		if(isset($data['tarefa'])){
+			if ($usuario->tarefas->first() != null) {
+				if($usuario->tarefas->first()->id != $data['tarefa']){
+					DB::table('pessoa_tarefa')->where('pessoa_id', $id)->update([
+						'tarefa_id' => $data['tarefa']]);
+				}
+			}
+			else {
+				DB::table('pessoa_tarefa')->insert(
+				['edicao_id' => Edicao::getEdicaoId(),
+					'tarefa_id' => $data['tarefa'],
+					'pessoa_id' => $id,
+				]
+			);
+			}
+		}
+		
 		if (!empty($funcoes)) {
 			$funcaoId = array_keys($funcoes);
 			foreach ($funcoes as $funcao) {
 				if($funcao->funcao_id == Funcao::select(['id'])->where('funcao', 'Voluntário')->first()->id){
-					DB::table('pessoa_tarefa')->where('edicao_id', Edicao::getEdicaoId())->where('pessoa_id', $id)->delete();
-				}
-				if($funcao->funcao_id == Funcao::select(['id'])->where('funcao', 'Homologador')->first()->id || $funcao->funcao_id == Funcao::select(['id'])->where('funcao', 'Avaliador')->first()->id){
-					if($cont == 0){
-					$comissaoEdicao = DB::table('comissao_edicao')->select('id')
-                                    ->where('edicao_id', Edicao::getEdicaoId())
-                                    ->where('pessoa_id', $id)
-                                    ->get();
-					DB::table('areas_comissao')->where('comissao_edicao_id', $comissaoEdicao->first()->id)->delete();
-					DB::table('comissao_edicao')->where('id', $comissaoEdicao->first()->id)->delete();
+					if (!isset($data['funcao']) || (!in_array($funcao->funcao_id, $data['funcao']))) {
+						DB::table('pessoa_tarefa')->where('edicao_id', Edicao::getEdicaoId())->where('pessoa_id', $id)->delete();
 					}
-					$cont++;
 				}
-				if ($funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Autor')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id) {			
+				if ($funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Autor')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Avaliador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Homologador')->first()->id) {	
 					if (!isset($data['funcao']) || (!in_array($funcao->funcao_id, $data['funcao']))) {
 						DB::table('funcao_pessoa')->where('funcao_id', $funcao->funcao_id)->where('pessoa_id', $id)->delete();
 					}
@@ -559,12 +580,38 @@ class AdminController extends Controller
 				]);
 			}
 		}
+		$usuarios = Pessoa::orderBy('nome')->get();
 
-		$usuario = Pessoa::find($id);
+		//$usuario = Pessoa::find($id);
+		$tarefas = Tarefa::orderBy('tarefa')->get();
 		$funcoes = Funcao::all();
-		return view('admin.usuario.editarFuncao')
-			->withUsuario($usuario)
-			->withFuncoes($funcoes);
+		return view('admin.usuarios')
+			->withUsuarios($usuarios)
+			->withFuncoes($funcoes)
+			->withTarefas($tarefas);
+	}
+
+	public function projetoNaoCompareceu()
+	{
+		$projetos = Projeto::select( 'projeto.id', 'projeto.titulo')
+						->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+						->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
+						->where(function ($q){
+                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
+                        })
+						->orderBy('projeto.titulo')
+						->distinct('projeto.id')
+						->get();
+
+		return view('admin.projetoNaoCompareceu')->withProjetos($projetos);
+	}
+
+	public function naoCompareceu(Request $req)
+	{
+		$data = $req->all();
+		dd($data['projeto']);
+		return view('admin.projetos');
 	}
 
 	public function fichaAvaliacao()

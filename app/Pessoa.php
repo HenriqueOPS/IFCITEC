@@ -126,7 +126,7 @@ class Pessoa extends Authenticatable {
 				return true;
 			}
 		}
-        
+
 		return false;
 	}
 
@@ -310,5 +310,16 @@ class Pessoa extends Authenticatable {
             return false;
         }
     }
+
+	public function getProjetosAvaliador($id, $edicao){
+		$projetos = Projeto::select('projeto.id', 'titulo')
+			->join('avaliacao', 'projeto.id', '=', 'avaliacao.projeto_id')
+			->where('projeto.edicao_id','=',$edicao)
+			->where('avaliacao.pessoa_id','=',$id)
+			->orderBy('projeto.titulo','asc')
+			->get();
+
+		return $projetos;
+	}
 
 }

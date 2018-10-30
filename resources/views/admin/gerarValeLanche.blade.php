@@ -15,7 +15,7 @@
                         <h2>Gerar Vale Lanche</h2>
                     </div>
                 </div>
-                <form method="post" action="{{ route('valeLanche')}}">
+                <form method="post" action="{{ route('valeLanche', $edicao)}}">
 
                     {{ csrf_field() }}
 

@@ -9,15 +9,6 @@
 
 				<div class="input-group">
                 <span class="input-group-addon">
-                    <i class="material-icons">exposure_zero</i>
-                </span>
-					<div class="form-group label-floating">
-						<span id="vagasModal"></span>
-					</div>
-				</div>
-
-				<div class="input-group">
-                <span class="input-group-addon">
                     <i class="material-icons">description</i>
                 </span>
 					<div class="form-group label-floating">
@@ -48,7 +39,6 @@ $('.modalTarefa').click(function(){
 		console.log(res);
 
 		//altera o DOM
-		$("#vagasModal").html(res.dados.vagas);
 		$("#tarefaModal").html(res.dados.tarefa);
 		$("#descricaoTModal").html(res.dados.descricao);
 

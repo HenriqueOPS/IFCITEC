@@ -65,15 +65,15 @@
 </style>
 </head>
 @foreach($areas as $area)
-@foreach($area->getClassificacaoProjetos($area->id) as $projeto)
+@foreach($area->getClassificacaoProjetosCertificados($area->id, $edicao) as $projeto)
 @if($loop->iteration == 1)
-<p style="color: #FFF">{{$colocacao = 'PRIMEIRO LUGAR' }}</p>
+<p style="color: #FFF">{{$colocacao = 'TERCEIRO LUGAR' }}</p>
 @endif
 @if($loop->iteration == 2)
 <p style="color: #FFF">{{$colocacao = 'SEGUNDO LUGAR' }}</p>
 @endif
 @if($loop->iteration == 3)
-<p style="color: #FFF">{{$colocacao = 'TERCEIRO LUGAR' }}</p>
+<p style="color: #FFF">{{$colocacao = 'PRIMEIRO LUGAR' }}</p>
 @endif
 @foreach($projeto->pessoas as $pessoa)
 <body>

@@ -58,10 +58,19 @@
                                 Avaliados
                             </a>
                         </li>
+                        <li>
+                            <a id="6" class="tab-projetos" role="tab" data-toggle="tab">
+                                <i class="material-icons">description</i>
+                                Não Compareceu
+                            </a>
+                        </li>
                     </ul>
                 </div>
 
                 <div>
+                    <a href="{{ route('projetoNaoCompareceu') }}" id="" class="btn btn-primary btn-round">
+                        <i class="material-icons">add</i> Add Projeto Não Compareceu
+                    </a>
 
                     <a href="{{route('homologar-projetos')}}" id="homologarTrabalhos" class="btn btn-sm btn-primary">Homologar Trabalhos</a>
 
@@ -129,7 +138,7 @@
 
                                 </div>
 
-                                <a class="dados-projeto" projeto-id="{{$projeto->id}}"><i class="material-icons blue-icon">pan_tool</i></a>
+                                <a class="dados-projeto" projeto-id="{{$projeto->id}}" href="#"><i class="material-icons blue-icon">remove_red_eye</i></a>
 
                                 @if($projeto->getStatus() == "Não Avaliado" || $projeto->getStatus() == "Homologado")
                                     <a href="{{route('vinculaAvaliador',$projeto->id)}}"><i class="material-icons">assignment_ind</i></a>
@@ -238,10 +247,11 @@ $('.dados-projeto').click(function(){
             $("#homologadores").html('');
 
             homologadores.forEach(function (homologador) {
-                if(homologador.revisado)
+                if(homologador.revisado) {
                     $("#homologadores").append('<span>'+homologador.nome+' => '+homologador.nota_final+'</span><br>');
-                else
+                }else {
                     $("#homologadores").append('<span>'+homologador.nome+'</span><br>');
+                }
             });
         }
 
@@ -250,10 +260,11 @@ $('.dados-projeto').click(function(){
             $("#avaliadores").html('');
 
             avaliadores.forEach(function (avaliador) {
-                if(avaliador.revisado)
-                    $("#avaliadores").append('<span>'+avaliador.nome+' => '+avaliador.nota_final+'</span><br>');
-                else
+                if(avaliador.avaliado) {
+                    $("#avaliadores").append('<span>' + avaliador.nome + ' => ' + avaliador.nota_final + '</span><br>');
+                }else {
                     $("#avaliadores").append('<span>'+avaliador.nome+'</span><br>');
+                }
             });
         }
 
@@ -313,12 +324,14 @@ function hideAll(){
     $('div.project.situacao-4').hide();
     $('div.project.situacao-5').hide();
     $('div.project.situacao-6').hide();
+    $('div.project.situacao-7').hide();
 	$('div[id=1]').hide();
 	$('div[id=2]').hide();
 	$('div[id=3]').hide();
 	$('div[id=4]').hide();
 	$('div[id=5]').hide();
 	$('div[id=6]').hide();
+    $('div[id=7]').hide();
 
 }
 
@@ -329,6 +342,7 @@ function showAll(){
     $('div.project.situacao-4').show();
     $('div.project.situacao-5').show();
     $('div.project.situacao-6').show();
+    $('div.project.situacao-7').show();
 }
 
 </script>
