@@ -62,7 +62,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('administrador.relatorios')}}">
+                    <a href="{{route('administrador.relatoriosEdicao')}}">
                         <i class="material-icons">description</i>
                         Relatórios
                     </a>

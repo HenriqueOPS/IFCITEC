@@ -2,6 +2,7 @@
 
 @section('css')
     <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -37,7 +38,7 @@
                         Áreas
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="{{route('administrador.tarefas')}}">
                         <i class="material-icons">title</i>
                         Tarefas (Voluntários)
@@ -61,7 +62,7 @@
                         Comissão Avaliadora
                     </a>
                 </li>
-                <li>
+                <li class="active">
                     <a href="{{route('administrador.relatoriosEdicao')}}">
                         <i class="material-icons">description</i>
                         Relatórios
@@ -74,57 +75,63 @@
 </div>
 <br><br>
 <div class="container">
+ <form method="post" action="{{route('administrador.escolheEdicao')}}">
+                    {{ csrf_field() }}
     <div class="row">
         <div class="col-md-12 main main-raised">
-            <div class="list-projects">
-                    <table class="table">
-                            <thead id="4">
-                    <div id="4">
-                        <div class="col-md-3">
-                            <a href="{{ route('cadastroTarefa') }}" class="btn btn-primary btn-round">
-                                <i class="material-icons">add</i> Adicionar Tarefa
-                            </a>
-                        </div>
-                    </div>
-                    <div id="4">
-                        <tr>
-                            <th class="text-center">#</th>
-                            <th>Tarefa</th>
-                            <th>Descrição</th>
-                            <th class="text-right">Ações</th>
-                        </tr>
-                    </div>
-                    </thead>
+           <div class="input-group{{ $errors->has('edicao') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">school</i>
+                                </span>
+                                <div class="form-group">
+                                    <label class="control-label">Edição</label>
+                                    <select id="edicao-select" name="edicao" value="{{old('edicao') ? old('edicao'): ''}}" required>
+                                        <option></option>
+                                        @foreach ($edicoes as $edicao)
+                                            @if ($edicao->id == old('edicao'))
+                                                <option selected="selected" value="{{$edicao->id}}">{{\App\Edicao::numeroEdicao($edicao->ano)}}</option>
+                                            @else
+                                                <option value="{{$edicao->id}}">{{\App\Edicao::numeroEdicao($edicao->ano)}}</option>
+                                                
+                                            @endif
+                                        @endforeach
+                                    </select>
 
-                    <tbody id="4">
-                        @foreach($tarefas as $id => $tarefa)
-                        <tr>
-                            <td class="text-center">{{$id+1}}</td>
-                            <td>{{$tarefa->tarefa}}</td>
-                            <td>{{$tarefa->descricao}}</td>
-                            <td class="text-right">
-                            <a href="{{ route('tarefaVoluntarios', $tarefa->id) }}" target="_blank"><i class="material-icons">description</i></a>
-
-                            <a href="javascript:void(0);" class="modalTarefa" data-toggle="modal" data-target="#modal7" id-tarefa="{{ $tarefa->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
-                    
-                            <a href="{{ route('tarefa', $tarefa->id) }}"><i class="material-icons">edit</i></a>
-                            
-                            <a href="javascript:void(0);" class="exclusaoTarefa" id-tarefa="{{ $tarefa->id }}"><i class="material-icons blue-icon">delete</i></a>
-                        
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                    </table>
-                </div>
+                                    @if ($errors->has('edicao'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('edicao') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+            </div>
+            <div class="row">
+                    <div class="col-md-6 col-md-offset-3 text-center">
+                        <button class="btn btn-primary">Enviar</button>
+                    </div>
             </div>
         </div>
     </div>
+    </form>
 </div>
 @endsection
 
-@section('partials')
+@section('js')
 
-    @include('partials.modalTarefa')
+<script src="{{asset('js/main.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/selectize.min.js')}}"></script>
+<script type="application/javascript">
+$(document).ready(function () {
+
+    var oldEdicao = $('#edicao-select').attr("value");
+    $('#edicao-select').selectize({
+        placeholder: 'Escolha uma edição...',
+        onInitialize: function () {
+            this.setValue(oldEdicao, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+});
+</script>
 
 @endsection

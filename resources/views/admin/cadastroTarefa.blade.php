@@ -39,21 +39,6 @@
                                 @endif
                             </div>
 
-                            <div class="input-group{{ $errors->has('vagas') ? ' has-error' : '' }}">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">exposure_zero</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Número de Vagas</label>
-                                    <input type="number" class="form-control" name="vagas" required>
-                                </div>
-                                @if ($errors->has('vagas'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('vagas') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-
                             <div class="form-group{{ $errors->has('descricao') ? ' has-error' : '' }}">
                                 <div class="form-group label-floating">
                                     <i class="material-icons">description</i>

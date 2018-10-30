@@ -30,7 +30,7 @@
 		$("#ModalDeleteUsuário").modal();
 
 		$('.excluir').click(function(){
-			var urlConsulta = '.././usuario/exclui-usuario/'+idUsuario+'/'+$('#passwordDeleteUsuário').val();
+			var urlConsulta = '.././organizador/exclui-usuario/'+idUsuario+'/'+$('#passwordDeleteUsuário').val();
 			
 			$.get(urlConsulta, function (res){
 				if(res == 'true'){

@@ -1023,4 +1023,9 @@ class ProjetoController extends Controller
     	return view('confirmaPresenca', ['p' => $p]);
     }
 
+    public function dadosNivel($id)
+	{ //Ajax
+		return Nivel::find($id);
+	}
+
 }

@@ -58,10 +58,19 @@
                                 Avaliados
                             </a>
                         </li>
+                        <li>
+                            <a id="6" class="tab-projetos" role="tab" data-toggle="tab">
+                                <i class="material-icons">description</i>
+                                Não Compareceu
+                            </a>
+                        </li>
                     </ul>
                 </div>
 
                 <div>
+                    <a href="{{ route('projetoNaoCompareceu') }}" id="" class="btn btn-primary btn-round">
+                        <i class="material-icons">add</i> Add Projeto Não Compareceu
+                    </a>
 
                     <a href="{{route('homologar-projetos')}}" id="homologarTrabalhos" class="btn btn-sm btn-primary">Homologar Trabalhos</a>
 
@@ -315,12 +324,14 @@ function hideAll(){
     $('div.project.situacao-4').hide();
     $('div.project.situacao-5').hide();
     $('div.project.situacao-6').hide();
+    $('div.project.situacao-7').hide();
 	$('div[id=1]').hide();
 	$('div[id=2]').hide();
 	$('div[id=3]').hide();
 	$('div[id=4]').hide();
 	$('div[id=5]').hide();
 	$('div[id=6]').hide();
+    $('div[id=7]').hide();
 
 }
 
@@ -331,6 +342,7 @@ function showAll(){
     $('div.project.situacao-4').show();
     $('div.project.situacao-5').show();
     $('div.project.situacao-6').show();
+    $('div.project.situacao-7').show();
 }
 
 </script>

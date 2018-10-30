@@ -15,7 +15,7 @@
                         <h2>Gerar Localização de Projetos</h2>
                     </div>
                 </div>
-                <form method="post" action="{{ route('geraLocalizacaoProjetos')}}">
+                <form method="post" action="{{ route('geraLocalizacaoProjetos', $edicao)}}">
 
                     {{ csrf_field() }}
 

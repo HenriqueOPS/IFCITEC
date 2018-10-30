@@ -21,7 +21,7 @@
         	</thead>
   			<tbody>
           {{$cont = 0}}
-          {{$projetos = $area->getClassificacaoProjetosCertificados($area->id)}}
+          {{$projetos = $area->getClassificacaoProjetosCertificados($area->id, $edicao)}}
 		  @foreach($projetos as $projeto)
           @if($cont >= 3)
             @break

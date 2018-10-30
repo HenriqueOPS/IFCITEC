@@ -15,7 +15,7 @@
 					</tr>
 					</thead>
 					<tbody>
-					{{$projetos = $nivel->getProjetosClassificados($nivel->id)}}
+					{{$projetos = $nivel->getProjetosClassificados($nivel->id, $edicao)}}
 					@foreach($projetos as $projeto)
 						<tr>
 							<td><a style="color: #000;">{{$projeto->titulo}}</a></td>

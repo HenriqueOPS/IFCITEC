@@ -22,12 +22,12 @@ Route::get('/version', function (){
 
 //Gera os crachás
 Route::get('/cracha/gerar-crachas/branco', 'CrachaController@generateCrachas')->name('generateCrachas');
-Route::get('/cracha/gerar-crachas/autores', 'CrachaController@generateCrachasAutores')->name('generateCrachasAutores');
-Route::get('/cracha/gerar-crachas/coorientadores', 'CrachaController@generateCrachasCoorientadores')->name('generateCrachasCoorientadores');
-Route::get('/cracha/gerar-crachas/comissao-avaliadora', 'CrachaController@generateCrachasComissaoAvaliadora')->name('generateCrachasComissaoAvaliadora');
+Route::get('/cracha/gerar-crachas/autores/{edicao}', 'CrachaController@generateCrachasAutores')->name('generateCrachasAutores');
+Route::get('/cracha/gerar-crachas/coorientadores', 'CrachaController@generateCrachasCoorientadores/{edicao}')->name('generateCrachasCoorientadores');
+Route::get('/cracha/gerar-crachas/comissao-avaliadora/{edicao}', 'CrachaController@generateCrachasComissaoAvaliadora')->name('generateCrachasComissaoAvaliadora');
 Route::get('/cracha/gerar-crachas/comissao-organizadora', 'CrachaController@generateCrachasComissaoOrganizadora')->name('generateCrachasComissaoOrganizadora');
-Route::get('/cracha/gerar-crachas/orientadores', 'CrachaController@generateCrachasOrientadores')->name('generateCrachasOrientadores');
-Route::get('/cracha/gerar-crachas/voluntarios', 'CrachaController@generateCrachasVoluntarios')->name('generateCrachasVoluntarios');
+Route::get('/cracha/gerar-crachas/orientadores/{edicao}', 'CrachaController@generateCrachasOrientadores')->name('generateCrachasOrientadores');
+Route::get('/cracha/gerar-crachas/voluntarios', 'CrachaController@generateCrachasVoluntarios/{edicao}')->name('generateCrachasVoluntarios');
 Route::get('/cracha/qr-code/{id}', 'CrachaController@generateQrCode')->name('qrcode');
 
 
@@ -86,71 +86,72 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 
 
 //Relatórios
-	Route::get('/csv/{id}', 'RelatorioController@csv')->name('csv');
-	Route::get('/csv/anais/ifcitec', 'RelatorioController@csvAnais')->name('csvAnais');
-	Route::get('/csv/presenca/autores', 'RelatorioController@csvPresencaAutores')->name('csvPresencaAutores');
-	Route::get('/csv/projetos/premiacao', 'RelatorioController@csvPremiados')->name('csvPremiados');
-	Route::get('/csv/presenca/avaliadores', 'RelatorioController@csvPresencaAvaliadores')->name('csvPresencaAvaliadores');
-	Route::get('/csv/presenca/coorientadores', 'RelatorioController@csvPresencaCoorientadores')->name('csvPresencaCoorientadores');
-	Route::get('/csv/presenca/orientadores', 'RelatorioController@csvPresencaOrientadores')->name('csvPresencaOrientadores');
-	Route::get('/csv/presenca/voluntarios', 'RelatorioController@csvPresencaVoluntarios')->name('csvPresencaVoluntarios');
+	Route::get('/csv/{id}/{edicao?}', 'RelatorioController@csv')->name('csv');
+	Route::get('/csv/anais/ifcitec/{edicao}', 'RelatorioController@csvAnais')->name('csvAnais');
+	Route::get('/csv/presenca/autores/{edicao}', 'RelatorioController@csvPresencaAutores')->name('csvPresencaAutores');
+	Route::get('/csv/projetos/premiacao/{edicao}', 'RelatorioController@csvPremiados')->name('csvPremiados');
+	Route::get('/csv/presenca/avaliadores/{edicao}', 'RelatorioController@csvPresencaAvaliadores')->name('csvPresencaAvaliadores');
+	Route::get('/csv/presenca/coorientadores/{edicao}', 'RelatorioController@csvPresencaCoorientadores')->name('csvPresencaCoorientadores');
+	Route::get('/csv/presenca/orientadores/{edicao}', 'RelatorioController@csvPresencaOrientadores')->name('csvPresencaOrientadores');
+	Route::get('/csv/presenca/voluntarios/{edicao}', 'RelatorioController@csvPresencaVoluntarios')->name('csvPresencaVoluntarios');
 	Route::get('/csv/presenca/comissao', 'RelatorioController@csvPresencaComissaoOrganizadora')->name('csvPresencaComissao');
-	Route::get('/csv/presenca/homologadores', 'RelatorioController@csvPresencaHomologadores')->name('csvPresencaHomologadores');
+	Route::get('/csv/presenca/homologadores/{edicao}', 'RelatorioController@csvPresencaHomologadores')->name('csvPresencaHomologadores');
 	Route::get('/projetos/csv', 'RelatorioController@csvCertificados')->name('csvCertificados');
 	Route::get('/pessoas/csv', 'RelatorioController@csvProjetos')->name('csvProjetos');
 	Route::get('/pessoas/csv/autores/homologados', 'RelatorioController@csvAutoresHomologados')->name('csvAutoresHomologados');
-	Route::get('/pessoas/csv/autores/confirmaram-presenca', 'RelatorioController@csvAutoresConfirmaramPresenca')->name('csvAutoresConfirmaramPresenca');
-	Route::get('/relatorio/niveis', 'RelatorioController@niveis')->name('relatorioNivel');
-	Route::get('/relatorio/projetos/classificacao/geral', 'RelatorioController@classificacaoGeral')->name('classificacaoGeral');
-	Route::get('/relatorio/projetos/compareceram', 'RelatorioController@projetosCompareceram')->name('projetosCompareceram');
-	Route::get('/relatorio/projetos/compareceram/ifrs/canoas', 'RelatorioController@projetosCompareceramIFRSCanoas')->name('projetosCompareceramIFRSCanoas');
-	Route::get('/relatorio/projetos/compareceram/autor', 'RelatorioController@projetosCompareceramPorAutor')->name('projetosCompareceramAutor');
-	Route::get('/relatorio/projetos/classificacao', 'RelatorioController@classificacaoProjetos')->name('classificacaoProjetos');
-	Route::get('/relatorio/projetos/status', 'RelatorioController@statusProjetos')->name('statusProjetos');
-	Route::get('/relatorio/projetos/premiacao', 'RelatorioController@premiacaoProjetos')->name('premiacaoProjetos');
+	Route::get('/pessoas/csv/autores/confirmaram-presenca/{edicao}', 'RelatorioController@csvAutoresConfirmaramPresenca')->name('csvAutoresConfirmaramPresenca');
+	Route::get('/relatorio/niveis/{edicao}', 'RelatorioController@niveis')->name('relatorioNivel');
+	Route::get('/relatorio/projetos/classificacao/geral/{edicao}', 'RelatorioController@classificacaoGeral')->name('classificacaoGeral');
+	Route::get('/relatorio/projetos/compareceram/{edicao}', 'RelatorioController@projetosCompareceram')->name('projetosCompareceram');
+	Route::get('/relatorio/presenca/participantes/{edicao}', 'RelatorioController@participantesCompareceram')->name('participantesCompareceram');
+	Route::get('/relatorio/projetos/compareceram/ifrs/canoas/{edicao}', 'RelatorioController@projetosCompareceramIFRSCanoas')->name('projetosCompareceramIFRSCanoas');
+	Route::get('/relatorio/projetos/compareceram/autor/{edicao}', 'RelatorioController@projetosCompareceramPorAutor')->name('projetosCompareceramAutor');
+	Route::get('/relatorio/projetos/classificacao/{edicao}', 'RelatorioController@classificacaoProjetos')->name('classificacaoProjetos');
+	Route::get('/relatorio/projetos/status/{edicao}', 'RelatorioController@statusProjetos')->name('statusProjetos');
+	Route::get('/relatorio/projetos/premiacao/{edicao}', 'RelatorioController@premiacaoProjetos')->name('premiacaoProjetos');
 	Route::get('/relatorio/niveis/projetos/{id}', 'RelatorioController@nivelProjetos')->name('nivelProjetos');
 	Route::get('/relatorio/escolas', 'RelatorioController@escolas')->name('relatorioEscola');
-	Route::get('/relatorio/projetos/classificados/area', 'RelatorioController@projetosClassificados')->name('projetosClassificados');
-	Route::get('/relatorio/projetos/classificados/nivel', 'RelatorioController@projetosClassificadosNivel')->name('projetosClassificadosNivel');
-	Route::get('/relatorio/projetos/classificados', 'RelatorioController@projetosClassificadosSemNota')->name('projetosClassificadosSemNota');
-	Route::get('/relatorio/projetos/nao-homologados/nivel', 'RelatorioController@projetosNaoHomologadosNivel')->name('projetosNaoHomologadosNivel');
+	Route::get('/relatorio/projetos/classificados/area/{edicao}', 'RelatorioController@projetosClassificados')->name('projetosClassificados');
+	Route::get('/relatorio/projetos/classificados/nivel/{edicao}', 'RelatorioController@projetosClassificadosNivel')->name('projetosClassificadosNivel');
+	Route::get('/relatorio/projetos/classificados/{edicao}', 'RelatorioController@projetosClassificadosSemNota')->name('projetosClassificadosSemNota');
+	Route::get('/relatorio/projetos/nao-homologados/nivel/{edicao}', 'RelatorioController@projetosNaoHomologadosNivel')->name('projetosNaoHomologadosNivel');
 	Route::get('/relatorio/projetos/notas/homologadores', 'RelatorioController@notaProjetosArea')->name('notaProjetosArea');
 	Route::get('/relatorio/projetos/notas/homologadores/niveis', 'RelatorioController@notaProjetosNivel')->name('notaProjetosNivel');
 	Route::get('/relatorio/escolas/projetos/{id}', 'RelatorioController@escolaProjetos')->name('escolaProjetos');
-	Route::get('/relatorio/areas', 'RelatorioController@areas')->name('relatorioArea');
+	Route::get('/relatorio/areas/{edicao}', 'RelatorioController@areas')->name('relatorioArea');
 	Route::get('/relatorio/areas/projetos/{id}', 'RelatorioController@areaProjetos')->name('areaProjetos');
 	Route::get('/relatorio/edicoes', 'RelatorioController@edicoes')->name('relatorioEdicao');
 	Route::get('/relatorio/funcoes/usuarios', 'RelatorioController@funcoesUsuarios')->name('relatorioFuncoesUsuarios');
 	Route::get('/relatorio/usuarios/homologados', 'RelatorioController@usuariosPosHomologacao')->name('usuariosPosHomologacao');
-	Route::get('/relatorio/voluntario/tarefa', 'RelatorioController@voluntarioTarefa')->name('relatorioVoluntarioTarefa');
+	Route::get('/relatorio/voluntario/tarefa/{edicao}', 'RelatorioController@voluntarioTarefa')->name('relatorioVoluntarioTarefa');
 	Route::get('/relatorio/tarefa/voluntarios/{id}', 'RelatorioController@tarefaVoluntarios')->name('tarefaVoluntarios');
-	Route::get('/relatorio/projetos', 'RelatorioController@projetos')->name('relatorioProjetos');
+	Route::get('/relatorio/projetos/{edicao}', 'RelatorioController@projetos')->name('relatorioProjetos');
 	Route::get('/relatorio/usuarios', 'RelatorioController@usuarios')->name('relatorioUsuarios');
-	Route::get('/relatorio/autores', 'RelatorioController@autores')->name('relatorioAutores');
-	Route::get('/relatorio/orientadores', 'RelatorioController@orientadores')->name('relatorioOrientadores');
-	Route::get('/relatorio/coorientadores', 'RelatorioController@coorientadores')->name('relatorioCoorientadores');
-	Route::get('/relatorio/voluntarios', 'RelatorioController@voluntarios')->name('relatorioVoluntarios');
-	Route::get('/relatorio/avaliadores', 'RelatorioController@avaliadores')->name('relatorioAvaliadores');
-	Route::get('/relatorio/homologadores', 'RelatorioController@homologadores')->name('relatorioHomologadores');
-	Route::get('/relatorio/autores/lanche', 'RelatorioController@autoresLanche')->name('relatorioAutoresLanche');
-	Route::get('/relatorio/autores/pos/homologacao', 'RelatorioController@autoresPosHomologacao')->name('relatorioAutoresPos');
-	Route::get('/relatorio/orientadores/pos/homologacao', 'RelatorioController@orientadoresPosHomologacao')->name('relatorioOrientadoresPos');
-	Route::get('/relatorio/coorientadores/pos/homologacao', 'RelatorioController@coorientadoresPosHomologacao')->name('relatorioCoorientadoresPos');
-	Route::get('/relatorio/autores/tamanho/camisa', 'RelatorioController@camisaTamanho')->name('camisaTamanho');
-	Route::get('/relatorio/autores/tamanho/camisa/assinatura', 'RelatorioController@camisaTamanhoAssinatura')->name('camisaTamanhoAssinatura');
-	Route::get('/relatorio/participantes/assinatura', 'RelatorioController@participantesAssinatura')->name('participantesAssinatura');
-	Route::get('/relatorio/homologadores/area', 'RelatorioController@homologadoresArea')->name('homologadoresArea');
-	Route::get('/relatorio/avaliadores/area', 'RelatorioController@avaliadoresArea')->name('avaliadoresArea');
-	Route::get('/relatorio/homologadores/projeto', 'RelatorioController@homologadoresProjeto')->name('homologadoresProjeto');
-	Route::get('/relatorio/avaliadores/projeto', 'RelatorioController@avaliadoresProjeto')->name('avaliadoresProjeto');
-	Route::get('/relatorio/projetos/avaliador', 'RelatorioController@projetosAvaliador')->name('projetosAvaliador');
-	Route::get('/relatorio/projetos/confirma', 'RelatorioController@projetosConfirmaramPresenca')->name('relatorioProjetosConfirma');
-	Route::get('/relatorio/projetos/confirma/area', 'RelatorioController@projetosConfirmaramPresencaArea')->name('relatorioProjetosConfirmaArea');
-	Route::get('/relatorio/gerar/localizacao/projetos', 'RelatorioController@gerarLocalizacaoProjetos')->name('gerarLocalizacaoProjetos');
-	Route::post('/relatorio/gera/localizacao/projetos', 'RelatorioController@geraLocalizacaoProjetos')->name('geraLocalizacaoProjetos');
-	Route::post('/relatorio/vale-lanche', 'RelatorioController@valeLanche')->name('valeLanche');
-	Route::get('/relatorio/vale-lanche/gerar', 'RelatorioController@gerarValeLanche')->name('geraValeLanche');
-	Route::get('/relatorio/premiacao/certificados', 'RelatorioController@premiacaoCertificados')->name('premiacaoCertificados');
+	Route::get('/relatorio/autores/{edicao}', 'RelatorioController@autores')->name('relatorioAutores');
+	Route::get('/relatorio/orientadores/{edicao}', 'RelatorioController@orientadores')->name('relatorioOrientadores');
+	Route::get('/relatorio/coorientadores/{edicao}', 'RelatorioController@coorientadores')->name('relatorioCoorientadores');
+	Route::get('/relatorio/voluntarios/{edicao}', 'RelatorioController@voluntarios')->name('relatorioVoluntarios');
+	Route::get('/relatorio/avaliadores/{edicao}', 'RelatorioController@avaliadores')->name('relatorioAvaliadores');
+	Route::get('/relatorio/homologadores/{edicao}', 'RelatorioController@homologadores')->name('relatorioHomologadores');
+	Route::get('/relatorio/autores/lanche/{edicao}', 'RelatorioController@autoresLanche')->name('relatorioAutoresLanche');
+	Route::get('/relatorio/autores/pos/homologacao/{edicao}', 'RelatorioController@autoresPosHomologacao')->name('relatorioAutoresPos');
+	Route::get('/relatorio/orientadores/pos/homologacao/{edicao}', 'RelatorioController@orientadoresPosHomologacao')->name('relatorioOrientadoresPos');
+	Route::get('/relatorio/coorientadores/pos/homologacao/{edicao}', 'RelatorioController@coorientadoresPosHomologacao')->name('relatorioCoorientadoresPos');
+	Route::get('/relatorio/autores/tamanho/camisa/{edicao}', 'RelatorioController@camisaTamanho')->name('camisaTamanho');
+	Route::get('/relatorio/autores/tamanho/camisa/assinatura/{$edicao}', 'RelatorioController@camisaTamanhoAssinatura')->name('camisaTamanhoAssinatura');
+	Route::get('/relatorio/participantes/assinatura/{edicao}', 'RelatorioController@participantesAssinatura')->name('participantesAssinatura');
+	Route::get('/relatorio/homologadores/area/{edicao}', 'RelatorioController@homologadoresArea')->name('homologadoresArea');
+	Route::get('/relatorio/avaliadores/area/{edicao}', 'RelatorioController@avaliadoresArea')->name('avaliadoresArea');
+	Route::get('/relatorio/homologadores/projeto/{edicao}', 'RelatorioController@homologadoresProjeto')->name('homologadoresProjeto');
+	Route::get('/relatorio/avaliadores/projeto/{edicao}', 'RelatorioController@avaliadoresProjeto')->name('avaliadoresProjeto');
+	Route::get('/relatorio/projetos/avaliador/{edicao}', 'RelatorioController@projetosAvaliador')->name('projetosAvaliador');
+	Route::get('/relatorio/projetos/confirma/{edicao}', 'RelatorioController@projetosConfirmaramPresenca')->name('relatorioProjetosConfirma');
+	Route::get('/relatorio/projetos/confirma/area/{edicao}', 'RelatorioController@projetosConfirmaramPresencaArea')->name('relatorioProjetosConfirmaArea');
+	Route::get('/relatorio/gerar/localizacao/projetos/{edicao}', 'RelatorioController@gerarLocalizacaoProjetos')->name('gerarLocalizacaoProjetos');
+	Route::post('/relatorio/gera/localizacao/projetos/{edicao}', 'RelatorioController@geraLocalizacaoProjetos')->name('geraLocalizacaoProjetos');
+	Route::post('/relatorio/vale-lanche/{edicao}', 'RelatorioController@valeLanche')->name('valeLanche');
+	Route::get('/relatorio/vale-lanche/gerar/{edicao}', 'RelatorioController@gerarValeLanche')->name('geraValeLanche');
+	Route::get('/relatorio/premiacao/certificados/{edicao}', 'RelatorioController@premiacaoCertificados')->name('premiacaoCertificados');
 
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
 	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');
@@ -160,7 +161,9 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 	Route::get('/administrador/tarefas', 'AdminController@tarefas')->name('administrador.tarefas');
 	Route::get('/administrador/usuario', 'AdminController@usuarios')->name('administrador.usuarios');
 	Route::get('/administrador/comissao', 'AdminController@comissao')->name('administrador.comissao');
-	Route::get('/administrador/relatorios', 'AdminController@relatorios')->name('administrador.relatorios');
+	Route::get('/administrador/relatorios/{edicao?}', 'AdminController@relatorios')->name('administrador.relatorios');
+	Route::get('/administrador/escolhe-edicao/relatorios', 'AdminController@relatoriosEdicao')->name('administrador.relatoriosEdicao');
+	Route::post('/administrador/escolhe-edicao/relatorios', 'AdminController@relatoriosEscolheEdicao')->name('administrador.escolheEdicao');
 
 /* Rotas Administrador */
 Route::group(['middleware' => ['IsAdministrador']], function () {
@@ -223,6 +226,8 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
     //Administrador
     Route::get('/projetos/homologar-projetos', 'ProjetoController@homologarProjetos')->name('homologar-projetos');
     Route::post('/projetos/homologa-projetos', 'ProjetoController@homologaProjetos')->name('homologa-projetos');
+    Route::get('/projeto/nao-compareceu', 'AdminController@projetoNaoCompareceu')->name('projetoNaoCompareceu');
+    Route::post('/nao-compareceu', 'AdminController@naoCompareceu')->name('naoCompareceu');
 
 });
 
@@ -248,9 +253,20 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
     Route::get('/projeto/{id}/status/', 'ProjetoController@statusProjeto')->name('statusProjeto'); //Ajax
 
     Route::get('/organizador/presenca', 'OrganizadorController@presenca')->name('organizacao.presenca');
-    Route::get('/organizador/relatorios', 'OrganizadorController@relatorios')->name('organizacao.relatorios');
     Route::get('/organizador/projetos', 'OrganizadorController@projetos')->name('organizacao.projetos');
 	Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
+	Route::get('/organizador/escolhe-edicao/relatorios', 'OrganizadorController@relatoriosEdicao')->name('organizacao.relatoriosEdicao');
+	Route::post('/organizador/escolhe-edicao/relatorios', 'OrganizadorController@relatoriosEscolheEdicao')->name('organizacao.escolheEdicao');
+	Route::get('/organizador/relatorios/{edicao?}', 'OrganizadorController@relatorios')->name('organizacao.relatorios');
+	Route::get('/organizador/usuario', 'OrganizadorController@usuarios')->name('organizacao.usuarios');
+
+	//Usuário
+	Route::post('/organizador/gerenciar-usuario/{id}', 'OrganizadorController@editaFuncaoUsuario')->name('orgEditaFuncaoUsuario');
+	Route::get('organizador/gerenciar/usuario/{id}', 'OrganizadorController@editarFuncaoUsuario')->name('orgEditarFuncaoUsuario');
+	Route::get('/organizador/exclui-usuario/{id}/{s}', 'OrganizadorController@excluiUsuario');
+    Route::get('/organizador/usuario/{id}/editar/', 'OrganizadorController@editarUsuario')->name('orgEditarUsuario');
+    Route::post('/organizador/usuario/{id}/editar-cadastro/', 'OrganizadorController@editaUsuario')->name('orgEditaUsuario');
+
 
 });
 
@@ -281,6 +297,8 @@ Route::get('/comissao/cadastrar/{s}', 'ComissaoAvaliadoraController@cadastrarCom
 
 
 Route::resource('projeto', 'ProjetoController');
+
+Route::get('projeto/nivel/dados-nivel/{id}', 'ProjetoController@dadosNivel'); //Ajax
 
 Route::prefix('projeto')->group(function () {
     Route::post('vincula-integrante', 'ProjetoController@vinculaIntegrante')->name('projeto.vinculaIntegrante');
