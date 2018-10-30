@@ -28,25 +28,26 @@ job-composer:
 #    - php vendor/bin/phpunit --coverage-text --colors=never
 
 # Testa conexão com banco e migrations
-job-db-generate:
-  stage: test
-  image: php:7.1.7-apache
-  services:
-    - postgres:latest
-  variables:
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: secret
-    POSTGRES_DB: ifcitec
-  script:
-    - apt-get update -yqq
-    - apt-get install -y libpq-dev
-    - docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
-    - docker-php-ext-install pdo pdo_pgsql pgsql
-    - cp .env.example .env
-    - php artisan key:generate
-    - php artisan env
-    - php artisan --env=local migrate
-    - php artisan db:seed
+#job-db-generate:
+#  stage: test
+#  image: php:7.1.7-apache
+#  services:
+#  - postgres:latest
+#  variables:
+#    POSTGRES_USER: postgres
+#    POSTGRES_PASSWORD: secret
+#    POSTGRES_DB: ifcitec
+#  script:
+#  - apt-get update -yqq
+#  - apt-get install -y libpq-dev
+#  - docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
+#  - docker-php-ext-install pdo pdo_pgsql pgsql
+#  - cp .env.example .env
+#  - php artisan key:generate
+#  - php artisan env
+#  - php artisan --env=local migrate
+#  - php artisan db:seed
+
 
 # Cria um container para stage, disponível no menu Registry
 job-stage-container:
