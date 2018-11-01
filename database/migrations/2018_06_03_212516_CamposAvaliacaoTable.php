@@ -19,6 +19,7 @@ class CamposAvaliacaoTable extends Migration
             $table->string('tipo', 50);
             $table->string('campo', 50);
             $table->integer('categoria_id')->unsigned();
+            $table->integer('nivel_id')->unsigned();
             $table->float('peso', 4, 2)->unsigned();
             $table->text('descricao');
             $table->boolean('val_0');
@@ -30,7 +31,7 @@ class CamposAvaliacaoTable extends Migration
             //Foreign Keys Constraints
             $table->foreign('edicao_id')->references('id')->on(env('DB_SCHEMA').'.edicao');
             $table->foreign('categoria_id')->references('id')->on(env('DB_SCHEMA').'.categoria_avaliacao');
-            $table->foreing('nivel_id')->references('id')->on(env('DB_SCHEMA').'nivel');
+            $table->foreign('nivel_id')->references('id')->on(env('DB_SCHEMA').'.nivel');
         });
     }
 

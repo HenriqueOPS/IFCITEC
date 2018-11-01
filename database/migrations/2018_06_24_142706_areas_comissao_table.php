@@ -19,10 +19,8 @@ class AreasComissaoTable extends Migration
             $table->integer('comissao_edicao_id')->unsigned();
             $table->boolean('homologado')->default(false);
             //Foreign Keys Constraints
-            $table->foreign('area_id')->references('id')->on(env('DB_SCHEMA').'.area_conhecimento');
+           // $table->foreign('area_id')->references('id')->on(env('DB_SCHEMA').'.area_conhecimento');
             $table->foreign('comissao_edicao_id')->references('id')->on(env('DB_SCHEMA').'.comissao_edicao');
-            //Other Constraints
-            $table->unique(['area_id', 'comissao_edicao_id']);  
         });
     }
 
