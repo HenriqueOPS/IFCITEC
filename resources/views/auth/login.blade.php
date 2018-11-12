@@ -25,7 +25,7 @@
 
                 <div class="content text-center box-logo">
                     <a class="btn btn-simple btn-just-icon">
-                        <img src="{{ asset('img/logonormal.png') }}" title="IFCITEC" height="110" />
+                        <img src="{{ asset('img/logonormal.png') }}" title="IFCITEC" height="90" />
                     </a>
                 </div>
 

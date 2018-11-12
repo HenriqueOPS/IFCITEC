@@ -24,13 +24,13 @@
 
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="input-{{ $errors->has('nivel_id') ? ' has-error' : '' }}">
+                            <div class="input-group{{ $errors->has('nivel_id') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">text_fields</i>
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Nível</label>
-                                    <select class="form-control" name="nivel_id" id="nivel_id" required>
+                                    <select id="nivel-select" name="nivel_id" id="nivel_id" value="{{isset($dados->nivel_id) ? $dados->nivel_id : ''}}" required>
 										@foreach ($niveis as $nivel)
 
 											@if($dados->nivel_id == $nivel->id)
@@ -87,8 +87,6 @@
         </div>
     </div>
 </div>
-</div>
-</div>
 
 @endsection
 
@@ -110,9 +108,6 @@ $(document).ready(function () {
             $('.selectize-input').addClass('form-control');
         },
     });
-
-
-    nivelSelect = $nivelSelect[0].selectize;
 });
 
 </script>

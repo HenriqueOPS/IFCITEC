@@ -32,7 +32,17 @@ class VoluntarioController extends Controller
      */
     public function index(){
         if(Pessoa::find(Auth::id())->temFuncao('Voluntário') == true) {
-          return view('inscricaoEnviada');
+        	if (Pessoa::find(Auth::id())->temTarefa()) {
+        		 $tarefa = DB::table('pessoa_tarefa')
+		            ->select('tarefa.tarefa')
+		            ->join('tarefa','pessoa_tarefa.tarefa_id','=','tarefa.id')
+		            ->where('pessoa_tarefa.pessoa_id','=',Auth::id())
+		            ->get();
+        		return view('tarefa',array('tarefa' => $tarefa));
+        	}
+        	else{
+          		return view('inscricaoEnviada');
+      		}
         }else{
             $tarefas = Tarefa::orderBy('tarefa')->get();
 
@@ -59,7 +69,7 @@ class VoluntarioController extends Controller
 			return view('inscricaoEnviada');
 		}
 		else{
-			return redirect()->route('home');
+			return view('temTrabalho');
 		}
     }
 }

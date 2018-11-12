@@ -262,7 +262,7 @@
 
 						<!-- Período de Inscrição para Avaliador/Homologador -->
 						<div class="row">
-							<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
+							<div class="col-md-10 col-md-offset-1 col-xs-10 text-center">
 								<h3>Período de Inscrição para Avaliador/Homologador</h3>
 								<span>Durante esse período será possivel se inscrever para atuar como voluntário durante a feira</span>
 							</div>

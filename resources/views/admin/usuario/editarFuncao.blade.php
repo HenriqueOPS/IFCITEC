@@ -34,7 +34,7 @@
         {{ csrf_field() }}
 
 
-        <div class="col-md-12 main main-raised">
+        <div class="col-md-12 col-xs-12 main main-raised">
 
             <div class="list-projects">
                 <table class="table">

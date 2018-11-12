@@ -9,6 +9,7 @@ use App\Edicao;
 use App\Projeto;
 use App\Avaliacao;
 use App\Revisao;
+use App\Situacao;
 use function foo\func;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -122,6 +123,7 @@ class ComissaoAvaliadoraController extends Controller
                                             ->where('funcao', 'Coorientador')
                                             ->first()->id);
                                     })
+                                    ->where('projeto.situacao_id','!=',Situacao::where('situacao', 'Não Homologado')->get()->first()->id)
                                     ->orderBy('area_conhecimento.id', 'asc')
                                     ->get()
                                     ->keyBy('id')
@@ -191,7 +193,7 @@ class ComissaoAvaliadoraController extends Controller
                 ]
         );
 
-        Pessoa::find($id)->edicoes()->attach(['edicao_id' => Edicao::getEdicaoId()],
+        Pessoa::find(Auth::id())->edicoes()->attach(['edicao_id' => Edicao::getEdicaoId()],
             ['pessoa_id' => Auth::id()]);
 
 
@@ -281,6 +283,7 @@ class ComissaoAvaliadoraController extends Controller
                     ->where('funcao', 'Coorientador')
                     ->first()->id);
             })
+            ->where('projeto.situacao_id','!=',Situacao::where('situacao', 'Não Homologado')->get()->first()->id)
             ->orderBy('area_conhecimento.id', 'asc')
             ->get()
             ->keyBy('id')
@@ -314,7 +317,7 @@ class ComissaoAvaliadoraController extends Controller
 		$data = $req->all();
 
         $pessoa = Pessoa::find($data['pessoa_id']);
-        if($data['avaliador'] && !$pessoa->temFuncao('Avaliador',TRUE)){
+        if(isset($data['avaliador']) && !$pessoa->temFuncao('Avaliador',TRUE)){
             DB::table('funcao_pessoa')
                     ->insert([
                         'pessoa_id' => $data['pessoa_id'],
@@ -324,7 +327,7 @@ class ComissaoAvaliadoraController extends Controller
                     ]);
         }
 
-        if($data['homologador'] && !$pessoa->temFuncao('Homologador',TRUE)){
+        if(isset($data['homologador']) && !$pessoa->temFuncao('Homologador',TRUE)){
             DB::table('funcao_pessoa')
                     ->insert([
                         'pessoa_id' => $data['pessoa_id'],

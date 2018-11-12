@@ -14,7 +14,7 @@
             <div class="main main-raised">
 
                 <div class="row">
-                    <div class="col-md-10 col-md-offset-1">
+                    <div class="col-md-10 col-md-offset-1 col-xs-offset-1 col-xs-10">
                         <h2>Novo Projeto</h2>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-10 col-md-offset-1">
+                        <div class="col-md-10 col-md-offset-1 col-xs-11">
                             <div class="input-group{{ $errors->has('titulo') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">title</i>
@@ -124,7 +124,7 @@
 
                             <br>
 
-                            <div class="col-md-offset-1">
+                            <div class="col-md-offset-1 col-xs-offset-1">
                              <p>Dica para os dois próximos tópicos:
                                 <a href="javascript:void(0);" class="atualizar btn btn-primary btn-fab btn-fab-mini btn-round" role="button">
                                     <i class="material-icons">visibility</i>
@@ -192,7 +192,7 @@
                     </div>
 
                 <hr>
-                <div class="col-md-offset-1">
+                <div class="col-md-offset-1 col-xs-offset-1">
                              <p>Dica para os dois próximos tópicos:
                                 <a href="javascript:void(0);" class="info btn btn-primary btn-fab btn-fab-mini btn-round" role="button">
                                     <i class="material-icons">visibility</i>
@@ -201,7 +201,7 @@
                 </div>
 
                 <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
+                        <div class="col-md-10 col-md-offset-1 col-xs-offset-1">
                             <h3>Autor(es)</h3>
                         </div>
                 </div>
@@ -300,7 +300,7 @@
                 </div>
 
                 <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
+                        <div class="col-md-10 col-md-offset-1 col-xs-offset-1">
                             <h3>Orientador</h3>
                         </div>
                 </div>
@@ -337,7 +337,7 @@
                 </div>
 
                 <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
+                        <div class="col-md-10 col-md-offset-1 col-xs-offset-1">
                             <h3>Coorientador(es)</h3>
                         </div>
                 </div>
@@ -534,7 +534,7 @@ $(document).ready(function () {
 
     var oldEscola = $('#escola-select').attr("value");
     $('#escola-select').selectize({
-        placeholder: 'Digite a Escola a qual pertence o projeto...',
+        placeholder: 'Digite a escola do projeto...',
         onInitialize: function () {
             this.setValue(oldEscola, true);
             //$('.selectize-control').addClass('form-group');

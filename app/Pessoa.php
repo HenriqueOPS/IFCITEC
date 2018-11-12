@@ -216,7 +216,7 @@ class Pessoa extends Authenticatable {
         return false;
     }
 
-    public function comissaoNivel($nivel, $pessoa) {
+    public function comissaoArea($area, $pessoa) {
 
         //pega o id da edição
         $EdicaoId = Edicao::getEdicaoId();
@@ -225,12 +225,11 @@ class Pessoa extends Authenticatable {
 
             $query = DB::table('areas_comissao')
                             ->join('area_conhecimento', 'areas_comissao.area_id', '=', 'area_conhecimento.id')
-                            ->join('nivel', 'area_conhecimento.nivel_id', '=', 'nivel.id')
                             ->join('comissao_edicao', 'areas_comissao.comissao_edicao_id', '=', 'comissao_edicao.id')
                             //Busca pela Pessoa
                             ->where('comissao_edicao.pessoa_id','=',$pessoa)
                             //Busca pelo Nível
-                            ->where('nivel.id','=',$nivel)
+                            ->where('area_conhecimento.id','=',$area)
                             //Busca pela Edição
                             ->where('comissao_edicao.edicao_id', $EdicaoId)
                             ->orWhere('edicao_id',null)
@@ -295,14 +294,26 @@ class Pessoa extends Authenticatable {
     }
 
     public function temTrabalho(){
-        //VERRRR
         $total = DB::table('escola_funcao_pessoa_projeto')
-            ->select('escola_funcao_pessoa_projeto.projeto_id')
+            ->select('escola_funcao_pessoa_projeto.projeto_id', 'projeto.situacao_id')
             ->join('projeto','escola_funcao_pessoa_projeto.projeto_id','=','projeto.id')
             ->where('escola_funcao_pessoa_projeto.pessoa_id','=',$this->id)
-            ->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+            ->where('projeto.situacao_id','<>',Situacao::where('situacao', 'Não Homologado')->get()->first()->id)
             ->get();
+        if($total->count()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
+    public function temTarefa(){
+        $total = DB::table('pessoa_tarefa')
+            ->select('tarefa.tarefa')
+            ->join('tarefa','pessoa_tarefa.tarefa_id','=','tarefa.id')
+            ->where('pessoa_tarefa.pessoa_id','=',$this->id)
+            ->get();
         if($total->count()){
             return true;
         }

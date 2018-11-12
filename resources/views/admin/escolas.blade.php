@@ -89,7 +89,6 @@
                     <tr>
                         <th class="text-center">#</th>
                         <th>Escola</th>
-                        <th>Município</th>
                         <th>Email</th>
                         <th>Telefone</th>
                         <th class="text-right">Ações</th>
@@ -103,7 +102,6 @@
                         <tr>
                             <td class="text-center">{{ $i+1 }}</td>
                             <td>{{ $escola['nome_curto'] }}</td>
-                            <td></td>
                             <td>{{ $escola['email'] }}</td>
                             <td>{{ $escola['telefone'] }}</td>
 

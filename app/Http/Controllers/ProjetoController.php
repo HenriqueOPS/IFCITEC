@@ -101,6 +101,7 @@ class ProjetoController extends Controller
 		$projeto = new Projeto();
 		$projeto->fill($request->toArray());
 		$projeto->titulo = strtoupper($request->titulo);
+		$projeto->situacao_id = Situacao::where('situacao', 'Cadastrado')->get()->first()->id;
 		//
 		$areaConhecimento = AreaConhecimento::find($request->area_conhecimento);
 		$nivel = Nivel::find($request->nivel);
@@ -1026,6 +1027,45 @@ class ProjetoController extends Controller
     public function dadosNivel($id)
 	{ //Ajax
 		return Nivel::find($id);
+	}
+
+	public function projetoNaoCompareceu($id, $s)
+	{ //Ajax
+		if (password_verify($s, Auth::user()['attributes']['senha'])) {
+			Projeto::where('id', $id)
+				->update(['situacao_id' => Situacao::where('situacao', 'Não Compareceu')->get()->first()->id,
+			]);
+
+			return 'true';
+		}
+
+		return 'false';
+	}
+
+	public function projetoCompareceuAvaliado($id, $s)
+	{ //Ajax
+		if (password_verify($s, Auth::user()['attributes']['senha'])) {
+			Projeto::where('id', $id)
+				->update(['situacao_id' => Situacao::where('situacao', 'Avaliado')->get()->first()->id,
+			]);
+
+			return 'true';
+		}
+
+		return 'false';
+	}
+
+	public function projetoCompareceuNaoAvaliado($id, $s)
+	{ //Ajax
+		if (password_verify($s, Auth::user()['attributes']['senha'])) {
+			Projeto::where('id', $id)
+				->update(['situacao_id' => Situacao::where('situacao', 'Não Avaliado')->get()->first()->id,
+			]);
+
+			return 'true';
+		}
+
+		return 'false';
 	}
 
 }

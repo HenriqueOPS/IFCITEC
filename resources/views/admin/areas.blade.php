@@ -75,14 +75,14 @@
 <br><br>
 <div class="container">
     <div class="row">
-        <div class="col-md-12 main main-raised">
+        <div class="col-md-12 col-xs-12 main main-raised">
             <div class="list-projects">
                     <table class="table">
                         <thead id="3">
                     <div id="3">
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-xs-3">
                             <a href="{{ route('cadastroArea') }}" class="btn btn-primary btn-round">
-                                <i class="material-icons">add</i> Adicionar Área do Conhecimento
+                                <i class="material-icons">add</i> Adicionar Área
                             </a>
                         </div>
                     </div>

@@ -23,7 +23,7 @@ Route::get('/version', function (){
 //Gera os crachás
 Route::get('/cracha/gerar-crachas/branco', 'CrachaController@generateCrachas')->name('generateCrachas');
 Route::get('/cracha/gerar-crachas/autores/{edicao}', 'CrachaController@generateCrachasAutores')->name('generateCrachasAutores');
-Route::get('/cracha/gerar-crachas/coorientadores', 'CrachaController@generateCrachasCoorientadores/{edicao}')->name('generateCrachasCoorientadores');
+Route::get('/cracha/gerar-crachas/coorientadores/{edicao}', 'CrachaController@generateCrachasCoorientadores')->name('generateCrachasCoorientadores');
 Route::get('/cracha/gerar-crachas/comissao-avaliadora/{edicao}', 'CrachaController@generateCrachasComissaoAvaliadora')->name('generateCrachasComissaoAvaliadora');
 Route::get('/cracha/gerar-crachas/comissao-organizadora', 'CrachaController@generateCrachasComissaoOrganizadora')->name('generateCrachasComissaoOrganizadora');
 Route::get('/cracha/gerar-crachas/orientadores/{edicao}', 'CrachaController@generateCrachasOrientadores')->name('generateCrachasOrientadores');
@@ -230,8 +230,9 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
     //Administrador
     Route::get('/projetos/homologar-projetos', 'ProjetoController@homologarProjetos')->name('homologar-projetos');
     Route::post('/projetos/homologa-projetos', 'ProjetoController@homologaProjetos')->name('homologa-projetos');
-    Route::get('/projeto/nao-compareceu', 'AdminController@projetoNaoCompareceu')->name('projetoNaoCompareceu');
-    Route::post('/nao-compareceu', 'AdminController@naoCompareceu')->name('naoCompareceu');
+    Route::get('/projeto/nao-compareceu/{id}/{s}', 'ProjetoController@projetoNaoCompareceu'); //
+    Route::get('/projeto/compareceu/avaliado/{id}/{s}', 'ProjetoController@projetoCompareceuAvaliado');
+    Route::get('/projeto/compareceu/nao-avaliado/{id}/{s}', 'ProjetoController@projetoCompareceuNaoAvaliado'); 
 
 });
 
@@ -335,3 +336,7 @@ Route::get('mail/voluntario', function(){
     });
 
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

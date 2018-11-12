@@ -28,8 +28,7 @@
 										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 											<span aria-hidden="true"><i class="material-icons">clear</i></span>
 										</button>
-										<b>ATENÇÃO: </b>É de total resposabilidade do usuário a veracidade dos dados
-										aqui informados
+										<b>ATENÇÃO: </b>Você não poderá avaliar uma área do conhecimento da qual é orientador ou coorientador
 									</div>
 								</div>
 							</div>

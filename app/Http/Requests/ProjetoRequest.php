@@ -99,13 +99,13 @@ class ProjetoRequest extends FormRequest {
 
             foreach ($coorientador as $c) {
                 if($c != null){
-                if(Pessoa::find($c)->comissaoNivel($validator->getData()['nivel'], $c) == false){
+                if(Pessoa::find($c)->comissaoArea($validator->getData()['area_conhecimento'], $c) == false){
                     $validator->errors()->add('coorientador[]', 'Não é possível adicionar esse coorientador');
                 }
                 }
             }
 
-            if(Pessoa::find($orientador)->comissaoNivel($validator->getData()['nivel'], $orientador) == false){
+            if(Pessoa::find($orientador)->comissaoArea($validator->getData()['area_conhecimento'], $orientador) == false){
                     $validator->errors()->add('orientador', 'Não é possível adicionar esse orientador');
             }
 

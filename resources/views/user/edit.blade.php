@@ -227,7 +227,7 @@
 $(document).ready(function () {
     var oldCamisa = $('#camisa-select').attr("value");
     $('#camisa-select').selectize({
-        placeholder: 'Selecione o tamanho da sua camisa...',
+        placeholder: 'Selecione o tamanho...',
         onInitialize: function () {
             this.setValue(oldCamisa, true);
             //$('.selectize-control').addClass('form-group');

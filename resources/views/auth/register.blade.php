@@ -21,7 +21,7 @@
                 </div>
                 <form name="f1" method="POST" action="{{route('register')}}">
 
-                    {{ csrf_field() }}
+                    <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 
                     <div class="row">
                         <div class="col-md-12">
@@ -40,7 +40,7 @@
                         <div class="col-md-12 text-center">
                             <div class="social-line">
                                 <a class="btn btn-simple btn-just-icon">
-                                    <img src="{{ asset('img/logo.png') }}" title="IFCITEC" height="100" />
+                                    <img src="{{ asset('img/logo.png') }}" title="IFCITEC" height="75" />
                                 </a>
                             </div>
                         </div>
@@ -205,7 +205,7 @@
 $(document).ready(function () {
     var oldCamisa = $('#camisa-select').attr("value");
     $('#camisa-select').selectize({
-        placeholder: 'Selecione o tamanho da sua camisa...',
+        placeholder: 'Selecione o tamanho...',
         onInitialize: function () {
             this.setValue(oldCamisa, true);
             //$('.selectize-control').addClass('form-group');
