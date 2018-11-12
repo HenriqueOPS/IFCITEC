@@ -40,7 +40,7 @@
                 <li>
                     <a href="{{route('administrador.tarefas')}}">
                         <i class="material-icons">title</i>
-                        Tarefas (Voluntários)
+                        Tarefas
                     </a>
                 </li>
                 <li>
@@ -59,6 +59,12 @@
                     <a href="{{route('administrador.comissao')}}">
                         <i class="material-icons">list_alt</i>
                         Comissão Avaliadora
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('administrador.notas')}}">
+                        <i class="material-icons">note_add</i>
+                        Notas
                     </a>
                 </li>
                 <li class="active">
@@ -208,7 +214,7 @@
                             <td>4</td>
                             <td>Crachás Comissão Organizadora</td>
                             <td class="text-right">
-                                <a href="{{route('generateCrachasComissaoOrganizadora')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('generateCrachasComissaoOrganizadora', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -229,7 +235,7 @@
                             <td>7</td>
                             <td>Crachás Backup</td>
                             <td class="text-right">
-                                <a href="{{route('generateCrachas')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('generateCrachas', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>

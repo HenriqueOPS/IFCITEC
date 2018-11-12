@@ -21,13 +21,13 @@ Route::get('/version', function (){
 
 
 //Gera os crachás
-Route::get('/cracha/gerar-crachas/branco', 'CrachaController@generateCrachas')->name('generateCrachas');
+Route::get('/cracha/gerar-crachas/branco/{edicao}', 'CrachaController@generateCrachas')->name('generateCrachas');
 Route::get('/cracha/gerar-crachas/autores/{edicao}', 'CrachaController@generateCrachasAutores')->name('generateCrachasAutores');
 Route::get('/cracha/gerar-crachas/coorientadores/{edicao}', 'CrachaController@generateCrachasCoorientadores')->name('generateCrachasCoorientadores');
 Route::get('/cracha/gerar-crachas/comissao-avaliadora/{edicao}', 'CrachaController@generateCrachasComissaoAvaliadora')->name('generateCrachasComissaoAvaliadora');
-Route::get('/cracha/gerar-crachas/comissao-organizadora', 'CrachaController@generateCrachasComissaoOrganizadora')->name('generateCrachasComissaoOrganizadora');
+Route::get('/cracha/gerar-crachas/comissao-organizadora/{edicao}', 'CrachaController@generateCrachasComissaoOrganizadora')->name('generateCrachasComissaoOrganizadora');
 Route::get('/cracha/gerar-crachas/orientadores/{edicao}', 'CrachaController@generateCrachasOrientadores')->name('generateCrachasOrientadores');
-Route::get('/cracha/gerar-crachas/voluntarios', 'CrachaController@generateCrachasVoluntarios/{edicao}')->name('generateCrachasVoluntarios');
+Route::get('/cracha/gerar-crachas/voluntarios/{edicao}', 'CrachaController@generateCrachasVoluntarios')->name('generateCrachasVoluntarios');
 Route::get('/cracha/qr-code/{id}', 'CrachaController@generateQrCode')->name('qrcode');
 
 
@@ -98,7 +98,7 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 	Route::get('/csv/presenca/coorientadores/{edicao}', 'RelatorioController@csvPresencaCoorientadores')->name('csvPresencaCoorientadores');
 	Route::get('/csv/presenca/orientadores/{edicao}', 'RelatorioController@csvPresencaOrientadores')->name('csvPresencaOrientadores');
 	Route::get('/csv/presenca/voluntarios/{edicao}', 'RelatorioController@csvPresencaVoluntarios')->name('csvPresencaVoluntarios');
-	Route::get('/csv/presenca/comissao', 'RelatorioController@csvPresencaComissaoOrganizadora')->name('csvPresencaComissao');
+	Route::get('/csv/presenca/comissao/organizadora', 'RelatorioController@csvPresencaComissaoOrganizadora')->name('csvPresencaComissao');
 	Route::get('/csv/presenca/homologadores/{edicao}', 'RelatorioController@csvPresencaHomologadores')->name('csvPresencaHomologadores');
 	Route::get('/projetos/csv', 'RelatorioController@csvCertificados')->name('csvCertificados');
 	Route::get('/pessoas/csv', 'RelatorioController@csvProjetos')->name('csvProjetos');
@@ -165,6 +165,9 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 	Route::get('/administrador/tarefas', 'AdminController@tarefas')->name('administrador.tarefas');
 	Route::get('/administrador/usuario', 'AdminController@usuarios')->name('administrador.usuarios');
 	Route::get('/administrador/comissao', 'AdminController@comissao')->name('administrador.comissao');
+	Route::get('/administrador/notas', 'AdminController@notas')->name('administrador.notas');
+	Route::post('/administrador/notas/projeto', 'AdminController@notasProjeto')->name('administrador.escolheProjeto');
+	Route::get('/administrador/notas/projeto/{edicao?}', 'AdminController@notasProjetoEscolhido')->name('administrador.notasProjeto');
 	Route::get('/administrador/relatorios/{edicao?}', 'AdminController@relatorios')->name('administrador.relatorios');
 	Route::get('/administrador/escolhe-edicao/relatorios', 'AdminController@relatoriosEdicao')->name('administrador.relatoriosEdicao');
 	Route::post('/administrador/escolhe-edicao/relatorios', 'AdminController@relatoriosEscolheEdicao')->name('administrador.escolheEdicao');
@@ -180,7 +183,7 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	// Comissão Avaliadora
 	Route::get('/comissao/homologar/{id}', 'ComissaoAvaliadoraController@homologarComissao')->name('homologarComissao');
 	Route::post('/comissao/homologar/', 'ComissaoAvaliadoraController@homologaComissao')->name('homologaComissao');
-	Route::get('/comissao/excluir/{idC}/{idF}/{s}', 'ComissaoAvaliadoraController@excluiComissao'); 
+	Route::get('/comissao/excluir/{idC}/{idF}/{s}', 'ComissaoAvaliadoraController@excluiComissao');
 
 	// Nivel
 	Route::get('/nivel/cadastrar', 'AdminController@cadastroNivel')->name('cadastroNivel');
@@ -232,7 +235,7 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
     Route::post('/projetos/homologa-projetos', 'ProjetoController@homologaProjetos')->name('homologa-projetos');
     Route::get('/projeto/nao-compareceu/{id}/{s}', 'ProjetoController@projetoNaoCompareceu'); //
     Route::get('/projeto/compareceu/avaliado/{id}/{s}', 'ProjetoController@projetoCompareceuAvaliado');
-    Route::get('/projeto/compareceu/nao-avaliado/{id}/{s}', 'ProjetoController@projetoCompareceuNaoAvaliado'); 
+    Route::get('/projeto/compareceu/nao-avaliado/{id}/{s}', 'ProjetoController@projetoCompareceuNaoAvaliado');
 
 });
 

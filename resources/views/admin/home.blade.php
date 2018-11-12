@@ -41,7 +41,7 @@
                 <li>
                     <a href="{{route('administrador.tarefas')}}">
                         <i class="material-icons">title</i>
-                        Tarefas (Voluntários)
+                        Tarefas
                     </a>
                 </li>
                 <li>
@@ -62,6 +62,12 @@
 						Comissão Avaliadora
 					</a>
 				</li>
+                <li>
+                    <a href="{{route('administrador.notas')}}">
+                        <i class="material-icons">note_add</i>
+                        Notas
+                    </a>
+                </li>
                 <li>
                     <a href="{{route('administrador.relatoriosEdicao')}}">
                         <i class="material-icons">description</i>

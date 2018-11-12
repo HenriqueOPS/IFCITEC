@@ -107,7 +107,7 @@ class RelatorioController extends Controller
 
 		$nivel = utf8_decode('Nível');
 		$area = utf8_decode('Área do Conhecimento');
-
+s
 		fputcsv($handle, array('Projeto','Integrantes','Escola',$nivel,$area,'Resumo'), ';');
 
 		foreach ($projetos as $projeto) {
@@ -1270,6 +1270,7 @@ class RelatorioController extends Controller
                     ->where(function ($q){
                         $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
                         $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                        $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
                     })
                     ->where('projeto.presenca', TRUE)
                     ->where('nivel.id', $data['nivel'][$key])
@@ -1312,6 +1313,7 @@ class RelatorioController extends Controller
 			->where(function ($q){
                             $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
                             $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
              })
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->where('projeto.presenca', TRUE)

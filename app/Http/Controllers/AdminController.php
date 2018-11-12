@@ -146,6 +146,22 @@ class AdminController extends Controller
     	return view('admin.usuarios')->withUsuarios($usuarios);
     }
 
+    public function notas(){
+    	$projetos = DB::table('projeto')->select('titulo', 'id')->where('edicao_id', Edicao::getEdicaoId())->orderBy('titulo')->get()->toArray();
+
+    	return view('admin.notas', collect(['projetos' => $projetos]));
+    }
+
+    public function notasProjeto(Request $req){
+		$data = $req->all();
+		$projeto = $data['projeto'];
+		return redirect()->route('administrador.notasProjeto', ['projeto' => $projeto]);
+	}
+
+	public function notasProjetoEscolhido(){
+		return view('admin.notasProjeto');
+	}
+
     public function comissao(){
 
     	$comissao = DB::table('funcao_pessoa')
@@ -540,7 +556,7 @@ class AdminController extends Controller
 			);
 			}
 		}
-		
+
 		if (!empty($funcoes)) {
 			$funcaoId = array_keys($funcoes);
 			foreach ($funcoes as $funcao) {
@@ -549,7 +565,7 @@ class AdminController extends Controller
 						DB::table('pessoa_tarefa')->where('edicao_id', Edicao::getEdicaoId())->where('pessoa_id', $id)->delete();
 					}
 				}
-				if ($funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Autor')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Avaliador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Homologador')->first()->id) {	
+				if ($funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Autor')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Avaliador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Homologador')->first()->id) {
 					if (!isset($data['funcao']) || (!in_array($funcao->funcao_id, $data['funcao']))) {
 						DB::table('funcao_pessoa')->where('funcao_id', $funcao->funcao_id)->where('pessoa_id', $id)->delete();
 					}
@@ -585,7 +601,7 @@ class AdminController extends Controller
 		} else {
 			foreach ($data['funcao'] as $funcao) {
 				if ($funcao == Funcao::select(['id'])->where('funcao', 'Voluntário')->first()->id && Pessoa::find($id)->temTrabalho()) {
-						
+
 				}
 						else{
 							if ($funcao == Funcao::select(['id'])->where('funcao', 'Administrador')->first()->id) {
@@ -605,7 +621,7 @@ class AdminController extends Controller
 								]);
 							}
 					}
-			
+
 			}
 		}
 		$usuarios = Pessoa::orderBy('nome')->get();

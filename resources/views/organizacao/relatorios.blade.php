@@ -184,7 +184,7 @@
                             <td>4</td>
                             <td>Crachás Comissão Organizadora</td>
                             <td class="text-right">
-                                <a href="{{route('generateCrachasComissaoOrganizadora')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('generateCrachasComissaoOrganizadora', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -205,7 +205,7 @@
                             <td>7</td>
                             <td>Crachás Backup</td>
                             <td class="text-right">
-                                <a href="{{route('generateCrachas')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('generateCrachas', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>

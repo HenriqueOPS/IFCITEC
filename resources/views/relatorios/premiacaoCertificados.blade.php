@@ -84,14 +84,14 @@
 	        		<h1 style="margin-top: 10mm; font-size: 10mm;">CERTIFICADO</h1>
 					<p style="margin-top: 10mm; font-size: 4mm;">O Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Sul, <br> Campus Canoas, certifica que</p>
 					<h1 style="margin-top: 20mm; font-size: 6mm;"><i>{{$pessoa->nome}}</i></h1>
-					@if($pessoa->temFuncaoProjeto('Autor', $projeto->id, $pessoa->id))
-					<p style="margin-top: 20mm; font-size: 4mm;">Autor(a) do projeto {{$projeto->titulo}} obteve o {{$colocacao}} do nível {{$area->niveis->nivel}} da área {{$area->area_conhecimento}} na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}}  IFCITEC.</p>
+					@if($pessoa->temFuncaoProjeto('Autor', $projeto->id, $pessoa->id, $edicao))
+					<p style="margin-top: 20mm; font-size: 4mm;">Autor(a) do projeto {{$projeto->titulo}} obteve o {{$colocacao}} do nível {{$area->niveis->nivel}} da área {{$area->area_conhecimento}} na {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC.</p>
 					@endif
-					@if($pessoa->temFuncaoProjeto('Orientador', $projeto->id, $pessoa->id))
-					<p style="margin-top: 20mm; font-size: 4mm;">Orientador(a) do projeto {{$projeto->titulo}} obteve o {{$colocacao}} do nível {{$area->niveis->nivel}} da área {{$area->area_conhecimento}} na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}}  IFCITEC.</p>
+					@if($pessoa->temFuncaoProjeto('Orientador', $projeto->id, $pessoa->id, $edicao))
+					<p style="margin-top: 20mm; font-size: 4mm;">Orientador(a) do projeto {{$projeto->titulo}} obteve o {{$colocacao}} do nível {{$area->niveis->nivel}} da área {{$area->area_conhecimento}} na {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC.</p>
 					@endif
-					@if($pessoa->temFuncaoProjeto('Coorientador', $projeto->id, $pessoa->id))
-					<p style="margin-top: 20mm; font-size: 4mm;">Coorientador(a) do projeto {{$projeto->titulo}} obteve o {{$colocacao}} do nível {{$area->niveis->nivel}} da área {{$area->area_conhecimento}} na {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}}  IFCITEC.</p>
+					@if($pessoa->temFuncaoProjeto('Coorientador', $projeto->id, $pessoa->id, $edicao))
+					<p style="margin-top: 20mm; font-size: 4mm;">Coorientador(a) do projeto {{$projeto->titulo}} obteve o {{$colocacao}} do nível {{$area->niveis->nivel}} da área {{$area->area_conhecimento}} na {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC.</p>
 					@endif
 					<p style="margin-top: 15mm; font-size: 4mm;">Canoas, {{$data}}</p>
 			</div>

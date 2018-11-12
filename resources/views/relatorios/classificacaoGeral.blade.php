@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DA CLASSIFICAÇÃO GERAL DA {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC</h2>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DA CLASSIFICAÇÃO GERAL DA {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC</h2>
 
       @foreach($niveis as $nivel)
         <p style="text-align: center;"><b>{{$nivel->nivel}}</b></p>

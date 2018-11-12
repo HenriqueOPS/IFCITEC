@@ -20,9 +20,9 @@ class CrachaController extends Controller
 				->svg();
 	}
 
-	public function generateCrachas(){
+	public function generateCrachas($edicao){
 		
-		return Response::view('impressao.crachas');
+		return Response::view('impressao.crachas', compact('edicao'));
 	}
 
 	public function generateCrachasAutores($edicao){
@@ -33,6 +33,7 @@ class CrachaController extends Controller
                         ->where(function ($q){
                             $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
                             $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                      		$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
                         })
 						->where('funcao_pessoa.edicao_id', $edicao)
 						->where('projeto.presenca', TRUE)
@@ -41,7 +42,7 @@ class CrachaController extends Controller
 						->distinct('pessoa.id')
 						->get();
 		$funcao = 'Autor';
-		return Response::view('impressao.cracha_verde', compact('pessoas', 'funcao'));
+		return Response::view('impressao.cracha_verde', compact('pessoas', 'funcao', 'edicao'));
 	}
 
 	public function generateCrachasComissaoAvaliadora($edicao){
@@ -53,10 +54,10 @@ class CrachaController extends Controller
 						->distinct('pessoa.id')
 						->get();
 		$funcao = 'Comissão Avaliadora';	
-		return view('impressao.cracha_vermelho', compact('pessoas', 'funcao'));
+		return view('impressao.cracha_vermelho', compact('pessoas', 'funcao', 'edicao'));
 	}
 
-	public function generateCrachasComissaoOrganizadora(){
+	public function generateCrachasComissaoOrganizadora($edicao){
 		$pessoas = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 						->select('pessoa.nome', 'pessoa.id')
 						->where(function ($q){
@@ -72,7 +73,7 @@ class CrachaController extends Controller
 						->get();
 
 		$funcao = 'Comissão Organizadora';
-		return view('impressao.cracha_vermelho', compact('pessoas', 'funcao'));
+		return view('impressao.cracha_vermelho', compact('pessoas', 'funcao', 'edicao'));
 	}
 
 	public function generateCrachasOrientadores($edicao){
@@ -83,6 +84,7 @@ class CrachaController extends Controller
                         ->where(function ($q){
                             $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
                             $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
                         })
                         ->where('funcao_pessoa.edicao_id', $edicao)
 						->where('projeto.presenca', TRUE)
@@ -92,7 +94,7 @@ class CrachaController extends Controller
 						->get();
 
 		$funcao = 'Orientador';
-		return view('impressao.cracha_verde', compact('pessoas','funcao'));
+		return view('impressao.cracha_verde', compact('pessoas','funcao', 'edicao'));
 	}
 
 	public function generateCrachasCoorientadores($edicao){
@@ -103,6 +105,7 @@ class CrachaController extends Controller
                         ->where(function ($q){
                             $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
                             $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
                         })
                         ->where('funcao_pessoa.edicao_id', $edicao)
 						->where('projeto.presenca', TRUE)
@@ -111,7 +114,7 @@ class CrachaController extends Controller
 						->distinct('pessoa.id')
 						->get();
 		$funcao = 'Coorientador';
-		return view('impressao.cracha_verde', compact('pessoas', 'funcao'));
+		return view('impressao.cracha_verde', compact('pessoas', 'funcao', 'edicao'));
 	}
 
 	public function generateCrachasVoluntarios($edicao){
@@ -125,7 +128,7 @@ class CrachaController extends Controller
 						->distinct('pessoa.id')
 						->get();
 						
-		return view('impressao.cracha_azul', compact('pessoas'));
+		return view('impressao.cracha_azul', compact('pessoas', 'edicao'));
 	}
 
 }

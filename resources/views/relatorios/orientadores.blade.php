@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <h5 style="text-align: center; font-size: 25px;">RELATÓRIO DE ORIENTADORES DA {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC
+        <h5 style="text-align: center; font-size: 25px;">RELATÓRIO DE ORIENTADORES DA {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC
         </h5>
         <br>
         <table class="bordered striped centered" style="width:100%;">

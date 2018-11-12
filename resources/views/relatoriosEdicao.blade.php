@@ -41,7 +41,7 @@
                 <li>
                     <a href="{{route('administrador.tarefas')}}">
                         <i class="material-icons">title</i>
-                        Tarefas (Voluntários)
+                        Tarefas
                     </a>
                 </li>
                 <li>
@@ -60,6 +60,12 @@
                     <a href="{{route('administrador.comissao')}}">
                         <i class="material-icons">list_alt</i>
                         Comissão Avaliadora
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('administrador.notas')}}">
+                        <i class="material-icons">note_add</i>
+                        Notas
                     </a>
                 </li>
                 <li class="active">
@@ -89,10 +95,10 @@
                                         <option></option>
                                         @foreach ($edicoes as $edicao)
                                             @if ($edicao->id == old('edicao'))
-                                                <option selected="selected" value="{{$edicao->id}}">{{\App\Edicao::numeroEdicao($edicao->ano)}}</option>
+                                                <option selected="selected" value="{{$edicao->id}}">{{\App\Edicao::numeroEdicao($edicao->ano)}} IFCITEC</option>
                                             @else
-                                                <option value="{{$edicao->id}}">{{\App\Edicao::numeroEdicao($edicao->ano)}}</option>
-                                                
+                                                <option value="{{$edicao->id}}">{{\App\Edicao::numeroEdicao($edicao->ano)}} IFCITEC</option>
+
                                             @endif
                                         @endforeach
                                     </select>

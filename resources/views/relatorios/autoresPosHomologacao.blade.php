@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <h5 style="text-align: center; font-size: 25px;">RELATÓRIO DE AUTORES DA {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC (PÓS HOMOLOGAÇÃO)
+        <h5 style="text-align: center; font-size: 25px;">RELATÓRIO DE AUTORES DA {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC (PÓS HOMOLOGAÇÃO)
         </h5>
         <br>
         <table class="bordered striped centered" style="width:100%;">
