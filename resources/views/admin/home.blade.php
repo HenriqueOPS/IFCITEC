@@ -77,7 +77,7 @@
 <div class="container">
     <div class="row">
 
-        <div class="col-md-12 main main-raised">
+        <div class="col-md-12 col-xs-12 main main-raised">
             <div class="list-projects">
                 <table class="table">
                     <thead id="0">
@@ -91,9 +91,7 @@
                     <tr>
                         <th class="text-center">#</th>
                         <th>Ano</th>
-                        <th>Período de Inscrição</th>
-                        <th>Período de Homologação</th>
-                        <th>Período de Avaliação</th>
+                        <th>Período da feira</th>
                         <th class="text-right">Ações</th>
                     </tr>
                     </thead>
@@ -101,20 +99,18 @@
                     <tbody id="0">
 
                         @foreach($edicoes as $id => $edicao)
-
+                        <div class="col-md-12 col-xs-6">
                         <tr>
                             <td class="text-center">{{$id+1}}</td>
                             <td>{{  \App\Edicao::numeroEdicao($edicao['ano']) }}</td>
-                            <td>{{ date('d/m/Y H:i:s', strtotime($edicao['inscricao_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['inscricao_fechamento'])) }}</td>
-                            <td>{{ date('d/m/Y H:i:s', strtotime($edicao['homologacao_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['homologacao_fechamento'])) }}</td>
-                            <td>{{ date('d/m/Y H:i:s', strtotime($edicao['avaliacao_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['avaliacao_fechamento'])) }}</td>
+                            <td>{{ date('d/m/Y H:i:s', strtotime($edicao['feira_abertura'])) }} - {{ date('d/m/Y H:i:s', strtotime($edicao['feira_fechamento'])) }}</td>
                             <td class="td-actions text-right">
                                 <a href="javascript:void(0);" class="modalEdicao" id-edicao="{{ $edicao['id'] }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
                                 <a href="{{route('editarEdicao',$edicao['id'])}}"><i class="material-icons">edit</i></a>
                                 <a href="javascript:void(0);" class="excluirEdicao" id-edicao="{{ $edicao['id'] }}"><i class="material-icons blue-icon">delete</i></a>
                             </td>
-                        <tr>
-
+                        </tr>
+                        </div>
                         @endforeach
 
                     </tbody>

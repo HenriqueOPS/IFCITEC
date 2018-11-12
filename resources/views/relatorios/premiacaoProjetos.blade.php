@@ -20,21 +20,21 @@
   				</tr>
         	</thead>
   			<tbody>
-          {{$cont = 0}}
+          {{$cont = 3}}
           {{$projetos = $area->getClassificacaoProjetosCertificados($area->id, $edicao)}}
 		  @foreach($projetos as $projeto)
-          @if($cont >= 3)
+          @if($cont <= 0)
             @break
           @endif
           @if($projeto->situacao_id == \App\Situacao::where('situacao', 'Avaliado')->get()->first()->id)
   				<tr>
-            <td><a style="color: #000;">{{$cont - 1}}</a></td>
+            <td><a style="color: #000;">{{$cont--}}</a></td>
     				<td><a style="color: #000;">{{$projeto->titulo}}</a></td>
             <td><a style="color: #000;">{{$projeto->nome_curto}}</a></td>
     				<td><a style="color: #000;">{{$projeto->nota_avaliacao}}</a></td>
-            {{$coorientadores = $projeto->getCoorientadores($projeto->id)}}
-            {{$orientador = $projeto->getOrientador($projeto->id)}}
-            {{$autores = $projeto->getAutores($projeto->id)}}
+            {{$coorientadores = $projeto->getCoorientadores($projeto->id, $edicao)}}
+            {{$orientador = $projeto->getOrientador($projeto->id, $edicao)}}
+            {{$autores = $projeto->getAutores($projeto->id, $edicao)}}
             <td>
             @foreach($autores as $autor)
             {{$autor->nome}},

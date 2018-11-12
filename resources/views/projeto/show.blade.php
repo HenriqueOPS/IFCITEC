@@ -11,7 +11,7 @@
             <div class="main main-raised">
 
                 <div class="row">
-                    <div class="col-md-7 col-md-offset-1">
+                    <div class="col-md-7 col-md-offset-1 col-xs-10 col-xs-offset-1">
                         <h2>{{$projeto->titulo}}</h2>
                     </div>
                 </div>
@@ -19,7 +19,7 @@
                 <div class="row">
                     <div id="projeto-show">
 
-                        <div class="col-md-7 col-md-offset-1">
+                        <div class="col-md-6 col-md-offset-1 col-xs-10 col-xs-offset-1">
                             <div id="status">
                                 @if($projeto->getStatus() == "Não Homologado" || $projeto->getStatus() == "Não Avaliado")
                                     <span class="label label-info">{{$projeto->getStatus()}}</span>
@@ -69,7 +69,7 @@
 
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-xs-10 col-xs-offset-1">
                             @if(Auth::user()->temFuncao('Avaliador') || Auth::user()->temFuncao('Homologador'))
 
                                 @if((\App\Edicao::consultaPeriodo('Homologação')) && $ehHomologador)

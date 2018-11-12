@@ -72,7 +72,7 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
+                            <div class="col-md-6 col-md-offset-5 col-xs-6 col-xs-offset-2">
                                 <button type="submit" class="btn btn-primary">
 									Redefinir Senha
                                 </button>

@@ -34,22 +34,24 @@
                 <form method="POST" action="{{ route('recuperar.senha') }}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="row">
-                    <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                             <div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">email</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Email</label>
-                                    <input type="text" class="form-control" name="email" value="{{ old('email') }}" required>
+                    <div class="col-md-10 col-md-offset-1">
+                            <div class="col-xs-11">
+                                 <div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                    <span class="input-group-addon">
+                                        <i class="material-icons">email</i>
+                                    </span>
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">Email</label>
+                                        <input type="text" class="form-control" name="email" value="{{ old('email') }}" required>
+                                    </div>
+                                    @if ($errors->has('email'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                    @endif
                                 </div>
-                                @if ($errors->has('email'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('email') }}</strong>
-                                </span>
-                                @endif
                             </div>
-                            <div class="col-md-offset-3">
+                            <div class="col-md-offset-3 col-xs-4">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="material-icons">send </i> Enviar link de redefinição
                                 </button>

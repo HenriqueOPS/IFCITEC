@@ -68,9 +68,7 @@
                 </div>
 
                 <div>
-                    <a href="{{ route('projetoNaoCompareceu') }}" id="" class="btn btn-primary btn-round">
-                        <i class="material-icons">add</i> Add Projeto Não Compareceu
-                    </a>
+                    
 
                     <a href="{{route('homologar-projetos')}}" id="homologarTrabalhos" class="btn btn-sm btn-primary">Homologar Trabalhos</a>
 
@@ -146,6 +144,14 @@
                                     <a href="{{route('vinculaRevisor',$projeto->id)}}"><i class="material-icons">assignment_ind</i></a>
                                 @endif
 
+                                @if($projeto->getStatus() == "Não Avaliado" || $projeto->getStatus() == "Avaliado")
+                                    <a href="javascript:void(0);" class="naoCompareceu" id-projeto="{{ $projeto->id }}"><i class="material-icons blue-icon">clear</i></a>
+                                @endif
+
+                                @if($projeto->getStatus() == "Não Compareceu")
+                                    <a href="javascript:void(0);" class="compareceu" id-projeto="{{ $projeto->id }}"><i class="material-icons blue-icon">check</i></a>
+                                @endif
+
                             </div>
                         </div>
 
@@ -211,6 +217,54 @@
 </div>
 <!-- Fim Modal Área -->
 
+<!-- Modal Não Compareceu -->
+<div id="ModalNaoCompareceu" class="modal fade bd-example-modal-lg" role="dialog3" aria-labelledby="ModalNaoCompareceu">
+    <div class="modal-dialog" role="document3">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Não Compareceu</h5>
+            </div>
+
+            <div class="modal-body">
+                <span>Para confirmar que o projeto não compareceu, confirme sua senha.</span>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">lock_outline</i>
+                    </span>
+                    <input type="password" placeholder="Senha..." class="form-control" id="passwordNaoCompareceu" name="password" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary confirma" data-dismiss="modal">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Compareceu -->
+<div id="ModalCompareceu" class="modal fade bd-example-modal-lg" role="dialog3" aria-labelledby="ModalCompareceu">
+    <div class="modal-dialog" role="document2">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Compareceu</h5>
+            </div>
+
+            <div class="modal-body">
+                <span>Para confirmar que o projeto compareceu, confirme sua senha e logo em seguida aperte no botão que corrsponde a situação do projeto.</span>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">lock_outline</i>
+                    </span>
+                    <input type="password" placeholder="Senha..." class="form-control" id="passwordCompareceu" name="password" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary avaliado" data-dismiss="modal">Avaliado</button>
+                <button type="button" class="btn btn-primary naoavaliado" data-dismiss="modal">Não Avaliado</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="application/javascript">
 $('.dados-projeto').click(function(){
@@ -324,14 +378,12 @@ function hideAll(){
     $('div.project.situacao-4').hide();
     $('div.project.situacao-5').hide();
     $('div.project.situacao-6').hide();
-    $('div.project.situacao-7').hide();
 	$('div[id=1]').hide();
 	$('div[id=2]').hide();
 	$('div[id=3]').hide();
 	$('div[id=4]').hide();
 	$('div[id=5]').hide();
 	$('div[id=6]').hide();
-    $('div[id=7]').hide();
 
 }
 
@@ -342,10 +394,63 @@ function showAll(){
     $('div.project.situacao-4').show();
     $('div.project.situacao-5').show();
     $('div.project.situacao-6').show();
-    $('div.project.situacao-7').show();
 }
 
 </script>
 
+<script type="application/javascript">
+$('.naoCompareceu').click(function(){
+    var idProjeto= $(this).attr('id-projeto');
+
+    $("#ModalNaoCompareceu").modal();
+
+    $('.confirma').click(function(){
+        var urlConsulta = '.././projeto/nao-compareceu/'+idProjeto+'/'+$('#passwordNaoCompareceu').val();
+        $.get(urlConsulta, function (res){
+            if(res == 'true'){
+                bootbox.alert("O projeto mudou de situação com sucesso!");
+                window.location.reload();
+            }else{
+                bootbox.alert("Senha incorreta");
+            }
+
+        });
+    });
+
+});
+
+$('.compareceu').click(function(){
+    var idProjeto= $(this).attr('id-projeto');
+
+    $("#ModalCompareceu").modal();
+
+    $('.avaliado').click(function(){
+        var urlConsulta = '.././projeto/compareceu/avaliado/'+idProjeto+'/'+$('#passwordCompareceu').val();
+        $.get(urlConsulta, function (res){
+            if(res == 'true'){
+                bootbox.alert("O projeto mudou de situação com sucesso!");
+                window.location.reload();
+            }else{
+                bootbox.alert("Senha incorreta");
+            }
+
+        });
+    });
+
+    $('.naoavaliado').click(function(){
+        var urlConsulta = '.././projeto/compareceu/nao-avaliado/'+idProjeto+'/'+$('#passwordCompareceu').val();
+        $.get(urlConsulta, function (res){
+            if(res == 'true'){
+                bootbox.alert("O projeto mudou de situação com sucesso!");
+                window.location.reload();
+            }else{
+                bootbox.alert("Senha incorreta");
+            }
+
+        });
+    });
+
+});
+</script>
 @endsection
 

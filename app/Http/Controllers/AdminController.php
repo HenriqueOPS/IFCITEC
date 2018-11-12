@@ -40,9 +40,7 @@ class AdminController extends Controller
 	public function index() {
 
 		$edicoes = Edicao::all(['id', 'ano',
-			'inscricao_abertura', 'inscricao_fechamento',
-			'homologacao_abertura', 'homologacao_fechamento',
-			'avaliacao_abertura', 'avaliacao_fechamento'])->sortByDesc('ano');
+			'feira_abertura', 'feira_fechamento'])->sortByDesc('ano');
 
 		$comissao = DB::table('funcao_pessoa')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
@@ -561,23 +559,53 @@ class AdminController extends Controller
 			if (isset($data['funcao'])) {
 				foreach ($data['funcao'] as $funcao) {
 					if (!in_array($funcao, $funcaoId)) {
-						DB::table('funcao_pessoa')->insert([
-							'funcao_id' => $funcao,
-							'pessoa_id' => $id,
-							'edicao_id' => Edicao::getEdicaoId(),
-							'homologado' => TRUE
-						]);
+						if ($funcao == Funcao::select(['id'])->where('funcao', 'Voluntário')->first()->id && Pessoa::find($id)->temTrabalho()) {
+						}
+						else{
+							if ($funcao == Funcao::select(['id'])->where('funcao', 'Administrador')->first()->id) {
+								DB::table('funcao_pessoa')->insert([
+									'funcao_id' => $funcao,
+									'pessoa_id' => $id,
+									'edicao_id' => 1,
+									'homologado' => TRUE
+								]);
+							}
+							else{
+								DB::table('funcao_pessoa')->insert([
+									'funcao_id' => $funcao,
+									'pessoa_id' => $id,
+									'edicao_id' => Edicao::getEdicaoId(),
+									'homologado' => TRUE
+								]);
+							}
+						}
 					}
 				}
 			}
 		} else {
 			foreach ($data['funcao'] as $funcao) {
-				DB::table('funcao_pessoa')->insert([
-					'funcao_id' => $funcao,
-					'pessoa_id' => $id,
-					'edicao_id' => Edicao::getEdicaoId(),
-					'homologado' => TRUE
-				]);
+				if ($funcao == Funcao::select(['id'])->where('funcao', 'Voluntário')->first()->id && Pessoa::find($id)->temTrabalho()) {
+						
+				}
+						else{
+							if ($funcao == Funcao::select(['id'])->where('funcao', 'Administrador')->first()->id) {
+								DB::table('funcao_pessoa')->insert([
+									'funcao_id' => $funcao,
+									'pessoa_id' => $id,
+									'edicao_id' => 1,
+									'homologado' => TRUE
+								]);
+							}
+							else{
+								DB::table('funcao_pessoa')->insert([
+									'funcao_id' => $funcao,
+									'pessoa_id' => $id,
+									'edicao_id' => Edicao::getEdicaoId(),
+									'homologado' => TRUE
+								]);
+							}
+					}
+			
 			}
 		}
 		$usuarios = Pessoa::orderBy('nome')->get();
@@ -589,29 +617,6 @@ class AdminController extends Controller
 			->withUsuarios($usuarios)
 			->withFuncoes($funcoes)
 			->withTarefas($tarefas);
-	}
-
-	public function projetoNaoCompareceu()
-	{
-		$projetos = Projeto::select( 'projeto.id', 'projeto.titulo')
-						->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
-						->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
-						->where(function ($q){
-                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-                        })
-						->orderBy('projeto.titulo')
-						->distinct('projeto.id')
-						->get();
-
-		return view('admin.projetoNaoCompareceu')->withProjetos($projetos);
-	}
-
-	public function naoCompareceu(Request $req)
-	{
-		$data = $req->all();
-		dd($data['projeto']);
-		return view('admin.projetos');
 	}
 
 	public function fichaAvaliacao()
