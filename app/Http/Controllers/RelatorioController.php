@@ -107,7 +107,7 @@ class RelatorioController extends Controller
 
 		$nivel = utf8_decode('Nível');
 		$area = utf8_decode('Área do Conhecimento');
-s
+		
 		fputcsv($handle, array('Projeto','Integrantes','Escola',$nivel,$area,'Resumo'), ';');
 
 		foreach ($projetos as $projeto) {
