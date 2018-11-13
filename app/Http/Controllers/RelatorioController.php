@@ -688,7 +688,7 @@ class RelatorioController extends Controller
 			->orderBy('projeto.titulo', 'asc')
 			->get();
 
-		return \PDF::loadView('relatorios.projetosClassificadosSemNota', array('projetos' => $projetos))->download('projetos_classificados.pdf');
+		return \PDF::loadView('relatorios.projetosClassificadosSemNota', array('projetos' => $projetos, 'edicao' => $edicao))->download('projetos_classificados.pdf');
 	}
 
 

@@ -54,7 +54,6 @@
             </td>
 
   				</tr>
-          {{$cont++}}
           @endif
           @endforeach
   			</tbody>

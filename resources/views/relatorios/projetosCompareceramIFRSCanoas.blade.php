@@ -25,9 +25,9 @@
     				<td><a style="color: #000;">{{$projeto->titulo}}</a></td>
             <td><a style="color: #000;">{{$projeto->nome_curto}}</a></td>
     				<td><a style="color: #000;">{{$projeto->nota_avaliacao}}</a></td>
-            {{$coorientadores = $projeto->getCoorientadores($projeto->id)}}
-            {{$orientador = $projeto->getOrientador($projeto->id)}}
-            {{$autores = $projeto->getAutores($projeto->id)}}
+            {{$coorientadores = $projeto->getCoorientadores($projeto->id, $edicao)}}
+            {{$orientador = $projeto->getOrientador($projeto->id, $edicao)}}
+            {{$autores = $projeto->getAutores($projeto->id, $edicao)}}
             <td>
             @foreach($autores as $autor)
             {{$autor->nome}},
