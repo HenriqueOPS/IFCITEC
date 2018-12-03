@@ -144,7 +144,13 @@
                                     <a href="{{route('vinculaRevisor',$projeto->id)}}"><i class="material-icons">assignment_ind</i></a>
                                 @endif
 
+                                @if($projeto->getStatus() == "Não Homologado" || $projeto->getStatus() == "Homologado")
+                                     <a href="{{route('notaRevisao',$projeto->id)}}"><i class="material-icons blue-icon">looks_one</i></a>
+                                @endif
+
                                 @if($projeto->getStatus() == "Não Avaliado" || $projeto->getStatus() == "Avaliado")
+                                    <a href="{{route('notaAvaliacao',$projeto->id)}}"><i class="material-icons blue-icon">looks_one</i></a>
+
                                     <a href="javascript:void(0);" class="naoCompareceu" id-projeto="{{ $projeto->id }}"><i class="material-icons blue-icon">clear</i></a>
                                 @endif
 

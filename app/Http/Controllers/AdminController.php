@@ -146,20 +146,78 @@ class AdminController extends Controller
     	return view('admin.usuarios')->withUsuarios($usuarios);
     }
 
-    public function notas(){
-    	$projetos = DB::table('projeto')->select('titulo', 'id')->where('edicao_id', Edicao::getEdicaoId())->orderBy('titulo')->get()->toArray();
+    public function notaRevisao($id){
+    	$projeto = Projeto::find($id);
+    	$situacoes = Situacao::all();
+    	
+    	$revisao = DB::table('revisao')->join('pessoa', 'revisao.pessoa_id', '=', 'pessoa.id')
+    		->select('revisao.pessoa_id', 'revisao.observacao', 'revisao.nota_final', 'pessoa.nome')
+    		->where('revisao.projeto_id', $id)
+    		->get()->toArray();
 
-    	return view('admin.notas', collect(['projetos' => $projetos]));
-    }
-
-    public function notasProjeto(Request $req){
-		$data = $req->all();
-		$projeto = $data['projeto'];
-		return redirect()->route('administrador.notasProjeto', ['projeto' => $projeto]);
+		return view('admin.notaRevisao', array('projeto' => $projeto, 'situacoes' => $situacoes, 'revisao' => $revisao));
 	}
 
-	public function notasProjetoEscolhido(){
-		return view('admin.notasProjeto');
+	public function mudaNotaRevisao(Request $req){
+		$data = $req->all();
+
+		Projeto::where('id', $data['projeto'])
+			->update(['situacao_id' => $data['situacao']
+		]);
+		DB::table('revisao')->where('projeto_id', $data['projeto'])
+			->where('pessoa_id', $data['rev1'])
+			->update(['nota_final' => $data['nota1'], 'observacao' => $data['obs1']]);
+
+		DB::table('revisao')->where('projeto_id', $data['projeto'])
+			->where('pessoa_id', $data['rev2'])
+			->update(['nota_final' => $data['nota2'], 'observacao' => $data['obs2']]);
+
+		$projeto = Projeto::find($data['projeto']);
+    	$situacoes = Situacao::all();
+    	
+    	$revisao = DB::table('revisao')->join('pessoa', 'revisao.pessoa_id', '=', 'pessoa.id')
+    		->select('revisao.pessoa_id', 'revisao.observacao', 'revisao.nota_final', 'pessoa.nome')
+    		->where('revisao.projeto_id', $data['projeto'])
+    		->get()->toArray();
+
+		return view('admin.notaRevisao', array('projeto' => $projeto, 'situacoes' => $situacoes, 'revisao' => $revisao));
+	}
+
+	public function notaAvaliacao($id){
+    	$projeto = Projeto::find($id);
+    	$situacoes = Situacao::all();
+    	
+    	$avaliacao = DB::table('avaliacao')->join('pessoa', 'avaliacao.pessoa_id', '=', 'pessoa.id')
+    		->select('avaliacao.pessoa_id', 'avaliacao.observacao', 'avaliacao.nota_final', 'pessoa.nome')
+    		->where('avaliacao.projeto_id', $id)
+    		->get()->toArray();
+
+		return view('admin.notaAvaliacao', array('projeto' => $projeto, 'situacoes' => $situacoes, 'avaliacao' => $avaliacao));
+	}
+
+	public function mudaNotaAvaliacao(Request $req){
+		$data = $req->all();
+
+		Projeto::where('id', $data['projeto'])
+			->update(['situacao_id' => $data['situacao']
+		]);
+		DB::table('avaliacao')->where('projeto_id', $data['projeto'])
+			->where('pessoa_id', $data['ava1'])
+			->update(['nota_final' => $data['nota1'], 'observacao' => $data['obs1']]);
+
+		DB::table('avaliacao')->where('projeto_id', $data['projeto'])
+			->where('pessoa_id', $data['ava2'])
+			->update(['nota_final' => $data['nota2'], 'observacao' => $data['obs2']]);
+
+		$projeto = Projeto::find($data['projeto']);
+    	$situacoes = Situacao::all();
+    	
+    	$avaliacao = DB::table('avaliacao')->join('pessoa', 'avaliacao.pessoa_id', '=', 'pessoa.id')
+    		->select('avaliacao.pessoa_id', 'avaliacao.observacao', 'avaliacao.nota_final', 'pessoa.nome')
+    		->where('avaliacao.projeto_id', $data['projeto'])
+    		->get()->toArray();
+
+		return view('admin.notaAvaliacao', array('projeto' => $projeto, 'situacoes' => $situacoes, 'avaliacao' => $avaliacao));
 	}
 
     public function comissao(){
