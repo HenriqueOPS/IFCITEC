@@ -20,8 +20,8 @@
   				</tr>
         	</thead>
   			<tbody>
-          {{$cont = 3}}
           {{$projetos = $area->getClassificacaoProjetosCertificados($area->id, $edicao)}}
+          {{$cont = count($projetos)}}
 		  @foreach($projetos as $projeto)
           @if($cont <= 0)
             @break

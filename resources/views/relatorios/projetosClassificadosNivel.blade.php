@@ -15,17 +15,19 @@
 					</tr>
 					</thead>
 					<tbody>
+					{{$cont = 0}}
 					{{$projetos = $nivel->getProjetosClassificados($nivel->id, $edicao)}}
 					@foreach($projetos as $projeto)
 						<tr>
 							<td><a style="color: #000;">{{$projeto->titulo}}</a></td>
 							<td><a style="color: #000;">{{$projeto->nota}}</a></td>
-
+							{{$cont++}}
 
 						</tr>
 					@endforeach
 					</tbody>
 				</table>
+				<p><b> Total de Projetos: {{$cont}}</b></p>  
 				<br><br>
 			@endforeach
 		</div>

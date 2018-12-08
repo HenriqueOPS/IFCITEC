@@ -108,7 +108,7 @@ class RelatorioController extends Controller
 		$nivel = utf8_decode('Nível');
 		$area = utf8_decode('Área do Conhecimento');
 
-		fputcsv($handle, array('Projeto','Integrantes','Escola',$nivel,$area,'Resumo'), ';');
+		fputcsv($handle, array('Projeto','Integrantes','Escola',$nivel,$area,'Resumo','Palavras-Chave'), ';');
 
 		foreach ($projetos as $projeto) {
 					$integrantes = '';
@@ -126,6 +126,21 @@ class RelatorioController extends Controller
 					foreach ($projeto->getCoorientadores($projeto->id, $edicao) as $coorientador) {
 						$integrantes = $integrantes.', '.$coorientador->nome.' (Coorientador)';
 					}
+					$palavras = DB::table('palavra_chave')
+						->join('palavra_projeto','palavra_chave.id','=','palavra_projeto.palavra_id')
+						->join('projeto','palavra_chave.projeto_id','=','projeto.id')
+						->select('palavra_chave.palavra')
+						->where('projeto.id', $projeto->id)
+						->get();
+
+					$cont = 0;
+					foreach ($palavras as $palavra) {
+						if ($cont != 0) {
+							$p = $p.', ';
+						}
+						$p = $p.$palavra->palavra;
+						$cont++;
+					}
 
 					$titulo = utf8_decode($projeto->titulo);
 					$integrantes = utf8_decode($integrantes);
@@ -134,7 +149,7 @@ class RelatorioController extends Controller
 					$escola = utf8_decode($projeto->nome_completo);
 					$resumo = utf8_decode($projeto->resumo);
 
-					fputcsv($handle, array($titulo,$integrantes,$escola,$nivel,$area_conhecimento,$resumo), ';');
+					fputcsv($handle, array($titulo,$integrantes,$escola,$nivel,$area_conhecimento,$resumo, $p), ';');
 
 		}
 
@@ -255,6 +270,7 @@ class RelatorioController extends Controller
 						->where(function ($q){
                             $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
                             $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
                         })
 						->where('funcao_pessoa.edicao_id', $edicao)
 						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
@@ -662,8 +678,8 @@ class RelatorioController extends Controller
 	public function projetosClassificados($edicao){
 
         $areas = Edicao::find($edicao)->areas;
-
-        return \PDF::loadView('relatorios.projetosClassificados', array('areas' => $areas, 'edicao' => $edicao))->setPaper('A4', 'landscape')->download('projetos_classificados_area.pdf');
+        $cont = 0;
+        return \PDF::loadView('relatorios.projetosClassificados', array('areas' => $areas, 'edicao' => $edicao, 'cont' => $cont))->setPaper('A4', 'landscape')->download('projetos_classificados_area.pdf');
 	}
 
 	public function projetosClassificadosNivel($edicao){
@@ -803,6 +819,7 @@ class RelatorioController extends Controller
 			 ->where(function ($q){
                             $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
                             $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
              })
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->where('projeto.presenca', TRUE)
@@ -825,6 +842,7 @@ class RelatorioController extends Controller
 						 ->where(function ($q){
                             $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
                             $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
                         })
 						->where('funcao_pessoa.edicao_id', $edicao)
 						->where('projeto.presenca', TRUE)
@@ -845,6 +863,7 @@ class RelatorioController extends Controller
 						 ->where(function ($q){
                             $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
                             $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
                         })
 						->where('funcao_pessoa.edicao_id', $edicao)
 						->where('projeto.presenca', TRUE)
@@ -864,6 +883,7 @@ class RelatorioController extends Controller
 						 ->where(function ($q){
                             $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
                             $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
                         })
 						->where('funcao_pessoa.edicao_id', $edicao)
 						->where('projeto.presenca', TRUE)
@@ -883,6 +903,7 @@ class RelatorioController extends Controller
                         ->where(function ($q){
                             $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
                             $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
                         })
 						->where('funcao_pessoa.edicao_id', $edicao)
 						->where('projeto.presenca', TRUE)
@@ -933,6 +954,7 @@ class RelatorioController extends Controller
 						->where(function ($q){
                             $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
                             $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
                         })
 						->where('funcao_pessoa.edicao_id', $edicao)
 						->where('projeto.presenca', TRUE)
@@ -953,6 +975,7 @@ class RelatorioController extends Controller
 						->where(function ($q){
                             $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
                             $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
                         })
 						->where('projeto.presenca', TRUE)
 						->where('funcao_pessoa.edicao_id', $edicao)
@@ -1209,7 +1232,7 @@ class RelatorioController extends Controller
 				->get()
 				->toArray();
 
-		return \PDF::loadView('relatorios.projetosCompareceram', array('projetos' => $projetos))->download('projetos_compareceram.pdf');
+		return \PDF::loadView('relatorios.projetosCompareceram', array('projetos' => $projetos, 'edicao' => $edicao))->download('projetos_compareceram.pdf');
 	}
 
 	public function projetosCompareceramPorAutor($edicao){
@@ -1228,7 +1251,7 @@ class RelatorioController extends Controller
 						->orderBy('pessoa.nome')
 						->get();
 
-		return \PDF::loadView('relatorios.projetosCompareceramPorAutor', array('autores' => $autores))->download('projetos_compareceram_autor.pdf');
+		return \PDF::loadView('relatorios.projetosCompareceramPorAutor', array('autores' => $autores, 'edicao' => $edicao))->download('projetos_compareceram_autor.pdf');
 	}
 
 	public function projetosCompareceramIFRSCanoas($edicao){

@@ -420,7 +420,7 @@
                             <td>8</td>
                             <td>Autores, Coorientadores, Orientadores e Voluntários que Compareceram na IFCITEC</td>
                             <td class="text-right">
-                                <a href="{{route('participantesCompareceram', $edicao)}}"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('participantesCompareceram', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>

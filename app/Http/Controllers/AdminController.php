@@ -38,7 +38,6 @@ class AdminController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-
 		$edicoes = Edicao::all(['id', 'ano',
 			'feira_abertura', 'feira_fechamento'])->sortByDesc('ano');
 
