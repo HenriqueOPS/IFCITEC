@@ -148,7 +148,7 @@ class AdminController extends Controller
     public function notaRevisao($id){
     	$projeto = Projeto::find($id);
     	$situacoes = Situacao::all();
-    	
+
     	$revisao = DB::table('revisao')->join('pessoa', 'revisao.pessoa_id', '=', 'pessoa.id')
     		->select('revisao.pessoa_id', 'revisao.observacao', 'revisao.nota_final', 'pessoa.nome')
     		->where('revisao.projeto_id', $id)
@@ -171,9 +171,12 @@ class AdminController extends Controller
 			->where('pessoa_id', $data['rev2'])
 			->update(['nota_final' => $data['nota2'], 'observacao' => $data['obs2']]);
 
+		DB::table('projeto')->where('id', $data['projeto'])
+			->update(['nota_revisao' => ($data['nota1']+$data['nota2'])/2]);
+
 		$projeto = Projeto::find($data['projeto']);
     	$situacoes = Situacao::all();
-    	
+
     	$revisao = DB::table('revisao')->join('pessoa', 'revisao.pessoa_id', '=', 'pessoa.id')
     		->select('revisao.pessoa_id', 'revisao.observacao', 'revisao.nota_final', 'pessoa.nome')
     		->where('revisao.projeto_id', $data['projeto'])
@@ -185,11 +188,12 @@ class AdminController extends Controller
 	public function notaAvaliacao($id){
     	$projeto = Projeto::find($id);
     	$situacoes = Situacao::all();
-    	
+
     	$avaliacao = DB::table('avaliacao')->join('pessoa', 'avaliacao.pessoa_id', '=', 'pessoa.id')
     		->select('avaliacao.pessoa_id', 'avaliacao.observacao', 'avaliacao.nota_final', 'pessoa.nome')
     		->where('avaliacao.projeto_id', $id)
     		->get()->toArray();
+
 
 		return view('admin.notaAvaliacao', array('projeto' => $projeto, 'situacoes' => $situacoes, 'avaliacao' => $avaliacao));
 	}
@@ -208,9 +212,12 @@ class AdminController extends Controller
 			->where('pessoa_id', $data['ava2'])
 			->update(['nota_final' => $data['nota2'], 'observacao' => $data['obs2']]);
 
+		DB::table('projeto')->where('id', $data['projeto'])
+			->update(['nota_avaliacao' => ($data['nota1']+$data['nota2'])/2]);
+
 		$projeto = Projeto::find($data['projeto']);
     	$situacoes = Situacao::all();
-    	
+
     	$avaliacao = DB::table('avaliacao')->join('pessoa', 'avaliacao.pessoa_id', '=', 'pessoa.id')
     		->select('avaliacao.pessoa_id', 'avaliacao.observacao', 'avaliacao.nota_final', 'pessoa.nome')
     		->where('avaliacao.projeto_id', $data['projeto'])

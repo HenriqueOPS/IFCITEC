@@ -90,9 +90,10 @@ class RelatorioController extends Controller
 						->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
 						->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
 						->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+						->join('avaliacao', 'projeto.id', '=', 'avaliacao.projeto_id')
 						->where('escola_funcao_pessoa_projeto.edicao_id', $edicao)
 						->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
-            			->where('projeto.nota_avaliacao','<>',NULL)
+						->where('avaliacao.nota_final','<>',0)
 			            ->orderBy('nivel.nivel')
 						->orderBy('area_conhecimento.area_conhecimento')
 						->orderBy('projeto.titulo')
@@ -128,12 +129,13 @@ class RelatorioController extends Controller
 					}
 					$palavras = DB::table('palavra_chave')
 						->join('palavra_projeto','palavra_chave.id','=','palavra_projeto.palavra_id')
-						->join('projeto','palavra_chave.projeto_id','=','projeto.id')
+						->join('projeto','palavra_projeto.projeto_id','=','projeto.id')
 						->select('palavra_chave.palavra')
 						->where('projeto.id', $projeto->id)
 						->get();
 
 					$cont = 0;
+					$p = '';
 					foreach ($palavras as $palavra) {
 						if ($cont != 0) {
 							$p = $p.', ';
@@ -192,13 +194,13 @@ class RelatorioController extends Controller
 				}
 				$cont++;
 				foreach($projeto->pessoas as $pessoa){
-					if($pessoa->temFuncaoProjeto('Autor', $projeto->id, $pessoa->id)){
+					if($pessoa->temFuncaoProjeto('Autor', $projeto->id, $pessoa->id, $edicao)){
 						$funcao = 'Autor';
 					}
-					if($pessoa->temFuncaoProjeto('Orientador', $projeto->id, $pessoa->id)){
+					if($pessoa->temFuncaoProjeto('Orientador', $projeto->id, $pessoa->id, $edicao)){
 						$funcao = 'Orientador';
 					}
-					if($pessoa->temFuncaoProjeto('Coorientador', $projeto->id, $pessoa->id)){
+					if($pessoa->temFuncaoProjeto('Coorientador', $projeto->id, $pessoa->id, $edicao)){
 						$funcao = 'Coorientador';
 					}
 

@@ -121,8 +121,8 @@ class AreaConhecimento extends Model {
             ->where('projeto.nota_avaliacao','<>',NULL)
             ->groupBy('projeto.id')
             ->groupBy('escola.nome_curto')
-            ->orderBy('projeto.nota_avaliacao', 'asc')
-            ->orderBy('nota', 'asc')
+            ->orderBy('projeto.nota_avaliacao', 'desc')
+            ->orderBy('nota', 'desc')
             ->orderBy('projeto.created_at', 'asc')
             ->limit(3)
             ->get();
