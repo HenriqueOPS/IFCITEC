@@ -139,7 +139,7 @@ class RelatorioController extends Controller
 						if ($cont != 0) {
 							$p = $p.', ';
 						}
-						$p = $p.$palavra->palavra;
+						$p = $p.utf8_decode($palavra->palavra);
 						$cont++;
 					}
 
@@ -149,7 +149,7 @@ class RelatorioController extends Controller
 					$area_conhecimento = utf8_decode($projeto->area_conhecimento);
 					$escola = utf8_decode($projeto->nome_completo);
 					$resumo = utf8_decode($projeto->resumo);
-
+					$resumo = str_replace('&#34;', '"', $resumo);
 					fputcsv($handle, array($titulo,$integrantes,$escola,$nivel,$area_conhecimento,$resumo, $p), ';');
 
 		}
