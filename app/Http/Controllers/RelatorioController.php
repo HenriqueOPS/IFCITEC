@@ -84,7 +84,82 @@ class RelatorioController extends Controller
 
 	public function csvMOSTRATEC($edicao)
 	{
+		$projetos = Projeto::select( 'projeto.id', 'projeto.titulo', 'escola.nome_completo', 'nivel.nivel', 'area_conhecimento.area_conhecimento', 'projeto.resumo')
+			->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+			->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
+			->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
+			->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+			->where('escola_funcao_pessoa_projeto.edicao_id', $edicao)
+			->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
+			->where('projeto.nota_avaliacao','<>',0)
+			->orderBy('nivel.nivel')
+			->orderBy('area_conhecimento.area_conhecimento')
+			->orderBy('projeto.titulo')
+			->distinct('projeto.id')
+			->get();
+		$a1 = 0;
+		$a2 = 0;
+		$a3 = 0;
+		foreach ($projetos as $projeto) {
+			$cont = 0;
+			foreach ($projeto->getAutores($projeto->id, $edicao) as $autor) {
+				$cont++;
+			}
+			if ($cont == 1){
+				$a1++;
+			}
+			if ($cont == 2){
+				$a2++;
+			}
+			if ($cont == 3){
+				$a3++;
+			}
+		}
 
+		$niveis = Nivel::all();
+
+		$filename = "RelatorioMOSTRATEC.csv";
+
+		$handle = fopen($filename, 'w+');
+
+		$handle = fopen($filename, 'w+');
+
+		fputcsv($handle, array('Projetos 01 Aluno',$a1), ';');
+		fputcsv($handle, array('Projetos 02 Alunos',$a2), ';');
+		fputcsv($handle, array('Projetos 03 Alunos',$a3), ';');
+
+		foreach ($niveis as $nivel){
+			$orientadores = Pessoa::select( 'pessoa.id')
+				->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+				->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+				->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
+				->where('projeto.nota_avaliacao','<>',0)
+				->where('projeto.nivel_id',$nivel->id)
+				->where('escola_funcao_pessoa_projeto.funcao_id',Funcao::where('funcao', 'Orientador')->first()->id)
+				->distinct('pessoa.id')
+				->get();
+
+			$coorientadores = Pessoa::select( 'pessoa.id')
+				->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+				->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+				->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
+				->where('projeto.nota_avaliacao','<>',0)
+				->where('projeto.nivel_id',$nivel->id)
+				->where('escola_funcao_pessoa_projeto.funcao_id',Funcao::where('funcao', 'Coorientador')->first()->id)
+				->distinct('pessoa.id')
+				->get();
+
+			fputcsv($handle, array('Quantidade de Orientadores do nivel '.utf8_decode($nivel->nivel),count($orientadores)), ';');
+			fputcsv($handle, array('Quantidade de Coorientadores do nivel '.utf8_decode($nivel->nivel),count($coorientadores)), ';');
+		}
+
+		fclose($handle);
+
+		$headers = array(
+			'Content-Type' => 'text/csv',
+		);
+
+		return Response::download($filename, $filename, $headers);
 	}
 
 	public function csvAnais($edicao)
