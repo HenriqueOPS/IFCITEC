@@ -82,6 +82,10 @@ class RelatorioController extends Controller
 		return Response::download($filename, $filename, $headers);
 	}
 
+	public function csvMOSTRATEC($edicao)
+	{
+
+	}
 
 	public function csvAnais($edicao)
 	{
@@ -150,6 +154,7 @@ class RelatorioController extends Controller
 					$escola = utf8_decode($projeto->nome_completo);
 					$resumo = utf8_decode($projeto->resumo);
 					$resumo = str_replace('&#34;', '"', $resumo);
+					$titulo = str_replace('&#34;', '"', $titulo);
 					fputcsv($handle, array($titulo,$integrantes,$escola,$nivel,$area_conhecimento,$resumo, $p), ';');
 
 		}
