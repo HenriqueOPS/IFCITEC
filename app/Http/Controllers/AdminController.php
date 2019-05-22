@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Categoria;
 use App\Http\Requests\AreaRequest;
 use App\Http\Requests\NivelRequest;
 use Illuminate\Database\Eloquent\Builder;
@@ -42,7 +43,7 @@ class AdminController extends Controller
 			'feira_abertura', 'feira_fechamento'])->sortByDesc('ano');
 
 		$comissao = DB::table('funcao_pessoa')
-			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+            ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->join('comissao_edicao', function ($join){
 				$join->on('comissao_edicao.pessoa_id', '=', 'pessoa.id');
 				$join->where('comissao_edicao.edicao_id', '=', Edicao::getEdicaoId());
@@ -699,9 +700,10 @@ class AdminController extends Controller
 			->withTarefas($tarefas);
 	}
 
-	public function fichaAvaliacao()
-	{
-		return view('fichaAvaliacao');
-	}
+
+
+
+
+
 
 }

@@ -78,8 +78,6 @@ Route::get('/email/presenca', 'ProjetoController@confirmarPresenca')->name('conf
 Route::get('/email/presenca/confirmada/{id}', 'ProjetoController@confirmaPresenca')->name('confirmaPresenca');
 
 
-Route::get('/ficha-avaliacao/cadastrar', 'AdminController@fichaAvaliacao')->name('fichaAvaliacao');
-
 
 //Edição dos dados pessoais
 Route::get('/editar-cadastro/', 'PessoaController@editarCadastro')->name('editarCadastro');
@@ -173,6 +171,7 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 	Route::get('/administrador/relatorios/{edicao?}', 'AdminController@relatorios')->name('administrador.relatorios');
 	Route::get('/administrador/escolhe-edicao/relatorios', 'AdminController@relatoriosEdicao')->name('administrador.relatoriosEdicao');
 	Route::post('/administrador/escolhe-edicao/relatorios', 'AdminController@relatoriosEscolheEdicao')->name('administrador.escolheEdicao');
+
 
 /* Rotas Administrador */
 Route::group(['middleware' => ['IsAdministrador']], function () {
@@ -278,6 +277,9 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
     Route::post('/organizador/usuario/{id}/editar-cadastro/', 'OrganizadorController@editaUsuario')->name('orgEditaUsuario');
 
 
+
+
+
 });
 
 
@@ -342,10 +344,35 @@ Route::get('mail/voluntario', function(){
 
 });
 
-Auth::routes();
+//Fichas Cadastro
+//CATEGORIA
+Route::get('/cadastrar-categoria', 'FichaController@cadastroCategoria')->name('cadastroCategoria');
+Route::post('/cadastra-categoria', 'FichaController@cadastraCategoria')->name('cadastradaCategoria');
+
+//CAMPOS
+Route::get('/cadastrar-campo','FichaController@cadastroCampo')->name('cadastroCampo');
+Route::post('/cadastra-campo','FichaController@cadastrarCampo')->name('cadastradoCampo');
+
+
+//Mostra Categoria
+Route::get('/mostra-categoria','FichaController@mostraCateg')->name('mostraCat');
+Route::get('/gerenciar-fichas','FichaController@categoria')->name('administrador.ficha');
+
+//Mostra Item
+Route::get('/mostra-item','FichaController@mostraItem')->name('mostraItem');
+
+
+
+//Ficha
+Route::get('/dados-categoria/{id}', 'FichaController@dadosCategoria'); //Ajax
+Route::get('/exclui-categoria/{id}/{s}', 'FichaController@excluiCategoria'); //Ajax
+Route::get('/exclui-item/{id}/{s}', 'FichaController@excluiItem'); //Ajax
+
+
+
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
+
