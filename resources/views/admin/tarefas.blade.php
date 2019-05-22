@@ -67,7 +67,12 @@
                         Relatórios
                     </a>
                 </li>
-
+                <li>
+                    <a href="{{route('gerFicha')}}">
+                        <i class="material-icons">list_alt</i>
+                        Fichas
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
