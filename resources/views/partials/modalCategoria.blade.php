@@ -5,8 +5,19 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="nomeCatModal"></h5>
             </div>
+
             <div class="modal-body">
-{{--MUDAR ICONE DO PESO--}}
+
+                <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="material-icons">assignment</i>
+                </span>
+                    <div class="form-group label-floating">
+                        Edição:  <span id="edicaoModal"> </span>
+                    </div>
+                </div>
+
+                {{--MUDAR ICONE DO PESO--}}
                 <div class="input-group">
                 <span class="input-group-addon">
                     <i class="material-icons">assignment</i>
@@ -21,7 +32,7 @@
                     <i class="material-icons">assignment</i>
                 </span>
                     <div class="form-group label-floating">
-                        <span id="nivelModal"></span>
+                      Nível:  <span id="nivelModal"></span>
                     </div>
                 </div>
 
@@ -34,25 +45,14 @@
                     </div>
                 </div>
 
-
+                <table class="table">
                 <div class="input-group">
                     <div class="form-group label-floating">
-                        <span id="itensModal">
-
+                       <span id="itensModal">
                         </span>
-
                     </div>
-                    <span>
-                        <a href="javascript:void(0);" class="exclusao"><i class="material-icons blue-icon">delete</i></a>
-                    </span>
                 </div>
-
-
-                {{--<div class="input-group">--}}
-                    {{--<div class="form-group label-floating">--}}
-                        {{--<span id="tpItemModal"></span>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
+                </table>
 
             </div>
 
@@ -63,7 +63,8 @@
     </div>
 </div>
 <!-- Fim Modal -->
-
+@section('js')
+    <script src="{{ asset('/js/main.js') }}"></script>
 <script type="application/javascript">
     $('.modalCategoria').click(function(){
         //recupera o id da categoria
@@ -78,28 +79,51 @@
             console.log(res);
 
             if(res.categoria) {
-                $("#nomeCatModal").html(res.categoria.categoria_avaliacao);
+                $("#nomeCatModal").html(res.categoria.descricao);
                 $("#pesoModal").html(res.categoria.peso);
                 $("#nivelModal").html(res.categoria.nivel);
+                $("#edicaoModal").html(numeroEdicao(res.categoria.ano));
             }
 
             if(res.campos){
-                var html = "<ul style=\"list-style-type: none;\">"
+                var html = "<ul style=\"list-style-type:\">"
 
                 for(var i in res.campos){
-                    html += " <li><h5><input type='checkbox' >"+res.campos[i].campo+ "</h5></li>"
+                    html += " <li><h5>"+res.campos[i].campo+ ' <a href="javascript:void(0);" class="exclusao" id-item="'+res.campos[i].id+'">' +
+                        "<i class=\"material-icons blue-icon\">delete</i></a></h5></li>";
                 }
-                $("#itensModal").html(html);
 
+                $("#itensModal").html(html);
             }
+
+            let idCategoria = 0;
 
             //abre a modal
             $("#modalCategoria").modal();
+
+            $('.exclusao').click(function () {
+                idCategoria = $(this).attr('id-item');
+                elemento= $(this).parents('li');
+
+
+                $("#ModalDeleteCategoria").modal();
+            });
+
+            $('button.excluir').click(function () {
+
+                $.get('/ifcitec/public/exclui-item/'+idCategoria+'/'+$('#passwordDeleteCategoria').val())
+                    .done(function (result) {
+                        console.log(result);
+                        $(elemento).hide('slow');
+                    });
+
+            });
 
         });
 
     })
 </script>
+@endsection
 
 <!-- Modal Delete Categoria -->
 <div id="ModalDeleteCategoria" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="ModalDeleteCategoria">
@@ -124,30 +148,23 @@
         </div>
     </div>
 </div>
-<!-- Fim Modal -->
 
-<script type="application/javascript">
-    $('.exclusao').click(function(){
-        var idCategoria = $(this).attr('id-categoria');
 
-        $("#ModalDeleteCategoria").modal();
+{{--<!-- Fim Modal -->--}}
+{{--<script type="application/javascript">--}}
 
-        $('.excluir').click(function(){
-            //AQUI
-            var urlConsulta = './exclui-categoria/'+idCategoria+'/'+$('#passwordDeleteCategoria').val();
-            $.get(urlConsulta, function (res){
-                if(res == 'true'){
-                    bootbox.alert("Categoria Excluída");
-                    window.location.reload();
-                }else if(res == 'password-problem'){
-                    bootbox.alert("Senha incorreta");
-                }else{
-
-                }
-
-            });
-        });
-
-    });
-</script>
-
+    {{--$('.exclusao').click(function(){--}}
+       {{--// alert(3);--}}
+        {{--var idItem = $(this).attr('id-categoria');--}}
+            {{--var urlConsulta = './exclui-item/'+idItem;--}}
+            {{--$.get(urlConsulta, function (res){--}}
+                {{--if(res == 'true'){--}}
+                    {{--bootbox.alert("Campo Excluído");--}}
+                    {{--window.location.reload();--}}
+                {{--}else if(res == 'password-problem'){--}}
+                    {{--bootbox.alert("Senha incorreta");--}}
+                {{--}else{--}}
+                {{--}--}}
+            {{--});--}}
+        {{--});--}}
+{{--</script>--}}

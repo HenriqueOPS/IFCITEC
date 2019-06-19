@@ -17,31 +17,25 @@
                 </div>
 
                         <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
+                            <li  class="active">
+                                <a href="{{ route('mostraCat') }}">
+                                    <i class="material-icons">list_alt</i>
+                                    Categoria
+                                </a>
+                            </li>
                             <li>
-                                <a href="{{ route('cadastroCategoria') }}">
+                                <a href="{{ route('listaCat') }}">
                                     <i class="material-icons">description</i>
-                                    Adicionar Categoria
+                                    Critérios de Avaliação
                                 </a>
                             </li>
 
-                            <li>
-                                <a  href="{{ route('cadastroCampo') }}" >
-                                    <i class="material-icons">description</i>
-                                   Adicionar Item
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('mostraCat') }}">
-                                    <i class="material-icons">list_alt</i>
-                                    Listar Categorias
-                                </a>
-                            </li>
-                            <li>
-                                <a  href="{{ route('mostraItem') }}">
-                                    <i class="material-icons">list_alt</i>
-                                    Listar Itens
-                                </a>
-                            </li>
+                            {{--<li>--}}
+                            {{--<a  href="{{ route('mostraItem') }}">--}}
+                            {{--<i class="material-icons">list_alt</i>--}}
+                            {{--Listar Itens--}}
+                            {{--</a>--}}
+                            {{--</li>--}}
                             <li>
                                 <a id="5" class="tab-projetos" role="tab" data-toggle="tab">
                                     <i class="material-icons">description</i>

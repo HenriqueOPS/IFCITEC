@@ -18,31 +18,26 @@
                 </div>
 
                 <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
-                    <li class="active">
-                        <a href="{{ route('cadastroCategoria') }}">
-                            <i class="material-icons">description</i>
-                            Adicionar Categoria
-                        </a>
-                    </li>
 
-                    <li>
-                        <a  href="{{ route('cadastroCampo') }}" >
-                            <i class="material-icons">description</i>
-                            Adicionar Item
-                        </a>
-                    </li>
                     <li>
                         <a href="{{ route('mostraCat') }}">
                             <i class="material-icons">list_alt</i>
-                            Listar Categorias
+                            Categoria
                         </a>
                     </li>
                     <li>
-                        <a  href="{{ route('mostraItem') }}">
-                            <i class="material-icons">list_alt</i>
-                            Listar Itens
+                        <a href="{{ route('listaCat') }}">
+                            <i class="material-icons">description</i>
+                            Critérios de Avaliação
                         </a>
                     </li>
+
+                    {{--<li>--}}
+                        {{--<a  href="{{ route('mostraItem') }}">--}}
+                            {{--<i class="material-icons">list_alt</i>--}}
+                            {{--Listar Itens--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
                     <li>
                         <a id="5" class="tab-projetos" role="tab" data-toggle="tab">
                             <i class="material-icons">description</i>
@@ -50,7 +45,16 @@
                         </a>
                     </li>
                 </ul>
+{{--BOTAO--}}
+                {{--<div>--}}
+                    {{--<div class="col-md-3">--}}
+                      {{--<button   onclick="escondeForm()" class="btn btn-primary btn-round">--}}
+                            {{--<i class="material-icons">add</i> Adicionar Categoria--}}
+                      {{--</button>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
 
+                <div id="bot" >
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
                             <h2>Cadastro de Categorias</h2>
@@ -58,6 +62,7 @@
                     </div>
                     <form name="criarCategoria" method="POST" action="{{ route('cadastradaCategoria')}}">
                         {{csrf_field()}}
+
                         <div class="row">
                             <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
                                 <div class="input-group">
@@ -77,6 +82,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
                                 <div class="input-group">
@@ -106,7 +112,7 @@
                     </span>
                                         <div class="form-group label-floating">
                                             <label class="control-label">Nome da Categoria</label>
-                                            <input type="text" class="form-control" name="categoria_avaliacao"
+                                            <input type="text" class="form-control" name="descricao"
                                                    required>
                                         </div>
                                     </div>
@@ -133,7 +139,7 @@
 
 
                     </form>
-
+                </div>
                 </div>
             </div>
         </div>
@@ -167,5 +173,15 @@
         });
     </script>
 
+    {{--<script>--}}
+        {{--function escondeForm() {--}}
+            {{--var x = document.getElementById('bot');--}}
+            {{--if (x.style.visibility === 'hidden') {--}}
+                {{--x.style.visibility = 'visible';--}}
+            {{--} else {--}}
+                {{--x.style.visibility = 'hidden';--}}
+            {{--}--}}
+        {{--}--}}
+    {{--</script>--}}
 
 @endsection

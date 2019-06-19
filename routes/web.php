@@ -343,30 +343,33 @@ Route::get('mail/voluntario', function(){
     });
 
 });
+//Começo
+Route::get('/gerenciar-fichas','FichaController@categoria')->name('administrador.ficha');
 
-//Fichas Cadastro
 //CATEGORIA
 Route::get('/cadastrar-categoria', 'FichaController@cadastroCategoria')->name('cadastroCategoria');
 Route::post('/cadastra-categoria', 'FichaController@cadastraCategoria')->name('cadastradaCategoria');
+Route::get('/mostra-categoria','FichaController@mostraCateg')->name('mostraCat');
+Route::get('/categoria/editar/{id}', 'FichaController@editarCategoria')->name('editarCat');
+Route::post('/categoria/edita-categoria', 'FichaController@editaCategoria')->name('editaCat');
+Route::post('/categoria/edita-categoria', 'FichaController@editaCategoria')->name('editaCat');
+Route::get('/dados-categoria/{id}', 'FichaController@dadosCategoria'); //Ajax
+Route::get('/exclui-categoria/{id}/{s}', 'FichaController@excluiCategoria'); //Ajax
 
 //CAMPOS
 Route::get('/cadastrar-campo','FichaController@cadastroCampo')->name('cadastroCampo');
 Route::post('/cadastra-campo','FichaController@cadastrarCampo')->name('cadastradoCampo');
+Route::get('/lista-categoria','FichaController@listaCategoria')->name('listaCat');
+Route::get('/exclui-item/{id}/{s}', 'FichaController@excluiItem')->name('excluiItem'); //Ajax
 
-
-//Mostra Categoria
-Route::get('/mostra-categoria','FichaController@mostraCateg')->name('mostraCat');
-Route::get('/gerenciar-fichas','FichaController@categoria')->name('administrador.ficha');
-
-//Mostra Item
-Route::get('/mostra-item','FichaController@mostraItem')->name('mostraItem');
+//MONTAR FICHA
 
 
 
-//Ficha
-Route::get('/dados-categoria/{id}', 'FichaController@dadosCategoria'); //Ajax
-Route::get('/exclui-categoria/{id}/{s}', 'FichaController@excluiCategoria'); //Ajax
-Route::get('/exclui-item/{id}/{s}', 'FichaController@excluiItem'); //Ajax
+
+
+////Mostra Item
+//Route::get('/mostra-item','FichaController@mostraItem')->name('mostraItem');
 
 
 

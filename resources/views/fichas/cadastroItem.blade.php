@@ -18,31 +18,25 @@
                 </div>
 
                 <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
+                    <li >
+                        <a href="{{ route('mostraCat') }}">
+                            <i class="material-icons">list_alt</i>
+                            Categoria
+                        </a>
+                    </li>
                     <li>
-                        <a href="{{ route('cadastroCategoria') }}">
+                        <a href="{{ route('listaCat') }}">
                             <i class="material-icons">description</i>
-                            Adicionar Categoria
+                            Critérios de Avaliação
                         </a>
                     </li>
 
-                    <li class="active">
-                        <a  href="{{ route('cadastroCampo') }}" >
-                            <i class="material-icons">description</i>
-                            Adicionar Item
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('mostraCat') }}">
-                            <i class="material-icons">list_alt</i>
-                            Listar Categorias
-                        </a>
-                    </li>
-                    <li>
-                        <a  href="{{ route('mostraItem') }}">
-                            <i class="material-icons">list_alt</i>
-                            Listar Itens
-                        </a>
-                    </li>
+                    {{--<li>--}}
+                    {{--<a  href="{{ route('mostraItem') }}">--}}
+                    {{--<i class="material-icons">list_alt</i>--}}
+                    {{--Listar Itens--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
                     <li>
                         <a id="5" class="tab-projetos" role="tab" data-toggle="tab">
                             <i class="material-icons">description</i>
@@ -54,7 +48,7 @@
 
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                            <h2>Cadastro de Itens</h2>
+                            <h2>Cadastro de Critérios de Avaliação</h2>
                         </div>
                     </div>
                     <form name="criarCampo" method="POST" action="{{route('cadastradoCampo')}}">
@@ -86,7 +80,7 @@
                                     </span>
                                     <div class="form-group label-floating">
                                         <label class="control-label">Tipo do Campo</label>
-                                        <select  name="tipoCampo"class="tp-select">
+                                        <select  name="tipo" class="tp-select">
                                             <option>Homologação</option>
                                             <option>Avaliação</option>
                                         </select>
@@ -106,7 +100,7 @@
                                         <select name="categoria_id" value="{{old('categoria_id')}}" class="tp-select">
                                             @foreach($categorias as $categoria)
                                                 <option value="{{$categoria->id}}">
-                                                    {{$categoria->categoria_avaliacao}}
+                                                    {{$categoria->descricao}}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -146,15 +140,6 @@
                                             </div>
                                         </div>
                                         {{--Checkbox--}}
-                                        {{--<div class="col-md-offset-2">--}}
-                                            {{--<div class="checkbox">--}}
-                                                {{--<label>--}}
-                                                    {{--<input type="checkbox" name="val_0[]" value="true" checked>--}}
-                                                    {{--Binário--}}
-                                                {{--</label>--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-
 
                                         <div class="col-md-offset-2">
                                             <div class="checkbox">
