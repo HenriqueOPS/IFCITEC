@@ -19,7 +19,7 @@ class Categoria extends Model {
      * @var array
      */
     protected $fillable = [
-        'categoria_avaliacao', 'peso', 'edicao_id', 'nivel_id'
+        'descricao', 'peso', 'edicao_id', 'nivel_id'
     ];
 
 }

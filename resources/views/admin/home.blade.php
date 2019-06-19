@@ -70,7 +70,7 @@
                 </li>
 
                 <li>
-                    <a href="{{route('gerFicha')}}">
+                    <a href="{{route('administrador.ficha')}}">
                         <i class="material-icons">list_alt</i>
                         Fichas
                     </a>

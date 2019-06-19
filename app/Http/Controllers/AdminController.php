@@ -373,7 +373,6 @@ class AdminController extends Controller
 
 	public function editaArea(AreaRequest $req)
 	{
-
 		$data = $req->all();
 		$id = $data['id_area'];
 
