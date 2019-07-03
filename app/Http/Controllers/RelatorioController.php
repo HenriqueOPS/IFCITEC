@@ -342,6 +342,37 @@ class RelatorioController extends Controller
 		return Response::download($filename, $filename, $headers);
 	}
 
+	public function csvEtiquetas()
+	{
+		$resultados = DB::table('escola')->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
+			->select('*')
+			->orderBy('escola.nome_curto')
+			->get();
+
+		$filename = "EscolasEtiquetas.csv";
+
+		$handle = fopen($filename, 'w+');
+		$endereco = utf8_decode('Endereço');
+		$municipio = utf8_decode('Município');
+		fputcsv($handle, array('Escola','Email','Telefone',$endereco,$municipio,'Estado','CEP'), ';');
+
+		foreach ($resultados as $row) {
+			$nome_curto = utf8_decode($row->nome_curto);
+			$end = utf8_decode($row->endereco).', '.utf8_decode($row->numero);
+			$mun = utf8_decode($row->municipio);
+			$estado = utf8_decode($row->uf);
+			fputcsv($handle, array($nome_curto,$row->email, $row->telefone,$end,$mun,$estado,$row->cep), ';');
+		}
+
+		fclose($handle);
+
+		$headers = array(
+			'Content-Type' => 'text/csv',
+		);
+
+		return Response::download($filename, $filename, $headers);
+	}
+
 	public function csvAutoresConfirmaramPresenca($edicao)
 	{
 		$resultados = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')

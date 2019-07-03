@@ -124,6 +124,7 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 	Route::get('/relatorio/projetos/notas/homologadores/niveis', 'RelatorioController@notaProjetosNivel')->name('notaProjetosNivel');
 	Route::get('/relatorio/escolas/projetos/{id}', 'RelatorioController@escolaProjetos')->name('escolaProjetos');
 	Route::get('/relatorio/areas/{edicao}', 'RelatorioController@areas')->name('relatorioArea');
+	Route::get('/relatorio/csv/escolas', 'RelatorioController@csvEtiquetas')->name('csvEtiquetas');
 	Route::get('/relatorio/areas/projetos/{id}', 'RelatorioController@areaProjetos')->name('areaProjetos');
 	Route::get('/relatorio/edicoes', 'RelatorioController@edicoes')->name('relatorioEdicao');
 	Route::get('/relatorio/funcoes/usuarios', 'RelatorioController@funcoesUsuarios')->name('relatorioFuncoesUsuarios');
