@@ -122,42 +122,99 @@ class RelatorioController extends Controller
 
 		$handle = fopen($filename, 'w+');
 
-		$handle = fopen($filename, 'w+');
-
 		fputcsv($handle, array('Projetos 01 Aluno',$a1), ';');
 		fputcsv($handle, array('Projetos 02 Alunos',$a2), ';');
 		fputcsv($handle, array('Projetos 03 Alunos',$a3), ';');
 
+		// numero de orientadores e coorientadores por nivel
 		foreach ($niveis as $nivel){
+
 			$orientadores = Pessoa::select( 'pessoa.id')
 				->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 				->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 				->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
 				->where('projeto.nota_avaliacao','<>',0)
-				->where('projeto.nivel_id',$nivel->id)
-				->where('escola_funcao_pessoa_projeto.funcao_id',Funcao::where('funcao', 'Orientador')->first()->id)
+				->where('projeto.nivel_id', $nivel->id)
+				->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
 				->distinct('pessoa.id')
 				->get();
+
+			fputcsv($handle, array('Quantidade de Orientadores do nivel ' . $nivel->nivel, count($orientadores)), ';');
 
 			$coorientadores = Pessoa::select( 'pessoa.id')
 				->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 				->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 				->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
 				->where('projeto.nota_avaliacao','<>',0)
-				->where('projeto.nivel_id',$nivel->id)
-				->where('escola_funcao_pessoa_projeto.funcao_id',Funcao::where('funcao', 'Coorientador')->first()->id)
+				->where('projeto.nivel_id', $nivel->id)
+				->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
 				->distinct('pessoa.id')
 				->get();
 
-			fputcsv($handle, array('Quantidade de Orientadores do nivel '.utf8_decode($nivel->nivel),count($orientadores)), ';');
-			fputcsv($handle, array('Quantidade de Coorientadores do nivel '.utf8_decode($nivel->nivel),count($coorientadores)), ';');
+			fputcsv($handle, array('Quantidade de Coorientadores do nivel ' . $nivel->nivel, count($coorientadores)), ';');
+
 		}
+
+		// numero de escolas
+		$countEscolas = DB::table('escola_funcao_pessoa_projeto')
+			->selectRaw('count(distinct escola_id) as num')
+			->where('edicao_id', '=', $edicao)
+			->distinct('escola_id')
+			->get();
+
+		fputcsv($handle, array('Quantidade de escolas participantes ', $countEscolas[0]->num), ';');
+
+		// numero de escolas por nivel
+		foreach ($niveis as $nivel){
+
+			$countEscolasNivel = Projeto::selectRaw('count(distinct escola_funcao_pessoa_projeto.escola_id) as num')
+				->join('escola_funcao_pessoa_projeto', 'projeto_id', '=', 'projeto.id')
+				->where('projeto.edicao_id', '=', $edicao)
+				->where('projeto.nivel_id', '=', $nivel->id)
+				->get();
+
+			fputcsv($handle, array('Quantidade de Escolas no nivel ' . $nivel->nivel, $countEscolasNivel[0]->num), ';');
+
+		}
+
+		// numero de projetos
+		$countProjetos = Projeto::select( 'projeto.id')
+			->where('edicao_id', $edicao)
+			->count();
+
+		fputcsv($handle, array('Projetos cadastrados', $countProjetos), ';');
+
+		// numero de projetos por niveis
+		foreach ($niveis as $nivel){
+
+			$countProjetosNivel = Projeto::select( 'projeto.id')
+				->where('edicao_id', $edicao)
+				->where('nivel_id', '=', $nivel->id)
+				->count();
+
+			fputcsv($handle, array('Projetos cadastrados no nivel ' . $nivel->nivel, $countProjetosNivel), ';');
+
+		}
+
+		// numero de avaliadores
+		$countAvaliadores = DB::table('funcao_pessoa')
+			->where('funcao_id', '=', Funcao::where('funcao', 'Avaliador')->first()->id)
+			->where('edicao_id', '=', $edicao)
+			->where('homologado', '=', true)
+			->count();
+		fputcsv($handle, array('Numero de avaliadores ', $countAvaliadores), ';');
+
+		// numero de homologadores
+		$countHomologadores = DB::table('funcao_pessoa')
+			->where('funcao_id', '=', Funcao::where('funcao', 'Homologador')->first()->id)
+			->where('edicao_id', '=', $edicao)
+			->where('homologado', '=', true)
+			->count();
+		fputcsv($handle, array('Numero de homologadores ', $countHomologadores), ';');
 
 		fclose($handle);
 
-		$headers = array(
-			'Content-Type' => 'text/csv',
-		);
+		$headers = ['Content-Type' => 'text/csv'];
 
 		return Response::download($filename, $filename, $headers);
 	}
