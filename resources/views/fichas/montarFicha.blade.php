@@ -18,7 +18,7 @@
                 </div>
 
                 <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
-                    <li >
+                    <li>
                         <a href="{{ route('mostraCat') }}">
                             <i class="material-icons">list_alt</i>
                             Categoria
@@ -37,10 +37,10 @@
                     {{--Listar Itens--}}
                     {{--</a>--}}
                     {{--</li>--}}
-                    <li>
-                        <a id="5" class="tab-projetos" role="tab" data-toggle="tab">
+                    <li class="active">
+                        <a href="{{route('telaEscolheTipo')}}">
                             <i class="material-icons">description</i>
-                            Montar Ficha
+                            Montar Formulário
                         </a>
                     </li>
                 </ul>
@@ -48,60 +48,53 @@
 
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                        <h2>Cadastro de Critérios de Avaliação</h2>
+                        <h2>Montagem de Formulários</h2>
                     </div>
                 </div>
-                <form name="criarCampo" method="POST" action="{{route('cadastradoCampo')}}">
+                {{--{{ url("/escolher/{categorias}"}}--}}
+                <form method="post" action="{{route('selecionarCategorias')}}">
                     {{csrf_field()}}
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">event_note</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Edição</label>
-                                    <select name="edicao_id" value="{{old('edicao_id')}}" class="tp-select">
-                                        @foreach($edicoes as $edicao)
-                                            <option value="{{$edicao->id}}">{{\App\Edicao::numeroEdicao($edicao->id)}}
-                                                IFCITEC
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                            <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">text_fields</i>
-                                    </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Tipo do Campo</label>
-                                    <select  name="tipo" class="tp-select">
-                                        <option>Homologação</option>
-                                        <option>Avaliação</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {{--<div class="row">--}}
+                    {{--<div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">--}}
+                    {{--<div class="input-group">--}}
+                    {{--<span class="input-group-addon">--}}
+                    {{--<i class="material-icons">event_note</i>--}}
+                    {{--</span>--}}
+                    {{--<div class="form-group label-floating">--}}
+                    {{--<label class="control-label">Edição</label>--}}
+                    {{--<select name="edicao_id" value="{{old('edicao_id')}}" class="tp-select">--}}
+                    {{--@foreach($edicoes as $edicao)--}}
+                    {{--<option value="{{$edicao->id}}">{{\App\Edicao::numeroEdicao($edicao->id)}}--}}
+                    {{--IFCITEC--}}
+                    {{--</option>--}}
+                    {{--@endforeach--}}
+                    {{--</select>--}}
+                    {{--</div>--}}
+                    {{--</div>--}}
+                    {{--</div>--}}
+                    {{--</div>--}}
 
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">text_fields</i>
-                                </span>
+                    <span class="input-group-addon">
+                    <i class="material-icons">event_note</i>
+                    </span>
                                 <div class="form-group label-floating">
-                                    <label class="control-label">Categoria</label>
-                                    <select name="categoria_id" value="{{old('categoria_id')}}" class="tp-select">
-                                        @foreach($categorias as $categoria)
-                                            <option value="{{$categoria->id}}">
-                                                {{$categoria->descricao}}
-                                            </option>
+                                    <label class="control-label">Tipo do Formulário</label>
+                                    {{--<select class="tp-select" name="tp" value="{{old('tipo') ? old('tipo'): ''}}" required>--}}
+                                        {{--<option></option>--}}
+                                        {{--@foreach ($tps as $tp)--}}
+                                            {{--@if ($tp == old('tipo'))--}}
+                                                {{--<option selected="selected" value="{{$tp->tipo}}"></option>--}}
+                                            {{--@else--}}
+                                                {{--<option value="{{$tp->tipo}}"></option>--}}
+                                            {{--@endif--}}
+                                        {{--@endforeach--}}
+                                    {{--</select>--}}
+                                    <select name="tp" value="{{old('tipo')}}" class="tp-select">
+                                        @foreach($tps as $tp)
+                                            <option value="{{$tp->tipo}}">{{$tp->tipo}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -109,9 +102,27 @@
                         </div>
                     </div>
 
-                        <div class="col-md-6 col-md-offset-3 text-center">
-                            <button class="btn btn-primary">Cadastrar</button>
-                        </div>
+                    {{--<div class="row">--}}
+                        {{--<div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">--}}
+                            {{--<div class="input-group">--}}
+                    {{--<span class="input-group-addon">--}}
+                    {{--<i class="material-icons">event_note</i>--}}
+                    {{--</span>--}}
+                                {{--<div class="form-group label-floating">--}}
+                                    {{--<label class="control-label">Tipo do Formulário</label>--}}
+                                    {{--<select name="tp" value="{{old('categoria_avaliacao')}}" class="tp-select">--}}
+                                        {{--@foreach($categorias as $categoria)--}}
+                                            {{--<option value="{{$categoria->categoria_avaliacao}}">{{$categoria->categoria_avaliacao}}</option>--}}
+                                        {{--@endforeach--}}
+                                    {{--</select>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+
+                    <div class="col-md-6 col-md-offset-3 text-center">
+                        <button class="btn btn-primary">Enviar</button>
+                    </div>
 
                 </form>
 
@@ -123,8 +134,8 @@
 
 @endsection
 
-
 @section('js')
+    <script type="text/javascript" src="{{asset('js/selectize.min.js')}}"></script>
 
     {{--SCRIPT PARA SELECIONAR--}}
     <script type="text/javascript">
@@ -147,7 +158,6 @@
             //  $tpSelect = $tpSelect[0].selectize;
         });
     </script>
-
 
 
 @endsection

@@ -37,9 +37,9 @@
                     {{--</a>--}}
                     {{--</li>--}}
                     <li>
-                        <a id="5" class="tab-projetos" role="tab" data-toggle="tab">
+                        <a href="{{ route('telaEscolheTipo') }}">
                             <i class="material-icons">description</i>
-                            Montar Ficha
+                            Montar Formulário
                         </a>
                     </li>
                 </ul>

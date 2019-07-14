@@ -31,6 +31,7 @@ class FichaController extends Controller
     public function index()
     {
     }
+
 //Categoria
     public function cadastroCategoria()
     {
@@ -43,35 +44,38 @@ class FichaController extends Controller
 
 
     public function cadastraCategoria(Request $req)// com categoriaRequest nao funciona
-{
-    $data = $req->all();
+    {
+        $data = $req->all();
 
-    Categoria::create([
-        'peso' => $data['peso_categoria'],
-        'nivel_id' => $data['nivel_id'],
-        'edicao_id' => $data['edicao_id'],
-        'descricao' => $data['descricao'],
-    ]);
+        Categoria::create([
+            'peso' => $data['peso_categoria'],
+            'nivel_id' => $data['nivel_id'],
+            'edicao_id' => $data['edicao_id'],
+            'descricao' => $data['descricao'],
+        ]);
 //    dd($data);
 
-    return redirect()->route('cadastroCategoria');
+        return redirect()->route('cadastroCategoria');
 
-}
+    }
 
-    public function categoria(){
+    public function categoria()
+    {
         return view('fichas.ficha');
     }
 
     //Mostra Categoria (usado em categoria)
-    public function mostraCateg(){
-        $cat= Categoria::orderBy('descricao')
+    public function mostraCateg()
+    {
+        $cat = Categoria::orderBy('descricao')
             ->get();
         return view('fichas.Categoria', collect(['cat' => $cat]));
     }
 
     //Lista Categoria(usado em criterio)
-    public function listaCategoria(){
-        $cat= Categoria::orderBy('descricao')
+    public function listaCategoria()
+    {
+        $cat = Categoria::orderBy('descricao')
             ->get();
         return view('fichas.criterio', collect(['cat' => $cat]));
     }
@@ -79,10 +83,11 @@ class FichaController extends Controller
 
     public function dadosCategoria($id)
     { //Ajax
-        $categoria = Categoria::find($id)
-            ->join('nivel', 'nivel_id','=','nivel.id')
-            ->join('edicao','edicao_id','=','edicao.id')
-            ->select('nivel','categoria_avaliacao.descricao','peso', 'edicao.ano')
+        $categoria = Categoria::
+            select('nivel', 'categoria_avaliacao.descricao', 'peso', 'edicao.ano')
+            ->join('nivel', 'nivel_id', '=', 'nivel.id')
+            ->join('edicao', 'edicao_id', '=', 'edicao.id')
+            ->where('categoria_avaliacao.id','=',$id)
             ->get();
         $campos = Campo::select()
             ->where('categoria_id', '=', $id)
@@ -96,9 +101,11 @@ class FichaController extends Controller
 
     public function excluiCategoria($id, $s)
     {
-
         if (password_verify($s, Auth::user()['attributes']['senha'])) {
+
+            Campo::where('campos_avaliacao.categoria_id','=',$id)->delete();
             Categoria::find($id)->delete();
+
             return 'true';
         } else {
             return 'password-problem';
@@ -109,7 +116,7 @@ class FichaController extends Controller
     //*Coloca dados já cadastrados*
     public function editarCategoria($id)
     {
-        $edicao= DB::table('edicao')->select('id', 'ano')->get();
+        $edicao = DB::table('edicao')->select('id', 'ano')->get();
         $niveis = DB::table('nivel')->select('id', 'nivel')->get();
         $dados = Categoria::find($id);
 
@@ -123,15 +130,14 @@ class FichaController extends Controller
         $id = $data['id_categoria'];
 
         Categoria::where('id', $id)
-            ->update([ 'peso' => $data['peso'],
-            'nivel_id' => $data['nivel_id'],
-            'edicao_id'=> $data['edicao_id'],
-            'descricao' => $data['categoria_avaliacao']
+            ->update(['peso' => $data['peso'],
+                'nivel_id' => $data['nivel_id'],
+                'edicao_id' => $data['edicao_id'],
+                'descricao' => $data['categoria_avaliacao']
             ]);
 
         return redirect()->route('mostraCat');
     }
-
 
 
 //Campos
@@ -179,16 +185,49 @@ class FichaController extends Controller
             return 'password-problem';
         }
     }
+//Formularios
+
+
+
+    public function selecionaTp()
+    {
+        $tps = Campo::all();
+        return view('fichas.montarFicha', compact('tps'));
+
+    }
+
+//    public function listaCategorias(Request $request){
+//        $data = $request->all();
+//        $tipo= $data['tp'];
+//        $categorias= DB::table('campos_avaliacao')
+//            ->join('categoria_avaliacao','campos_avaliacao.categoria_id','=','categoria_avaliacao.id')
+//            ->where('campos_avaliacao.tipo','=',$tipo)->select('categoria_avaliacao.descricao')->get();
+////        echo $categorias;
+//
+//        return redirect()->route('selecionarCategorias', ['categoria' => $tipo]);
+//
+////        return view('fichas.montarFicha', compact('categorias'));
+//    }
+
+//    //TA REPETIDO DE ACORDO COM A QUANTIDADE DE CRITERIO
+    public function listarCategorias(Request $request){
+        $data = $request->all();
+        $edicoes = DB::table('edicao')->select('id')->get();
+
+        $tipo= $data['tp'];
+        $categorias= DB::table('campos_avaliacao')
+            ->join('categoria_avaliacao','campos_avaliacao.categoria_id','=','categoria_avaliacao.id')
+            ->where('campos_avaliacao.tipo','=',$tipo)
+            ->select('categoria_avaliacao.descricao', 'categoria_avaliacao.id')
+            ->groupBy('categoria_avaliacao.id')
+            ->get();
+        return view('fichas.selecionarCategoria',['edicoes' => $edicoes], ['categorias' => $categorias]);
+    }
+
 
 //    //Lista Itens
 //    public function mostraItem(){
 //        $it= Campo::orderBy('campo')->get();
 //        return view('fichas.mostraItem', collect(['it' => $it]));
 //    }
-
-
-
-
-
-
 }
