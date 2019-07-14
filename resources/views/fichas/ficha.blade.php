@@ -17,7 +17,7 @@
                 </div>
 
                         <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
-                            <li  class="active">
+                            <li>
                                 <a href="{{ route('mostraCat') }}">
                                     <i class="material-icons">list_alt</i>
                                     Categoria
@@ -36,10 +36,11 @@
                             {{--Listar Itens--}}
                             {{--</a>--}}
                             {{--</li>--}}
+                            {{--<li>--}}
                             <li>
-                                <a id="5" class="tab-projetos" role="tab" data-toggle="tab">
+                                <a href="{{ route('telaEscolheTipo') }}">
                                     <i class="material-icons">description</i>
-                                    Montar Ficha
+                                    Montar Formulário
                                 </a>
                             </li>
                         </ul>

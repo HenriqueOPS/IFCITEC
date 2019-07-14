@@ -363,6 +363,11 @@ Route::get('/lista-categoria','FichaController@listaCategoria')->name('listaCat'
 Route::get('/exclui-item/{id}/{s}', 'FichaController@excluiItem')->name('excluiItem'); //Ajax
 
 //MONTAR FICHA
+Route::get('/montar-ficha','FichaController@selecionaTp')->name('telaEscolheTipo');
+//Route::post('/montar-ficha','FichaController@listaCategorias')->name('listaCategorias');
+Route::post('/escolher/categoria','FichaController@listarCategorias')->name('selecionarCategorias');
+
+
 
 
 

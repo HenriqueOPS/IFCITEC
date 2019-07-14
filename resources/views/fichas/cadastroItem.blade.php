@@ -37,12 +37,12 @@
                     {{--Listar Itens--}}
                     {{--</a>--}}
                     {{--</li>--}}
-                    <li>
-                        <a id="5" class="tab-projetos" role="tab" data-toggle="tab">
-                            <i class="material-icons">description</i>
-                            Montar Ficha
-                        </a>
-                    </li>
+                    {{--<li>--}}
+                        {{--<a id="5" class="tab-projetos" role="tab" data-toggle="tab">--}}
+                            {{--<i class="material-icons">description</i>--}}
+                            {{--Montar Ficha--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
                 </ul>
 
 

@@ -37,9 +37,9 @@
                         {{--</a>--}}
                     {{--</li>--}}
                     <li>
-                        <a id="5" class="tab-projetos" role="tab" data-toggle="tab">
+                        <a href="{{ route('telaEscolheTipo') }}">
                             <i class="material-icons">description</i>
-                            Montar Ficha
+                            Montar Formulário
                         </a>
                     </li>
                 </ul>
@@ -98,6 +98,9 @@
 @endsection
 
 @section('partials')
+    <script type="text/javascript" src="{{asset('js/selectize.min.js')}}"></script>
+    {{--@include('partials.modalCategoria')--}}
+
     <div id="ModalDeleteCategoria" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="ModalDeleteCategoria">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -121,7 +124,6 @@
         </div>
     </div>
     <!-- Fim Modal -->
-
     <script type="application/javascript">
         $('.exclusao').click(function(){
             var idCategoria = $(this).attr('id-categoria');
@@ -146,6 +148,31 @@
 
         });
     </script>
+
+    {{--<script type="application/javascript">--}}
+        {{--$('.exclusao').click(function(){--}}
+            {{--var idCategoria = $(this).attr('id-categoria');--}}
+
+            {{--$("#ModalDeleteCategoria").modal();--}}
+
+            {{--$('.excluir').click(function(){--}}
+                {{--//AQUI--}}
+                {{--var urlConsulta = './exclui-categoria/'+idCategoria+'/'+$('#passwordDeleteCategoria').val();--}}
+                {{--$.get(urlConsulta, function (res){--}}
+                    {{--if(res == 'true'){--}}
+                        {{--bootbox.alert("Categoria Excluída");--}}
+                        {{--window.location.reload();--}}
+                    {{--}else if(res == 'password-problem'){--}}
+                        {{--bootbox.alert("Senha incorreta");--}}
+                    {{--}else{--}}
+
+                    {{--}--}}
+
+                {{--});--}}
+            {{--});--}}
+
+        {{--});--}}
+    {{--</script>--}}
 
 @endsection
 

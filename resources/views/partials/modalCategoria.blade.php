@@ -90,7 +90,7 @@
 
                 for(var i in res.campos){
                     html += " <li><h5>"+res.campos[i].campo+ ' <a href="javascript:void(0);" class="exclusao" id-item="'+res.campos[i].id+'">' +
-                        "<i class=\"material-icons blue-icon\">delete</i></a></h5></li>";
+                        "<i style='margin-left:110px; display: block; float: right;' class=\"material-icons blue-icon\ \">delete</i></a></h5></li>";
                 }
 
                 $("#itensModal").html(html);
