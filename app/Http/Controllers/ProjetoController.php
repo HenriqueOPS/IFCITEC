@@ -56,8 +56,7 @@ class ProjetoController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function create()
-	{
+	public function create() {
 
 		//Não está no período de Inscrição
 		if(!Edicao::consultaPeriodo('Inscrição'))

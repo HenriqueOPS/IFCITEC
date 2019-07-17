@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Controllers\PeriodosController;
 use App\Endereco;
 use App\Funcao;
 use App\Pessoa;
@@ -10,11 +9,9 @@ use App\Projeto;
 use App\Avaliacao;
 use App\Revisao;
 use App\Situacao;
-use function foo\func;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use App\Jobs\MailComissaoAvaliadoraJob;
 
 class ComissaoAvaliadoraController extends Controller
@@ -24,8 +21,7 @@ class ComissaoAvaliadoraController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
     }
 
@@ -34,8 +30,7 @@ class ComissaoAvaliadoraController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
 
         if ((Edicao::consultaPeriodo('Homologação') &&
             Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Homologador'))) {
@@ -58,14 +53,13 @@ class ComissaoAvaliadoraController extends Controller
                 ->get();
 
             return view('comissao.home', compact('idOk'))->withProjetos($projetos);
-
         } elseif (Edicao::consultaPeriodo('Avaliação') &&
                   Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador')){
 
             $idOk = DB::table('avaliacao')
                 ->select('avaliacao.projeto_id')
                 ->where('pessoa_id', '=', Auth::user()->id)
-                ->where('avaliado','=',true)
+                ->where('avaliado', '=', true)
                 ->get()
                 ->toArray();
 
@@ -73,19 +67,17 @@ class ComissaoAvaliadoraController extends Controller
 
             $projetos = Projeto::select('projeto.id', 'projeto.titulo', 'projeto.situacao_id')
                 ->join('avaliacao', function($query){
-                    $query->on('projeto.id','=','avaliacao.projeto_id');
-                    $query->where('avaliacao.pessoa_id','=',Auth::user()->id);
+                    $query->on('projeto.id', '=', 'avaliacao.projeto_id');
+                    $query->where('avaliacao.pessoa_id', '=', Auth::user()->id);
                 })
                 ->orderBy('avaliacao.avaliado','asc')
                 ->get();
 
             return view('comissao.home', compact('idOk'))->withProjetos($projetos);
-
-
-        }elseif (Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador') ||
+        } elseif (Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador') ||
             Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Homologador')) {
             return view('inscricaoEnviada');
-        } else{
+        } else {
             //@TODO: redirecionar de acordo com a função e o período
             return redirect()->route('comissaoAvaliadora');
         }
@@ -170,7 +162,7 @@ class ComissaoAvaliadoraController extends Controller
     public function cadastraComissao(Request $req){
         $data = $req->all();
 
-        if (Pessoa::find(Auth::id())->endereco_id != null) {
+        if (Pessoa::find(Auth::id())->endereco_id != null) { // altera o endereço do caboclo
 
             $idEndereco = DB::table('endereco')
 				->where('id', '=', Pessoa::find(Auth::id())->endereco_id)
@@ -183,7 +175,7 @@ class ComissaoAvaliadoraController extends Controller
                     'numero' => $data['numero']
                 ]);
 
-        } else {
+        } else { // cria um registro de endereço
 
 			$idEndereco = Endereco::create([
 						'cep' => $data['cep'],
@@ -214,23 +206,23 @@ class ComissaoAvaliadoraController extends Controller
 								'pessoa_id' => Auth::id()
 							]);
 
-        $areas = $data['area_id'];
-        foreach ($areas as $area) {
+		$areas = $data['area_id'];
+        foreach ($areas as $areaId) {
             DB::table('areas_comissao')
 				->insert([
-            		'area_id' => $area,
+            		'area_id' => $areaId,
                     'comissao_edicao_id' => $comissaoEdicao,
                     'homologado' => false
                 ]);
         }
 
-        // Avaliador
+		// Avaliador
         if(in_array("1", $data['funcao'])){
         	$idFuncaoAvaliador = DB::table('funcao')
 					->where('funcao', 'Avaliador')
 					->get();
 
-			$idFuncaoAvaliador = $idFuncaoAvaliador->id;
+			$idFuncaoAvaliador = $idFuncaoAvaliador[0]->id;
 
 			DB::table('funcao_pessoa')
 				->insert([
@@ -244,11 +236,11 @@ class ComissaoAvaliadoraController extends Controller
         // Homologador
         if(in_array("2", $data['funcao'])){
 
-        $idFuncaoHomologador = DB::table('funcao')
+        	$idFuncaoHomologador = DB::table('funcao')
 					->where('funcao', 'Homologador')
 					->get();
 
-		$idFuncaoHomologador = $idFuncaoHomologador->id;
+			$idFuncaoHomologador = $idFuncaoHomologador[0]->id;
 
 	  		DB::table('funcao_pessoa')
 				->insert([

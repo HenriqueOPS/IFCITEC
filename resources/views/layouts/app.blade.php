@@ -32,12 +32,12 @@
 		@if (!env('APP_DEBUG'))
 
 		<!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id={{env('GOOGLE_ANALYTICS_ID')}}"></script>
+		<script async src="https://www.googletagmanager.com/gtag/js?id={{ env('GOOGLE_ANALYTICS_ID') }}"></script>
 		<script>
 		window.dataLayer = window.dataLayer || [];
 		function gtag(){dataLayer.push(arguments);}
 		gtag('js', new Date());
-		gtag('config', '{{env('GOOGLE_ANALYTICS_ID')}}');
+		gtag('config', '{{ env('GOOGLE_ANALYTICS_ID') }}');
 
 		@if (Auth::user())
 		gtag('set', {'user_id': '{{ Auth::user()->id }} - {{ Auth::user()->nome }}'}); // Defina o ID de usuário usando o user_id conectado.
@@ -46,11 +46,12 @@
 
 		<!-- Google Tag Manager -->
 		<script>
-			(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-						new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-					j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-					'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-			})(window,document,'script','dataLayer','{{env('TAG_MANAGER_ID')}}');</script>
+		(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+					new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+				j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+				'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','{{env('TAG_MANAGER_ID')}}');
+		</script>
 		<!-- End Google Tag Manager -->
 
 		@endif
@@ -60,9 +61,13 @@
     </head>
     <body>
 
+	@if (!env('APP_DEBUG'))
+
 	<!-- Google Tag Manager (noscript) -->
 	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{env('TAG_MANAGER_ID')}}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	<!-- End Google Tag Manager (noscript) -->
+
+	@endif
 
         <div id="app">
 			@if (Auth::guest())
@@ -97,11 +102,11 @@
 									\App\Edicao::consultaPeriodo('Avaliação') ||
 									Auth::user()->temFuncao('Administrador') ||
 									Auth::user()->temFuncao('Homologador'))
-									<li><a href="{{route('comissao')}}">Comissão Avaliadora</a></li>
+									<li><a href="{{ route('comissao') }}">Comissão Avaliadora</a></li>
 								@endif
 
 								@if(\App\Edicao::consultaPeriodo('Voluntário'))
-									@if(! Auth::user()->temTrabalho() || Auth::user()->temFuncao('Administrador'))
+									@if(!Auth::user()->temTrabalho() || Auth::user()->temFuncao('Administrador'))
 									<li><a href="{{ route('voluntario') }}">Voluntário</a></li>
 									@endif
 								@endif

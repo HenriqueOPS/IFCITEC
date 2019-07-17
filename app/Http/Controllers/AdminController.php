@@ -27,8 +27,7 @@ class AdminController extends Controller
 	 *
 	 * @return void
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		$this->middleware('auth');
 	}
 
@@ -68,50 +67,7 @@ class AdminController extends Controller
             ->get()
             ->keyBy('id');
 
-        $numeroProjetos = count($projetos);
-        $autores = array();
-        $orientadores = array();
-        $coorientadores = array();
-
-        //Participantes dos projetos
-        if ($projetos) {
-            $idAutor = Funcao::where('funcao', 'Autor')->first();
-            $idOrientador = Funcao::where('funcao', 'Orientador')->first();
-            $idCoorientador = Funcao::where('funcao', 'Coorientador')->first();
-
-            $arrayIDs = $projetos;
-            $ids = array_keys($arrayIDs->toArray());
-
-            $autores = DB::table('escola_funcao_pessoa_projeto')
-                ->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
-                ->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
-                ->whereIn('projeto_id', $ids)
-                ->where('funcao_id', $idAutor->id)
-                ->get()
-                ->toArray();
-
-            $orientadores = DB::table('escola_funcao_pessoa_projeto')
-                ->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
-                ->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
-                ->whereIn('projeto_id', $ids)
-                ->where('funcao_id', $idOrientador->id)
-                ->get()
-                ->toArray();
-
-            $coorientadores = DB::table('escola_funcao_pessoa_projeto')
-                ->join('pessoa', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
-                ->select('escola_funcao_pessoa_projeto.projeto_id', 'pessoa.id', 'pessoa.nome')
-                ->whereIn('projeto_id', $ids)->where('funcao_id', $idCoorientador->id)
-                ->get()
-                ->toArray();
-        }
-
-        return view('admin.projetos', collect([
-            'autores' => $autores,
-            'orientadores' => $orientadores,
-            'coorientadores' => $coorientadores,
-            'numeroProjetos' => $numeroProjetos
-        ]))->withProjetos($projetos);
+        return view('admin.projetos')->withProjetos($projetos);
 
     }
 
@@ -163,16 +119,27 @@ class AdminController extends Controller
 		Projeto::where('id', $data['projeto'])
 			->update(['situacao_id' => $data['situacao']
 		]);
-		DB::table('revisao')->where('projeto_id', $data['projeto'])
+		DB::table('revisao')
+			->where('projeto_id', $data['projeto'])
 			->where('pessoa_id', $data['rev1'])
-			->update(['nota_final' => $data['nota1'], 'observacao' => $data['obs1']]);
+			->update([
+				'nota_final' => $data['nota1'],
+				'observacao' => $data['obs1']
+			]);
 
-		DB::table('revisao')->where('projeto_id', $data['projeto'])
+		DB::table('revisao')
+			->where('projeto_id', $data['projeto'])
 			->where('pessoa_id', $data['rev2'])
-			->update(['nota_final' => $data['nota2'], 'observacao' => $data['obs2']]);
+			->update([
+				'nota_final' => $data['nota2'],
+				'observacao' => $data['obs2']
+			]);
 
-		DB::table('projeto')->where('id', $data['projeto'])
-			->update(['nota_revisao' => ($data['nota1']+$data['nota2'])/2]);
+		DB::table('projeto')
+			->where('id', $data['projeto'])
+			->update([
+				'nota_revisao' => (($data['nota1'] + $data['nota2']) / 2)
+			]);
 
 		$projeto = Projeto::find($data['projeto']);
     	$situacoes = Situacao::all();
@@ -182,7 +149,11 @@ class AdminController extends Controller
     		->where('revisao.projeto_id', $data['projeto'])
     		->get()->toArray();
 
-		return view('admin.notaRevisao', array('projeto' => $projeto, 'situacoes' => $situacoes, 'revisao' => $revisao));
+		return view('admin.notaRevisao', [
+			'projeto' => $projeto,
+			'situacoes' => $situacoes,
+			'revisao' => $revisao
+		]);
 	}
 
 	public function notaAvaliacao($id){
@@ -697,11 +668,6 @@ class AdminController extends Controller
 			->withUsuarios($usuarios)
 			->withFuncoes($funcoes)
 			->withTarefas($tarefas);
-	}
-
-	public function fichaAvaliacao()
-	{
-		return view('fichaAvaliacao');
 	}
 
 }

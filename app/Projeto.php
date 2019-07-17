@@ -25,7 +25,8 @@ class Projeto extends Model {
     ];
 
     public function pessoas() {
-        return $this->belongsToMany('App\Pessoa', 'escola_funcao_pessoa_projeto')->withPivot('funcao_id', 'escola_id');
+        return $this->belongsToMany('App\Pessoa', 'escola_funcao_pessoa_projeto')
+			->withPivot('funcao_id', 'escola_id');
     }
 
     public function avaliacoes() {
@@ -59,14 +60,11 @@ class Projeto extends Model {
             ->where('id', '=', $this->situacao_id)
             ->first();
 
-        if(!is_null($situacao)){
+        if (!is_null($situacao))
             return $situacao->situacao;
-        }
 
         return "Cadastrado"; // XGH
-
     }
-
 
     public function getNotaRevisao($id){
         $subQuery = DB::table('revisao')
@@ -106,7 +104,7 @@ class Projeto extends Model {
 
         $homologadores = DB::table('revisao')
             ->select('revisado')
-            ->where('projeto_id','=',$this->id)
+            ->where('projeto_id', '=', $this->id)
             ->get()
             ->toArray();
 
@@ -121,14 +119,18 @@ class Projeto extends Model {
             return true;
 
         return false;
-
     }
 
+	/*
+	 *
+	 * Retorna TRUE quando todos avaliadores já tiverem avaliado o projeto
+	 *
+	 */
     public function statusAvaliacao(){
 
         $avaliadores = DB::table('avaliacao')
             ->select('avaliado')
-            ->where('projeto_id','=',$this->id)
+            ->where('projeto_id', '=', $this->id)
             ->get()
             ->toArray();
 
@@ -143,7 +145,6 @@ class Projeto extends Model {
             return true;
 
         return false;
-
     }
 
     public function statusPresenca(){

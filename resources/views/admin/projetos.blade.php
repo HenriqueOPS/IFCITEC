@@ -17,8 +17,8 @@
             </div>
 
             <div class="list-projects">
-                <h5><b id="geral">Número de projetos: <span id="nProjetos">{{$numeroProjetos}}</span> </b></h5>
-                <h5><b id="situacao">Número de projetos: <span>{{$numeroProjetos}}</span> </b></h5>
+                <h5><b id="geral">Número de projetos: <span id="nProjetos">{{ count($projetos) }}</span> </b></h5>
+                <h5><b id="situacao">Número de projetos: <span>{{ count($projetos) }}</span> </b></h5>
 
                 <div>
                     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
@@ -68,36 +68,22 @@
                 </div>
 
                 <div>
-                    
 
-                    <a href="{{route('homologar-projetos')}}" id="homologarTrabalhos" class="btn btn-sm btn-primary">Homologar Trabalhos</a>
+                    <a href="{{ route('homologar-projetos') }}" id="homologarTrabalhos" class="btn btn-sm btn-primary">Homologar Trabalhos</a>
 
                     @foreach($projetos as $projeto)
 
-                        <div class="row project situacao-{{$projeto->situacao_id}}">
+                        <div class="row project situacao-{{ $projeto->situacao_id }}">
                             <div class="col-md-10">
                                 <div class="project-title">
-                                    <span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
+                                    <span><a href="{{ route('projeto.show', ['projeto' => $projeto->id]) }}">{{ $projeto->titulo }}</a></span>
                                 </div>
                                 <div class="project-info">
                                     Integrantes:
-                                    @foreach ($autores as $autor)
-                                        @if($autor->projeto_id == $projeto->id)
-                                            {{$autor->nome}},
-                                        @endif
-                                    @endforeach
 
-                                    @foreach ($orientadores as $orientador)
-                                        @if($orientador->projeto_id == $projeto->id)
-                                            {{$orientador->nome}},
-                                        @endif
-                                    @endforeach
-
-                                    @foreach($coorientadores as $coorientador)
-                                        @if($coorientador->projeto_id == $projeto->id)
-                                            {{$coorientador->nome}},
-                                        @endif
-                                    @endforeach
+									@foreach($projeto->pessoas as $pessoa)
+										{{ $pessoa->nome }},
+									@endforeach
                                 </div>
                             </div>
                             <div class="col-md-2 actions text-center">
@@ -273,7 +259,7 @@
 </div>
 
 <script type="application/javascript">
-$('.dados-projeto').click(function(){
+$('.dados-projeto').click(function() {
 
     //recupera o id do projeto
     var idProjeto = $(this).attr('projeto-id');
@@ -283,20 +269,15 @@ $('.dados-projeto').click(function(){
     //faz a consulta via Ajax
     $.get(urlConsulta, function (res){
 
-        console.log(res);
-
         $("#nomeProjeto").html(res.titulo);
+		$("#projetoStatus").html('<span class="label label-default">' + res.situacao + '</span>');
 
-        $("#projetoStatus").html('');
-
-        if(res.situacao == "Não Homologado" || res.situacao == "Não Avaliado"){
+        if (res.situacao == "Não Homologado" || res.situacao == "Não Avaliado") {
             $("#projetoStatus").html('<span class="label label-info">'+res.situacao+'</span>');
-        }else if(res.situacao == "Homologado" || res.situacao == "Avaliado"){
+        } else if(res.situacao == "Homologado" || res.situacao == "Avaliado") {
             $("#projetoStatus").html('<span class="label label-success">' + res.situacao + '</span>');
-        }else if(res.situacao == "Não Compareceu"){
+        } else if(res.situacao == "Não Compareceu") {
             $("#projetoStatus").html('<span class="label label-danger">' + res.situacao + '</span>');
-        }else{
-            $("#projetoStatus").html('<span class="label label-default">' + res.situacao + '</span>');
         }
 
         $(".modal-projeto.nivel").html(res.nivel);
@@ -307,10 +288,10 @@ $('.dados-projeto').click(function(){
             $("#homologadores").html('');
 
             homologadores.forEach(function (homologador) {
-                if(homologador.revisado) {
-                    $("#homologadores").append('<span>'+homologador.nome+' => '+homologador.nota_final+'</span><br>');
-                }else {
-                    $("#homologadores").append('<span>'+homologador.nome+'</span><br>');
+				$("#homologadores").append('<span>'+homologador.nome+'</span><br>');
+
+                if (homologador.revisado) {
+                    $("#homologadores").append('<span>'+homologador.nome+' - <b>' + homologador.nota_final + '</b></span><br>');
                 }
             });
         }
@@ -320,10 +301,10 @@ $('.dados-projeto').click(function(){
             $("#avaliadores").html('');
 
             avaliadores.forEach(function (avaliador) {
-                if(avaliador.avaliado) {
-                    $("#avaliadores").append('<span>' + avaliador.nome + ' => ' + avaliador.nota_final + '</span><br>');
-                }else {
-                    $("#avaliadores").append('<span>'+avaliador.nome+'</span><br>');
+				$("#avaliadores").append('<span>'+avaliador.nome+'</span><br>');
+
+                if (avaliador.avaliado) {
+                    $("#avaliadores").append('<span>' + avaliador.nome + ' - <b>' + avaliador.nota_final + '</b></span><br>');
                 }
             });
         }
@@ -348,30 +329,25 @@ $(document).ready(function () {
     $('.tab-projetos').click(function (e) {
         var target = $(this)[0];
 
-        console.log('div.project.situacao-'+target.id);
+		$('#homologarTrabalhos').hide();
 
-        if(target.id==2){
+        if (target.id==2)
             $('#homologarTrabalhos').show();
-        }else{
-            $('#homologarTrabalhos').hide();
-        }
 
-        if(target.id=='situacao'){
+        if (target.id=='situacao') {
             $("#geral").hide();
             $("#situacao").show();
             showAll();
-        }else{
+        } else {
             $("#situacao").hide();
             $("#geral").show();
             $("#nProjetos").html($('div.project.situacao-'+target.id).length);
+
             hideAll();
+
             $('div.project.situacao-'+target.id).show();
 			$('div[id='+target.id+']').show();
         }
-
-        
-        console.log(target.id);
-
 
     });
 
@@ -390,7 +366,6 @@ function hideAll(){
 	$('div[id=4]').hide();
 	$('div[id=5]').hide();
 	$('div[id=6]').hide();
-
 }
 
 function showAll(){

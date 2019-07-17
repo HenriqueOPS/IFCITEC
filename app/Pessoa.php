@@ -139,11 +139,11 @@ class Pessoa extends Authenticatable {
 
             //Faz a consulta na mão por causa dos Wheres
             $query = DB::table('funcao_pessoa')
-                            ->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
-                            //Busca pela Função
-                            ->where('funcao.funcao','=',$funcao)
-                            //Busca pela Pessoa
-                            ->where('funcao_pessoa.pessoa_id','=',$this->id);
+						->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+						//Busca pela Função
+						->where('funcao.funcao','=',$funcao)
+						//Busca pela Pessoa
+						->where('funcao_pessoa.pessoa_id','=',$this->id);
 
             //Busca pela edição
             if($EdicaoId) {

@@ -14,6 +14,10 @@ use QRCode;
 class CrachaController extends Controller
 {
 
+	public function __construct() {
+		$this->middleware('auth');
+	}
+
 	public function generateQrCode($id){
 		return QRCode::text($id)
 				->setMargin(1)
