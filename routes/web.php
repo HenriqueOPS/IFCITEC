@@ -90,6 +90,7 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 //Relatórios
 	Route::get('/csv/{id}/{edicao?}', 'RelatorioController@csv')->name('csv');
 	Route::get('/csv/anais/ifcitec/{edicao}', 'RelatorioController@csvAnais')->name('csvAnais');
+	Route::get('/csv/mostratec/ifcitec/{edicao}', 'RelatorioController@csvMOSTRATEC')->name('csvMOSTRATEC');
 	Route::get('/csv/presenca/autores/{edicao}', 'RelatorioController@csvPresencaAutores')->name('csvPresencaAutores');
 	Route::get('/csv/projetos/premiacao/{edicao}', 'RelatorioController@csvPremiados')->name('csvPremiados');
 	Route::get('/csv/presenca/avaliadores/{edicao}', 'RelatorioController@csvPresencaAvaliadores')->name('csvPresencaAvaliadores');
@@ -121,6 +122,7 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 	Route::get('/relatorio/projetos/notas/homologadores/niveis', 'RelatorioController@notaProjetosNivel')->name('notaProjetosNivel');
 	Route::get('/relatorio/escolas/projetos/{id}', 'RelatorioController@escolaProjetos')->name('escolaProjetos');
 	Route::get('/relatorio/areas/{edicao}', 'RelatorioController@areas')->name('relatorioArea');
+	Route::get('/relatorio/csv/escolas', 'RelatorioController@csvEtiquetas')->name('csvEtiquetas');
 	Route::get('/relatorio/areas/projetos/{id}', 'RelatorioController@areaProjetos')->name('areaProjetos');
 	Route::get('/relatorio/edicoes', 'RelatorioController@edicoes')->name('relatorioEdicao');
 	Route::get('/relatorio/funcoes/usuarios', 'RelatorioController@funcoesUsuarios')->name('relatorioFuncoesUsuarios');

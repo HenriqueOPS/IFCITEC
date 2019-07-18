@@ -1,1 +1,13 @@
-/ifcitec/nbproject/private/
+/node_modules
+/public/hot
+/public/storage
+/public/version.json
+/storage/*.key
+/vendor
+/.idea
+/.vagrant
+Homestead.json
+Homestead.yaml
+npm-debug.log
+.env
+/nbproject

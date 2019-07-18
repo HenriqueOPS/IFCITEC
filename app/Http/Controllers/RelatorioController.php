@@ -82,6 +82,142 @@ class RelatorioController extends Controller
 		return Response::download($filename, $filename, $headers);
 	}
 
+	public function csvMOSTRATEC($edicao)
+	{
+		$projetos = Projeto::select( 'projeto.id', 'projeto.titulo', 'escola.nome_completo', 'nivel.nivel', 'area_conhecimento.area_conhecimento', 'projeto.resumo')
+			->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+			->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
+			->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
+			->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+			->where('escola_funcao_pessoa_projeto.edicao_id', $edicao)
+			->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
+			->where('projeto.nota_avaliacao','<>',0)
+			->orderBy('nivel.nivel')
+			->orderBy('area_conhecimento.area_conhecimento')
+			->orderBy('projeto.titulo')
+			->distinct('projeto.id')
+			->get();
+		$a1 = 0;
+		$a2 = 0;
+		$a3 = 0;
+		foreach ($projetos as $projeto) {
+			$cont = 0;
+			foreach ($projeto->getAutores($projeto->id, $edicao) as $autor) {
+				$cont++;
+			}
+			if ($cont == 1){
+				$a1++;
+			}
+			if ($cont == 2){
+				$a2++;
+			}
+			if ($cont == 3){
+				$a3++;
+			}
+		}
+
+		$niveis = Nivel::all();
+
+		$filename = "RelatorioMOSTRATEC.csv";
+
+		$handle = fopen($filename, 'w+');
+
+		fputcsv($handle, array('Projetos 01 Aluno',$a1), ';');
+		fputcsv($handle, array('Projetos 02 Alunos',$a2), ';');
+		fputcsv($handle, array('Projetos 03 Alunos',$a3), ';');
+
+		// numero de orientadores e coorientadores por nivel
+		foreach ($niveis as $nivel){
+
+			$orientadores = Pessoa::select( 'pessoa.id')
+				->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+				->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+				->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
+				->where('projeto.nota_avaliacao','<>',0)
+				->where('projeto.nivel_id', $nivel->id)
+				->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
+				->distinct('pessoa.id')
+				->get();
+
+			fputcsv($handle, array('Quantidade de Orientadores do nivel ' . $nivel->nivel, count($orientadores)), ';');
+
+			$coorientadores = Pessoa::select( 'pessoa.id')
+				->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+				->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+				->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
+				->where('projeto.nota_avaliacao','<>',0)
+				->where('projeto.nivel_id', $nivel->id)
+				->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
+				->distinct('pessoa.id')
+				->get();
+
+			fputcsv($handle, array('Quantidade de Coorientadores do nivel ' . $nivel->nivel, count($coorientadores)), ';');
+
+		}
+
+		// numero de escolas
+		$countEscolas = DB::table('escola_funcao_pessoa_projeto')
+			->selectRaw('count(distinct escola_id) as num')
+			->where('edicao_id', '=', $edicao)
+			->distinct('escola_id')
+			->get();
+
+		fputcsv($handle, array('Quantidade de escolas participantes ', $countEscolas[0]->num), ';');
+
+		// numero de escolas por nivel
+		foreach ($niveis as $nivel){
+
+			$countEscolasNivel = Projeto::selectRaw('count(distinct escola_funcao_pessoa_projeto.escola_id) as num')
+				->join('escola_funcao_pessoa_projeto', 'projeto_id', '=', 'projeto.id')
+				->where('projeto.edicao_id', '=', $edicao)
+				->where('projeto.nivel_id', '=', $nivel->id)
+				->get();
+
+			fputcsv($handle, array('Quantidade de Escolas no nivel ' . $nivel->nivel, $countEscolasNivel[0]->num), ';');
+
+		}
+
+		// numero de projetos
+		$countProjetos = Projeto::select( 'projeto.id')
+			->where('edicao_id', $edicao)
+			->count();
+
+		fputcsv($handle, array('Projetos cadastrados', $countProjetos), ';');
+
+		// numero de projetos por niveis
+		foreach ($niveis as $nivel){
+
+			$countProjetosNivel = Projeto::select( 'projeto.id')
+				->where('edicao_id', $edicao)
+				->where('nivel_id', '=', $nivel->id)
+				->count();
+
+			fputcsv($handle, array('Projetos cadastrados no nivel ' . $nivel->nivel, $countProjetosNivel), ';');
+
+		}
+
+		// numero de avaliadores
+		$countAvaliadores = DB::table('funcao_pessoa')
+			->where('funcao_id', '=', Funcao::where('funcao', 'Avaliador')->first()->id)
+			->where('edicao_id', '=', $edicao)
+			->where('homologado', '=', true)
+			->count();
+		fputcsv($handle, array('Numero de avaliadores ', $countAvaliadores), ';');
+
+		// numero de homologadores
+		$countHomologadores = DB::table('funcao_pessoa')
+			->where('funcao_id', '=', Funcao::where('funcao', 'Homologador')->first()->id)
+			->where('edicao_id', '=', $edicao)
+			->where('homologado', '=', true)
+			->count();
+		fputcsv($handle, array('Numero de homologadores ', $countHomologadores), ';');
+
+		fclose($handle);
+
+		$headers = ['Content-Type' => 'text/csv'];
+
+		return Response::download($filename, $filename, $headers);
+	}
 
 	public function csvAnais($edicao)
 	{
@@ -139,7 +275,7 @@ class RelatorioController extends Controller
 						if ($cont != 0) {
 							$p = $p.', ';
 						}
-						$p = $p.$palavra->palavra;
+						$p = $p.utf8_decode($palavra->palavra);
 						$cont++;
 					}
 
@@ -149,7 +285,8 @@ class RelatorioController extends Controller
 					$area_conhecimento = utf8_decode($projeto->area_conhecimento);
 					$escola = utf8_decode($projeto->nome_completo);
 					$resumo = utf8_decode($projeto->resumo);
-
+					$resumo = str_replace('&#34;', '"', $resumo);
+					$titulo = str_replace('&#34;', '"', $titulo);
 					fputcsv($handle, array($titulo,$integrantes,$escola,$nivel,$area_conhecimento,$resumo, $p), ';');
 
 		}
@@ -251,6 +388,37 @@ class RelatorioController extends Controller
 			$nivel = utf8_decode($row->nivel);
 			$area = utf8_decode($row->area_conhecimento);
 			fputcsv($handle, array($titulo,$nivel,$area,$row->nota), ';');
+		}
+
+		fclose($handle);
+
+		$headers = array(
+			'Content-Type' => 'text/csv',
+		);
+
+		return Response::download($filename, $filename, $headers);
+	}
+
+	public function csvEtiquetas()
+	{
+		$resultados = DB::table('escola')->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
+			->select('*')
+			->orderBy('escola.nome_curto')
+			->get();
+
+		$filename = "EscolasEtiquetas.csv";
+
+		$handle = fopen($filename, 'w+');
+		$endereco = utf8_decode('Endereço');
+		$municipio = utf8_decode('Município');
+		fputcsv($handle, array('Escola','Email','Telefone',$endereco,$municipio,'Estado','CEP'), ';');
+
+		foreach ($resultados as $row) {
+			$nome_curto = utf8_decode($row->nome_curto);
+			$end = utf8_decode($row->endereco).', '.utf8_decode($row->numero);
+			$mun = utf8_decode($row->municipio);
+			$estado = utf8_decode($row->uf);
+			fputcsv($handle, array($nome_curto,$row->email, $row->telefone,$end,$mun,$estado,$row->cep), ';');
 		}
 
 		fclose($handle);

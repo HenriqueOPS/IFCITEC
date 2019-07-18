@@ -249,29 +249,43 @@
                                 <a href="{{route('csvAnais', $edicao)}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
+						<tr>
+							<td>2</td>
+							<td>Dados MOSTRATEC (Edição Corrente)</td>
+							<td class="text-right">
+								<a href="{{route('csvMOSTRATEC', $edicao)}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
+							</td>
+						</tr>
                         <tr>
-                            <td>2</td>
+                            <td>3</td>
                             <td>Relatório de Áreas do Conhecimento</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioArea', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+						<tr>
+							<td>4</td>
+							<td>Relatório de CSV das Etiquetas</td>
+							<td class="text-right">
+								<a href="{{route('csvEtiquetas')}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
+							</td>
+						</tr>
                         <tr>
-                            <td>3</td>
+                            <td>5</td>
                             <td>Relatório de Edições</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioEdicao')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>4</td>
+                            <td>6</td>
                             <td>Relatório de Escolas</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioEscola')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>5</td>
+                            <td>7</td>
                             <td>Relatório de Níveis</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioNivel', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>

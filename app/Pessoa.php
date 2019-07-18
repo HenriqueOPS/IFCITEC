@@ -91,17 +91,17 @@ class Pessoa extends Authenticatable {
 							//Busca pela Função
 							->where('funcao.funcao','=',$funcao)
 							//Busca pela Pessoa
-							->where('funcao_pessoa.pessoa_id','=',$this->id)
-							->where('funcao_pessoa.edicao_id','=',$EdicaoId);
+							->where('funcao_pessoa.pessoa_id', '=', $this->id)
+							->where('funcao_pessoa.edicao_id', '=', $EdicaoId);
 
-				if(!$query->count()){ //Todas edições
+				if (!$query->count()) { //Todas edições
 					$query = DB::table('funcao_pessoa')
 								->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
 								//Busca pela Função
 								->where('funcao.funcao','=',$funcao)
 								//Busca pela Pessoa
-								->where('funcao_pessoa.pessoa_id','=',$this->id)
-								->where('funcao_pessoa.edicao_id','=',1);
+								->where('funcao_pessoa.pessoa_id', '=', $this->id)
+								->where('funcao_pessoa.edicao_id', '=', 1);
                 }
 
 			}else{

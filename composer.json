@@ -14,9 +14,8 @@
         "laravel/tinker": "~1.0",
         "laravellegends/pt-br-validator": "5.1.*",
         "lavela/phpjasper": "^3.0",
-        "maatwebsite/excel":  "~2.1.0",
-        "nesbot/carbon": "^1.31",
-        "werneckbh/laravel-qr-code": "^0.1.3"
+        "maatwebsite/excel": "~2.1.0",
+        "nesbot/carbon": "^1.31"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
