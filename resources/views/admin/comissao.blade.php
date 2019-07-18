@@ -67,7 +67,12 @@
                         Relatórios
                     </a>
                 </li>
-
+                <li>
+                    <a href="{{route('administrador.ficha')}}">
+                        <i class="material-icons">list_alt</i>
+                        Fichas
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

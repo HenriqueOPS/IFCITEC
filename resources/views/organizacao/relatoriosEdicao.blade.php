@@ -67,7 +67,6 @@
                                                 <option selected="selected" value="{{$edicao->id}}">{{\App\Edicao::numeroEdicao($edicao->ano)}} IFCITEC</option>
                                             @else
                                                 <option value="{{$edicao->id}}">{{\App\Edicao::numeroEdicao($edicao->ano)}} IFCITEC</option>
-
                                             @endif
                                         @endforeach
                                     </select>

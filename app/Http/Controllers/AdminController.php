@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Categoria;
 use App\Http\Requests\AreaRequest;
 use App\Http\Requests\NivelRequest;
 use Illuminate\Database\Eloquent\Builder;
@@ -343,7 +344,6 @@ class AdminController extends Controller
 
 	public function editaArea(AreaRequest $req)
 	{
-
 		$data = $req->all();
 		$id = $data['id_area'];
 
@@ -669,5 +669,11 @@ class AdminController extends Controller
 			->withFuncoes($funcoes)
 			->withTarefas($tarefas);
 	}
+
+
+
+
+
+
 
 }

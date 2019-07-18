@@ -99,4 +99,5 @@ class NivelController extends Controller {
         return response()->json($areasConhecimento, 200);
     }
 
+
 }

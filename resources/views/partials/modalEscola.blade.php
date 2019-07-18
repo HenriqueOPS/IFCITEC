@@ -63,7 +63,7 @@
 
 <script type="application/javascript">
 $('.modalEscola').click(function(){
-	//recupera o id da escola
+	//recupera o id da categoria
 	var idEscola = $(this).attr('id-escola');
 
 	//monta a url de consulta
