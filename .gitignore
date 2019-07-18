@@ -13,3 +13,4 @@ npm-debug.log
 /nbproject
 composer.lock
 .vscode
+composer.lock
