@@ -78,8 +78,6 @@ Route::get('/email/presenca', 'ProjetoController@confirmarPresenca')->name('conf
 Route::get('/email/presenca/confirmada/{id}', 'ProjetoController@confirmaPresenca')->name('confirmaPresenca');
 
 
-Route::get('/ficha-avaliacao/cadastrar', 'AdminController@fichaAvaliacao')->name('fichaAvaliacao');
-
 
 //Edição dos dados pessoais
 Route::get('/editar-cadastro/', 'PessoaController@editarCadastro')->name('editarCadastro');
@@ -175,6 +173,7 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 	Route::get('/administrador/relatorios/{edicao?}', 'AdminController@relatorios')->name('administrador.relatorios');
 	Route::get('/administrador/escolhe-edicao/relatorios', 'AdminController@relatoriosEdicao')->name('administrador.relatoriosEdicao');
 	Route::post('/administrador/escolhe-edicao/relatorios', 'AdminController@relatoriosEscolheEdicao')->name('administrador.escolheEdicao');
+
 
 /* Rotas Administrador */
 Route::group(['middleware' => ['IsAdministrador']], function () {
@@ -280,6 +279,9 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
     Route::post('/organizador/usuario/{id}/editar-cadastro/', 'OrganizadorController@editaUsuario')->name('orgEditaUsuario');
 
 
+
+
+
 });
 
 
@@ -343,11 +345,44 @@ Route::get('mail/voluntario', function(){
     });
 
 });
+//Começo
+Route::get('/gerenciar-fichas','FichaController@categoria')->name('administrador.ficha');
 
-Auth::routes();
+//CATEGORIA
+Route::get('/cadastrar-categoria', 'FichaController@cadastroCategoria')->name('cadastroCategoria');
+Route::post('/cadastra-categoria', 'FichaController@cadastraCategoria')->name('cadastradaCategoria');
+Route::get('/mostra-categoria','FichaController@mostraCateg')->name('mostraCat');
+Route::get('/categoria/editar/{id}', 'FichaController@editarCategoria')->name('editarCat');
+Route::post('/categoria/edita-categoria', 'FichaController@editaCategoria')->name('editaCat');
+Route::post('/categoria/edita-categoria', 'FichaController@editaCategoria')->name('editaCat');
+Route::get('/dados-categoria/{id}', 'FichaController@dadosCategoria'); //Ajax
+Route::get('/exclui-categoria/{id}/{s}', 'FichaController@excluiCategoria'); //Ajax
+
+//CAMPOS
+Route::get('/cadastrar-campo','FichaController@cadastroCampo')->name('cadastroCampo');
+Route::post('/cadastra-campo','FichaController@cadastrarCampo')->name('cadastradoCampo');
+Route::get('/lista-categoria','FichaController@listaCategoria')->name('listaCat');
+Route::get('/exclui-item/{id}/{s}', 'FichaController@excluiItem')->name('excluiItem'); //Ajax
+
+//MONTAR FICHA
+Route::get('/montar-ficha','FichaController@selecionaTp')->name('telaEscolheTipo');
+//Route::post('/montar-ficha','FichaController@listaCategorias')->name('listaCategorias');
+Route::post('/escolher/categoria','FichaController@listarCategorias')->name('selecionarCategorias');
+
+
+
+
+
+
+
+////Mostra Item
+//Route::get('/mostra-item','FichaController@mostraItem')->name('mostraItem');
+
+
+
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
+
