@@ -79,7 +79,6 @@ Route::get('/comissao/avaliadora', 'ComissaoAvaliadoraController@home')->name('c
 //Inscrição Comissão Avaliadora
 Route::get('/inscricao-comissao-avaliadora', 'ComissaoAvaliadoraController@cadastrarComissao')->name('comissaoAvaliadora');
 Route::post('/comissao/cadastrar', 'ComissaoAvaliadoraController@cadastraComissao')->name('cadastroAvaliador');
-Route::get('/comissao/cadastrar/{s}', 'ComissaoAvaliadoraController@cadastrarComissao')->name('cadastraComissao'); //Ajax
 
 
 //Voluntario
@@ -98,7 +97,6 @@ Route::prefix('projeto')->group(function () {
 	Route::post('vincula-integrante', 'ProjetoController@vinculaIntegrante')->name('projeto.vinculaIntegrante');
 	//AJAX
 	Route::get('vincula-integrante/{email}', 'ProjetoController@searchPessoaByEmail');
-
 });
 Route::prefix('projeto/editar')->group(function () {
 	//AJAX

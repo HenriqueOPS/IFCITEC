@@ -81,7 +81,7 @@ class Pessoa extends Authenticatable {
 		if($EdicaoId || $funcao == 'Administrador'){
 
 			//Busca pela edição
-			if($EdicaoId) {
+			if ($EdicaoId) {
 				//Permissão apenas para a edição corrente ou para todas as edições
 				//quando a pessoa possuir permissão para a edição de id 1, tbm terá para todas as demais
 
@@ -104,7 +104,7 @@ class Pessoa extends Authenticatable {
 								->where('funcao_pessoa.edicao_id', '=', 1);
                 }
 
-			}else{
+			} else {
 				//Permissão para todas as edições
 				$query = DB::table('funcao_pessoa')
 							->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
@@ -115,10 +115,10 @@ class Pessoa extends Authenticatable {
 							->where('funcao_pessoa.edicao_id','=',1);
 			}
 
-			if($query->count()) {
+			if ($query->count()) {
 				//Verifica se não foi homologado como Homologador ou Avaliador
-				if(($funcao=='Homologador' || $funcao=='Avaliador')){
-                    if(!$query->get()[0]->homologado && !$flag){
+				if (($funcao=='Homologador' || $funcao=='Avaliador')) {
+                    if (!$query->get()[0]->homologado && !$flag) {
                         return false;
                     }
                 }
