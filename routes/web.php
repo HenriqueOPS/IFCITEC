@@ -362,8 +362,5 @@ Route::post('/escolher/categoria','FichaController@listarCategorias')->name('sel
 
 
 
-
-
-Route::get('/formulario/', function () {
-	return view('comissao.formulario');
-});
+Route::get('/formulario/{tipo}/{id}', 'FormularioController@index')->name('formularioAvaliacao');
+Route::post('/formulario', 'FormularioController@store')->name('enviarFormulario');

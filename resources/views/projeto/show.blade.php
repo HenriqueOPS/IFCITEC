@@ -74,9 +74,9 @@
 
                                 @if((\App\Edicao::consultaPeriodo('Homologação')) && $ehHomologador)
 
-                                    <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScwVSWWpbvwB6BKYk1Cz-SaObHgUrlMnkbiLxaBB3szdLmnZQ/viewform?usp=pp_url&entry.1051144494={{urlencode($projeto->titulo)}}&entry.259386738={{urlencode($projeto->nivel->nivel)}}&entry.1403982251={{urlencode($projeto->areaConhecimento->area_conhecimento)}}&entry.1561957447={{$projeto->id}}&entry.276755517={{urlencode(Auth::user()->nome)}}&entry.846448634={{Auth::user()->id}}" id="botao-forms" class="btn btn-success">
-                                        Homologar
-                                    </a>
+									<a href="{{ route('formularioAvaliacao', ['homologacao', $projeto->id]) }}" id="botao-forms" class="btn btn-success">
+										Homologar
+									</a>
 
                                 @endif
 
@@ -84,19 +84,9 @@
 
                                     @if($projeto->getStatus() != "Avaliado")
 
-                                            @if($projeto->nivel->nivel == "Ensino Fundamental")
-
-                                            <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScoHqGSMIyCde2zR4H3eogjLnjSO5h9gI_ZBbQElePQIgvcAA/viewform?usp=pp_url&entry.1937205043={{urlencode($projeto->titulo)}}&entry.1262812210={{urlencode($projeto->nivel->nivel)}}&entry.2140598612={{urlencode($projeto->areaConhecimento->area_conhecimento)}}&entry.1274479363={{$projeto->id}}&entry.1888254598={{urlencode(Auth::user()->nome)}}&entry.2083262699={{Auth::user()->id}}" id="botao-forms" class="btn btn-success">
-                                                Avaliar
-                                            </a>
-
-                                            @else
-
-                                            <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfek9JgHhetqXhu1hZCLJpoCXGpNnYZsKClNF86dYFEOIWokw/viewform?usp=pp_url&entry.1937205043={{urlencode($projeto->titulo)}}&entry.609303703={{urlencode($projeto->nivel->nivel)}}&entry.152161166={{urlencode($projeto->areaConhecimento->area_conhecimento)}}&entry.970528430={{$projeto->id}}&entry.935053726={{urlencode(Auth::user()->nome)}}&entry.1538157001={{Auth::user()->id}}" id="botao-forms" class="btn btn-success">
-                                                Avaliar
-                                            </a>
-
-                                            @endif
+										<a href="{{ route('formularioAvaliacao', ['avaliacao', $projeto->id]) }}" id="botao-forms" class="btn btn-success">
+											Avaliar
+										</a>
 
                                      @endif
 
@@ -131,7 +121,7 @@
                             <b><i class="material-icons">group</i> Integrantes:</b><br>
 
                             @foreach($projeto->pessoas as $pessoa)
-                                <b>{{App\Funcao::find($pessoa->pivot->funcao_id)->funcao}}: </b>{{$pessoa->nome}}({{$pessoa->email}})<br>
+                                <b>{{App\Funcao::find($pessoa->pivot->funcao_id)->funcao}}: </b>{{$pessoa->nome}} ({{$pessoa->email}})<br>
                             @endforeach
                             <hr>
                             <b><i class="material-icons">school</i> Nível:</b><br>

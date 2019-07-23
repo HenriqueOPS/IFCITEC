@@ -553,11 +553,6 @@ class ProjetoController extends Controller
 		return redirect('home');
 	}
 
-	//   public function integrantes(){
-	//     return view('projeto.integrantes');
-	// }
-
-
 
     public function showFormVinculaHomologador($id){
         $projeto = Projeto::find($id);
