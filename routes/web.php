@@ -360,3 +360,10 @@ Route::get('/montar-ficha','FichaController@selecionaTp')->name('telaEscolheTipo
 //Route::post('/montar-ficha','FichaController@listaCategorias')->name('listaCategorias');
 Route::post('/escolher/categoria','FichaController@listarCategorias')->name('selecionarCategorias');
 
+
+
+
+
+Route::get('/formulario/', function () {
+	return view('comissao.formulario');
+});
