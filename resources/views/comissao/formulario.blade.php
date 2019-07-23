@@ -7,362 +7,104 @@
 
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1">
-				<h2 class="text-center">Titulo do projeto</h2>
+				<h2 class="text-center">{{ $projeto->titulo }}</h2>
 			</div>
 		</div>
 
-		<form id="formulario">
+		<div class="row hide" id="loadCadastro">
+
+			<div class="loader loader--style2" title="1">
+				<svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+					 width="80px" height="80px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                          <path fill="#000" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+							  <animateTransform attributeType="xml"
+												attributeName="transform"
+												type="rotate"
+												from="0 25 25"
+												to="360 25 25"
+												dur="0.6s"
+												repeatCount="indefinite"/>
+						  </path>
+                          </svg>
+			</div>
+
+		</div>
+
+		<form id="formulario" method="post" action="{{ route('enviarFormulario') }}">
 
 			{{ csrf_field() }}
 
-			<input type="hidden" name="idProjeto" value="1">
-			<input type="hidden" name="idAvaliador" value="2">
+			<input type="hidden" name="tipo" value="{{ $tipo }}">
+			<input type="hidden" name="idProjeto" value="{{ $projeto->id }}">
+
+			@foreach($categorias as $categoria)
+
+			<div class="categoria-form">
+
+				<h3>{{ $categoria->categoria_avaliacao }}</h3>
+
+				@foreach($categoria->campos as $campo)
+
+
+				<div class="row categoria-item">
+					<div class="col-md-7">
+						<span class="item-title">{{ $campo->descricao }}</span>
+					</div>
+
+					<div class="col-md-1 radio-wrapper">
+						<label>
+							<input type="radio" name="categorias[{{$categoria->categoria_avaliacao_id}}][{{ $campo->id }}]" value="0" {{ !$campo->val_0 ? 'disabled' : '' }}>
+							<strong>Não Apresenta</strong>
+						</label>
+					</div>
+
+					<div class="col-md-1 radio-wrapper">
+						<label>
+							<input type="radio" name="categorias[{{$categoria->categoria_avaliacao_id}}][{{ $campo->id }}]" value="25" {{ !$campo->val_25 ? 'disabled' : '' }}>
+							<strong>Insuficiente</strong>
+						</label>
+					</div>
+
+					<div class="col-md-1 radio-wrapper">
+						<label>
+							<input type="radio" name="categorias[{{$categoria->categoria_avaliacao_id}}][{{ $campo->id }}]" value="50" {{ !$campo->val_50 ? 'disabled' : '' }}>
+							<strong>Regular</strong>
+						</label>
+					</div>
+
+					<div class="col-md-1 radio-wrapper">
+						<label>
+							<input type="radio" name="categorias[{{$categoria->categoria_avaliacao_id}}][{{ $campo->id }}]" value="75" {{ !$campo->val_75 ? 'disabled' : '' }}>
+							<strong>Bom</strong>
+						</label>
+					</div>
+
+					<div class="col-md-1 radio-wrapper">
+						<label>
+							<input type="radio" name="categorias[{{$categoria->categoria_avaliacao_id}}][{{ $campo->id }}]" value="100" {{ !$campo->val_100 ? 'disabled' : '' }}>
+							<strong>Ótimo</strong>
+						</label>
+					</div>
+				</div>
+
+				@endforeach
+
+			</div>
+
+			@endforeach
 
 		<div class="categoria-form">
 
-			<h3>Resumo</h3>
+			<h3>Observação</h3>
 
-			<div class="row categoria-item">
-				<div class="col-md-7">
-					<span class="item-title">Capacidade de síntese e adequação de linguagem</span>
-				</div>
+			<div class="row">
+				<div class="col-md-12">
 
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a1" value="0">
-						<strong>Não Apresenta</strong>
-					</label>
-				</div>
+					<textarea name="observacao" class="form-control" placeholder="Escreva aqui suas impressões para melhorias do trabalho" rows="5"></textarea>
 
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a1" value="25">
-						<strong>Insuficiente</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a1" value="50">
-						<strong>Regular</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a1" value="75">
-						<strong>Bom</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a1" value="100">
-						<strong>Ótimo</strong>
-					</label>
 				</div>
 			</div>
 
-
-			<div class="row categoria-item">
-				<div class="col-md-7">
-					<span class="item-title">Definição do problema e justificativa</span>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a2" value="0">
-						<strong>Não Apresenta</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a2" value="25">
-						<strong>Insuficiente</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a2" value="50">
-						<strong>Regular</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a2" value="75">
-						<strong>Bom</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a2" value="100">
-						<strong>Ótimo</strong>
-					</label>
-				</div>
-			</div>
-
-
-			<div class="row categoria-item">
-				<div class="col-md-7">
-					<span class="item-title">Objetivos</span>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a3" value="0">
-						<strong>Não Apresenta</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a3" value="25">
-						<strong>Insuficiente</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a3" value="50">
-						<strong>Regular</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a3" value="75">
-						<strong>Bom</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a3" value="100">
-						<strong>Ótimo</strong>
-					</label>
-				</div>
-			</div>
-
-
-			<div class="row categoria-item">
-				<div class="col-md-7">
-					<span class="item-title">Metodologia</span>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a4" value="0">
-						<strong>Não Apresenta</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a4" value="25">
-						<strong>Insuficiente</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a4" value="50">
-						<strong>Regular</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a4" value="75">
-						<strong>Bom</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a4" value="100">
-						<strong>Ótimo</strong>
-					</label>
-				</div>
-			</div>
-
-
-			<div class="row categoria-item">
-				<div class="col-md-7">
-					<span class="item-title">Resultados parciais ou finais e/ou conclusões</span>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a5" value="0">
-						<strong>Não Apresenta</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a5" value="25">
-						<strong>Insuficiente</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a5" value="50">
-						<strong>Regular</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a5" value="75">
-						<strong>Bom</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a5" value="100">
-						<strong>Ótimo</strong>
-					</label>
-				</div>
-			</div>
-
-		</div>
-
-
-
-		<div class="categoria-form">
-
-			<h3>Pôster</h3>
-
-			<div class="row categoria-item">
-				<div class="col-md-7">
-					<span class="item-title">Há pôster de apresentação do projeto no estande.</span>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a6" value="0">
-						<strong>Não Apresenta</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a6" value="25" disabled>
-						<strong>Insuficiente</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a6" value="50" disabled>
-						<strong>Regular</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a6" value="75" disabled>
-						<strong>Bom</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a6" value="100">
-						<strong>Ótimo</strong>
-					</label>
-				</div>
-			</div>
-
-
-			<div class="row categoria-item">
-				<div class="col-md-7">
-					<span class="item-title">Definição do problema e justificativa</span>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a7" value="0">
-						<strong>Não Apresenta</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a7" value="25">
-						<strong>Insuficiente</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a7" value="50">
-						<strong>Regular</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a7" value="75">
-						<strong>Bom</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a7" value="100">
-						<strong>Ótimo</strong>
-					</label>
-				</div>
-			</div>
-
-
-			<div class="row categoria-item">
-				<div class="col-md-7">
-					<span class="item-title">Definição do problema e justificativa</span>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a8" value="0">
-						<strong>Não Apresenta</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a8" value="25">
-						<strong>Insuficiente</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a8" value="50">
-						<strong>Regular</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a8" value="75">
-						<strong>Bom</strong>
-					</label>
-				</div>
-
-				<div class="col-md-1 radio-wrapper">
-					<label>
-						<input type="radio" name="a8" value="100">
-						<strong>Ótimo</strong>
-					</label>
-				</div>
-			</div>
 		</div>
 
 		<div class="alert alert-warning">
@@ -372,6 +114,16 @@
 				</div>
 
 				<b>Oops:</b> É necessário preencher todos os tópicos do formulário para enviar
+			</div>
+		</div>
+
+		<div class="alert alert-danger">
+			<div class="container-fluid">
+				<div class="alert-icon">
+					<i class="material-icons">error_outline</i>
+				</div>
+
+				<b>Oops:</b> Ocorreu um erro ao tentar enviar o formulário, favor comunicar a organização da feira
 			</div>
 		</div>
 
@@ -472,10 +224,11 @@
 
 @section('js')
 <script>
-var numCampos = 5;
-numCampos += 3; // inclui idProjeto, idAvaliador e csrf_token
+var numCampos = {{ $countCampos }}; // numero de radio buttons
+numCampos += 4; // inclui tipo, idProjeto, csrf_token e observacao
 
 $('.alert-warning').hide();
+$('.alert-danger').hide();
 
 function changeSubmitButton() {
 	var formSerialized = $('#formulario').serializeArray();
@@ -489,10 +242,12 @@ function changeSubmitButton() {
 		$('.alert-warning').hide();
 	}
 
+	// salva uma cópia em localStorage para evitar problemas
 	localStorage.setItem('ifcitecForm', JSON.stringify(formSerialized));
 }
 
 $('input[type=radio]').change(changeSubmitButton);
+$('textarea[name=observacao]').change(changeSubmitButton);
 
 $(document).ready(function () {
 
@@ -508,7 +263,6 @@ $(document).ready(function () {
 			// remove os campos que não são checkbox
 			latestData = latestData.filter(function (field) {
 				switch (field.name) {
-					case 'idAvaliador':
 					case 'idProjeto':
 					case '_token':
 						return false;
@@ -519,15 +273,41 @@ $(document).ready(function () {
 			});
 
 			latestData.forEach(function (field) {
-				$('input[type=radio][name=' + field.name + '][value=' + field.value + ']').attr('checked', 'checked');
+				if (field.name == 'observacao')
+					$('textarea[name=observacao]').text(field.value)
+				else
+					$('input[type=radio][name="' + field.name + '"][value=' + field.value + ']').attr('checked', 'checked');
 			});
 
 			changeSubmitButton()
-
 		}
 	}
 
 });
 
+// envia o formulário via ajax
+$('#formulario').submit(function (e) {
+	e.preventDefault();
+
+	$('#loadCadastro').removeClass('hide');
+
+	var formSerialized = $('#formulario').serialize();
+
+	$.post('{{ route('enviarFormulario') }}', formSerialized)
+		.done(function () {
+			// limpa o localStorage
+			localStorage.removeItem('ifcitecForm');
+			// redireciona para tela de comissão avaliadora
+			location.href = '{{ route('comissao') }}';
+		})
+		.fail(function (data) {
+			console.log(data);
+			$('.alert-danger').show();
+		})
+		.always(function (data) {
+			$('#loadCadastro').addClass('hide');
+		});
+
+});
 </script>
 @endsection
