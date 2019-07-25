@@ -336,6 +336,8 @@ Route::get('mail/voluntario', function(){
     });
 
 });
+
+
 //Começo
 Route::get('/gerenciar-fichas','FichaController@categoria')->name('administrador.ficha');
 
@@ -361,6 +363,12 @@ Route::get('/montar-ficha','FichaController@selecionaTp')->name('telaEscolheTipo
 Route::post('/escolher/categoria','FichaController@listarCategorias')->name('selecionarCategorias');
 
 
-
+// formulário de avaliação/homologação
 Route::get('/formulario/{tipo}/{id}', 'FormularioController@index')->name('formularioAvaliacao');
 Route::post('/formulario', 'FormularioController@store')->name('enviarFormulario');
+
+
+// refact fichas
+Route::get('/administrador/fichas','FichaController@index');
+Route::get('/administrador/fichas/cadastrar','FichaController@novaFicha');
+Route::post('/administrador/fichas/cadastrar','FichaController@salvaFicha')->name('criaFicha');

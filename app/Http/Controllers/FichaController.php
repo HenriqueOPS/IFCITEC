@@ -28,9 +28,25 @@ class FichaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
+
+    	return view('admin.fichas.home');
+
     }
+
+
+	public function novaFicha() {
+		$niveis = Nivel::all();
+
+		return view('admin.fichas.create', compact('niveis'));
+
+	}
+
+	public function salvaFicha(Request $req) {
+
+    	dd($req->all());
+
+	}
 
 //Categoria
     public function cadastroCategoria()
