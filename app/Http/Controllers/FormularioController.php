@@ -105,8 +105,19 @@ class FormularioController extends Controller {
 
 			$sumCampos = 0;
 			// somatório dos campos
-			foreach ($campos as $campo)
+			foreach ($campos as $id => $campo) {
+
+				// salva os valores dos campos
+				DB::table('dados_avaliacao')
+					->insert([
+						'projeto_id' => $data['idProjeto'],
+						'valor' => ($campo / 100),
+						'campo_id' => $id,
+						'pessoa_id' => Auth::id()
+					]);
+
 				$sumCampos += $campo / 100; // deixa o valor do campo em no máximo 1
+			}
 
 			$notaFinal += ($sumCampos * $pesoCampo) * $pesoCategoria;
 
