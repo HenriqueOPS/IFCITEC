@@ -239,14 +239,14 @@ class ProjetoController extends Controller
 
 		//Busca pelas observações dos Homologadores
 		$obsHomologadores = DB::table('revisao')
-                                ->select('observacao')
+                                ->select('observacao', 'nota_final')
                                 ->where('projeto_id', '=', $projeto->id)
                                 ->where('revisado', '=', true)
                                 ->get();
 
 		//Busca pelas observações dos Avaliadores
         $obsAvaliadores = DB::table('avaliacao')
-                                ->select('observacao')
+                                ->select('observacao', 'nota_final')
                                 ->where('projeto_id', '=', $projeto->id)
                                 ->where('avaliado', '=', true)
                                 ->get();
@@ -900,7 +900,7 @@ class ProjetoController extends Controller
     	$p = Projeto::where('id', $id)->where('situacao_id',Situacao::where('situacao', 'Homologado')->get()->first()->id)
 			->update(['presenca' => TRUE,
 			]);
-			
+
     	return view('confirmaPresenca', ['p' => $p]);
     }
 

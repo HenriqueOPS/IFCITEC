@@ -8,10 +8,10 @@
 			<div class="col-md-12 main main-raised">
 
 				<div class="col-md-12 text-center">
-					<h2>Cadastrar nova ficha</h2>
+					<h2>Cadastrar Nova Ficha</h2>
 				</div>
 
-				<form method="post" id="formulario" action="{{ route('criaFicha') }}">
+				<form method="post" id="formulario" action="{{ route('adminstrador.salvarFicha') }}">
 
 					{{ csrf_field() }}
 
@@ -26,7 +26,6 @@
 									<label class="control-label">Nível</label>
 
 									<select id="nivel-select" name="nivel" required>
-
 										@foreach ($niveis as $nivel)
 											@if ($nivel->id == old('nivel'))
 												<option id="nivel" selected="selected" value="{{$nivel->id}}">{{$nivel->nivel}}</option>
@@ -73,21 +72,39 @@
 
 			<hr>
 
+			<div class="alert alert-danger" id="sendError">
+				<div class="container-fluid">
+					<div class="alert-icon">
+						<i class="material-icons">error_outline</i>
+					</div>
+
+					<b>Oops:</b> <span class="error"></span>
+				</div>
+			</div>
+
+			<div class="alert alert-success">
+				<div class="container-fluid">
+					<div class="alert-icon">
+						<i class="material-icons">error_outline</i>
+					</div>
+
+					<b>Oops:</b> <span class="error"></span>
+				</div>
+			</div>
+
 			<input class="btn btn-success align-center" type="submit" value="Enviar" >
 
-				</form>
+			</form>
 
 			</div>
 		</div>
 	</div>
 
 
-
-
 	<!-- TEMPLATE CATEGORIA -->
 	<div id="template-categoria" style="display: none;">
 
-		<div class="categoria">
+		<div class="categoria" id-categoria="<% idCategoria %>">
 
 			<a class="btn btn-danger  btn-sm btn-round removeCategoria" href="javascript:void(0)" onClick="removeCategoria(this)">
 				<i class="material-icons">clear</i> remover categoria
@@ -102,7 +119,7 @@
 					</span>
 						<div class="form-group label-floating">
 							<label class="control-label">Nome da Categoria</label>
-							<input type="text" class="form-control" name="categorias[][nome]" required>
+							<input type="text" class="form-control" name="categorias[<% idCategoria %>][nome]" required>
 						</div>
 					</div>
 
@@ -116,7 +133,7 @@
 					</span>
 						<div class="form-group label-floating">
 							<label class="control-label">Peso da Categoria</label>
-							<input type="text" class="form-control" name="categorias[][peso]" required>
+							<input type="number" class="form-control" min="0" max="10" name="categorias[<% idCategoria %>][peso]" required>
 						</div>
 					</div>
 
@@ -143,14 +160,14 @@
 
 			<div class="col-md-6">
 				<div class="form-group">
-					<input type="text" name="categorias[][campo][nome]" placeholder="Nome do campo" class="form-control" />
+					<input type="text" name="categorias[<% idCategoria %>][campos][<% idCampo %>][nome]" placeholder="Nome do campo" class="form-control" />
 				</div>
 			</div>
 
 			<div class="col-md-1">
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="categorias[][campo][0]" value="1">
+						<input type="checkbox" name="categorias[<% idCategoria %>][campos][<% idCampo %>][0]" value="1" checked>
 						0
 					</label>
 				</div>
@@ -158,7 +175,7 @@
 			<div class="col-md-1">
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="categorias[][campo][25]" value="1">
+						<input type="checkbox" name="categorias[<% idCategoria %>][campos][<% idCampo %>][25]" value="1" checked>
 						0,25
 					</label>
 				</div>
@@ -166,7 +183,7 @@
 			<div class="col-md-1">
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="categorias[<%id%>][campo][50]" value="1">
+						<input type="checkbox" name="categorias[<% idCategoria %>][campos][<% idCampo %>][50]" value="1" checked>
 						0,5
 					</label>
 				</div>
@@ -174,7 +191,7 @@
 			<div class="col-md-1">
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="categorias[][campo][75]" value="1">
+						<input type="checkbox" name="categorias[<% idCategoria %>][campos][<% idCampo %>][75]" value="1" checked>
 						0,75
 					</label>
 				</div>
@@ -182,7 +199,7 @@
 			<div class="col-md-1">
 				<div class="checkbox">
 					<label>
-						<input type="checkbox" name="categorias[][campo][100]" value="1">
+						<input type="checkbox" name="categorias[<% idCategoria %>][campos][<% idCampo %>][100]" value="1" checked>
 						1
 					</label>
 				</div>
@@ -197,7 +214,7 @@
 		</div>
 
 	</div>
-
+	<!-- FIM TEMPLATE CAMPO -->
 
 @endsection
 
@@ -215,7 +232,6 @@
 	background: #f7f7f7;
 	padding: 15px 10px;
 	margin: 10px 0;
-
 }
 
 .categorias .categoria .removeCategoria {
@@ -266,12 +282,18 @@ $(document).ready(function () {
 		},
 	});
 
+	$('#sendError').hide();
 });
+
+var countCategoria = 0;
+var countCampo = 0;
 
 adicionaCategoria(); // init
 
 function adicionaCategoria () {
 	var templateCategoria = $('#template-categoria').html();
+    templateCategoria = templateCategoria.replace(/<% idCategoria %>/g, countCategoria++);
+
 	var categoria = $(templateCategoria).appendTo('div.categorias');
 
 	adicionaCampo(categoria.children('h4'));
@@ -281,9 +303,14 @@ function removeCategoria (element) {
 	$(element).parents('.categoria').remove();
 }
 
-
 function adicionaCampo(element) {
+
+    var idCategoria = $(element).parent().attr('id-categoria');
+
 	var templateCampo = $('#template-campo').html();
+    templateCampo = templateCampo.replace(/<% idCategoria %>/g, idCategoria);
+    templateCampo = templateCampo.replace(/<% idCampo %>/g, countCampo++);
+
 	$(templateCampo).appendTo($(element).siblings('.campos-categoria'));
 }
 
@@ -291,19 +318,21 @@ function removeCampo (element) {
 	$(element).parents('.campo').remove();
 }
 
-
 // envia o formulário via ajax
 $('#formulario').submit(function (e) {
 	e.preventDefault();
 
 	var formSerialized = $('#formulario').serialize();
 
-	$.post('{{ route('criaFicha') }}', formSerialized)
+	$.post('{{ route('adminstrador.salvarFicha') }}', formSerialized)
 		.done(function () {
 
 		})
-		.fail(function (data) {
-			console.log(data);
+		.fail(function (res) {
+            $('#sendError').show();
+            $('#sendError .error').html(res.responseJSON.error);
+
+			console.log(res);
 		});
 
 });

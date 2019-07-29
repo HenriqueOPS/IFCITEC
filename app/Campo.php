@@ -19,8 +19,8 @@ class Campo extends Model {
      * @var array
      */
     protected $fillable = [
-        'edicao_id', 'tipo','campo','categoria_id',
-        'val_0','val_25','val_50','val_75','val_100'
+        'edicao_id', 'peso', 'categoria_id',
+        'val_0', 'val_25', 'val_50', 'val_75', 'val_100'
     ];
 
     public function getCamposCategoria() {

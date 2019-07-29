@@ -29,7 +29,6 @@
 
             <div class="list-projects">
 
-
                 @foreach($projetos as $projeto)
 
                     <div class="row project">
@@ -37,7 +36,15 @@
                     <div class="col-md-10">
                         <div class="project-title">
                             @if(!in_array($projeto->id, $idOk))
-                                <span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
+
+								@if(\App\Edicao::consultaPeriodo('Homologação'))
+									<span><a href="{{ route('formularioAvaliacao', ['homologacao', $projeto->id]) }}">{{$projeto->titulo}}</a></span>
+								@endif
+
+								@if(\App\Edicao::consultaPeriodo('Avaliação'))
+									<span><a href="{{ route('formularioAvaliacao', ['avaliacao', $projeto->id]) }}">{{$projeto->titulo}}</a></span>
+								@endif
+
                             @else
                                 <span>{{$projeto->titulo}}</span>
                             @endif
@@ -87,7 +94,6 @@
                     </div>
 
                 @endforeach
-
 
             </div>
 

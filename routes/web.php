@@ -74,20 +74,15 @@ Route::get('/autor', 'AutorController@index')->name('autor');
 
 //Comissao Avaliadora
 Route::get('/comissao-avaliadora', 'ComissaoAvaliadoraController@index')->name('comissao');
-Route::get('/comissao/avaliadora', 'ComissaoAvaliadoraController@home')->name('comissaoHome');
 
 //Inscrição Comissão Avaliadora
 Route::get('/inscricao-comissao-avaliadora', 'ComissaoAvaliadoraController@cadastrarComissao')->name('comissaoAvaliadora');
 Route::post('/comissao/cadastrar', 'ComissaoAvaliadoraController@cadastraComissao')->name('cadastroAvaliador');
 
-
 //Voluntario
 Route::get('/voluntario', 'VoluntarioController@index')->name('voluntario');
 Route::get('/voluntario/cadastrar/{s}', 'VoluntarioController@cadastrarVoluntario')->name('cadastrarVoluntario'); //Ajax
 Route::post('/voluntario/cadastra', 'VoluntarioController@cadastraVoluntario')->name('cadastraVoluntario');
-
-Route::get('/administrador/usuarios', 'AdminController@administrarUsuarios')->name('administrarUsuarios');
-Route::get('/periodo', 'PeriodosController@periodoInscricao');
 
 Route::resource('projeto', 'ProjetoController');
 
@@ -98,6 +93,7 @@ Route::prefix('projeto')->group(function () {
 	//AJAX
 	Route::get('vincula-integrante/{email}', 'ProjetoController@searchPessoaByEmail');
 });
+
 Route::prefix('projeto/editar')->group(function () {
 	//AJAX
 	Route::get('vincula-integrante/{email}', 'ProjetoController@searchPessoaByEmail');
@@ -106,12 +102,7 @@ Route::prefix('projeto/editar')->group(function () {
 Route::get('/projeto/editar/{id}', 'ProjetoController@editarProjeto')->name('editarProjeto');
 Route::post('/projeto/edita-projeto', 'ProjetoController@editaProjeto')->name('editaProjeto');
 
-
-//
-Route::get('/projeto/{id}/setSituacao/{situacao}', 'ProjetoController@setSituacao')->name('projeto.setSituacao');
-
 Route::get('projeto/nivel/areasConhecimento/{id}', 'NivelController@areasConhecimento'); //Ajax
-
 
 
 
@@ -172,6 +163,11 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
     //Edição dos dados de usuario
     Route::get('/usuario/{id}/editar/', 'PessoaController@editarUsuario')->name('editarUsuario');
     Route::post('/usuario/{id}/editar-cadastro/', 'PessoaController@editaUsuario')->name('editaUsuario');
+
+    // Fichas de Avaliação/Homologação
+	Route::get('/administrador/fichas','FichaController@index')->name('administrador.ficha');
+	Route::get('/administrador/fichas/cadastrar','FichaController@novaFicha')->name('adminstrador.cadastrarFicha');
+	Route::post('/administrador/fichas/cadastrar','FichaController@salvaFicha')->name('adminstrador.salvarFicha');
 
     //Administrador
     Route::get('/projetos/homologar-projetos', 'ProjetoController@homologarProjetos')->name('homologar-projetos');
@@ -323,7 +319,6 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
 	Route::get('/relatorio/vale-lanche/gerar/{edicao}', 'RelatorioController@gerarValeLanche')->name('geraValeLanche');
 	Route::get('/relatorio/premiacao/certificados/{edicao}', 'RelatorioController@premiacaoCertificados')->name('premiacaoCertificados');
 
-
 });
 
 
@@ -337,38 +332,6 @@ Route::get('mail/voluntario', function(){
 
 });
 
-
-//Começo
-Route::get('/gerenciar-fichas','FichaController@categoria')->name('administrador.ficha');
-
-//CATEGORIA
-Route::get('/cadastrar-categoria', 'FichaController@cadastroCategoria')->name('cadastroCategoria');
-Route::post('/cadastra-categoria', 'FichaController@cadastraCategoria')->name('cadastradaCategoria');
-Route::get('/mostra-categoria','FichaController@mostraCateg')->name('mostraCat');
-Route::get('/categoria/editar/{id}', 'FichaController@editarCategoria')->name('editarCat');
-Route::post('/categoria/edita-categoria', 'FichaController@editaCategoria')->name('editaCat');
-Route::post('/categoria/edita-categoria', 'FichaController@editaCategoria')->name('editaCat');
-Route::get('/dados-categoria/{id}', 'FichaController@dadosCategoria'); //Ajax
-Route::get('/exclui-categoria/{id}/{s}', 'FichaController@excluiCategoria'); //Ajax
-
-//CAMPOS
-Route::get('/cadastrar-campo','FichaController@cadastroCampo')->name('cadastroCampo');
-Route::post('/cadastra-campo','FichaController@cadastrarCampo')->name('cadastradoCampo');
-Route::get('/lista-categoria','FichaController@listaCategoria')->name('listaCat');
-Route::get('/exclui-item/{id}/{s}', 'FichaController@excluiItem')->name('excluiItem'); //Ajax
-
-//MONTAR FICHA
-Route::get('/montar-ficha','FichaController@selecionaTp')->name('telaEscolheTipo');
-//Route::post('/montar-ficha','FichaController@listaCategorias')->name('listaCategorias');
-Route::post('/escolher/categoria','FichaController@listarCategorias')->name('selecionarCategorias');
-
-
-// formulário de avaliação/homologação
+// Formulário de Avaliação/Homologação
 Route::get('/formulario/{tipo}/{id}', 'FormularioController@index')->name('formularioAvaliacao');
 Route::post('/formulario', 'FormularioController@store')->name('enviarFormulario');
-
-
-// refact fichas
-Route::get('/administrador/fichas','FichaController@index');
-Route::get('/administrador/fichas/cadastrar','FichaController@novaFicha');
-Route::post('/administrador/fichas/cadastrar','FichaController@salvaFicha')->name('criaFicha');
