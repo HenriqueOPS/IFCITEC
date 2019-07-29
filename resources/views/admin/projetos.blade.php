@@ -288,11 +288,11 @@ $('.dados-projeto').click(function() {
             $("#homologadores").html('');
 
             homologadores.forEach(function (homologador) {
-				$("#homologadores").append('<span>'+homologador.nome+'</span><br>');
-
                 if (homologador.revisado) {
-                    $("#homologadores").append('<span>'+homologador.nome+' - <b>' + homologador.nota_final + '</b></span><br>');
-                }
+                    $("#homologadores").append('<span>' + homologador.nome + ' - <b>' + homologador.nota_final + '</b></span><br>');
+                } else {
+                    $("#homologadores").append('<span>' + homologador.nome + '</span><br>');
+				}
             });
         }
 
@@ -301,11 +301,11 @@ $('.dados-projeto').click(function() {
             $("#avaliadores").html('');
 
             avaliadores.forEach(function (avaliador) {
-				$("#avaliadores").append('<span>'+avaliador.nome+'</span><br>');
-
                 if (avaliador.avaliado) {
                     $("#avaliadores").append('<span>' + avaliador.nome + ' - <b>' + avaliador.nota_final + '</b></span><br>');
-                }
+                } else {
+                    $("#avaliadores").append('<span>' + avaliador.nome + '</span><br>');
+				}
             });
         }
 

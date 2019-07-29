@@ -5,30 +5,58 @@
 
 	<div class="main main-raised">
 
-		<div class="row">
-			<div class="col-md-10 col-md-offset-1">
-				<h2 class="text-center">{{ $projeto->titulo }}</h2>
-			</div>
-		</div>
-
 		<div class="row hide" id="loadCadastro">
 
 			<div class="loader loader--style2" title="1">
 				<svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 					 width="80px" height="80px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-                          <path fill="#000" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
-							  <animateTransform attributeType="xml"
-												attributeName="transform"
-												type="rotate"
-												from="0 25 25"
-												to="360 25 25"
-												dur="0.6s"
-												repeatCount="indefinite"/>
-						  </path>
-                          </svg>
+					  <path fill="#000" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+						  <animateTransform attributeType="xml"
+											attributeName="transform"
+											type="rotate"
+											from="0 25 25"
+											to="360 25 25"
+											dur="0.6s"
+											repeatCount="indefinite"/>
+					  </path>
+				</svg>
 			</div>
 
 		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<h2 class="text-center">{{ $projeto->titulo }}</h2>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<h4>Resumo</h4>
+				<p class="resumo">{{ $projeto->resumo }}</p>
+
+				<hr>
+
+				<b>Palavras-Chaves:</b>
+				@foreach($projeto->palavrasChaves as $palavra)
+					{{ $palavra->palavra }};
+				@endforeach
+
+				<hr>
+			</div>
+		</div>
+
+		@if($tipo == 'avaliacao')
+
+		<div class="row">
+			<div class="col-md-12">
+				<button class="btn btn-danger  btn-sm btn-round" id="naoCompareceu">
+					<i class="material-icons">layers_clear</i> Projeto não compareceu
+				</button>
+			</div>
+		</div>
+
+		@endif
 
 		<form id="formulario" method="post" action="{{ route('enviarFormulario') }}">
 
@@ -44,7 +72,6 @@
 				<h3>{{ $categoria->categoria_avaliacao }}</h3>
 
 				@foreach($categoria->campos as $campo)
-
 
 				<div class="row categoria-item">
 					<div class="col-md-7">
@@ -99,9 +126,7 @@
 
 			<div class="row">
 				<div class="col-md-12">
-
 					<textarea name="observacao" class="form-control" placeholder="Escreva aqui suas impressões para melhorias do trabalho" rows="5"></textarea>
-
 				</div>
 			</div>
 
@@ -127,11 +152,9 @@
 			</div>
 		</div>
 
-
 		<div class="wrapper-button">
 			<input type="submit" class="btn btn-success" value="Enviar" disabled>
 		</div>
-
 
 		</form>
 
@@ -282,6 +305,16 @@ $(document).ready(function () {
 			changeSubmitButton()
 		}
 	}
+
+});
+
+$('#naoCompareceu').click(function () {
+
+    $('textarea[name=observacao]').text('Projeto não compareceu');
+    $('input[type=radio][value="0"]').attr('checked', 'checked');
+
+    $('input[type=submit]').removeAttr('disabled');
+    $('.alert-warning').hide();
 
 });
 

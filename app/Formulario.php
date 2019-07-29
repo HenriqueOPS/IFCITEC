@@ -16,6 +16,8 @@ class Formulario extends Model {
      * @var string
      */
     protected $table = 'formulario';
+	protected $primaryKey = 'idformulario';
+	public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +25,7 @@ class Formulario extends Model {
      * @var array
      */
     protected $fillable = [
-        'idformulario', 'tipo', 'edicao_id'
+        'idformulario', 'tipo', 'edicao_id', 'nivel_id'
     ];
 
 

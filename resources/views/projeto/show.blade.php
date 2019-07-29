@@ -37,19 +37,13 @@
                             @foreach($projeto->palavrasChaves as $palavra)
                                 {{$palavra->palavra}};
                             @endforeach
-                            @if($projeto->revisoes->isNotEmpty())
-                                @if ($projeto->getStatus() == "Reprovado")
-                                    <hr>
-                                    <b>Comentário da Homologação:</b><br>
-                                    {{($projeto->revisoes[0]->observacao)}}
-                                @endif
-                            @endif
 
                             <hr>
 
                             @if(count($obsHomologadores) && (!(\App\Edicao::consultaPeriodo('Homologação')) || Auth::user()->temFuncao('Administrador')))
                                 <h3>Homologação:</h3>
                                 @foreach($obsHomologadores as $obs)
+									<b>Nota do Homologador {{$loop->index + 1}}:</b> <span>{{ $obs->nota_final }}</span><br>
                                     <b>Observação do Homologador {{$loop->index + 1}}:</b><br>
                                     <p>{{$obs->observacao}}</p>
 
@@ -60,6 +54,7 @@
                             @if(count($obsAvaliadores) && (!(\App\Edicao::consultaPeriodo('Avaliação')) || Auth::user()->temFuncao('Administrador')))
                                 <h3>Avaliação:</h3>
                                 @foreach($obsAvaliadores as $obs)
+									<b>Nota do Avaliador {{$loop->index + 1}}:</b> <span>{{ $obs->nota_final }}</span><br>
                                     <b>Observação do Avaliador {{$loop->index + 1}}:</b><br>
                                     <p>{{$obs->observacao}}</p>
 
