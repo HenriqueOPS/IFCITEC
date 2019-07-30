@@ -83,10 +83,6 @@ class ComissaoAvaliadoraController extends Controller
         }
     }
 
-    public function home(){
-        return view('avaliador.home');
-    }
-
     public function cadastrarComissao(){
         $areas = DB::table('area_conhecimento')
 			->join('area_edicao', 'area_conhecimento.id', '=', 'area_edicao.area_id')

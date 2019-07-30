@@ -1,20 +1,43 @@
 @extends('layouts.app')
 
-@section('css')
-    <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
-@endsection
-
 @section('content')
+<div class="container">
+	<div class="row">
+
+		<div class="col-md-12 text-center">
+			<h2>Painel do Organizador</h2>
+		</div>
+
+		<div id="page" class="col-md-12">
+			<ul class="nav nav-pills nav-pills-primary"  role="tablist">
+				<li>
+					<a href="{{ route('organizador') }}">
+						<i class="material-icons">account_balance</i>
+						Escolas
+					</a>
+				</li>
+				<li class="active">
+					<a href="{{ route('organizacao.projetos') }}">
+						<i class="material-icons">list_alt</i>
+						Listar Projetos
+					</a>
+				</li>
+				<li>
+					<a href="{{ route('organizacao.presenca') }}">
+						<i class="material-icons">account_circle</i>
+						Presença
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<br><br>
 <div class="container">
 
     <div class="row">
 
         <div class="col-md-12 main main-raised">
-
-            <div class="col-md-12 text-center">
-                <h2>Comissão Organizadora</h2>
-                <h3>Projetos</h3>
-            </div>
 
             <div class="list-projects">
                 <h5><b id="geral">Número de projetos: <span id="nProjetos">{{$numeroProjetos}}</span> </b></h5>
@@ -62,8 +85,6 @@
                 </div>
 
                 <div>
-
-                    <a href="{{route('homologar-projetos')}}" id="homologarTrabalhos" class="btn btn-sm btn-primary">Homologar Trabalhos</a>
 
                     @foreach($projetos as $projeto)
 
@@ -271,7 +292,6 @@ $('.dados-projeto').click(function(){
 <script src="{{asset('js/main.js')}}"></script>
 <script type="application/javascript">
 $(document).ready(function () {
-    $('#homologarTrabalhos').hide();
     $("#situacao").hide();
 
     $('.tab-projetos').click(function (e) {
@@ -279,11 +299,6 @@ $(document).ready(function () {
 
         console.log('div.project.situacao-'+target.id);
 
-        if(target.id==2){
-            $('#homologarTrabalhos').show();
-        }else{
-            $('#homologarTrabalhos').hide();
-        }
 
         if(target.id=='situacao'){
             $("#geral").hide();
@@ -297,11 +312,6 @@ $(document).ready(function () {
             $('div.project.situacao-'+target.id).show();
             $('div[id='+target.id+']').show();
         }
-
-        
-        console.log(target.id);
-
-
     });
 
 });
@@ -319,7 +329,6 @@ function hideAll(){
     $('div[id=4]').hide();
     $('div[id=5]').hide();
     $('div[id=6]').hide();
-
 }
 
 function showAll(){

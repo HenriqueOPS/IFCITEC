@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@section('css')
-<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
-@endsection
-
 @section('content')
 <div class="container" style="margin-top: 60px; ">
     <div class="row">
@@ -26,7 +22,7 @@
 
                 @if (isset($error))
                 <div class="alert alert-danger">
-                    <strong>Whoops!</strong>                    
+                    <strong>Whoops!</strong>
                         {{ $error }}
                 </div>
                 @endif

@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@section('css')
-<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
-@endsection
-
 @section('content')
 <div class="container">
     <div class="row">
@@ -142,7 +138,7 @@
             $("#cidade").val("");
             $("#uf").val("");
         }
-        
+
         //Quando o campo cep perde o foco.
         $("#cep").blur(function() {
 

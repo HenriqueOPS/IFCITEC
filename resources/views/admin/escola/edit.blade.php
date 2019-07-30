@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@section('css')
-<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
-@endsection
-
 @section('content')
 <div class="container">
     <div class="row">
@@ -20,7 +16,7 @@
 
                     <input type="hidden" name="id_escola" value="{{ $dados->id }}">
                     <input type="hidden" name="id_endereco" value="{{ isset($data->id) ? $data->id : '0'}}">
-                    
+
 
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
@@ -146,7 +142,7 @@
             $("#cidade").val("");
             $("#uf").val("");
         }
-        
+
         //Quando o campo cep perde o foco.
         $("#cep").blur(function() {
 

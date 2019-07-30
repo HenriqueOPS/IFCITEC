@@ -2,23 +2,23 @@
 
 @section('content')
 <style>
-    body{background: #666;}
+    body { background: #666; }
 
-    #mensagem{
+    #mensagem {
         position: fixed;
         top: 0;
         left: 0;
         width: 100vw;
         z-index: 10;
     }
-    #preview{
+
+    #preview {
         position: relative;
         z-index: 9;
         transform: scaleX(1) !important;
-
     }
 
-    #QRCode{
+    #QRCode {
         width: 180px;
         height: 180px;
         background: transparent;
@@ -28,7 +28,6 @@
         left: calc(50vw - 94px);
         top: calc(50vh - 94px);
     }
-
 </style>
 
 <div id="mensagem">
@@ -64,26 +63,24 @@
 
 <div id="QRCode"></div>
 
-<video width="100%"style="width: 100vw; height: 100vh;" autoplay id="preview"></video>
+<video width="100%" style="width: 100vw; height: 100vh;" autoplay id="preview"></video>
 
 @endsection
 
 @section('js')
 
-<script type="text/javascript" src="{{asset('js/instascan.js')}}"></script>
+<script type="text/javascript" src="{{ asset('js/instascan.js') }}"></script>
 <script type="text/javascript">
 
-    $('#warning').hide();
-    $('#success').hide();
-    $('#danger').hide();
-
-    setInterval(function () {
-
+	function hideAlerts() {
         $('#warning').hide();
         $('#success').hide();
         $('#danger').hide();
+	}
 
-    },3000);
+	hideAlerts();
+
+    setInterval(hideAlerts, 3000);
 
     let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
     scanner.addListener('scan', function (idPessoa) {
@@ -107,6 +104,7 @@
         });
 
     });
+
     Instascan.Camera.getCameras().then(function (cameras) {
         if (cameras.length > 0) {
             scanner.start(cameras[0]);

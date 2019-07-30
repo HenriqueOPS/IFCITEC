@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('css')
-<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 <style>
 .no-js #loader { display: none;  }
 .js #loader { display: block; position: absolute; top: 0; }

@@ -22,10 +22,38 @@ h2{
     border-bottom: 1px solid lightgray !important;
 }
 
-body{
-    background-image: url("../img/fundo.png");
-    background-size: 100%;
+body {
+
 }
+
+body::after,
+body::before {
+	width: 35vw;
+	min-width: 250px;
+	max-width: 400px;
+
+	height: 35vw;
+	min-height: 250px;
+	max-height: 400px;
+
+	content: ' ';
+	position: fixed;
+	z-index: -1;
+	background-size: 100% auto;
+}
+
+body::after {
+	bottom: 0;
+	left: 0;
+	background-image: url("../img/bg-bottom.png");
+}
+
+body::before {
+	top: 0;
+	right: 0;
+	background-image: url("../img/bg-top.png");
+}
+
 
 .icon-white{
     background-color: white;

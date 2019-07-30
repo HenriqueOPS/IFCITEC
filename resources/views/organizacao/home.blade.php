@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@section('css')
-    <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
-@endsection
-
 @section('content')
 
     <div class="container">
@@ -14,9 +10,9 @@
             </div>
 
             <div id="page" class="col-md-12">
-                <ul class="nav nav-pills nav-pills-primary"  role="tablist">
+                <ul class="nav nav-pills nav-pills-primary">
                     <li class="active">
-                        <a href="dashboard" id="0" class="tab" role="tab" data-toggle="tab">
+                        <a href="{{ route('organizador') }}">
                             <i class="material-icons">account_balance</i>
                             Escolas
                         </a>
@@ -33,18 +29,6 @@
                             Presença
                         </a>
                     </li>
-                    <li>
-                        <a href="{{route('organizacao.relatoriosEdicao')}}">
-                            <i class="material-icons">description</i>
-                            Relatórios
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{route('organizacao.usuarios')}}">
-                            <i class="material-icons">person</i>
-                            Usuários
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -57,13 +41,6 @@
                 <div class="list-projects">
                     <table class="table">
                         <thead id="0">
-                        <div id="0">
-                            <div class="col-md-3">
-                                <a href="{{ route('cadastroEscola') }}" class="btn btn-primary btn-round">
-                                    <i class="material-icons">add</i> Adicionar Escola
-                                </a>
-                            </div>
-                        </div>
                         <tr>
                             <th class="text-center">#</th>
                             <th>Escola</th>
@@ -86,25 +63,13 @@
 
 
                                 <td class="td-actions text-right">
-
                                     <a href="javascript:void(0);" class="modalEscola"  data-toggle="modal" data-target="#modal0" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
-
-                                    <a href="{{ route('escola', $escola->id) }}"><i class="material-icons">edit</i></a>
-
-                                    <a href="javascript:void(0);" class="exclusao" id-escola="{{ $escola->id }}"><i class="material-icons blue-icon">delete</i></a>
                                 </td>
                             <tr>
 
                         @endforeach
 
                         </tbody>
-
-                        <thead id="1">
-                        <div id="1">
-                            <h5><b>Número de projetos: {{$numeroProjetos}} </b></h5>
-                        </div>
-
-                        </thead>
 
                     </table>
                 </div>
@@ -116,57 +81,108 @@
 
 @section('partials')
 
-    @include('partials.modalEscola')
+<!-- Modal -->
+<div id="modal-escola" class="modal fade bd-example-modal-lg"  role="dialog" aria-labelledby="modal-escola">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="nome-curtoModal"></h5>
+			</div>
+			<div class="modal-body">
+
+				<div class="input-group">
+			<span class="input-group-addon">
+				<i class="material-icons">assignment</i>
+			</span>
+					<div class="form-group label-floating">
+						<span id="nome-completoModal"></span>
+					</div>
+				</div>
+
+				<div class="input-group">
+			<span class="input-group-addon">
+				<i class="material-icons">mail</i>
+			</span>
+					<div class="form-group label-floating">
+						<span id="emailModal"></span>
+					</div>
+				</div>
+
+				<div class="input-group">
+			<span class="input-group-addon">
+				<i class="material-icons">phone</i>
+			</span>
+					<div class="form-group label-floating">
+						<span id="telefoneModal"></span>
+					</div>
+				</div>
+
+				<div class="input-group">
+			<span class="input-group-addon">
+				<i class="material-icons">location_on</i>
+			</span>
+					<div class="form-group label-floating">
+						<span id="enderecoModal"></span>
+					</div>
+				</div>
+
+				<div class="input-group">
+			<span class="input-group-addon">
+				<i class="material-icons">markunread_mailbox</i>
+			</span>
+					<div class="form-group label-floating">
+						<span id="cepModal"></span>
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Fim Modal -->
+
+<script type="application/javascript">
+	$('.modalEscola').click(function(){
+		//recupera o id da categoria
+		var idEscola = $(this).attr('id-escola');
+
+		//monta a url de consulta
+		var urlConsulta = '.././escola/dados-escola/'+idEscola;
+		//faz a consulta via Ajax
+		$.get(urlConsulta, function (res){
+
+			console.log(res);
+			//monta a string do endereço
+			var endereco = '';
+			var cep = '';
+
+			if(res.data) {
+				res.data.endereco ? endereco += res.data.endereco + ", " : endereco += '';
+				res.data.numero ? endereco += res.data.numero + ", " : endereco += '';
+				res.data.bairro ? endereco += res.data.bairro + ", " : endereco += '';
+				res.data.municipio ? endereco += res.data.municipio + ", " : endereco += '';
+				res.data.uf ? endereco += res.data.uf + ", " : endereco += '';
+
+				res.data.cep ? cep = res.data.cep : '';
+			}
+
+			//altera o DOM
+			$("#nome-curtoModal").html(res.dados.nome_curto);
+			$("#nome-completoModal").html(res.dados.nome_completo);
+			$("#emailModal").html(res.dados.email);
+			$("#telefoneModal").html(res.dados.telefone);
+			$("#enderecoModal").html(endereco);
+			$("#cepModal").html(cep);
+
+			//abre a modal
+			$("#modal-escola").modal();
+
+		});
+
+	})
+</script>
 
 @endsection
-
-@section('js')
-
-    <script type="application/javascript">
-        $(document).ready(function () {
-
-            hideBodys();
-            hideHeads();
-            $('tbody[id=0]').show();
-            $('thead[id=0]').show();
-            $('div[id=0]').show();
-            $('.tab').click(function (e) {
-                var target = $(this)[0];
-                hideBodys();
-                hideHeads();
-                $('tbody[id='+target.id+']').show();
-                $('thead[id='+target.id+']').show();
-                $('div[id='+target.id+']').show();
-            });
-
-        });
-
-        function hideBodys(){
-            $('tbody[id=0]').hide();
-            $('tbody[id=1]').hide();
-            $('tbody[id=2]').hide();
-            $('tbody[id=3]').hide();
-            $('tbody[id=4]').hide();
-            $('div[id=0]').hide();
-            $('div[id=1]').hide();
-            $('div[id=2]').hide();
-            $('div[id=3]').hide();
-            $('div[id=4]').hide();
-        }
-        function hideHeads(){
-            $('thead[id=0]').hide();
-            $('thead[id=1]').hide();
-            $('thead[id=2]').hide();
-            $('thead[id=3]').hide();
-            $('thead[id=4]').hide();
-            $('div[id=0]').hide();
-            $('div[id=1]').hide();
-            $('div[id=2]').hide();
-            $('div[id=3]').hide();
-            $('div[id=4]').hide();
-        }
-    </script>
-@endsection
-
-
-

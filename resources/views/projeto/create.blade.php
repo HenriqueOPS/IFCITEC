@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('css')
-<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 <link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 @endsection
@@ -140,7 +139,7 @@
                                     <label class="control-label">Resumo</label>
                                     <textarea id="resumo" class="form-control" rows="5" name="resumo" required>{{old('resumo')}}</textarea>
                                     <p>Total de Caracteres: <b><span id="total-char"></span></b></p>
-                            
+
                                 </div>
                                 @if ($errors->has('resumo'))
                                 <span class="help-block">
@@ -478,7 +477,7 @@ $(document).ready(function () {
     });
 
     $('.info').click(function () {
-            
+
         $("#ModalInfo").modal();
     });
 

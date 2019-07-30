@@ -2,7 +2,6 @@
 
 @section('css')
 <link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
-<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -30,7 +29,7 @@
                                 </div>
                             </div>
 
-        
+
                             <div class="row">
                                 <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
                                   <input name="de[]" type="number" class="form-control" placeholder="De... (Sala)">
@@ -103,14 +102,14 @@ var total = 0;
         newSelect.find('div').attr("id", id);
         newSelect.find('div').css('display', 'block');
 
-        button = '<a class="btn btn-danger btn-fab btn-fab-mini btn-round" role="button" onclick="deletaBloco(\'' + id + '\')" style="color: red;"><i class="material-icons">remove</i></a>'; 
+        button = '<a class="btn btn-danger btn-fab btn-fab-mini btn-round" role="button" onclick="deletaBloco(\'' + id + '\')" style="color: red;"><i class="material-icons">remove</i></a>';
 
         console.log(button);
         newSelect.find('a').append(button);
 
         $("#selects").append(newSelect.html());
 
-        
+
 
         console.log(newSelect.find('div select'));
 }

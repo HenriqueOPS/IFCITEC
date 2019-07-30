@@ -795,7 +795,6 @@ class ProjetoController extends Controller
             ->where('revisao.projeto_id','=',DB::raw('projeto.id'))
             ->toSql();
 
-
         //busca os projetos Não Homologados
 	    $projetos = Projeto::select('projeto.id', 'titulo', 'situacao_id',
             'nivel_id', 'area_id', DB::raw('('.$subQuery.') as nota'))

@@ -68,38 +68,37 @@ class AdminController extends Controller
             ->get()
             ->keyBy('id');
 
-        return view('admin.projetos')->withProjetos($projetos);
-
+        return view('admin.projeto.home')->withProjetos($projetos);
     }
 
     public function escolas(){
     	$escolas = Escola::orderBy('nome_curto')->get();
 
-    	return view('admin.escolas', collect(['escolas' => $escolas]));
+    	return view('admin.escola.home', collect(['escolas' => $escolas]));
     }
 
     public function niveis(){
     	$niveis = Nivel::orderBy('nivel')->get();
 
-    	return view('admin.niveis', collect(['niveis' => $niveis]));
+    	return view('admin.nivel.home', collect(['niveis' => $niveis]));
     }
 
     public function areas(){
     	$areas = AreaConhecimento::all(['id', 'area_conhecimento', 'descricao', 'nivel_id']);
 
-    	return view('admin.areas')->withAreas($areas);
+    	return view('admin.area.home')->withAreas($areas);
     }
 
     public function tarefas(){
     	$tarefas = DB::table('tarefa')->orderBy('tarefa')->get()->toArray();
 
-    	return view('admin.tarefas', collect(['tarefas' => $tarefas]));
+    	return view('admin.tarefa.home', collect(['tarefas' => $tarefas]));
     }
 
     public function usuarios(){
     	$usuarios = Pessoa::orderBy('nome')->get();
 
-    	return view('admin.usuarios')->withUsuarios($usuarios);
+    	return view('admin.usuario.home')->withUsuarios($usuarios);
     }
 
     public function notaRevisao($id){
@@ -215,21 +214,22 @@ class AdminController extends Controller
 			->get()
 			->toArray();
 
-    	return view('admin.comissao', collect(['comissao' => $comissao]));
+    	return view('admin.comissao.home', collect(['comissao' => $comissao]));
     }
 
     public function relatorios($edicao){
-    	return view('admin.relatorios', array('edicao' => $edicao));
+    	return view('admin.relatorios.homeEdicao', array('edicao' => $edicao));
     }
 
     public function relatoriosEdicao(){
     	$edicoes = Edicao::all();
-    	return view('relatoriosEdicao')->withEdicoes($edicoes);
+    	return view('admin.relatorios.home')->withEdicoes($edicoes);
     }
 
     public function relatoriosEscolheEdicao(Request $req){
     	$data = $req->all();
     	$edicao = $data['edicao'];
+
     	return redirect()->route('administrador.relatorios', ['edicao' => $edicao]);
     }
 
@@ -251,9 +251,7 @@ class AdminController extends Controller
 	}
 
 
-	public function cadastraNivel(NivelRequest $req)
-	{
-
+	public function cadastraNivel(NivelRequest $req) {
 		$data = $req->all();
 
 		Nivel::create([
@@ -265,7 +263,6 @@ class AdminController extends Controller
 		]);
 
 		return redirect()->route('administrador.niveis');
-
 	}
 
 	public function editarNivel($id)
@@ -465,28 +462,23 @@ class AdminController extends Controller
 
 	}
 
-	public function excluiEscola($id, $s)
-	{
+	public function excluiEscola($id, $s) {
 
 		if (password_verify($s, Auth::user()['attributes']['senha'])) {
 			Escola::find($id)->delete();
-
 
 			return 'true';
 		} else {
 			return 'password-problem';
 		}
 
-
 	}
 
-	public function cadastroTarefa()
-	{
-		return view('admin.cadastroTarefa');
+	public function cadastroTarefa() {
+		return view('admin.tarefa.create');
 	}
 
-	public function cadastraTarefa(Request $req)
-	{
+	public function cadastraTarefa(Request $req) {
 		$data = $req->all();
 
 		Tarefa::create([
@@ -495,24 +487,21 @@ class AdminController extends Controller
 		]);
 
 		return redirect()->route('administrador.tarefas');
-
 	}
 
-	public function editarTarefa($id)
-	{
+	public function editarTarefa($id) {
 		$dados = Tarefa::find($id);
-		return view('admin.editarTarefa', array('dados' => $dados));
-
+		return view('admin.tarefa.edit', array('dados' => $dados));
 	}
 
-	public function editaTarefa(Request $req)
-	{
+	public function editaTarefa(Request $req) {
 
 		$data = $req->all();
 		$id = $data['id_tarefa'];
 
 		Tarefa::where('id', $id)
-			->update(['tarefa' => $data['tarefa'],
+			->update([
+				'tarefa' => $data['tarefa'],
 				'descricao' => $data['descricao'],
 			]);
 

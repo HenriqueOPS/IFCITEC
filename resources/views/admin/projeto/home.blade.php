@@ -1,20 +1,85 @@
 @extends('layouts.app')
 
-@section('css')
-    <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
-@endsection
-
 @section('content')
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<h2>Painel administrativo</h2>
+		</div>
+
+		<div id="page" class="col-md-12">
+			<ul class="nav nav-pills nav-pills-primary"  role="tablist">
+				<li>
+					<a href="{{route('administrador')}}">
+						<i class="material-icons">adjust</i>
+						Edições
+					</a>
+				</li>
+				<li>
+					<a href="{{route('administrador.escolas')}}">
+						<i class="material-icons">account_balance</i>
+						Escolas
+					</a>
+				</li>
+				<li>
+					<a href="{{route('administrador.niveis')}}">
+						<i class="material-icons">school</i>
+						Níveis
+					</a>
+				</li>
+				<li>
+					<a href="{{route('administrador.areas')}}">
+						<i class="material-icons">brightness_auto</i>
+						Áreas
+					</a>
+				</li>
+				<li>
+					<a href="{{route('administrador.ficha')}}">
+						<i class="material-icons">list_alt</i>
+						Fichas
+					</a>
+				</li>
+				<li>
+					<a href="{{route('administrador.tarefas')}}">
+						<i class="material-icons">title</i>
+						Tarefas
+					</a>
+				</li>
+				<li>
+					<a href="{{route('administrador.usuarios')}}">
+						<i class="material-icons">person</i>
+						Usuários
+					</a>
+				</li>
+				<li class="active">
+					<a href="{{route('administrador.projetos')}}">
+						<i class="material-icons">list_alt</i>
+						Listar Projetos
+					</a>
+				</li>
+				<li>
+					<a href="{{route('administrador.comissao')}}">
+						<i class="material-icons">list_alt</i>
+						Comissão Avaliadora
+					</a>
+				</li>
+				<li>
+					<a href="{{route('administrador.relatoriosEdicao')}}">
+						<i class="material-icons">description</i>
+						Relatórios
+					</a>
+				</li>
+
+			</ul>
+		</div>
+	</div>
+</div>
+<br><br>
 <div class="container">
 
     <div class="row">
 
         <div class="col-md-12 main main-raised">
-
-            <div class="col-md-12 text-center">
-                <h2>Painel administrativo</h2>
-                <h3>Projetos</h3>
-            </div>
 
             <div class="list-projects">
                 <h5><b id="geral">Número de projetos: <span id="nProjetos">{{ count($projetos) }}</span> </b></h5>

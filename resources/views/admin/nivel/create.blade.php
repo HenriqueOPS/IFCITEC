@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@section('css')
-<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
-@endsection
-
 @section('content')
 <div class="container">
     <div class="row">
@@ -34,7 +30,7 @@
                                 </span>
                                 @endif
                             </div>
-                            
+
                             <div class="input-group{{ $errors->has('min_ch') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">remove_circle</i>
@@ -79,7 +75,7 @@
                                 </span>
                                 @endif
                             </div>
-                
+
                             <div class="form-group{{ $errors->has('descricao') ? ' has-error' : '' }}">
                                 <div class="form-group label-floating">
                                     <i class="material-icons">description</i>
@@ -93,7 +89,7 @@
                                 @endif
                             </div>
                         </div>
-                        
+
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">

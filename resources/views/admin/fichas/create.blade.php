@@ -88,7 +88,7 @@
 						<i class="material-icons">error_outline</i>
 					</div>
 
-					<b>Oops:</b> <span class="error"></span>
+					<b>Aeee:</b> Formulário Salvo com sucesso
 				</div>
 			</div>
 
@@ -283,6 +283,7 @@ $(document).ready(function () {
 	});
 
 	$('#sendError').hide();
+	$('.alert-success').hide();
 });
 
 var countCategoria = 0;
@@ -326,7 +327,7 @@ $('#formulario').submit(function (e) {
 
 	$.post('{{ route('adminstrador.salvarFicha') }}', formSerialized)
 		.done(function () {
-
+			$('.alert-success').show();
 		})
 		.fail(function (res) {
             $('#sendError').show();

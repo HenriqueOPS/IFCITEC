@@ -3,7 +3,6 @@
 @section('content')
 	<div class="container">
 		<div class="row">
-
 			<div class="col-md-12 text-center">
 				<h2>Painel administrativo</h2>
 			</div>
@@ -32,6 +31,12 @@
 						<a href="{{route('administrador.areas')}}">
 							<i class="material-icons">brightness_auto</i>
 							Áreas
+						</a>
+					</li>
+					<li class="active">
+						<a href="{{route('administrador.ficha')}}">
+							<i class="material-icons">list_alt</i>
+							Fichas
 						</a>
 					</li>
 					<li>
@@ -65,12 +70,6 @@
 						</a>
 					</li>
 
-					<li class="active">
-						<a href="{{route('administrador.ficha')}}">
-							<i class="material-icons">list_alt</i>
-							Fichas
-						</a>
-					</li>
 				</ul>
 			</div>
 		</div>

@@ -1,54 +1,78 @@
 @extends('layouts.app')
 
-@section('css')
-    <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
-@endsection
-
 @section('content')
 <div class="container">
-    <div class="row">
-            <div class="col-md-12 text-center">
-                <h2>Painel administrativo</h2>
-            </div>
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<h2>Painel administrativo</h2>
+		</div>
 
-            <div id="page" class="col-md-12">
-            <ul class="nav nav-pills nav-pills-primary"  role="tablist">
-                <li>
-                    <a href="{{route('organizador')}}">
-                        <i class="material-icons">account_balance</i>
-                        Escolas
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('organizacao.projetos')}}">
-                        <i class="material-icons">list_alt</i>
-                        Listar Projetos
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('organizacao.presenca')}}">
-                        <i class="material-icons">account_circle</i>
-                        Presença
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="{{route('organizacao.relatorios')}}">
-                        <i class="material-icons">description</i>
-                        Relatórios
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('organizacao.usuarios')}}">
-                        <i class="material-icons">person</i>
-                        Usuários
-                    </a>
-                </li>
+		<div id="page" class="col-md-12">
+			<ul class="nav nav-pills nav-pills-primary"  role="tablist">
+				<li>
+					<a href="{{route('administrador')}}">
+						<i class="material-icons">adjust</i>
+						Edições
+					</a>
+				</li>
+				<li>
+					<a href="{{route('administrador.escolas')}}">
+						<i class="material-icons">account_balance</i>
+						Escolas
+					</a>
+				</li>
+				<li>
+					<a href="{{route('administrador.niveis')}}">
+						<i class="material-icons">school</i>
+						Níveis
+					</a>
+				</li>
+				<li>
+					<a href="{{route('administrador.areas')}}">
+						<i class="material-icons">brightness_auto</i>
+						Áreas
+					</a>
+				</li>
+				<li>
+					<a href="{{route('administrador.ficha')}}">
+						<i class="material-icons">list_alt</i>
+						Fichas
+					</a>
+				</li>
+				<li>
+					<a href="{{route('administrador.tarefas')}}">
+						<i class="material-icons">title</i>
+						Tarefas
+					</a>
+				</li>
+				<li>
+					<a href="{{route('administrador.usuarios')}}">
+						<i class="material-icons">person</i>
+						Usuários
+					</a>
+				</li>
+				<li>
+					<a href="{{route('administrador.projetos')}}">
+						<i class="material-icons">list_alt</i>
+						Listar Projetos
+					</a>
+				</li>
+				<li>
+					<a href="{{route('administrador.comissao')}}">
+						<i class="material-icons">list_alt</i>
+						Comissão Avaliadora
+					</a>
+				</li>
+				<li class="active">
+					<a href="{{route('administrador.relatoriosEdicao')}}">
+						<i class="material-icons">description</i>
+						Relatórios
+					</a>
+				</li>
 
-
-
-            </ul>
-        </div>
-    </div>
+			</ul>
+		</div>
+	</div>
 </div>
 <br><br>
 <div class="container">
@@ -151,13 +175,13 @@
                                 <a href="{{route('avaliadoresProjeto', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Relatório de Projetos Por Avaliador</td>
-                            <td class="text-right">
-                                <a href="{{route('projetosAvaliador', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
-                            </td>
-                        </tr>
+						<tr>
+							<td>4</td>
+							<td>Relatório de Projetos Por Avaliador</td>
+							<td class="text-right">
+								<a href="{{route('projetosAvaliador', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
+							</td>
+						</tr>
                     </tbody>
 
                     <tbody id="1">
@@ -220,29 +244,43 @@
                                 <a href="{{route('csvAnais', $edicao)}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
+						<tr>
+							<td>2</td>
+							<td>Dados MOSTRATEC (Edição Corrente)</td>
+							<td class="text-right">
+								<a href="{{route('csvMOSTRATEC', $edicao)}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
+							</td>
+						</tr>
                         <tr>
-                            <td>2</td>
+                            <td>3</td>
                             <td>Relatório de Áreas do Conhecimento</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioArea', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+						<tr>
+							<td>4</td>
+							<td>Relatório de CSV das Etiquetas</td>
+							<td class="text-right">
+								<a href="{{route('csvEtiquetas')}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
+							</td>
+						</tr>
                         <tr>
-                            <td>3</td>
+                            <td>5</td>
                             <td>Relatório de Edições</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioEdicao')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>4</td>
+                            <td>6</td>
                             <td>Relatório de Escolas</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioEscola')}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                         <tr>
-                            <td>5</td>
+                            <td>7</td>
                             <td>Relatório de Níveis</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioNivel', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
@@ -398,7 +436,7 @@
                             <td>8</td>
                             <td>Autores, Coorientadores, Orientadores e Voluntários que Compareceram na IFCITEC</td>
                             <td class="text-right">
-                                <a href="{{route('participantesCompareceram', $edicao)}}"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('participantesCompareceram', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -486,14 +524,14 @@
                                 <a href="{{route('relatorioAutores', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Relatório de Autores (Lanche)
-                            </td>
-                            <td class="text-right">
-                                <a href="{{route('relatorioAutoresLanche', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
-                            </td>
-                        </tr>
+						<tr>
+							<td>2</td>
+							<td>Relatório de Autores (Lanche)
+							</td>
+							<td class="text-right">
+								<a href="{{route('relatorioAutoresLanche', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
+							</td>
+						</tr>
                         <tr>
                             <td>3</td>
                             <td>Relatório de Autores (Pós Homologação)
@@ -636,6 +674,7 @@ $(document).ready(function () {
     $('tbody[id=6]').hide();
     $('tbody[id=7]').hide();
     $('tbody[id=8]').hide();
+    $('tbody[id=9]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
@@ -645,6 +684,7 @@ $(document).ready(function () {
     $('div[id=6]').hide();
     $('div[id=7]').hide();
     $('div[id=8]').hide();
+    $('div[id=9]').hide();
 }
 function hideHeads(){
     $('thead[id=0]').hide();
@@ -656,6 +696,7 @@ function hideHeads(){
     $('thead[id=6]').hide();
     $('thead[id=7]').hide();
     $('thead[id=8]').hide();
+    $('thead[id=9]').hide();
     $('div[id=0]').hide();
     $('div[id=1]').hide();
     $('div[id=2]').hide();
@@ -665,6 +706,7 @@ function hideHeads(){
     $('div[id=6]').hide();
     $('div[id=7]').hide();
     $('div[id=8]').hide();
+    $('div[id=9]').hide();
 }
 
 </script>

@@ -104,7 +104,9 @@ Route::post('/projeto/edita-projeto', 'ProjetoController@editaProjeto')->name('e
 
 Route::get('projeto/nivel/areasConhecimento/{id}', 'NivelController@areasConhecimento'); //Ajax
 
-
+// Formulário de Avaliação/Homologação
+Route::get('/formulario/{tipo}/{id}', 'FormularioController@index')->name('formularioAvaliacao');
+Route::post('/formulario', 'FormularioController@store')->name('enviarFormulario');
 
 /* Rotas Administrador */
 Route::group(['middleware' => ['IsAdministrador']], function () {
@@ -118,6 +120,13 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/comissao/homologar/{id}', 'ComissaoAvaliadoraController@homologarComissao')->name('homologarComissao');
 	Route::post('/comissao/homologar/', 'ComissaoAvaliadoraController@homologaComissao')->name('homologaComissao');
 	Route::get('/comissao/excluir/{idC}/{idF}/{s}', 'ComissaoAvaliadoraController@excluiComissao');
+
+	// Escola
+	Route::get('/escola/cadastrar', 'AdminController@cadastroEscola')->name('cadastroEscola');
+	Route::post('/escola/cadastrar', 'AdminController@cadastraEscola')->name('cadastroEscola');
+	Route::get('/escola/editar/{id}', 'AdminController@editarEscola')->name('escola');
+	Route::post('/escola/edita-escola', 'AdminController@editaEscola')->name('editaEscola');
+	Route::get('/escola/exclui-escola/{id}/{s}', 'AdminController@excluiEscola'); //Ajax
 
 	// Nivel
 	Route::get('/nivel/cadastrar', 'AdminController@cadastroNivel')->name('cadastroNivel');
@@ -148,28 +157,34 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/edicao/dados-edicao/{id}', 'EdicaoController@dadosEdicao'); //Ajax
 	Route::get('/edicao/exclui-edicao/{id}/{s}', 'EdicaoController@excluiEdicao'); //Ajax
 
-	//Tarefa
+	// Tarefa
 	Route::get('/tarefa/cadastrar', 'AdminController@cadastroTarefa')->name('cadastroTarefa');
 	Route::post('/tarefa/cadastrar', 'AdminController@cadastraTarefa')->name('cadastraTarefa');
 	Route::get('/tarefa/editar/{id}', 'AdminController@editarTarefa')->name('tarefa');
 	Route::post('/tarefa/edita-tarefa', 'AdminController@editaTarefa')->name('editaTarefa');
-
 	Route::get('/tarefa/dados-tarefa/{id}', 'AdminController@dadosTarefa'); //Ajax
 	Route::get('/tarefa/exclui-tarefa/{id}/{s}', 'AdminController@excluiTarefa'); //Ajax
 
-	//Usuários
+	// Usuários
 	Route::get('/usuario/exclui-usuario/{id}/{s}', 'AdminController@excluiUsuario');
 
-    //Edição dos dados de usuario
+    // Edição dos dados de usuario
     Route::get('/usuario/{id}/editar/', 'PessoaController@editarUsuario')->name('editarUsuario');
     Route::post('/usuario/{id}/editar-cadastro/', 'PessoaController@editaUsuario')->name('editaUsuario');
+
+	// Vincula Homologador
+	Route::get('/projeto/{id}/vinculaHomologador/', 'ProjetoController@showFormVinculaHomologador')->name('vinculaRevisor');
+	Route::post('/projeto/vinculaHomologador/', 'ProjetoController@vinculaHomologador')->name('vinculaRevisorPost');
+	// Vincula Avaliador
+	Route::get('/projeto/{id}/vinculaAvaliador/', 'ProjetoController@showFormVinculaAvaliador')->name('vinculaAvaliador');
+	Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')->name('vinculaAvaliadorPost');
 
     // Fichas de Avaliação/Homologação
 	Route::get('/administrador/fichas','FichaController@index')->name('administrador.ficha');
 	Route::get('/administrador/fichas/cadastrar','FichaController@novaFicha')->name('adminstrador.cadastrarFicha');
 	Route::post('/administrador/fichas/cadastrar','FichaController@salvaFicha')->name('adminstrador.salvarFicha');
 
-    //Administrador
+    // Administrador
     Route::get('/projetos/homologar-projetos', 'ProjetoController@homologarProjetos')->name('homologar-projetos');
     Route::post('/projetos/homologa-projetos', 'ProjetoController@homologaProjetos')->name('homologa-projetos');
     Route::get('/projeto/nao-compareceu/{id}/{s}', 'ProjetoController@projetoNaoCompareceu'); //
@@ -185,57 +200,16 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/administrador/usuario', 'AdminController@usuarios')->name('administrador.usuarios');
 	Route::get('/administrador/comissao', 'AdminController@comissao')->name('administrador.comissao');
 	Route::get('/administrador/notas', 'AdminController@notas')->name('administrador.notas');
-	Route::get('/administrador/nota-revisao/projeto/{projeto}', 'AdminController@notaRevisao')->name('notaRevisao');
-	Route::get('/administrador/nota-avaliacao/projeto/{projeto}', 'AdminController@notaAvaliacao')->name('notaAvaliacao');
-	Route::post('/administrador/muda/nota-revisao/projeto', 'AdminController@mudaNotaRevisao')->name('mudaNotaRevisao');
-	Route::post('/administrador/muda/nota-avaliacao/projeto', 'AdminController@mudaNotaAvaliacao')->name('mudaNotaAvaliacao');
+
 	Route::get('/administrador/relatorios/{edicao?}', 'AdminController@relatorios')->name('administrador.relatorios');
 	Route::get('/administrador/escolhe-edicao/relatorios', 'AdminController@relatoriosEdicao')->name('administrador.relatoriosEdicao');
 	Route::post('/administrador/escolhe-edicao/relatorios', 'AdminController@relatoriosEscolheEdicao')->name('administrador.escolheEdicao');
 
-	// mostra os erros do arquivo laravel.log
-	Route::get('/errors', function (){
-		return view('admin.errors');
-	});
-
-});
-
-
-/* Rotas Organização */
-Route::group(['middleware' => ['IsOrganizacao']], function () {
-
-	// Escola
-	Route::get('/escola/cadastrar', 'AdminController@cadastroEscola')->name('cadastroEscola');
-	Route::post('/escola/cadastrar', 'AdminController@cadastraEscola')->name('cadastroEscola');
-	Route::get('/escola/editar/{id}', 'AdminController@editarEscola')->name('escola');
-	Route::post('/escola/edita-escola', 'AdminController@editaEscola')->name('editaEscola');
-	Route::get('/escola/dados-escola/{id}', 'AdminController@dadosEscola'); //Ajax
-	Route::get('/escola/exclui-escola/{id}/{s}', 'AdminController@excluiEscola'); //Ajax
-
-    //vincula Homologador
-    Route::get('/projeto/{id}/vinculaHomologador/', 'ProjetoController@showFormVinculaHomologador')->name('vinculaRevisor');
-    Route::post('/projeto/vinculaHomologador/', 'ProjetoController@vinculaHomologador')->name('vinculaRevisorPost');
-    //vincula Avaliador
-    Route::get('/projeto/{id}/vinculaAvaliador/', 'ProjetoController@showFormVinculaAvaliador')->name('vinculaAvaliador');
-    Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')->name('vinculaAvaliadorPost');
-
-    Route::get('/projeto/{id}/status/', 'ProjetoController@statusProjeto')->name('statusProjeto'); //Ajax
-
-    Route::get('/organizador/presenca', 'OrganizadorController@presenca')->name('organizacao.presenca');
-    Route::get('/organizador/projetos', 'OrganizadorController@projetos')->name('organizacao.projetos');
-	Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
-	Route::get('/organizador/escolhe-edicao/relatorios', 'OrganizadorController@relatoriosEdicao')->name('organizacao.relatoriosEdicao');
-	Route::post('/organizador/escolhe-edicao/relatorios', 'OrganizadorController@relatoriosEscolheEdicao')->name('organizacao.escolheEdicao');
-	Route::get('/organizador/relatorios/{edicao?}', 'OrganizadorController@relatorios')->name('organizacao.relatorios');
-	Route::get('/organizador/usuario', 'OrganizadorController@usuarios')->name('organizacao.usuarios');
-
-	//Usuário
-	Route::post('/organizador/gerenciar-usuario/{id}', 'OrganizadorController@editaFuncaoUsuario')->name('orgEditaFuncaoUsuario');
-	Route::get('organizador/gerenciar/usuario/{id}', 'OrganizadorController@editarFuncaoUsuario')->name('orgEditarFuncaoUsuario');
-	Route::get('/organizador/exclui-usuario/{id}/{s}', 'OrganizadorController@excluiUsuario');
-    Route::get('/organizador/usuario/{id}/editar/', 'OrganizadorController@editarUsuario')->name('orgEditarUsuario');
-    Route::post('/organizador/usuario/{id}/editar-cadastro/', 'OrganizadorController@editaUsuario')->name('orgEditaUsuario');
-
+	// TODO: remover
+	Route::get('/administrador/nota-revisao/projeto/{projeto}', 'AdminController@notaRevisao')->name('notaRevisao');
+	Route::get('/administrador/nota-avaliacao/projeto/{projeto}', 'AdminController@notaAvaliacao')->name('notaAvaliacao');
+	Route::post('/administrador/muda/nota-revisao/projeto', 'AdminController@mudaNotaRevisao')->name('mudaNotaRevisao');
+	Route::post('/administrador/muda/nota-avaliacao/projeto', 'AdminController@mudaNotaAvaliacao')->name('mudaNotaAvaliacao');
 
 	//Gera os crachás
 	Route::get('/cracha/gerar-crachas/branco/{edicao}', 'CrachaController@generateCrachas')->name('generateCrachas');
@@ -248,8 +222,7 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
 	Route::get('/cracha/qr-code/{id}', 'CrachaController@generateQrCode')->name('qrcode');
 
 
-
-	//Relatórios
+	// Relatórios
 	Route::get('/csv/{id}/{edicao?}', 'RelatorioController@csv')->name('csv');
 	Route::get('/csv/anais/ifcitec/{edicao}', 'RelatorioController@csvAnais')->name('csvAnais');
 	Route::get('/csv/mostratec/ifcitec/{edicao}', 'RelatorioController@csvMOSTRATEC')->name('csvMOSTRATEC');
@@ -319,6 +292,29 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
 	Route::get('/relatorio/vale-lanche/gerar/{edicao}', 'RelatorioController@gerarValeLanche')->name('geraValeLanche');
 	Route::get('/relatorio/premiacao/certificados/{edicao}', 'RelatorioController@premiacaoCertificados')->name('premiacaoCertificados');
 
+	// mostra os erros do arquivo laravel.log
+	Route::get('/errors', function (){
+		return view('admin.errors');
+	});
+
+});
+
+
+/* Rotas Organização */
+Route::group(['middleware' => ['IsOrganizacao']], function () {
+
+	Route::get('/organizador', 'OrganizadorController@index')->name('organizador');
+
+	// Escola
+	Route::get('/escola/dados-escola/{id}', 'AdminController@dadosEscola'); //Ajax
+
+	// Projeto
+	Route::get('/organizador/projetos', 'OrganizadorController@projetos')->name('organizacao.projetos');
+    Route::get('/projeto/{id}/status/', 'ProjetoController@statusProjeto')->name('statusProjeto'); //Ajax
+
+	// Presença
+    Route::get('/organizador/presenca', 'OrganizadorController@presenca')->name('organizacao.presenca');
+
 });
 
 
@@ -332,6 +328,3 @@ Route::get('mail/voluntario', function(){
 
 });
 
-// Formulário de Avaliação/Homologação
-Route::get('/formulario/{tipo}/{id}', 'FormularioController@index')->name('formularioAvaliacao');
-Route::post('/formulario', 'FormularioController@store')->name('enviarFormulario');

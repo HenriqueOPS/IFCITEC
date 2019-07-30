@@ -2,7 +2,6 @@
 
 @section('css')
 <link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
-<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -78,7 +77,7 @@
                                                     <label>
                                                         <input type="radio"
                                                                 class="situacao"
-                                                                value="{{$situacao->id}}" 
+                                                                value="{{$situacao->id}}"
                                                                 name='situacao' checked>
                                                         {{$situacao->situacao}}
                                                     </label>
@@ -88,7 +87,7 @@
                                                     <label>
                                                         <input type="radio"
                                                                 class="situacao"
-                                                                value="{{$situacao->id}}" 
+                                                                value="{{$situacao->id}}"
                                                                 name='situacao'>
                                                         {{$situacao->situacao}}
                                                     </label>

@@ -2,8 +2,6 @@
 
 @section('css')
 <link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
-<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
-
 @endsection
 
 
@@ -29,9 +27,9 @@
                                     <i class="material-icons">school</i>
                                 </span>
                                 <div class="form-group">
-                                    <label class="control-label">Nível</label>        
+                                    <label class="control-label">Nível</label>
                                     <select id="nivel-select" name="nivel_id" value="{{old('nivel_id')}}" required>
-                                        @foreach ($niveis as $nivel) 
+                                        @foreach ($niveis as $nivel)
 
                                         <option value="{{$nivel->id}}">{{$nivel->nivel}}</option>
                                         @endforeach
@@ -43,7 +41,7 @@
                                 </span>
                                 @endif
                             </div>
-                            
+
                             <div class="input-group{{ $errors->has('area_conhecimento') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">text_fields</i>
