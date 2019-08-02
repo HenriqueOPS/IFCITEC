@@ -15,6 +15,7 @@ use App\Jobs\MailAutorJob;
 use App\Jobs\MailOrientadorJob;
 use App\Jobs\MailCoorientadorJob;
 use App\Jobs\MailProjetoHomologadoJob;
+use App\Jobs\MailProjetoNaoHomologadoJob;
 //
 use App\Pessoa;
 use App\Funcao;
@@ -841,32 +842,48 @@ class ProjetoController extends Controller
             $IDprojetos = explode(',', $req->all()['projetos_id']);
 
 	        // Busca o ID de todos os projetos homologados antes
-	        $aprovadosEdicao = Projeto::select('id')
+	        $homologadosAntes = Projeto::select('id')
                 ->where('edicao_id', '=', Edicao::getEdicaoId())
-                ->where('situacao_id', '=', 3)
-                //Homologado - HARD CODED
+                ->where('situacao_id', '=', 3) // Homologado - HARD CODED
                 ->get()
                 ->toArray();
 
-            $aprovadosEdicao = array_column($aprovadosEdicao, 'id');
+			$homologadosAntes = array_column($homologadosAntes, 'id');
 
-            // Faz a diferença entre o conjunto dos projetos homologados agora com os homologados antes
-            $IDprojetosEmail = array_diff($IDprojetos, $aprovadosEdicao);
+	        // Faz a diferença entre o conjunto dos projetos homologados agora com os homologados antes
+			$IDprojetosHomologados = array_diff($IDprojetos, $homologadosAntes);
 
-            // Muda o status de todos projetos da edição para Não Homologado
-            Projeto::where('edicao_id', '=', Edicao::getEdicaoId())
-                ->where('situacao_id', '=', 3)
-                //Não Homologado - HARD CODED
-                ->update(['situacao_id' => 2]);
+
+	        // Busca o ID de todos os projetos não homologados antes
+			$naoHomologadosAntes = Projeto::select('id')
+				->where('edicao_id', '=', Edicao::getEdicaoId())
+				->where('situacao_id', '=', 2) // Não Homologado - HARD CODED
+				->get()
+				->toArray();
+
+			$naoHomologadosAntes = array_column($naoHomologadosAntes, 'id');
+
+			// Faz a diferença entre o conjunto dos projetos não homologados antes com os homologados agora
+			$IDprojetosNaoHomologados = array_diff($naoHomologadosAntes, $IDprojetos);
+			// Faz a diferença entre o conjunto dos projetos homologados antes com os homologados agora
+			$IDprojetosNaoHomologadosAux = array_diff($homologadosAntes, $IDprojetos);
+
+			$IDprojetosNaoHomologados = array_merge($IDprojetosNaoHomologados, $IDprojetosNaoHomologadosAux);
+
 
             // Muda o status dos projetos selecionados para Homologado
-            Projeto::whereIn('id', $IDprojetos)
-                //Homologado - HARD CODED
-                ->update(['situacao_id' => 3]);
+			Projeto::whereIn('id', $IDprojetosHomologados)
+				->update(['situacao_id' => 3]); // Homologado - HARD CODED
+
+			// Muda o status dos projetos selecionados para Não Homologado
+			if (count($IDprojetosNaoHomologados) > 0) {
+				Projeto::whereIn('id', $IDprojetosNaoHomologados)
+					->update(['situacao_id' => 2]); // Não Homologado - HARD CODED
+			}
 
             // Dispara os emails dos projetos homologados
             // É IMPORTANTE estar com a queue em "database" e não em "sync"
-            foreach ($IDprojetosEmail as $IDprojeto) {
+            foreach ($IDprojetosHomologados as $IDprojeto) {
 
                 $projeto = Projeto::select('id', 'titulo')
                     ->where('id', $IDprojeto)
@@ -875,7 +892,8 @@ class ProjetoController extends Controller
                 if ($projeto->count()) {
 
                     foreach ($projeto[0]->pessoas as $pessoa) {
-                        $emailJob = (new MailProjetoHomologadoJob($pessoa->email, $pessoa->nome, $projeto[0]->titulo, $projeto[0]->id))->delay(\Carbon\Carbon::now()->addSeconds(3));
+                        $emailJob = (new MailProjetoHomologadoJob($pessoa->email, $pessoa->nome, $projeto[0]->titulo, $projeto[0]->id))
+							->delay(\Carbon\Carbon::now()->addSeconds(3));
                         dispatch($emailJob);
                     }
 
@@ -883,12 +901,29 @@ class ProjetoController extends Controller
 
             }
 
-        }else{
-            //Muda o status de todos projetos da edição para Não Homologado
-            Projeto::where('edicao_id', '=', Edicao::getEdicaoId())
-                //Não Homologado - HARD CODED
-                ->update(['situacao_id' => 2]);
-        }
+            // primeira homologação de trabalhos
+			if(count($homologadosAntes) == 0) {
+				// Dispara os emails dos projetos não homologado
+				foreach ($IDprojetosNaoHomologados as $IDprojeto) {
+
+					$projeto = Projeto::select('id', 'titulo')
+						->where('id', $IDprojeto)
+						->get();
+
+					if ($projeto->count()) {
+
+						foreach ($projeto[0]->pessoas as $pessoa) {
+							$emailJob = (new MailProjetoNaoHomologadoJob($pessoa->email, $pessoa->nome, $projeto[0]->titulo))
+								->delay(\Carbon\Carbon::now()->addSeconds(3));
+							dispatch($emailJob);
+						}
+
+					}
+
+				}
+			}
+
+	    }
 
 	    //dd($IDprojetos);
         return redirect(route('administrador.projetos'));
@@ -896,9 +931,9 @@ class ProjetoController extends Controller
     }
 
     public function confirmaPresenca($id){
-    	$p = Projeto::where('id', $id)->where('situacao_id',Situacao::where('situacao', 'Homologado')->get()->first()->id)
-			->update(['presenca' => TRUE,
-			]);
+    	$p = Projeto::where('id', $id)
+			->where('situacao_id', '!=', Situacao::where('situacao', 'Não Homologado')->get()->first()->id)
+			->update(['presenca' => true]);
 
     	return view('confirmaPresenca', ['p' => $p]);
     }

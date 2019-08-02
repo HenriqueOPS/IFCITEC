@@ -9,19 +9,19 @@
         	<thead>
         		<tr>
     				<th>Nome</th>
-            <th>Status</th>
+            		<th>Status</th>
   				</tr>
         	</thead>
   			<tbody>
   				@foreach($projetos as $projeto)
   				<tr>
     				<td>{{$projeto->titulo}}</td>
-            <td>{{$projeto->situacao}}</td>
+            		<td>{{$projeto->situacao}}</td>
   				</tr>
   				@endforeach
-  			</tbody>	
-  
-		</table> 
+  			</tbody>
+
+		</table>
 	</div>
 </div>
 @endsection

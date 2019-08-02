@@ -246,7 +246,8 @@ class ComissaoAvaliadoraController extends Controller
 				]);
       	}
 
-        $emailJob = (new MailComissaoAvaliadoraJob())->delay(\Carbon\Carbon::now()->addSeconds(3));
+        $emailJob = (new MailComissaoAvaliadoraJob(Auth::user()->nome, Auth::user()->email))
+			->delay(\Carbon\Carbon::now()->addSeconds(3));
         dispatch($emailJob);
 
         return redirect()->route('autor');

@@ -152,12 +152,6 @@
 
                                 <a class="dados-projeto" projeto-id="{{$projeto->id}}"><i class="material-icons blue-icon" href="#" >remove_red_eye</i></a>
 
-                                @if($projeto->getStatus() == "Não Avaliado" || $projeto->getStatus() == "Homologado")
-                                    <a href="{{route('vinculaAvaliador',$projeto->id)}}"><i class="material-icons">assignment_ind</i></a>
-                                @elseif ($projeto->getStatus() == "Não Homologado" || $projeto->getStatus() == "Cadastrado")
-                                    <a href="{{route('vinculaRevisor',$projeto->id)}}"><i class="material-icons">assignment_ind</i></a>
-                                @endif
-
                             </div>
                         </div>
 

@@ -12,14 +12,14 @@ class MailComissao extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $nome;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
-    {
-        //
+    public function __construct($nome) {
+        $this->nome = $nome;
     }
 
     /**
@@ -27,8 +27,7 @@ class MailComissao extends Mailable
      *
      * @return $this
      */
-    public function build()
-    {
-        return  $this->subject('IFCITEC')->view('mail.primeiro');
+    public function build() {
+        return $this->subject('IFCITEC')->view('mail.primeiro')->withNome($this->nome);
     }
 }

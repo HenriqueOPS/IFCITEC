@@ -29,6 +29,6 @@ class MailVoluntario extends Mailable
      */
     public function build()
     {
-        return  $this->subject('IFCITEC')->view('mail.mailVoluntario');
+        return $this->subject('IFCITEC')->view('mail.mailVoluntario');
     }
 }

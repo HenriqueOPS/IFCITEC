@@ -1386,7 +1386,8 @@ class RelatorioController extends Controller
 				->get()
 				->toArray();
 
-		return \PDF::loadView('relatorios.statusProjetos', array('projetos' => $projetos))->download('status_projetos.pdf');
+		return \PDF::loadView('relatorios.statusProjetos', array('projetos' => $projetos))
+			->download('status_projetos.pdf');
 	}
 
 	public function projetosCompareceram($edicao){

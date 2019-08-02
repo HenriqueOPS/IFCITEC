@@ -35,9 +35,7 @@
 
 								@if(\App\Edicao::consultaPeriodo('Homologação'))
 									<span><a href="{{ route('formularioAvaliacao', ['homologacao', $projeto->id]) }}">{{$projeto->titulo}}</a></span>
-								@endif
-
-								@if(\App\Edicao::consultaPeriodo('Avaliação'))
+								@elseif(\App\Edicao::consultaPeriodo('Avaliação'))
 									<span><a href="{{ route('formularioAvaliacao', ['avaliacao', $projeto->id]) }}">{{$projeto->titulo}}</a></span>
 								@endif
 

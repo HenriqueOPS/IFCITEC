@@ -265,9 +265,7 @@
 									<td>
 										<p>Prezado(a) {{$nome}},</p>
 										<br>
-										<p>Você inscreveu-se para Avaliador(a) e/ou Homologador(a) da Feira de Ciências e Inovação Tecnológica do IFRS - Campus Canoas.</p>
-										<br>
-										<p>Fique atento para as datas importantes disponíveis no site do evento. Em caso de qualquer dúvida, faça contato conosco pelo e-mail ifcitec@canoas.ifrs.edu.br</p>
+										<p>Infelizmente seu trabalho intitulado "{{$titulo}}" não foi homologado. Ainda sim esperamos sua visita na Feira de Ciências e Inovação Tecnológica do IFRS - Campus Canoas.</p>
 									</td>
 								</tr>
 								<tr>
@@ -304,4 +302,3 @@
 </table>
 </body>
 </html>
-

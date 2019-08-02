@@ -61,7 +61,8 @@ class VoluntarioController extends Controller
 				]
 			);
 
-			$emailJob = (new MailVoluntarioJob())->delay(\Carbon\Carbon::now()->addSeconds(3));
+			$emailJob = (new MailVoluntarioJob(Auth::user()->email))
+				->delay(\Carbon\Carbon::now()->addSeconds(3));
 			dispatch($emailJob);
 
 
