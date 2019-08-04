@@ -180,7 +180,7 @@ return [
         LaravelLegends\PtBrValidator\ValidatorProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
 
-		//LaravelQRCode\Providers\QRCodeServiceProvider::class,
+		LaravelQRCode\Providers\QRCodeServiceProvider::class,
 	],
 
     /*
