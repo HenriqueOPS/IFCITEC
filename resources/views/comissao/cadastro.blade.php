@@ -10,6 +10,17 @@
                             <h2>Cadastro de Comissão Avaliadora</h2>
                         </div>
                     </div>
+
+					@if ($temCadastro)
+
+						<div class="row">
+							<div class="col-md-12">
+								<h4 style="text-align: center;">Você já se cadastrou para fazer parte da comissão avaliadora</h4>
+							</div>
+						</div>
+
+					@else
+
                     <form method="POST" action="{{route('cadastroAvaliador')}}">
 
                         {{ csrf_field() }}
@@ -243,6 +254,8 @@
                             </div>
                         </div>
                     </form>
+
+					@endif
                 </div>
             </div>
         </div>

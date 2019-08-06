@@ -83,7 +83,13 @@ class ComissaoAvaliadoraController extends Controller
         }
     }
 
-    public function cadastrarComissao(){
+    public function cadastrarComissao() {
+
+    	$temCadastro = DB::table('comissao_edicao')
+			->where('edicao_id', Edicao::getEdicaoId())
+			->where('pessoa_id', Auth::id())
+			->count();
+
         $areas = DB::table('area_conhecimento')
 			->join('area_edicao', 'area_conhecimento.id', '=', 'area_edicao.area_id')
 			->select('area_conhecimento.id','area_conhecimento.area_conhecimento', 'area_conhecimento.nivel_id')
@@ -142,7 +148,7 @@ class ComissaoAvaliadoraController extends Controller
 
 		$data = null;
 
-        if ($dados->titulacao != null)
+        if ($dados->endereco_id != null)
             $data = Endereco::find($dados->endereco_id);
 
         return view('comissao.cadastro', [
@@ -150,7 +156,8 @@ class ComissaoAvaliadoraController extends Controller
 			'niveis' => $niveis,
 			'dados' => $dados,
 			'data' => $data,
-			'areasConhecimento' => $areasConhecimento
+			'areasConhecimento' => $areasConhecimento,
+			'temCadastro' => $temCadastro
 		]);
     }
 
