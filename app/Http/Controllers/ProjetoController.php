@@ -339,129 +339,132 @@ class ProjetoController extends Controller
 		$integrantesIds = Projeto::find($id)->pessoas->toArray();
 		$integrantesIds = array_column($integrantesIds, 'id');
 
-		if(!in_array(Auth::user()->id, $integrantesIds) ||
-			!(Auth::user()->temFuncao('Organizador') || Auth::user()->temFuncao('Administrador')))
-			return redirect()->route('home');
+		if (in_array(Auth::user()->id, $integrantesIds) ||
+			Auth::user()->temFuncao('Organizador') ||
+			Auth::user()->temFuncao('Administrador')) {
 
-		// altera o projeto em si
-		Projeto::where('id', '=', $id)
-			->update([
-				'titulo' => strtoupper($req->all()['titulo']),
-				'resumo' => $req->all()['resumo'],
-				'area_id' => $req->all()['area_conhecimento'],
-				'nivel_id' => $req->all()['nivel']
-			]);
+			// altera o projeto em si
+			Projeto::where('id', '=', $id)
+				->update([
+					'titulo' => strtoupper($req->all()['titulo']),
+					'resumo' => $req->all()['resumo'],
+					'area_id' => $req->all()['area_conhecimento'],
+					'nivel_id' => $req->all()['nivel']
+				]);
 
-		// quebra as palavras-chave que vieram do formulário
-		$palavrasChave = explode(",", $req->all()['palavras_chaves']);
+			// quebra as palavras-chave que vieram do formulário
+			$palavrasChave = explode(",", $req->all()['palavras_chaves']);
 
-		// deleta as palavras-chave do projeto
-		DB::table('palavra_projeto')
-			->where('projeto_id', $id)
-			->delete();
+			// deleta as palavras-chave do projeto
+			DB::table('palavra_projeto')
+				->where('projeto_id', $id)
+				->delete();
 
-		// recria as palavras chave
-		foreach ($palavrasChave as $palavra)
-			Projeto::find($id)->palavrasChaves()->attach(PalavraChave::create(['palavra' => $palavra]));
+			// recria as palavras chave
+			foreach ($palavrasChave as $palavra)
+				Projeto::find($id)->palavrasChaves()->attach(PalavraChave::create(['palavra' => $palavra]));
 
-		$projeto = Projeto::find($id);
+			$projeto = Projeto::find($id);
 
-		// deleta todos os vinculos de pessoa ao projeto
-		DB::table('escola_funcao_pessoa_projeto')
-			->where('projeto_id', '=', $id)
-			->delete();
+			// deleta todos os vinculos de pessoa ao projeto
+			DB::table('escola_funcao_pessoa_projeto')
+				->where('projeto_id', '=', $id)
+				->delete();
 
-		// Cria os vinculos de Autores ao projeto
-		foreach ($req->all()['autor'] as $idAutor) {
+			// Cria os vinculos de Autores ao projeto
+			foreach ($req->all()['autor'] as $idAutor) {
 
-			if ($idAutor) {
+				if ($idAutor) {
 
-				$dataAutor = Pessoa::select(['id', 'nome', 'email'])->find($idAutor);
-				if (!$dataAutor->temFuncao('Autor')) {
-					DB::table('funcao_pessoa')
+					$dataAutor = Pessoa::select(['id', 'nome', 'email'])->find($idAutor);
+					if (!$dataAutor->temFuncao('Autor')) {
+						DB::table('funcao_pessoa')
+							->insert([
+								'edicao_id' => Edicao::getEdicaoId(),
+								'funcao_id' => Funcao::select(['id'])->where('funcao', 'Autor')->first()->id,
+								'pessoa_id' => $idAutor,
+								'homologado' => false
+							]);
+					}
+
+					DB::table('escola_funcao_pessoa_projeto')
 						->insert([
-							'edicao_id' => Edicao::getEdicaoId(),
+							'escola_id' => $req->all()['escola'],
 							'funcao_id' => Funcao::select(['id'])->where('funcao', 'Autor')->first()->id,
 							'pessoa_id' => $idAutor,
-							'homologado' => false
+							'projeto_id' => $id,
+							'edicao_id' => Edicao::getEdicaoId()
 						]);
+
+					$emailJob = (new MailAutorJob($dataAutor->email, $dataAutor->nome, $projeto->titulo))
+						->delay(\Carbon\Carbon::now()->addSeconds(60));
+					dispatch($emailJob);
+
 				}
-
-				DB::table('escola_funcao_pessoa_projeto')
-					->insert([
-						'escola_id' => $req->all()['escola'],
-						'funcao_id' => Funcao::select(['id'])->where('funcao', 'Autor')->first()->id,
-						'pessoa_id' => $idAutor,
-						'projeto_id' => $id,
-						'edicao_id' => Edicao::getEdicaoId()
-					]);
-
-				$emailJob = (new MailAutorJob($dataAutor->email, $dataAutor->nome, $projeto->titulo))
-					->delay(\Carbon\Carbon::now()->addSeconds(60));
-				dispatch($emailJob);
 
 			}
 
-		}
+			// Cria o vinculo de Orientador ao projeto
+			$dataOrientador = Pessoa::select(['id', 'nome', 'email'])->find($req->all()['orientador']);
+			if (!$dataOrientador->temFuncao('Orientador')) {
+				DB::table('funcao_pessoa')
+					->insert([
+						'edicao_id' => Edicao::getEdicaoId(),
+						'funcao_id' => Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id,
+						'pessoa_id' => $req->all()['orientador'],
+						'homologado' => false
+					]);
+			}
 
-		// Cria o vinculo de Orientador ao projeto
-		$dataOrientador = Pessoa::select(['id','nome','email'])->find($req->all()['orientador']);
-		if (!$dataOrientador->temFuncao('Orientador')) {
-			DB::table('funcao_pessoa')
+			DB::table('escola_funcao_pessoa_projeto')
 				->insert([
-					'edicao_id' => Edicao::getEdicaoId(),
+					'escola_id' => $req->all()['escola'],
 					'funcao_id' => Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id,
 					'pessoa_id' => $req->all()['orientador'],
-					'homologado' => false
+					'projeto_id' => $id,
+					'edicao_id' => Edicao::getEdicaoId()
 				]);
-		}
 
-		DB::table('escola_funcao_pessoa_projeto')
-			->insert([
-				'escola_id' => $req->all()['escola'],
-				'funcao_id' => Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id,
-				'pessoa_id' => $req->all()['orientador'],
-				'projeto_id' => $id,
-				'edicao_id' => Edicao::getEdicaoId()
-			]);
+			$emailJob = (new MailOrientadorJob($dataOrientador->email, $dataOrientador->nome, $projeto->titulo))
+				->delay(\Carbon\Carbon::now()->addSeconds(60));
+			dispatch($emailJob);
 
-		$emailJob = (new MailOrientadorJob($dataOrientador->email, $dataOrientador->nome, $projeto->titulo))
-			->delay(\Carbon\Carbon::now()->addSeconds(60));
-		dispatch($emailJob);
+			// Cria o vinculo dos Coorientadores ao projeto
+			foreach ($req->all()['coorientador'] as $idCoorientador) {
 
-		// Cria o vinculo dos Coorientadores ao projeto
-		foreach ($req->all()['coorientador'] as $idCoorientador) {
+				if ($idCoorientador) {
 
-			if ($idCoorientador) {
+					$dataCoorientador = Pessoa::select(['id', 'nome', 'email'])->find($idCoorientador);
+					if (!$dataCoorientador->temFuncao('Coorientador')) {
+						DB::table('funcao_pessoa')
+							->insert([
+								'edicao_id' => Edicao::getEdicaoId(),
+								'funcao_id' => Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id,
+								'pessoa_id' => $idCoorientador,
+								'homologado' => false
+							]);
+					}
 
-				$dataCoorientador = Pessoa::select(['id','nome','email'])->find($idCoorientador);
-				if (!$dataCoorientador->temFuncao('Coorientador')) {
-					DB::table('funcao_pessoa')
+					DB::table('escola_funcao_pessoa_projeto')
 						->insert([
-							'edicao_id' => Edicao::getEdicaoId(),
+							'escola_id' => $req->all()['escola'],
 							'funcao_id' => Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id,
 							'pessoa_id' => $idCoorientador,
-							'homologado' => false
+							'projeto_id' => $id,
+							'edicao_id' => Edicao::getEdicaoId(),
 						]);
+
+					$emailJob = (new MailCoorientadorJob($dataCoorientador->email, $dataCoorientador->nome, $projeto->titulo))
+						->delay(\Carbon\Carbon::now()->addSeconds(60));
+					dispatch($emailJob);
 				}
 
-				DB::table('escola_funcao_pessoa_projeto')
-					->insert([
-						'escola_id' => $req->all()['escola'],
-						'funcao_id' => Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id,
-						'pessoa_id' => $idCoorientador,
-						'projeto_id' => $id,
-						'edicao_id' => Edicao::getEdicaoId(),
-					]);
-
-				$emailJob = (new MailCoorientadorJob($dataCoorientador->email, $dataCoorientador->nome, $projeto->titulo))
-					->delay(\Carbon\Carbon::now()->addSeconds(60));
-				dispatch($emailJob);
 			}
 
+			return redirect()->route('projeto.show', ['projeto' => $projeto->id]);
 		}
 
-		return redirect()->route('projeto.show', ['projeto' => $projeto->id]);
+		return redirect()->route('home');
 	}
 
 	/**
