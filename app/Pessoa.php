@@ -116,8 +116,8 @@ class Pessoa extends Authenticatable {
 			}
 
 			if ($query->count()) {
-				//Verifica se não foi homologado como Homologador ou Avaliador
-				if (($funcao=='Homologador' || $funcao=='Avaliador')) {
+				// Verifica se não foi homologado como Homologador ou Avaliador
+				if ($funcao == 'Homologador' || $funcao == 'Avaliador') {
                     if (!$query->get()[0]->homologado && !$flag) {
                         return false;
                     }
@@ -137,13 +137,13 @@ class Pessoa extends Authenticatable {
 
         if($EdicaoId){
 
-            //Faz a consulta na mão por causa dos Wheres
             $query = DB::table('funcao_pessoa')
 						->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
 						//Busca pela Função
 						->where('funcao.funcao','=',$funcao)
 						//Busca pela Pessoa
-						->where('funcao_pessoa.pessoa_id','=',$this->id);
+						->where('funcao_pessoa.pessoa_id','=',$this->id)
+            			->where('funcao_pessoa.homologado', '=', true);
 
             //Busca pela edição
             if($EdicaoId) {
@@ -220,20 +220,19 @@ class Pessoa extends Authenticatable {
         if($EdicaoId){
 
             $query = DB::table('areas_comissao')
-                            ->join('area_conhecimento', 'areas_comissao.area_id', '=', 'area_conhecimento.id')
-                            ->join('comissao_edicao', 'areas_comissao.comissao_edicao_id', '=', 'comissao_edicao.id')
-                            //Busca pela Pessoa
-                            ->where('comissao_edicao.pessoa_id','=',$pessoa)
-                            //Busca pelo Nível
-                            ->where('area_conhecimento.id','=',$area)
-                            //Busca pela Edição
-                            ->where('comissao_edicao.edicao_id', $EdicaoId)
-                            ->orWhere('edicao_id',null)
-                            ->get();
+				->join('area_conhecimento', 'areas_comissao.area_id', '=', 'area_conhecimento.id')
+				->join('comissao_edicao', 'areas_comissao.comissao_edicao_id', '=', 'comissao_edicao.id')
+				//Busca pela Pessoa
+				->where('comissao_edicao.pessoa_id', '=', $pessoa)
+				//Busca pelo Nível
+				->where('area_conhecimento.id', '=', $area)
+				//Busca pela Edição
+				->where('comissao_edicao.edicao_id', $EdicaoId)
+				->orWhere('edicao_id', null)
+				->get();
 
-            if(!$query->count()) {
+            if(!$query->count())
                 return true;
-            }
         }
 
         return false;

@@ -14,9 +14,9 @@
                     </a>
                 </div>
                 <div class="panel-body">
-                @if (session('status'))
+                @if (isset($success))
                 <div class="alert alert-success">
-                    {{ session('status') }}
+                    {{ $success }}
                 </div>
                 @endif
 

@@ -51,7 +51,7 @@
                                 </span>
                                     <div class="form-group label-floating">
                                         <label class="control-label">Titulação Em...</label>
-                                        <input type="text" class="form-control" name="titulacao"
+                                        <input type="text" class="form-control" name="titulacao" maxlength="190"
                                                value="{{isset($dados->titulacao) ? $dados->titulacao : ''}}">
                                     </div>
                                     @if ($errors->has('titulacao'))
@@ -67,7 +67,7 @@
                                 </span>
                                     <div class="form-group label-floating">
                                         <label class="control-label">Link Lattes</label>
-                                        <input type="url" class="form-control" name="lattes"
+                                        <input type="url" class="form-control" name="lattes" maxlength="190"
                                                value="{{isset($dados->lattes) ? $dados->lattes : ''}}"
                                                required>
                                     </div>
@@ -84,7 +84,7 @@
                                 </span>
                                     <div class="form-group label-floating">
                                         <label class="control-label">Profissão</label>
-                                        <input type="text" class="form-control" name="profissao"
+                                        <input type="text" class="form-control" name="profissao" maxlength="190"
                                                value="{{isset($dados->profissao) ? $dados->profissao : ''}}" required>
                                     </div>
                                     @if ($errors->has('profissao'))
@@ -100,7 +100,7 @@
                                 </span>
                                     <div class="form-group label-floating">
                                         <label class="control-label">Instituição</label>
-                                        <input type="text" class="form-control" name="instituicao"
+                                        <input type="text" class="form-control" name="instituicao" maxlength="190"
                                                value="{{isset($dados->instituicao) ? $dados->instituicao : ''}}"
                                                required>
                                     </div>
@@ -171,7 +171,7 @@
                                 </span>
                                     <div class="form-group">
                                         <label class="control-label">CEP</label>
-                                        <input type="text" class="form-control" name="cep" id="cep"
+                                        <input type="text" class="form-control" name="cep" id="cep" maxlength="10"
                                                value="{{isset($data->cep) ? $data->cep : ''}}" required>
                                     </div>
                                 </div>
@@ -181,7 +181,7 @@
                                 </span>
                                     <div class="form-group">
                                         <label class="control-label">Rua</label>
-                                        <input type="text" class="form-control" name="endereco" id="rua"
+                                        <input type="text" class="form-control" name="endereco" id="rua" maxlength="100"
                                                value="{{isset($data->endereco) ? $data->endereco : ''}}" required>
                                     </div>
                                 </div>
@@ -191,7 +191,7 @@
                                 </span>
                                     <div class="form-group">
                                         <label class="control-label">Bairro</label>
-                                        <input type="text" class="form-control" name="bairro" id="bairro"
+                                        <input type="text" class="form-control" name="bairro" id="bairro" maxlength="40"
                                                value="{{isset($data->bairro) ? $data->bairro : ''}}" required>
                                     </div>
                                 </div>
@@ -201,7 +201,7 @@
                                 </span>
                                     <div class="form-group">
                                         <label class="control-label">Cidade</label>
-                                        <input type="text" class="form-control" name="municipio" id="cidade"
+                                        <input type="text" class="form-control" name="municipio" id="cidade" maxlength="40"
                                                value="{{isset($data->municipio) ? $data->municipio : ''}}" required>
                                     </div>
                                 </div>
@@ -211,7 +211,7 @@
                                 </span>
                                     <div class="form-group">
                                         <label class="control-label">Estado</label>
-                                        <input type="text" class="form-control" name="uf" id="uf"
+                                        <input type="text" class="form-control" name="uf" id="uf" maxlength="20"
                                                value="{{isset($data->uf) ? $data->uf : ''}}" required>
                                     </div>
                                 </div>
@@ -221,7 +221,7 @@
                                 </span>
                                     <div class="form-group">
                                         <label class="control-label">Número</label>
-                                        <input type="text" class="form-control" name="numero"
+                                        <input type="text" class="form-control" name="numero" maxlength="50"
                                                value="{{isset($data->numero) ? $data->numero : ''}}" required>
                                     </div>
                                 </div>

@@ -31,22 +31,25 @@ class ForgotPasswordController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('guest');
     }
 
-    public function emailSenha(Request $req)
-    {
+    public function emailSenha(Request $req) {
         $data = $req->all();
-        if(! Pessoa::where('email',$data['email'])->get()->isEmpty()){
-        $emailJob = (new MailSenhaJob($data['email'], $data['_token']))->delay(\Carbon\Carbon::now()->addSeconds(3));
-        dispatch($emailJob);
-        $req->session()->flash('status', 'O email de recuperação de senha foi enviado com sucesso');
-        return view('auth.passwords.email');
+
+        if (Pessoa::where('email', $data['email'])->count()) {
+			$emailJob = (new MailSenhaJob($data['email'], $data['_token']))
+				->delay(\Carbon\Carbon::now()->addSeconds(3));
+			dispatch($emailJob);
+
+			return view('auth.passwords.email', [
+				'success' => 'O email de recuperação de senha foi enviado com sucesso'
+			]);
         }
-        else{
-            return view('auth.passwords.email', array('error' => 'Algo deu errado com o e-mail informado'));
-        }
+
+        return view('auth.passwords.email', [
+        	'error' => 'O email informado não está cadastro no sistema'
+		]);
     }
 }
