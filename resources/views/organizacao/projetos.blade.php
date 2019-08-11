@@ -28,6 +28,12 @@
 						Presença
 					</a>
 				</li>
+				<li>
+					<a href="{{route('organizacao.usuarios')}}">
+						<i class="material-icons">person</i>
+						Usuários
+					</a>
+				</li>
 			</ul>
 		</div>
 	</div>
@@ -40,8 +46,8 @@
         <div class="col-md-12 main main-raised">
 
             <div class="list-projects">
-                <h5><b id="geral">Número de projetos: <span id="nProjetos">{{$numeroProjetos}}</span> </b></h5>
-                <h5><b id="situacao">Número de projetos: <span>{{$numeroProjetos}}</span> </b></h5>
+                <h5><b id="geral">Número de projetos: <span id="nProjetos">{{ count($projetos) }}</span> </b></h5>
+                <h5><b id="situacao">Número de projetos: <span>{{ count($projetos) }}</span> </b></h5>
 
                 <div>
                     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
@@ -86,76 +92,65 @@
 
                 <div>
 
-                    @foreach($projetos as $projeto)
+						@foreach($projetos as $projeto)
 
-                        <div class="row project situacao-{{$projeto->situacao_id}}">
-                            <div class="col-md-10">
-                                <div class="project-title">
-                                    <span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
-                                </div>
-                                <div class="project-info">
-                                    Integrantes:
-                                    @foreach ($autores as $autor)
-                                        @if($autor->projeto_id == $projeto->id)
-                                            {{$autor->nome}},
-                                        @endif
-                                    @endforeach
+							<div class="row project situacao-{{ $projeto->situacao_id }}">
+								<div class="col-md-10">
+									<div class="project-title">
+										<span><a href="{{ route('projeto.show', ['projeto' => $projeto->id]) }}">{{ $projeto->titulo }}</a></span>
+									</div>
+									<div class="project-info">
+										Integrantes:
 
-                                    @foreach ($orientadores as $orientador)
-                                        @if($orientador->projeto_id == $projeto->id)
-                                            {{$orientador->nome}},
-                                        @endif
-                                    @endforeach
+										@foreach($projeto->pessoas as $pessoa)
+											{{ $pessoa->nome }},
+										@endforeach
+									</div>
+								</div>
+								<div class="col-md-2 actions text-center">
+									<div class="status">
+										@if($projeto->getStatus() == "Não Homologado" || $projeto->getStatus() == "Não Avaliado")
+											<span class="label label-info">{{$projeto->getStatus()}}</span>
+										@elseif ($projeto->getStatus() == "Homologado" || $projeto->getStatus() == "Avaliado")
+											<span class="label label-success">{{$projeto->getStatus()}}</span>
+										@elseif ($projeto->getStatus() == "Não Compareceu")
+											<span class="label label-danger">{{$projeto->getStatus()}}</span>
+										@else
+											<span class="label label-default">{{$projeto->getStatus()}}</span>
+										@endif
 
-                                    @foreach($coorientadores as $coorientador)
-                                        @if($coorientador->projeto_id == $projeto->id)
-                                            {{$coorientador->nome}},
-                                        @endif
-                                    @endforeach
-                                </div>
-                            </div>
-                            <div class="col-md-2 actions text-center">
-                                <div class="status">
-                                    @if($projeto->getStatus() == "Não Homologado" || $projeto->getStatus() == "Não Avaliado")
-                                        <span class="label label-info">{{$projeto->getStatus()}}</span>
-                                    @elseif ($projeto->getStatus() == "Homologado" || $projeto->getStatus() == "Avaliado")
-                                        <span class="label label-success">{{$projeto->getStatus()}}</span>
-                                    @elseif ($projeto->getStatus() == "Não Compareceu")
-                                        <span class="label label-danger">{{$projeto->getStatus()}}</span>
-                                    @else
-                                        <span class="label label-default">{{$projeto->getStatus()}}</span>
-                                    @endif
+										@if($projeto->getStatus() == "Homologado")
+											@if($projeto->statusPresenca())
+												<span class="label label-warning" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+											@else
+												<span class="label label-default" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+											@endif
+										@endif
 
-                                    @if($projeto->getStatus() == "Homologado")
-                                        @if($projeto->statusPresenca())
-                                            <span class="label label-warning" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
-                                        @else
-                                            <span class="label label-default" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
-                                        @endif
-                                    @endif
+										@if($projeto->getStatus() == "Não Homologado")
+											@if($projeto->statusHomologacao())
+												<span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+											@else
+												<span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+											@endif
+										@elseif($projeto->getStatus() == "Não Avaliado")
+											@if($projeto->statusAvaliacao())
+												<span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+											@else
+												<span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+											@endif
+										@endif
 
-                                    @if($projeto->getStatus() == "Não Homologado")
-                                        @if($projeto->statusHomologacao())
-                                            <span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
-                                        @else
-                                            <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
-                                        @endif
-                                    @elseif($projeto->getStatus() == "Não Avaliado")
-                                        @if($projeto->statusAvaliacao())
-                                            <span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
-                                        @else
-                                            <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
-                                        @endif
-                                    @endif
+									</div>
 
-                                </div>
+									<a class="dados-projeto" projeto-id="{{$projeto->id}}" href="#"><i class="material-icons blue-icon">remove_red_eye</i></a>
 
-                                <a class="dados-projeto" projeto-id="{{$projeto->id}}"><i class="material-icons blue-icon" href="#" >remove_red_eye</i></a>
+								</div>
+							</div>
 
-                            </div>
-                        </div>
+						@endforeach
 
-                    @endforeach
+
                 </div>
 
             </div>
@@ -235,13 +230,13 @@ $('.dados-projeto').click(function(){
 
         $("#projetoStatus").html('');
 
-        if(res.situacao == "Não Homologado" || res.situacao == "Não Avaliado"){
+        if (res.situacao == "Não Homologado" || res.situacao == "Não Avaliado") {
             $("#projetoStatus").html('<span class="label label-info">'+res.situacao+'</span>');
-        }else if(res.situacao == "Homologado" || res.situacao == "Avaliado"){
+        } else if(res.situacao == "Homologado" || res.situacao == "Avaliado") {
             $("#projetoStatus").html('<span class="label label-success">' + res.situacao + '</span>');
-        }else if(res.situacao == "Não Compareceu"){
+        } else if(res.situacao == "Não Compareceu") {
             $("#projetoStatus").html('<span class="label label-danger">' + res.situacao + '</span>');
-        }else{
+        } else {
             $("#projetoStatus").html('<span class="label label-default">' + res.situacao + '</span>');
         }
 
@@ -253,10 +248,7 @@ $('.dados-projeto').click(function(){
             $("#homologadores").html('');
 
             homologadores.forEach(function (homologador) {
-                if(homologador.revisado)
-                    $("#homologadores").append('<span>'+homologador.nome+' => '+homologador.nota_final+'</span><br>');
-                else
-                    $("#homologadores").append('<span>'+homologador.nome+'</span><br>');
+                $("#homologadores").append('<span>' + homologador.nome + '</span><br>');
             });
         }
 
@@ -265,10 +257,7 @@ $('.dados-projeto').click(function(){
             $("#avaliadores").html('');
 
             avaliadores.forEach(function (avaliador) {
-                if(avaliador.revisado)
-                    $("#avaliadores").append('<span>'+avaliador.nome+' => '+avaliador.nota_final+'</span><br>');
-                else
-                    $("#avaliadores").append('<span>'+avaliador.nome+'</span><br>');
+				$("#avaliadores").append('<span>' + avaliador.nome + '</span><br>');
             });
         }
 

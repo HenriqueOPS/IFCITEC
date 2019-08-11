@@ -315,6 +315,9 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
 	// Presença
     Route::get('/organizador/presenca', 'OrganizadorController@presenca')->name('organizacao.presenca');
 
+	// Usuarios
+	Route::get('/organizador/usuarios', 'OrganizadorController@usuarios')->name('organizacao.usuarios');
+
 });
 
 

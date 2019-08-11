@@ -29,6 +29,12 @@
                             Presença
                         </a>
                     </li>
+					<li>
+						<a href="{{route('organizacao.usuarios')}}">
+							<i class="material-icons">person</i>
+							Usuários
+						</a>
+					</li>
                 </ul>
             </div>
         </div>
