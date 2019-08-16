@@ -1283,25 +1283,39 @@ class RelatorioController extends Controller
 	}
 
 	public function homologadoresArea($edicao){
-		$areas = DB::table('area_conhecimento')->join('nivel', 'area_conhecimento.nivel_id', '=', 'nivel.id')
-				->join('area_edicao', 'area_conhecimento.id', '=', 'area_edicao.area_id')
-				->select('area_conhecimento.area_conhecimento', 'nivel.nivel', 'area_conhecimento.id')
-				->where('area_edicao.edicao_id',$edicao)
-				->orderBy('nivel.nivel')
+		$areas = DB::table('area_conhecimento')
+			->select('area_conhecimento.area_conhecimento', 'nivel.nivel', 'area_conhecimento.id')
+			->join('nivel', 'area_conhecimento.nivel_id', '=', 'nivel.id')
+			->join('area_edicao', 'area_conhecimento.id', '=', 'area_edicao.area_id')
+			->where('area_edicao.edicao_id', '=', $edicao)
+			->orderBy('nivel.nivel')
+			->get()
+			->toArray();
+
+		$homologadoresAreas = [];
+
+		foreach ($areas as $area) {
+
+			$homologadores = DB::table('pessoa')
+				->select('pessoa.nome', 'areas_comissao.area_id')
+				->join('comissao_edicao', 'pessoa.id', '=', 'comissao_edicao.pessoa_id')
+				->join('funcao_pessoa', 'pessoa.id', '=', 'funcao_pessoa.pessoa_id')
+				->join('areas_comissao', 'comissao_edicao.id', '=', 'areas_comissao.comissao_edicao_id')
+				->where('funcao_pessoa.funcao_id', '=', Funcao::select(['id'])->where('funcao', 'Homologador')->first()->id)
+				->where('funcao_pessoa.edicao_id', '=', $edicao)
+				->where('areas_comissao.area_id', '=', $area->id)
+				->orderBy('pessoa.nome')
+				->distinct()
 				->get()
 				->toArray();
 
-		$homologadores = DB::table('pessoa')->join('comissao_edicao', 'pessoa.id', '=', 'comissao_edicao.pessoa_id')
-				->join('funcao_pessoa', 'pessoa.id', '=', 'funcao_pessoa.pessoa_id')
-				->join('areas_comissao', 'comissao_edicao.id', '=', 'areas_comissao.comissao_edicao_id')
-				->select('pessoa.nome', 'areas_comissao.area_id')
-				->where('funcao_pessoa.funcao_id', Funcao::select(['id'])->where('funcao', 'Homologador')->first()->id)
-				->where('funcao_pessoa.edicao_id',$edicao)
-				->orderBy('pessoa.nome')
-				->get()
-				->toArray();
-		$cont = 0;
-		return \PDF::loadView('relatorios.homologadoresArea', array('areas' => $areas,'homologadores' => $homologadores, 'cont' => $cont))->download('homologadores_area.pdf');
+			array_push($homologadoresAreas, [
+				'area' => $area,
+				'homologadores' => $homologadores
+			]);
+		}
+
+		return \PDF::loadView('relatorios.homologadoresArea', compact('homologadoresAreas'))->download('homologadores_area.pdf');
 	}
 
 	public function avaliadoresArea($edicao){
