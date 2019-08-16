@@ -8,8 +8,8 @@
         <table class="bordered striped centered" style="width: 100%;">
         	<thead>
         		<tr>
-    				<th>Projeto</th> 
-            <th>Escola</th> 
+    				<th>Projeto</th>
+            <th>Escola</th>
     				<th>Autor(es)</th>
     				<th>Orientador</th>
     				<th>Coorientador(es)</th>
@@ -18,7 +18,7 @@
   			<tbody>
   				@foreach($projetos as $projeto)
   				<tr>
-    				<td>{{$projeto->titulo}}</td> 
+    				<td>{{$projeto->titulo}}</td>
     				<td>{{(\App\Escola::find($projeto->escola_id))->nome_curto}}</td>
     				<td>
               @foreach($autores as $autor)
@@ -44,9 +44,9 @@
             </td>
   				</tr>
   				@endforeach
-  			</tbody>	
-  
-		</table> 
+  			</tbody>
+
+		</table>
 	</div>
 </div>
 @endsection

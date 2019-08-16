@@ -456,43 +456,57 @@
                                 <a href="{{route('relatorioProjetos', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+
+						<tr>
+							<td>3</td>
+							<td>Relatório de Projetos por Nível e Área</td>
+							<td class="text-right">
+								<a href="{{route('relatorioProjetosArea', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
+							</td>
+						</tr>
+
                         <tr>
-                            <td>3</td>
+                            <td>4</td>
                             <td>Relatório de Projetos E Seus Status</td>
                             <td class="text-right">
                                 <a href="{{route('statusProjetos', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+
                         <tr>
-                            <td>4</td>
+                            <td>5</td>
                             <td>Relatório de Projetos Que Comparecerão (Edição Corrente)</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioProjetosConfirma', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+
                         <tr>
-                            <td>5</td>
+                            <td>6</td>
                             <td>Relatório de Projetos Que Comparecerão na Edição Corrente (Por Área do Conhecimento)</td>
                             <td class="text-right">
                                 <a href="{{route('relatorioProjetosConfirmaArea', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+
                         <tr>
-                            <td>6</td>
+                            <td>7</td>
                             <td>Relatório de Projetos Que Compareceram (Edição Corrente)</td>
                             <td class="text-right">
                                 <a href="{{route('projetosCompareceram', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+
                         <tr>
-                            <td>7</td>
+                            <td>8</td>
                             <td>Relatório de Projetos Que Compareceram do IFRS Canoas (Edição Corrente)</td>
                             <td class="text-right">
                                 <a href="{{route('projetosCompareceramIFRSCanoas', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+
                         <tr>
-                            <td>8</td>
+                            <td>9</td>
                             <td>Relatório de Projetos Que Compareceram Por Autor (Edição Corrente)</td>
                             <td class="text-right">
                                 <a href="{{route('projetosCompareceramAutor', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>

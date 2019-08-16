@@ -1157,6 +1157,51 @@ class RelatorioController extends Controller
 		return \PDF::loadView('relatorios.coorientadoresPosHomologacao', array('coorientadores' => $coorientadores,'cont' => $cont, 'edicao' => $edicao))->download('coorientadores_pos_homologacao.pdf');
 	}
 
+	public function projetosAreas($edicao) {
+
+		$niveis = DB::table('nivel')
+			->select('nivel.id', 'nivel.nivel')
+			->join('nivel_edicao', 'nivel_edicao.nivel_id', '=', 'nivel.id')
+			->where('nivel_edicao.edicao_id', '=', $edicao)
+			->get()
+			->toArray();
+
+		$projetosNivelArea = [];
+		foreach ($niveis as $nivel) {
+
+			$areas = DB::table('area_conhecimento')
+				->select('area_conhecimento.area_conhecimento', 'area_conhecimento.id')
+				->join('area_edicao', 'area_conhecimento.id', '=', 'area_edicao.area_id')
+				->where('area_edicao.edicao_id', '=', $edicao)
+				->where('area_conhecimento.nivel_id', '=', $nivel->id)
+				->orderBy('area_conhecimento.area_conhecimento')
+				->get()
+				->toArray();
+
+			$projetosArea = [];
+			foreach ($areas as $area) {
+
+				$projetos = Projeto::where('edicao_id', '=', $edicao)
+					->where('area_id', '=', $area->id)
+					->where('nivel_id', '=', $nivel->id)
+					->get();
+
+				array_push($projetosArea, [
+					'area' => $area,
+					'projetos' => $projetos
+				]);
+			}
+
+			array_push($projetosNivelArea, [
+				'nivel' => $nivel,
+				'projetosArea' => $projetosArea
+			]);
+		}
+
+		return \PDF::loadView('relatorios.projetosAreas', compact('projetosNivelArea'))
+			->download('projetos_area.pdf');
+	}
+
 	public function projetos($edicao){
 		$projetos = DB::table('projeto')->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
 			->select('projeto.titulo', 'projeto.id', 'escola_funcao_pessoa_projeto.escola_id')

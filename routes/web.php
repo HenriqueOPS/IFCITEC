@@ -265,6 +265,7 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/relatorio/voluntario/tarefa/{edicao}', 'RelatorioController@voluntarioTarefa')->name('relatorioVoluntarioTarefa');
 	Route::get('/relatorio/tarefa/voluntarios/{id}', 'RelatorioController@tarefaVoluntarios')->name('tarefaVoluntarios');
 	Route::get('/relatorio/projetos/{edicao}', 'RelatorioController@projetos')->name('relatorioProjetos');
+	Route::get('/relatorio/projetos/{edicao}/area', 'RelatorioController@projetosAreas')->name('relatorioProjetosArea');
 	Route::get('/relatorio/usuarios', 'RelatorioController@usuarios')->name('relatorioUsuarios');
 	Route::get('/relatorio/autores/{edicao}', 'RelatorioController@autores')->name('relatorioAutores');
 	Route::get('/relatorio/orientadores/{edicao}', 'RelatorioController@orientadores')->name('relatorioOrientadores');
