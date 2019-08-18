@@ -61,6 +61,15 @@
                         </div>
 
                         <div class="col-md-3 col-xs-10 col-xs-offset-1">
+
+							@if(Auth::user()->temFuncao('Administrador') || (\App\Edicao::consultaPeriodo('Inscrição')))
+
+								<a href="{{ route('editarProjeto', $projeto->id) }}" class="btn btn-success">
+									Editar informações
+								</a>
+
+							@endif
+
                             @if(Auth::user()->temFuncao('Avaliador') || Auth::user()->temFuncao('Homologador'))
 
                                 @if((\App\Edicao::consultaPeriodo('Homologação')) && $ehHomologador)
@@ -80,24 +89,6 @@
 										</a>
 
                                      @endif
-
-                                @endif
-
-                                @if(Auth::user()->temFuncao('Administrador'))
-
-                                    <a href="{{ route('editarProjeto', $projeto->id) }}" class="btn btn-success">
-                                        Editar informações
-                                    </a>
-
-                                @endif
-
-                            @else
-
-                                @if((\App\Edicao::consultaPeriodo('Inscrição')))
-
-                                    <a href="{{ route('editarProjeto', $projeto->id) }}" class="btn btn-success">
-                                        Editar informações
-                                    </a>
 
                                 @endif
 
