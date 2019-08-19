@@ -21,7 +21,7 @@
 
 					@else
 
-                    <form method="POST" action="{{route('cadastroAvaliador')}}">
+                    <form method="post" id="formulario" action="{{route('cadastroAvaliador')}}">
 
                         {{ csrf_field() }}
 
@@ -41,9 +41,8 @@
                                 </div>
                             </div>
                             <div class="col-md-10 col-md-offset-1 col-xs-11">
-                                {{ csrf_field() }}
-                                <input type="hidden" name="inscricao" value="avaliacao">
 
+                                <input type="hidden" name="inscricao" value="avaliacao">
 
                                 <div class="input-group{{ $errors->has('titulacao') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
@@ -249,8 +248,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 col-md-offset-3 text-center">
-                                <button href="javascript:void(0);" class="btn btn-primary">Inscrever</button>
-
+                                <button type="submit" class="btn btn-primary">Inscrever</button>
                             </div>
                         </div>
                     </form>
@@ -263,72 +261,90 @@
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="{{asset('js/datepicker/bootstrap-datepicker.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/datepicker/locales/bootstrap-datepicker.pt-BR.js')}}"></script>
-    <script type="text/javascript">
+<script type="text/javascript" src="{{asset('js/datepicker/bootstrap-datepicker.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/datepicker/locales/bootstrap-datepicker.pt-BR.js')}}"></script>
+<script type="text/javascript">
 
-        $(document).ready(function () {
+	$(document).ready(function () {
 
-            function limpa_formulário_cep() {
-                // Limpa valores do formulário de cep.
-                $("#rua").val("");
-                $("#bairro").val("");
-                $("#cidade").val("");
-                $("#uf").val("");
-            }
+		function limpa_formulário_cep() {
+			// Limpa valores do formulário de cep.
+			$("#rua").val("");
+			$("#bairro").val("");
+			$("#cidade").val("");
+			$("#uf").val("");
+		}
 
-            //Quando o campo cep perde o foco.
-            $("#cep").blur(function () {
+		//Quando o campo cep perde o foco.
+		$("#cep").blur(function () {
 
-                //Nova variável "cep" somente com dígitos.
-                var cep = $(this).val().replace(/\D/g, '');
+			//Nova variável "cep" somente com dígitos.
+			var cep = $(this).val().replace(/\D/g, '');
 
-                //Verifica se campo cep possui valor informado.
-                if (cep != "") {
+			//Verifica se campo cep possui valor informado.
+			if (cep != "") {
 
-                    //Expressão regular para validar o CEP.
-                    var validacep = /^[0-9]{8}$/;
+				//Expressão regular para validar o CEP.
+				var validacep = /^[0-9]{8}$/;
 
-                    //Valida o formato do CEP.
-                    if (validacep.test(cep)) {
+				//Valida o formato do CEP.
+				if (validacep.test(cep)) {
 
-                        //Preenche os campos com "..." enquanto consulta webservice.
-                        $("#rua").val("...");
-                        $("#bairro").val("...");
-                        $("#cidade").val("...");
-                        $("#uf").val("...");
-                        $("#ibge").val("...");
+					//Preenche os campos com "..." enquanto consulta webservice.
+					$("#rua").val("...");
+					$("#bairro").val("...");
+					$("#cidade").val("...");
+					$("#uf").val("...");
+					$("#ibge").val("...");
 
-                        //Consulta o webservice viacep.com.br/
-                        $.getJSON("//viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+					//Consulta o webservice viacep.com.br/
+					$.getJSON("//viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
 
-                            if (!("erro" in dados)) {
-                                //Atualiza os campos com os valores da consulta.
-                                $("#rua").val(dados.logradouro);
-                                $("#bairro").val(dados.bairro);
-                                $("#cidade").val(dados.localidade);
-                                $("#uf").val(dados.uf);
-                                $("#ibge").val(dados.ibge);
-                            } //end if.
-                            else {
-                                //CEP pesquisado não foi encontrado.
-                                limpa_formulário_cep();
-                                alert("CEP não encontrado.");
-                            }
-                        });
-                    } //end if.
-                    else {
-                        //cep é inválido.
-                        limpa_formulário_cep();
-                        alert("Formato de CEP inválido.");
-                    }
-                } //end if.
-                else {
-                    //cep sem valor, limpa formulário.
-                    limpa_formulário_cep();
+						if (!("erro" in dados)) {
+							//Atualiza os campos com os valores da consulta.
+							$("#rua").val(dados.logradouro);
+							$("#bairro").val(dados.bairro);
+							$("#cidade").val(dados.localidade);
+							$("#uf").val(dados.uf);
+							$("#ibge").val(dados.ibge);
+						} //end if.
+						else {
+							//CEP pesquisado não foi encontrado.
+							limpa_formulário_cep();
+							alert("CEP não encontrado.");
+						}
+					});
+				} //end if.
+				else {
+					//cep é inválido.
+					limpa_formulário_cep();
+					alert("Formato de CEP inválido.");
+				}
+			} //end if.
+			else {
+				//cep sem valor, limpa formulário.
+				limpa_formulário_cep();
+			}
+		});
+
+
+
+        $('button[type="submit"]').attr('disabled', 'disabled');
+
+        $('[name="funcao[]"]').change(function () {
+            $('button[type="submit"]').attr('disabled', 'disabled');
+
+
+            var formSerialized = $('#formulario').serializeArray();
+            formSerialized.forEach(function (field) {
+				if (field.name == 'funcao[]') {
+                    $('button[type="submit"]').removeAttr('disabled');
+                    console.log(field);
                 }
             });
         });
 
-    </script>
+	});
+
+</script>
 @endsection
