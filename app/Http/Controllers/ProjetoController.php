@@ -566,7 +566,8 @@ class ProjetoController extends Controller
 
         $numProjetos = DB::raw('SELECT count(*) 
                                 FROM revisao 
-                                WHERE pessoa_id = pessoa.id');
+                                JOIN projeto ON projeto.id = revisao.projeto_id
+                                WHERE pessoa_id = pessoa.id AND projeto.edicao_id = comissao_edicao.edicao_id');
 
         $revisores = DB::table('areas_comissao')
                             ->select('pessoa.id', 'pessoa.nome',
@@ -667,7 +668,8 @@ class ProjetoController extends Controller
 
         $numProjetos = DB::raw('SELECT count(*) 
                                 FROM avaliacao 
-                                WHERE pessoa_id = pessoa.id');
+                                JOIN projeto ON projeto.id = avaliacao.projeto_id
+                                WHERE pessoa_id = pessoa.id AND projeto.edicao_id = comissao_edicao.edicao_id');
 
         $avaliadores = DB::table('areas_comissao')
                         ->select('pessoa.id', 'pessoa.nome',
