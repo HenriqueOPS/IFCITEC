@@ -32,8 +32,8 @@ class ComissaoAvaliadoraController extends Controller
      */
     public function index() {
 
-        if ((Edicao::consultaPeriodo('Homologação') &&
-            Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Homologador'))) {
+        if (Edicao::consultaPeriodo('Homologação') &&
+            Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Homologador')) {
 
             $idOk = DB::table('revisao')
                 ->select('revisao.projeto_id')
@@ -49,12 +49,13 @@ class ComissaoAvaliadoraController extends Controller
                     $query->on('projeto.id','=','revisao.projeto_id');
                     $query->where('revisao.pessoa_id','=',Auth::user()->id);
                 })
+				->where('edicao_id', '=', Edicao::getEdicaoId())
                 ->orderBy('revisao.revisado','asc')
                 ->get();
 
             return view('comissao.home', compact('idOk'))->withProjetos($projetos);
         } elseif (Edicao::consultaPeriodo('Avaliação') &&
-                  Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador')){
+				  Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador')) {
 
             $idOk = DB::table('avaliacao')
                 ->select('avaliacao.projeto_id')
@@ -70,12 +71,13 @@ class ComissaoAvaliadoraController extends Controller
                     $query->on('projeto.id', '=', 'avaliacao.projeto_id');
                     $query->where('avaliacao.pessoa_id', '=', Auth::user()->id);
                 })
+				->where('edicao_id', '=', Edicao::getEdicaoId())
                 ->orderBy('avaliacao.avaliado','asc')
                 ->get();
 
             return view('comissao.home', compact('idOk'))->withProjetos($projetos);
         } elseif (Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador') ||
-            Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Homologador')) {
+				  Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Homologador')) {
             return view('inscricaoEnviada');
         } else {
             //@TODO: redirecionar de acordo com a função e o período
