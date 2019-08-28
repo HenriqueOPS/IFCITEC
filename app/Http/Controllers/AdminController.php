@@ -210,7 +210,7 @@ class AdminController extends Controller
 			->select('comissao_edicao.id','funcao_pessoa.homologado', 'funcao_pessoa.funcao_id',
 					 'pessoa.nome', 'pessoa.instituicao', 'pessoa.titulacao')
 			->orderBy('funcao_pessoa.homologado')
-			->orderBy('pessoa.nome')
+			->orderBy('pessoa.nome', 'asc')
 			->get()
 			->toArray();
 

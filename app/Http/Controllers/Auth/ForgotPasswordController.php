@@ -3,15 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\MailSenhaJob;
 use App\Pessoa;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
-class ForgotPasswordController extends Controller
-{
+class ForgotPasswordController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Password Reset Controller
@@ -22,7 +25,6 @@ class ForgotPasswordController extends Controller
     | your application to your users. Feel free to explore this trait.
     |
     */
-
 
     use SendsPasswordResetEmails;
 
@@ -39,7 +41,18 @@ class ForgotPasswordController extends Controller
         $data = $req->all();
 
         if (Pessoa::where('email', $data['email'])->count()) {
-			$emailJob = (new MailSenhaJob($data['email'], $data['_token']))
+
+        	$hasher = new BcryptHasher();
+        	$token = Str::random(64);
+
+        	DB::table('password_resets')
+				->insert([
+					'email' => $data['email'],
+					'token' => $hasher->make($token),
+					'created_at' => DB::raw('now()')
+				]);
+
+			$emailJob = (new MailSenhaJob($data['email'], $token))
 				->delay(\Carbon\Carbon::now()->addSeconds(3));
 			dispatch($emailJob);
 

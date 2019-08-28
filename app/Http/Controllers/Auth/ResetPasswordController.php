@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Pessoa;
-use RedirectsUsers;
 
+use Carbon\Carbon;
+use Illuminate\Auth\Passwords\DatabaseTokenRepository;
+use Illuminate\Contracts\Hashing\Hasher as HasherContract;
+use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
-
+use Illuminate\Support\Facades\DB;
 
 class ResetPasswordController extends Controller
 {
@@ -34,14 +37,29 @@ class ResetPasswordController extends Controller
      */
     protected $redirectTo = '/home';
 
+	/**
+	 * The number of seconds a token should last.
+	 *
+	 * @var int
+	 */
+    protected $expires = 60 * 60; // 1 hora
+
+	/**
+	 * The Hasher implementation.
+	 *
+	 * @var \Illuminate\Contracts\Hashing\Hasher
+	 */
+	protected $hasher;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('guest');
+
+        $this->hasher = new BcryptHasher();
     }
 
 	/**
@@ -53,11 +71,26 @@ class ResetPasswordController extends Controller
 	 * @param  string|null  $token
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
-	public function showResetForm(Request $request, $token = null)
-	{
-		return view('auth.passwords.reset')->with(
-			['token' => $token, 'email' => $request->email]
-		);
+	public function showResetForm(Request $request, $token = null) {
+		return view('auth.passwords.reset')->with([
+			'token' => $token,
+			'email' => $request->email
+		]);
+	}
+
+	protected function tokenExpired($createdAt) {
+		return Carbon::parse($createdAt)->addSeconds($this->expires)->isPast();
+	}
+
+	public function exists($email, $token) {
+		$passwordResets = DB::table('password_resets')
+			->where('email', '=', $email)
+			->get()
+			->first();
+
+		return $passwordResets &&
+			! $this->tokenExpired($passwordResets->created_at) &&
+			$this->hasher->check($token, $passwordResets->token);
 	}
 
 	/**
@@ -66,33 +99,20 @@ class ResetPasswordController extends Controller
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function reset(Request $request)
-	{
+	public function reset(Request $request) {
 
 		$this->validate($request, $this->rules(), $this->validationErrorMessages());
-
-		// XGH fudido
-		// toda a trait ResetsPasswords foi copiada e sobrescrita
-		// porque o campo de senha foi traduzido e o laravel se perde
-
 
 		//XGH
 		//reseta na mão pq o laravel não acha a model de pessoa
 		$data = $this->credentials($request);
+
+		if (!$this->exists($data['email'], $data['token']))
+			return false;
+
 		$this->resetPassword(Pessoa::findByEmail($data['email']), $data['senha']);
 
-		$response = $this->broker()->reset(
-			$this->credentials($request), function ($email, $senha) {
-			$this->resetPassword($email, $senha);
-		}
-		);
-
-		// If the password was successfully reset, we will redirect the user back to
-		// the application's home authenticated view. If there is an error we can
-		// redirect them back to where they came from with their error message.
-		return $response == Password::PASSWORD_RESET
-			? $this->sendResetResponse($response)
-			: $this->sendResetFailedResponse($request, $response);
+		return redirect('home');
 	}
 
 	/**
@@ -100,8 +120,7 @@ class ResetPasswordController extends Controller
 	 *
 	 * @return array
 	 */
-	protected function rules()
-	{
+	protected function rules() {
 		return [
 			'token' => 'required',
 			'email' => 'required|email',
@@ -114,8 +133,7 @@ class ResetPasswordController extends Controller
 	 *
 	 * @return array
 	 */
-	protected function validationErrorMessages()
-	{
+	protected function validationErrorMessages() {
 		return [];
 	}
 
@@ -125,8 +143,7 @@ class ResetPasswordController extends Controller
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return array
 	 */
-	protected function credentials(Request $request)
-	{
+	protected function credentials(Request $request) {
 		return $request->only(
 			'email', 'senha', 'token'
 		);
