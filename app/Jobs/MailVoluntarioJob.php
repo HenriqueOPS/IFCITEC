@@ -23,14 +23,16 @@ class MailVoluntarioJob implements ShouldQueue
 	public $tries = 10;
 
 	public $email;
+	public $nome;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($email) {
+    public function __construct($email, $nome) {
 		$this->email = $email;
+		$this->nome = $nome;
     }
 
     /**
@@ -41,7 +43,7 @@ class MailVoluntarioJob implements ShouldQueue
     public function handle()
     {
         Mail::to($this->email)
-            ->send(new MailVoluntario());
+            ->send(new MailVoluntario($this->nome));
     }
 }
 

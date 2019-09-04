@@ -30,46 +30,60 @@ class VoluntarioController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
+
         if(Pessoa::find(Auth::id())->temFuncao('Voluntário') == true) {
+
         	if (Pessoa::find(Auth::id())->temTarefa()) {
         		 $tarefa = DB::table('pessoa_tarefa')
 		            ->select('tarefa.tarefa')
 		            ->join('tarefa','pessoa_tarefa.tarefa_id','=','tarefa.id')
 		            ->where('pessoa_tarefa.pessoa_id','=',Auth::id())
 		            ->get();
-        		return view('tarefa',array('tarefa' => $tarefa));
-        	}
-        	else{
-          		return view('inscricaoEnviada');
+
+        		return view('voluntario.tarefa',['tarefa' => $tarefa]);
+        	} else {
+          		return view('voluntario.inscricaoEnviada');
       		}
+
         }else{
             $tarefas = Tarefa::orderBy('tarefa')->get();
 
-            return view('voluntario')->withTarefas($tarefas);
+            return view('voluntario.cadastro')->withTarefas($tarefas);
         }
     }
 
     public function cadastraVoluntario(Request $req){
-        $data = $req->all();
-		if(! Auth::user()->temTrabalho()) {
 
-			DB::table('funcao_pessoa')->insert(
-				['edicao_id' => Edicao::getEdicaoId(),
-					'funcao_id' => Funcao::where('funcao', 'Voluntário')->first()->id,
+        if(!Auth::user()->temTrabalho()) {
+
+        	$funcaoVoluntarioId = Funcao::where('funcao', 'Voluntário')->first()->id;
+
+        	$voluntario = DB::table('funcao_pessoa')
+				->where('edicao_id', '=', Edicao::getEdicaoId())
+				->where('funcao_id', '=', $funcaoVoluntarioId)
+				->where('pessoa_id', '=', Auth::id())
+				->where('homologado', '=', false)
+				->get();
+
+        	// verifica se já tá inscrito como voluntário
+        	if ($voluntario->count())
+				return view('voluntario.inscricaoEnviada');
+
+			DB::table('funcao_pessoa')
+				->insert([
+					'edicao_id' => Edicao::getEdicaoId(),
+					'funcao_id' => $funcaoVoluntarioId,
 					'pessoa_id' => Auth::id(),
 					'homologado' => false
-				]
-			);
+				]);
 
-			$emailJob = (new MailVoluntarioJob(Auth::user()->email))
+			$emailJob = (new MailVoluntarioJob(Auth::user()->email, Auth::user()->nome))
 				->delay(\Carbon\Carbon::now()->addSeconds(3));
 			dispatch($emailJob);
 
-
-			return view('inscricaoEnviada');
-		}
-		else{
-			return view('temTrabalho');
+			return view('voluntario.inscricaoEnviada');
+		} else {
+			return view('voluntario.temTrabalho');
 		}
     }
 }

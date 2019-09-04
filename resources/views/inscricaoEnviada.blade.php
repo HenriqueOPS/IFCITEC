@@ -10,7 +10,7 @@
             <div class="main main-raised">
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1">
-                        <center><h2>Você já enviou sua inscrição!</h2></center>
+                        <center><h2>Inscrição Realizada!</h2></center>
                     </div>
                 </div>
 			</div>
