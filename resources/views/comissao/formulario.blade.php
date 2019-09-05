@@ -134,6 +134,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<textarea name="observacao" class="form-control" placeholder="Escreva aqui suas impressões para melhorias do trabalho" rows="5"></textarea>
+					<span style="color: #ff1744; font-size: 10px;">campo obrigatório</span>
 				</div>
 			</div>
 
@@ -264,7 +265,7 @@ function changeSubmitButton() {
 	var formSerialized = $('#formulario').serializeArray();
 
 	// ainda não preencheu todos os campos
-	if (formSerialized.length < numCampos) {
+	if (formSerialized.length < numCampos || $('[name="observacao"]').val() == '') {
 		$('input[type=submit]').attr('disabled','disabled');
 		$('.alert-warning').show();
 	} else { // preencheu todos os campos
