@@ -81,6 +81,10 @@
 
         <div class="col-md-12 main main-raised">
 
+			@if($periodoAvaliacao)
+				<a href="{{ route('dashboard') }}" class="btn btn-sm btn-primary">Dashboard de Avaliação</a>
+			@endif
+
             <div class="list-projects">
                 <h5><b id="geral">Número de projetos: <span id="nProjetos">{{ count($projetos) }}</span> </b></h5>
                 <h5><b id="situacao">Número de projetos: <span>{{ count($projetos) }}</span> </b></h5>

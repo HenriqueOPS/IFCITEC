@@ -149,7 +149,7 @@ class Projeto extends Model {
 
     public function statusPresenca(){
         $projeto = Projeto::select('presenca')
-            ->where('id','=',$this->id)
+            ->where('id','=', $this->id)
             ->get();
         if($projeto->count() && $projeto[0]->presenca != null)
             return true;

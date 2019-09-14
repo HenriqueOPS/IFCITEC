@@ -205,6 +205,10 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/administrador/escolhe-edicao/relatorios', 'AdminController@relatoriosEdicao')->name('administrador.relatoriosEdicao');
 	Route::post('/administrador/escolhe-edicao/relatorios', 'AdminController@relatoriosEscolheEdicao')->name('administrador.escolheEdicao');
 
+	// Dashboard
+	Route::get('/administrador/dashboard', 'AdminController@dashboardPage')->name('dashboard');
+	Route::get('/administrador/dashboard/data', 'AdminController@dashboard'); // Ajax
+
 	// TODO: remover
 	Route::get('/administrador/nota-revisao/projeto/{projeto}', 'AdminController@notaRevisao')->name('notaRevisao');
 	Route::get('/administrador/nota-avaliacao/projeto/{projeto}', 'AdminController@notaAvaliacao')->name('notaAvaliacao');
