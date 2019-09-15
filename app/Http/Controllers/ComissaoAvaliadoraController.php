@@ -308,7 +308,8 @@ class ComissaoAvaliadoraController extends Controller
 			array_push($idsAreas, $a->area_id);
 
 
-		$areas = DB::table('area_conhecimento')->join('area_edicao', 'area_conhecimento.id', '=', 'area_edicao.area_id')
+		$areas = DB::table('area_conhecimento')
+			->join('area_edicao', 'area_conhecimento.id', '=', 'area_edicao.area_id')
 			->select('area_conhecimento.id','area_conhecimento.area_conhecimento', 'area_conhecimento.nivel_id')
 			->where('area_edicao.edicao_id', Edicao::getEdicaoId())
 			->orderBy('area_conhecimento.id', 'asc')
@@ -322,7 +323,8 @@ class ComissaoAvaliadoraController extends Controller
 			->get()
 			->toArray();
 
-        $projetosAreas = DB::table('area_conhecimento')->join('projeto', 'area_conhecimento.id', '=', 'projeto.area_id')
+        $projetosAreas = DB::table('area_conhecimento')
+			->join('projeto', 'area_conhecimento.id', '=', 'projeto.area_id')
             ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
             ->select('area_conhecimento.area_conhecimento', 'area_conhecimento.id')
             ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
@@ -356,12 +358,10 @@ class ComissaoAvaliadoraController extends Controller
             }
         }
 
-        if ($projetosAreas == null) {
+        if ($projetosAreas == null)
             $areasConhecimento = $areas;
-        }
 
-		return view('comissao.homologar', compact('id', 'pessoa', 'idsAreas', 'areas', 'nivel', 'areasConhecimento'));
-
+		return view('admin.comissao.homologar', compact('id', 'pessoa', 'idsAreas', 'areas', 'nivel', 'areasConhecimento'));
 	}
 
 	public function homologaComissao(Request $req){
@@ -369,25 +369,38 @@ class ComissaoAvaliadoraController extends Controller
 		$data = $req->all();
 
         $pessoa = Pessoa::find($data['pessoa_id']);
-        if(isset($data['avaliador']) && !$pessoa->temFuncao('Avaliador',TRUE)){
+
+		// homologa o avaliador
+        if (isset($data['avaliador']) && !$pessoa->temFuncao('Avaliador',true)) {
             DB::table('funcao_pessoa')
-                    ->insert([
-                        'pessoa_id' => $data['pessoa_id'],
-                        'funcao_id' => Funcao::where('funcao', 'Avaliador')->first()->id,
-                        'edicao_id' => Edicao::getEdicaoId(),
-                        'homologado' => true
-                    ]);
+				->insert([
+					'pessoa_id' => $data['pessoa_id'],
+					'funcao_id' => Funcao::where('funcao', 'Avaliador')->first()->id,
+					'edicao_id' => Edicao::getEdicaoId(),
+					'homologado' => true
+				]);
         }
 
-        if(isset($data['homologador']) && !$pessoa->temFuncao('Homologador',TRUE)){
+        // homologa o homologador
+        if (isset($data['homologador']) && !$pessoa->temFuncao('Homologador',true)) {
             DB::table('funcao_pessoa')
-                    ->insert([
-                        'pessoa_id' => $data['pessoa_id'],
-                        'funcao_id' => Funcao::where('funcao', 'Homologador')->first()->id,
-                        'edicao_id' => Edicao::getEdicaoId(),
-                        'homologado' => true
-                    ]);
+				->insert([
+					'pessoa_id' => $data['pessoa_id'],
+					'funcao_id' => Funcao::where('funcao', 'Homologador')->first()->id,
+					'edicao_id' => Edicao::getEdicaoId(),
+					'homologado' => true
+				]);
         }
+
+		// seta homologado como false para função de avaliador/homologador
+		DB::table('funcao_pessoa')
+			->where('pessoa_id', '=', $data['pessoa_id'])
+			->where('edicao_id', '=', Edicao::getEdicaoId())
+			->where(function ($q) {
+				$q->where('funcao_id', '=', Funcao::where('funcao', 'Homologador')->first()->id);
+				$q->orWhere('funcao_id', '=', Funcao::where('funcao', 'Avaliador')->first()->id);
+			})
+			->update(['homologado' => false]);
 
 		$areasComissao = DB::table('areas_comissao')
 			->select('area_id')
@@ -399,14 +412,13 @@ class ComissaoAvaliadoraController extends Controller
 		foreach ($areasComissao as $a)
 			array_push($idsAreas, $a->area_id);
 
-        //Existem áreas então HOMOLOGA
-		if(isset($data['area_id'])) {
+        // Existem áreas então HOMOLOGA
+		if (isset($data['area_id'])) {
 
-            //Cria novas areas
+            // Cria novas areas
             $newAreas = array_diff($data['area_id'], $idsAreas);
 
             foreach ($newAreas as $area => $id) {
-
                 DB::table('areas_comissao')
                     ->insert([
                         'area_id' => $id,
@@ -415,7 +427,7 @@ class ComissaoAvaliadoraController extends Controller
                     ]);
             }
 
-            //Deleta campos que tinham agr não tem mais
+            // Deleta campos que tinham agr não tem mais
             $oldAreas = array_diff($idsAreas, $data['area_id']);
             foreach ($oldAreas as $area => $id) {
                 DB::table('areas_comissao')->where([
@@ -424,38 +436,41 @@ class ComissaoAvaliadoraController extends Controller
                 ])->delete();
             }
 
-            //Homologa os campos já existentes
+            // Homologa os campos já existentes
             DB::table('areas_comissao')
                 ->select('area_id')
                 ->where('comissao_edicao_id', '=', $data['comissao_edicao_id'])
                 ->whereIn('area_id', array_intersect($idsAreas, $data['area_id']))
                 ->update(['homologado' => true]);
 
-            //Avaliador
-            DB::table('funcao_pessoa')
-                ->where([
-                    'pessoa_id' => $data['pessoa_id'],
-                    'edicao_id' => Edicao::getEdicaoId(),
-                    'funcao_id' => 3
-                ])->update(['homologado' => true]);
+            // Avaliador
+			if (isset($data['avaliador'])) {
+				DB::table('funcao_pessoa')
+					->where([
+						'pessoa_id' => $data['pessoa_id'],
+						'edicao_id' => Edicao::getEdicaoId(),
+						'funcao_id' => 3
+					])->update(['homologado' => true]);
+			}
 
-            //Homologador
-            DB::table('funcao_pessoa')
-                ->where([
-                    'pessoa_id' => $data['pessoa_id'],
-                    'edicao_id' => Edicao::getEdicaoId(),
-                    'funcao_id' => 4
-                ])->update(['homologado' => true]);
+            // Homologador
+			if (isset($data['homologador'])) {
+				DB::table('funcao_pessoa')
+					->where([
+						'pessoa_id' => $data['pessoa_id'],
+						'edicao_id' => Edicao::getEdicaoId(),
+						'funcao_id' => 4
+					])->update(['homologado' => true]);
+			}
 
+        }else{ // Não existem áreas então NÃO HOMOLOGA
 
-        }else{ //Não existem áreas então NÃO HOMOLOGA
-
-		    //Deleta os campos das areas
+		    // Deleta os campos das areas
             DB::table('areas_comissao')
                 ->where(['comissao_edicao_id' => $data['comissao_edicao_id']])
                 ->delete();
 
-            //Avaliador
+            // Avaliador
             DB::table('funcao_pessoa')
                 ->where([
                     'pessoa_id' => $data['pessoa_id'],
@@ -463,7 +478,7 @@ class ComissaoAvaliadoraController extends Controller
                     'funcao_id' => 3
                 ])->update(['homologado' => false]);
 
-            //Homologador
+            // Homologador
             DB::table('funcao_pessoa')
                 ->where([
                     'pessoa_id' => $data['pessoa_id'],

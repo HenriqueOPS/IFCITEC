@@ -73,7 +73,7 @@ class Pessoa extends Authenticatable {
 	 * @param String $check Uma string contento o nome da Role
 	 * @return boolean
 	 */
-	public function temFuncao($funcao, $flag = false) { // Não me Julgue
+	public function temFuncao($funcao, $flag = false) {
 
     	//pega o id da edição
 		$EdicaoId = Edicao::getEdicaoId();
