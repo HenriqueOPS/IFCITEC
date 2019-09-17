@@ -191,22 +191,21 @@ class Pessoa extends Authenticatable {
     }
 
     public function temFuncaoProjeto($funcao, $projeto, $pessoa, $edicao) {
-        if($edicao){
+        if ($edicao) {
 
             $query = DB::table('escola_funcao_pessoa_projeto')
-                            //Busca pela Função
-                            ->where('funcao_id','=',Funcao::where('funcao', $funcao)->get()->first()->id)
-                            //Busca pela Pessoa
-                            ->where('pessoa_id',$pessoa)
-                            //Busca pelo Projeto
-                            ->where('projeto_id',$projeto)
-                            //Busca pela Edição
-                            ->where('edicao_id', $edicao)
-                            ->get();
+				// Busca pela Função
+				->where('funcao_id', '=', Funcao::where('funcao', $funcao)->get()->first()->id)
+				// Busca pela Pessoa
+				->where('pessoa_id', $pessoa)
+				// Busca pelo Projeto
+				->where('projeto_id', $projeto)
+				// Busca pela Edição
+				->where('edicao_id', $edicao)
+				->get();
 
-            if($query->count()) {
+            if($query->count())
                 return true;
-            }
         }
 
         return false;

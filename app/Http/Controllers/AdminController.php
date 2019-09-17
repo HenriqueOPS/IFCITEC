@@ -273,7 +273,8 @@ class AdminController extends Controller
     }
 
     public function relatoriosEdicao(){
-    	$edicoes = Edicao::all();
+    	$edicoes = Edicao::all()->sortByDesc('ano');
+
     	return view('admin.relatorios.home')->withEdicoes($edicoes);
     }
 
