@@ -604,8 +604,7 @@ class AdminController extends Controller
 			->withTarefas($tarefas);
 	}
 
-	public function editaFuncaoUsuario(Request $req, $id)
-	{
+	public function editaFuncaoUsuario(Request $req, $id) {
 		$data = $req->all();
 		$funcoes = DB::table('funcao_pessoa')
 			->select('funcao_id')
@@ -617,20 +616,22 @@ class AdminController extends Controller
 		$usuario = Pessoa::find($id);
 
 		if(isset($data['tarefa'])){
+
 			if ($usuario->tarefas->first() != null) {
 				if($usuario->tarefas->first()->id != $data['tarefa']){
-					DB::table('pessoa_tarefa')->where('pessoa_id', $id)->update([
-						'tarefa_id' => $data['tarefa']]);
+					DB::table('pessoa_tarefa')
+						->where('pessoa_id', $id)
+						->update(['tarefa_id' => $data['tarefa']]);
 				}
+			} else {
+				DB::table('pessoa_tarefa')
+					->insert([
+						'edicao_id' => Edicao::getEdicaoId(),
+						'tarefa_id' => $data['tarefa'],
+						'pessoa_id' => $id,
+					]);
 			}
-			else {
-				DB::table('pessoa_tarefa')->insert(
-				['edicao_id' => Edicao::getEdicaoId(),
-					'tarefa_id' => $data['tarefa'],
-					'pessoa_id' => $id,
-				]
-			);
-			}
+
 		}
 
 		if (!empty($funcoes)) {
@@ -678,37 +679,27 @@ class AdminController extends Controller
 			foreach ($data['funcao'] as $funcao) {
 				if ($funcao == Funcao::select(['id'])->where('funcao', 'Voluntário')->first()->id && Pessoa::find($id)->temTrabalho()) {
 
-				}
-						else{
-							if ($funcao == Funcao::select(['id'])->where('funcao', 'Administrador')->first()->id) {
-								DB::table('funcao_pessoa')->insert([
-									'funcao_id' => $funcao,
-									'pessoa_id' => $id,
-									'edicao_id' => 1,
-									'homologado' => TRUE
-								]);
-							}
-							else{
-								DB::table('funcao_pessoa')->insert([
-									'funcao_id' => $funcao,
-									'pessoa_id' => $id,
-									'edicao_id' => Edicao::getEdicaoId(),
-									'homologado' => TRUE
-								]);
-							}
+				} else {
+					if ($funcao == Funcao::select(['id'])->where('funcao', 'Administrador')->first()->id) {
+						DB::table('funcao_pessoa')->insert([
+							'funcao_id' => $funcao,
+							'pessoa_id' => $id,
+							'edicao_id' => 1,
+							'homologado' => TRUE
+						]);
+					} else {
+						DB::table('funcao_pessoa')->insert([
+							'funcao_id' => $funcao,
+							'pessoa_id' => $id,
+							'edicao_id' => Edicao::getEdicaoId(),
+							'homologado' => TRUE
+						]);
 					}
-
+				}
 			}
 		}
-		$usuarios = Pessoa::orderBy('nome')->get();
 
-		//$usuario = Pessoa::find($id);
-		$tarefas = Tarefa::orderBy('tarefa')->get();
-		$funcoes = Funcao::all();
-		return view('admin.usuarios')
-			->withUsuarios($usuarios)
-			->withFuncoes($funcoes)
-			->withTarefas($tarefas);
+		return redirect()->route('administrador.usuarios');
 	}
 
 

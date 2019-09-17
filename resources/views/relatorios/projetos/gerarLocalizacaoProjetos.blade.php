@@ -8,16 +8,18 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2 col-sm-12">
+
             <div class="main main-raised">
+
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
                         <h2>Gerar Localização de Projetos</h2>
                     </div>
                 </div>
+
                 <form method="post" action="{{ route('geraLocalizacaoProjetos', $edicao)}}">
 
                     {{ csrf_field() }}
-
 
                     <div class="row" id="selects">
                         <div id="displayOriginal">
@@ -29,7 +31,6 @@
                                 </div>
                             </div>
 
-
                             <div class="row">
                                 <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
                                   <input name="de[]" type="number" class="form-control" placeholder="De... (Sala)">
@@ -38,7 +39,6 @@
                                   <input name="ate[]" type="number" class="form-control" placeholder="Até... (Sala)">
                                 </div>
                             </div>
-
 
                             <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
                                 <div class="form-group label-floating">
@@ -50,6 +50,7 @@
                             <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
                                 <div class="form-group">
                                     <label class="control-label">Selecione um Nível</label>
+
                                     <select id="nivel-select" name="nivel[]" required>
                                         <option></option>
                                         @foreach ($niveis as $nivel)
@@ -67,13 +68,16 @@
                            </div>
                           </div>
                         </div>
+
+
+
                         <div class="row">
                             <div class="col-md-6 col-md-offset-3 text-center">
                                 <button name="button" value="1" class="btn btn-primary">Gerar Identificação</button>
                                 <button name="button" value="2" class="btn btn-primary">Gerar Localização</button>
-
                             </div>
                         </div>
+
                     </div>
                 </form>
             </div>

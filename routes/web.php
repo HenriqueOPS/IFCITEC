@@ -253,8 +253,6 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/relatorio/participantes/assinatura/{edicao}', 'RelatorioController@participantesAssinatura')->name('participantesAssinatura');
 	Route::get('/relatorio/projetos/confirma/{edicao}', 'RelatorioController@projetosConfirmaramPresenca')->name('relatorioProjetosConfirma');
 	Route::get('/relatorio/projetos/confirma/area/{edicao}', 'RelatorioController@projetosConfirmaramPresencaArea')->name('relatorioProjetosConfirmaArea');
-	Route::get('/relatorio/gerar/localizacao/projetos/{edicao}', 'RelatorioController@gerarLocalizacaoProjetos')->name('gerarLocalizacaoProjetos');
-	Route::post('/relatorio/gera/localizacao/projetos/{edicao}', 'RelatorioController@geraLocalizacaoProjetos')->name('geraLocalizacaoProjetos');
 	Route::get('/relatorio/projetos/{edicao}', 'RelatorioController@projetos')->name('relatorioProjetos');
 	Route::get('/relatorio/projetos/{edicao}/area', 'RelatorioController@projetosAreas')->name('relatorioProjetosArea');
 
@@ -310,6 +308,9 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 
 
 	// Relatórios - Projetos
+	Route::get('/relatorio/gerar/localizacao/projetos/{edicao}', 'RelatorioController@gerarLocalizacaoProjetos')->name('gerarLocalizacaoProjetos');
+	Route::post('/relatorio/gera/localizacao/projetos/{edicao}', 'RelatorioController@geraLocalizacaoProjetos')->name('geraLocalizacaoProjetos');
+
 
 
 	// Relatórios - Voluntários

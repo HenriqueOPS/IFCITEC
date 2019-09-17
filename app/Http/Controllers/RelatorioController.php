@@ -1469,12 +1469,12 @@ class RelatorioController extends Controller {
 
 	public function gerarLocalizacaoProjetos($edicao){
 		$niveis = DB::table('nivel_edicao')
-			->select(['nivel.id','nivel','min_ch','max_ch','palavras'])
+			->select('nivel.id', 'nivel', 'min_ch', 'max_ch', 'palavras')
 			->where('edicao_id', '=',$edicao)
 			->join('nivel','nivel_edicao.nivel_id','=','nivel.id')
 			->get();
 
-		return view('admin.gerarLocalizacaoProjetos', array('edicao' => $edicao))->withNiveis($niveis);
+		return view('relatorios.projetos.gerarLocalizacaoProjetos', ['edicao' => $edicao])->withNiveis($niveis);
 	}
 
 	public function geraLocalizacaoProjetos(Request $req, $edicao){
