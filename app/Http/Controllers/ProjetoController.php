@@ -585,6 +585,7 @@ class ProjetoController extends Controller
                                 $join->on('pessoa.id', '=', 'funcao_pessoa.pessoa_id');
                                 $join->where('funcao_pessoa.edicao_id', '=', Edicao::getEdicaoId());
                                 $join->where('funcao_pessoa.funcao_id', '=', 4);
+								$join->where('funcao_pessoa.homologado', '=', true);
                             })
                             ->where('area_id','=',$projeto->area_id)
                             ->where('areas_comissao.homologado','=',true)
@@ -687,6 +688,7 @@ class ProjetoController extends Controller
                             $join->on('pessoa.id', '=', 'funcao_pessoa.pessoa_id');
                             $join->where('funcao_pessoa.edicao_id', '=', Edicao::getEdicaoId());
                             $join->where('funcao_pessoa.funcao_id', '=', 3);
+							$join->where('funcao_pessoa.homologado', '=', true);
                         })
                         ->where('area_id','=',$projeto->area_id)
                         ->where('areas_comissao.homologado','=',true)

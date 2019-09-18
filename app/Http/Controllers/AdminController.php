@@ -604,23 +604,31 @@ class AdminController extends Controller
 			->withTarefas($tarefas);
 	}
 
-	public function editaFuncaoUsuario(Request $req, $id) {
+	public function editaFuncaoUsuario(Request $req, $id) { // TODO: refatorar
 		$data = $req->all();
 		$funcoes = DB::table('funcao_pessoa')
 			->select('funcao_id')
 			->where('pessoa_id', $id)
+			->where(function ($q) {
+				$q->where('edicao_id', Edicao::getEdicaoId());
+				$q->orWhere('edicao_id', '=', 1);
+			})
 			->get()
 			->keyBy('funcao_id')
 			->toArray();
 
 		$usuario = Pessoa::find($id);
 
-		if(isset($data['tarefa'])){
+		if (isset($data['tarefa'])) {
 
 			if ($usuario->tarefas->first() != null) {
 				if($usuario->tarefas->first()->id != $data['tarefa']){
 					DB::table('pessoa_tarefa')
 						->where('pessoa_id', $id)
+						->where(function ($q) {
+							$q->where('edicao_id', Edicao::getEdicaoId());
+							$q->orWhere('edicao_id', '=', 1);
+						})
 						->update(['tarefa_id' => $data['tarefa']]);
 				}
 			} else {
