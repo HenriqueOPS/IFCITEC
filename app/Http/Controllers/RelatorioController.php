@@ -968,10 +968,14 @@ class RelatorioController extends Controller {
 			->join('funcao_pessoa', 'pessoa.id', '=', 'funcao_pessoa.pessoa_id')
 			->where('funcao_id', Funcao::where('funcao', 'Avaliador')->first()->id)
 			->where('funcao_pessoa.edicao_id', $edicao)
+			->where('funcao_pessoa.homologado', true)
 			->orderBy('pessoa.nome')
 			->get();
 
-		return \PDF::loadView('relatorios.avaliacao.projetosAvaliador', ['avaliadores' => $avaliadores])->download('projetos_avaliador.pdf');
+		return \PDF::loadView('relatorios.avaliacao.projetosAvaliador', [
+			'avaliadores' => $avaliadores,
+			'edicao' => $edicao
+		])->download('projetos_avaliador.pdf');
 	}
 
 	public function autoresLanche($edicao){
@@ -1347,6 +1351,7 @@ class RelatorioController extends Controller {
 				->join('areas_comissao', 'comissao_edicao.id', '=', 'areas_comissao.comissao_edicao_id')
 				->where('funcao_pessoa.funcao_id', Funcao::select(['id'])->where('funcao', 'Avaliador')->first()->id)
 				->where('funcao_pessoa.edicao_id', '=', $edicao)
+				->where('funcao_pessoa.homologado', '=', true)
 				->where('areas_comissao.area_id', '=', $area->id)
 				->orderBy('pessoa.nome')
 				->distinct('pessoa.id')
@@ -1371,6 +1376,11 @@ class RelatorioController extends Controller {
 		$projetos = Projeto::select('projeto.id', 'projeto.titulo')
 				->where('projeto.edicao_id', '=', $edicao)
 				->orderBy('projeto.titulo')
+				->where(function ($q){
+					$q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
+					$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
+					$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
+				})
 				->get();
 
 		return \PDF::loadView('relatorios.avaliacao.avaliadoresProjeto', array('projetos' => $projetos))->download('avaliadores_projeto.pdf');

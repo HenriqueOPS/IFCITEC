@@ -592,8 +592,7 @@ class AdminController extends Controller
 		return 'false';
 	}
 
-	public function editarFuncaoUsuario($id)
-	{
+	public function editarFuncaoUsuario($id) {
 		$usuario = Pessoa::find($id);
 		$funcoes = Funcao::all();
 		$tarefas = Tarefa::orderBy('tarefa')->get();

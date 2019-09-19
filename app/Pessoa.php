@@ -78,7 +78,7 @@ class Pessoa extends Authenticatable {
     	//pega o id da edição
 		$EdicaoId = Edicao::getEdicaoId();
 
-		if($EdicaoId || $funcao == 'Administrador'){
+		if ($EdicaoId || $funcao == 'Administrador') {
 
 			//Busca pela edição
 			if ($EdicaoId) {
@@ -87,32 +87,34 @@ class Pessoa extends Authenticatable {
 
 				//Faz a consulta na mão para a edição atual
 				$query = DB::table('funcao_pessoa')
-							->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
-							//Busca pela Função
-							->where('funcao.funcao','=',$funcao)
-							//Busca pela Pessoa
-							->where('funcao_pessoa.pessoa_id', '=', $this->id)
-							->where('funcao_pessoa.edicao_id', '=', $EdicaoId);
+					->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+					//Busca pela Função
+					->where('funcao.funcao','=',$funcao)
+					//Busca pela Pessoa
+					->where('funcao_pessoa.pessoa_id', '=', $this->id)
+					->where('funcao_pessoa.edicao_id', '=', $EdicaoId);
 
 				if (!$query->count()) { //Todas edições
 					$query = DB::table('funcao_pessoa')
-								->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
-								//Busca pela Função
-								->where('funcao.funcao','=',$funcao)
-								//Busca pela Pessoa
-								->where('funcao_pessoa.pessoa_id', '=', $this->id)
-								->where('funcao_pessoa.edicao_id', '=', 1);
+						->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+						//Busca pela Função
+						->where('funcao.funcao','=',$funcao)
+						//Busca pela Pessoa
+						->where('funcao_pessoa.pessoa_id', '=', $this->id)
+						->where('funcao_pessoa.edicao_id', '=', 1);
+
+
                 }
 
 			} else {
 				//Permissão para todas as edições
 				$query = DB::table('funcao_pessoa')
-							->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
-							//Busca pela Função
-							->where('funcao.funcao','=',$funcao)
-							//Busca pela Pessoa
-							->where('funcao_pessoa.pessoa_id','=',$this->id)
-							->where('funcao_pessoa.edicao_id','=',1);
+					->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+					//Busca pela Função
+					->where('funcao.funcao','=',$funcao)
+					//Busca pela Pessoa
+					->where('funcao_pessoa.pessoa_id', '=', $this->id)
+					->where('funcao_pessoa.edicao_id', '=', 1);
 			}
 
 			if ($query->count()) {
