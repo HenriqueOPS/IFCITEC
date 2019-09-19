@@ -216,7 +216,7 @@ setInterval(function () {
 }, 1000);
 
 function atualizaDados() {
-    $.get("/administrador/dashboard/data", function (data) {
+    $.get("/dashboard/data", function (data) {
         $('#cronometro .ultima-atualizacao').html(currentTime());
 
         var projetos = data.projetos;

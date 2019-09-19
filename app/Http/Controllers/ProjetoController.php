@@ -669,7 +669,7 @@ class ProjetoController extends Controller
 
         $numProjetos = DB::raw('SELECT count(*) 
                                 FROM avaliacao 
-                                JOIN projeto ON projeto.id = avaliacao.projeto_id
+                                INNER JOIN projeto ON projeto.id = avaliacao.projeto_id
                                 WHERE pessoa_id = pessoa.id AND projeto.edicao_id = comissao_edicao.edicao_id');
 
         $avaliadores = DB::table('areas_comissao')
@@ -706,15 +706,16 @@ class ProjetoController extends Controller
         $avaliadoresValue = ltrim($avaliadoresValue, ',');
 
         return view('comissao.avaliador.vincula')
-            ->with(["avaliadores" => $avaliadores,
+            ->with([
+            	"avaliadores" => $avaliadores,
                 "avaliadoresValue" => $avaliadoresValue,
                 "idAvaliadores" => $idAvaliadores,
                 "projeto" => $projeto,
             ]);
     }
 
-    public function vinculaAvaliador(Request $request)
-    {
+    public function vinculaAvaliador(Request $request) {
+
         DB::table('avaliacao')
             ->where('projeto_id', '=', $request->projeto_id)
             ->where('avaliado', '=', false)

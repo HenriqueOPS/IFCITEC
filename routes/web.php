@@ -46,6 +46,10 @@ Route::post('cadastro', [
 	'uses' => 'Auth\RegisterController@register'
 ]);
 
+// Dashboard
+Route::get('/dashboard', 'DashboardController@dashboardPage');
+Route::get('/dashboard/data', 'DashboardController@dashboard'); // Ajax
+
 // Authenticated Routes
 Auth::routes();
 
