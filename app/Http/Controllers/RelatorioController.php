@@ -556,256 +556,264 @@ class RelatorioController extends Controller {
 		return \PDF::loadView('relatorios.participantesCompareceram', array('autores' => $autores, 'coorientadores' => $coorientadores, 'orientadores' => $orientadores, 'voluntarios' => $voluntarios))->download('participantes_compareceram.pdf');
 }
 
-	public function csvPresencaAutores($edicao)
-	{
-		$autores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
-						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
-						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
-						->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
-						->where('projeto.nota_avaliacao','<>',0)
-						->where(function ($q){
-                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-             			})
-						->where('funcao_pessoa.edicao_id', $edicao)
-						->orderBy('pessoa.nome')
-						->get();
 
-		$filename = "RelatorioPresencaAutores.csv";
 
+	public function csvFactory($header, $rows, $filename = 'relatorio.csv', $delimiter = ';') {
 		$handle = fopen($filename, 'w+');
 
-		fputcsv($handle, array('NOME_PARTICIPANTE','EMAIL_PARTICIPANTE','CPF_PARTICIPANTE', 'PROJETO_PARTICIPANTE'), ';');
-
-		foreach ($autores as $row) {
-			$nome = utf8_decode($row->nome);
-			$email = utf8_decode($row->email);
-			$titulo = utf8_decode($row->titulo);
-			fputcsv($handle, array($nome,$email,$row->cpf,$titulo), ';');
-		}
+		fputcsv($handle, $header, $delimiter);
+		foreach ($rows as $row)
+			fputcsv($handle, $row, $delimiter);
 
 		fclose($handle);
 
-		$headers = array(
-			'Content-Type' => 'text/csv',
-		);
-
+		$headers = ['Content-Type' => 'text/csv'];
 		return Response::download($filename, $filename, $headers);
 	}
 
-	public function csvPresencaAvaliadores($edicao)
-	{
-		$avaliadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-						->join('avaliacao', 'pessoa.id', '=', 'avaliacao.pessoa_id')
-						->join('projeto', 'avaliacao.projeto_id', '=', 'projeto.id')
-						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
-						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Avaliador')->first()->id)
-						->where('funcao_pessoa.edicao_id', $edicao)
-						->orderBy('pessoa.nome')
-						->get();
+	public function csvPresencaAutores($edicao) {
 
-		$filename = "RelatorioPresencaAvaliadores.csv";
+		$subQuery = DB::raw('SELECT count(*) 
+			FROM presenca
+			WHERE presenca.id_pessoa = pessoa.id AND 
+				projeto.edicao_id = presenca.edicao_id');
 
-		$handle = fopen($filename, 'w+');
+		$autores = DB::table('funcao_pessoa')
+			->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
+			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+			->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+			->where('projeto.nota_avaliacao','<>',0)
+			->where('funcao_pessoa.edicao_id', '=', $edicao)
+			->where('projeto.edicao_id', '=', $edicao)
+			->where(DB::raw('('.$subQuery.')'), '>', 0)
+			->orderBy('pessoa.nome')
+			->get();
 
-		fputcsv($handle, array('NOME_PARTICIPANTE','EMAIL_PARTICIPANTE','CPF_PARTICIPANTE','PROJETO_PARTICIPANTE'), ';');
+		$header = ['NOME_PARTICIPANTE', 'EMAIL_PARTICIPANTE', 'CPF_PARTICIPANTE', 'CPF_PARTICIPANTE', 'PROJETO_PARTICIPANTE'];
 
-		foreach ($avaliadores as $row) {
-			$nome = utf8_decode($row->nome);
-			$email = utf8_decode($row->email);
-			$titulo = utf8_decode($row->titulo);
-			fputcsv($handle, array($nome,$email,$row->cpf,$titulo), ';');
+		$rows = [];
+		foreach ($autores as $autor) {
+			array_push($rows, [
+				utf8_decode($autor->nome),
+				utf8_decode($autor->email),
+				$autor->cpf,
+				$autor->rg,
+				utf8_decode($autor->titulo)
+			]);
 		}
 
-		fclose($handle);
-
-		$headers = array(
-			'Content-Type' => 'text/csv',
-		);
-
-		return Response::download($filename, $filename, $headers);
+		return $this->csvFactory($header, $rows, 'RelatorioPresencaAutores.csv');
 	}
 
-	public function csvPresencaCoorientadores($edicao)
-	{
-		$coorientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
-						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email','projeto.titulo')
-						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
-						->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
-						->where(function ($q){
-                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-             			})
-             			->where('projeto.nota_avaliacao','<>',0)
-						->where('funcao_pessoa.edicao_id', $edicao)
-						->orderBy('pessoa.nome')
-						->get();
+	public function csvPresencaAvaliadores($edicao) {
 
-		$filename = "RelatorioPresencaCoorientadores.csv";
+		$subQuery = DB::raw('SELECT count(*) 
+			FROM presenca
+			WHERE presenca.id_pessoa = pessoa.id AND 
+				projeto.edicao_id = presenca.edicao_id');
 
-		$handle = fopen($filename, 'w+');
+		$avaliadores = DB::table('funcao_pessoa')
+			->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
+			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+			->join('avaliacao', 'pessoa.id', '=', 'avaliacao.pessoa_id')
+			->join('projeto', 'avaliacao.projeto_id', '=', 'projeto.id')
+			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Avaliador')->first()->id)
+			->where('funcao_pessoa.edicao_id', '=', $edicao)
+			->where('projeto.edicao_id', '=', $edicao)
+			->where(DB::raw('('.$subQuery.')'), '>', 0)
+			->orderBy('pessoa.nome')
+			->get();
 
-		fputcsv($handle, array('NOME_PARTICIPANTE','EMAIL_PARTICIPANTE','CPF_PARTICIPANTE', 'PROJETO_PARTICIPANTE'), ';');
+		$header = ['NOME_PARTICIPANTE', 'EMAIL_PARTICIPANTE', 'CPF_PARTICIPANTE', 'RG_PARTICIPANTE', 'PROJETO_PARTICIPANTE'];
 
-		foreach ($coorientadores as $row) {
-			$nome = utf8_decode($row->nome);
-			$email = utf8_decode($row->email);
-			$titulo = utf8_decode($row->titulo);
-			fputcsv($handle, array($nome,$email,$row->cpf,$titulo), ';');
+		$rows = [];
+		foreach ($avaliadores as $avaliador) {
+			array_push($rows, [
+				utf8_decode($avaliador->nome),
+				utf8_decode($avaliador->email),
+				$avaliador->cpf,
+				$avaliador->rg,
+				utf8_decode($avaliador->titulo)
+			]);
 		}
 
-		fclose($handle);
-
-		$headers = array(
-			'Content-Type' => 'text/csv',
-		);
-
-		return Response::download($filename, $filename, $headers);
+		return $this->csvFactory($header, $rows, 'RelatorioPresencaAvaliadores.csv');
 	}
 
-	public function csvPresencaOrientadores($edicao)
-	{
-		$orientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
-						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
-						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
-						->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
-						->where(function ($q){
-                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-             			})
-             			->where('projeto.nota_avaliacao','<>',0)
-						->where('funcao_pessoa.edicao_id', $edicao)
-						->orderBy('pessoa.nome')
-						->get();
+	public function csvPresencaCoorientadores($edicao) {
 
-		$filename = "RelatorioPresencaOrientadores.csv";
+		$subQuery = DB::raw('SELECT count(*) 
+			FROM presenca
+			WHERE presenca.id_pessoa = pessoa.id AND 
+				projeto.edicao_id = presenca.edicao_id');
 
-		$handle = fopen($filename, 'w+');
+		$coorientadores = DB::table('funcao_pessoa')
+			->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email','projeto.titulo')
+			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
+			->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
+			->where('projeto.nota_avaliacao','<>',0)
+			->where('funcao_pessoa.edicao_id', '=', $edicao)
+			->where('projeto.edicao_id', '=', $edicao)
+			->where(DB::raw('('.$subQuery.')'), '>', 0)
+			->orderBy('pessoa.nome')
+			->get();
 
-		fputcsv($handle, array('NOME_PARTICIPANTE','EMAIL_PARTICIPANTE','CPF_PARTICIPANTE','PROJETO_PARTICIPANTE'), ';');
+		$header = ['NOME_PARTICIPANTE', 'EMAIL_PARTICIPANTE', 'CPF_PARTICIPANTE', 'RG_PARTICIPANTE', 'PROJETO_PARTICIPANTE'];
 
-		foreach ($orientadores as $row) {
-			$nome = utf8_decode($row->nome);
-			$email = utf8_decode($row->email);
-			$titulo = utf8_decode($row->titulo);
-			fputcsv($handle, array($nome,$email,$row->cpf,$titulo), ';');
+		$rows = [];
+		foreach ($coorientadores as $coorientador) {
+			array_push($rows, [
+				utf8_decode($coorientador->nome),
+				utf8_decode($coorientador->email),
+				$coorientador->cpf,
+				$coorientador->rg,
+				utf8_decode($coorientador->titulo)
+			]);
 		}
 
-		fclose($handle);
-
-		$headers = array(
-			'Content-Type' => 'text/csv',
-		);
-
-		return Response::download($filename, $filename, $headers);
+		return $this->csvFactory($header, $rows, 'RelatorioPresencaCoorientadores.csv');
 	}
 
-	public function csvPresencaVoluntarios($edicao)
-	{
-		$voluntarios = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-						->join('presenca', 'pessoa.id', '=', 'presenca.id_pessoa')
-						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email')
-						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Voluntário')->first()->id)
-						->where('funcao_pessoa.edicao_id', $edicao)
-						->orderBy('pessoa.nome')
-						->distinct('pessoa.id')
-						->get();
+	public function csvPresencaOrientadores($edicao) {
 
-		$filename = "RelatorioPresencaVoluntarios.csv";
+		$subQuery = DB::raw('SELECT count(*) 
+			FROM presenca
+			WHERE presenca.id_pessoa = pessoa.id AND 
+				projeto.edicao_id = presenca.edicao_id');
 
-		$handle = fopen($filename, 'w+');
+		$orientadores = DB::table('funcao_pessoa')
+			->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
+			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
+			->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
+			->where('projeto.nota_avaliacao','<>',0)
+			->where('funcao_pessoa.edicao_id', $edicao)
+			->where('projeto.edicao_id', '=', $edicao)
+			->where(DB::raw('('.$subQuery.')'), '>', 0)
+			->orderBy('pessoa.nome')
+			->get();
 
-		fputcsv($handle, array('NOME_PARTICIPANTE','EMAIL_PARTICIPANTE','CPF_PARTICIPANTE'), ';');
+		$header = ['NOME_PARTICIPANTE', 'EMAIL_PARTICIPANTE', 'CPF_PARTICIPANTE', 'RG_PARTICIPANTE', 'PROJETO_PARTICIPANTE'];
 
-		foreach ($voluntarios as $row) {
-			$nome = utf8_decode($row->nome);
-			$email = utf8_decode($row->email);
-			fputcsv($handle, array($nome,$email,$row->cpf,$row->rg), ';');
+		$rows = [];
+		foreach ($orientadores as $orientador) {
+			array_push($rows, [
+				utf8_decode($orientador->nome),
+				utf8_decode($orientador->email),
+				$orientador->cpf,
+				$orientador->rg,
+				utf8_decode($orientador->titulo)
+			]);
 		}
 
-		fclose($handle);
-
-		$headers = array(
-			'Content-Type' => 'text/csv',
-		);
-
-		return Response::download($filename, $filename, $headers);
+		return $this->csvFactory($header, $rows, 'RelatorioPresencaCoorientadores.csv');
 	}
 
-	public function csvPresencaHomologadores($edicao)
-	{
-		$homologadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-						->join('revisao', 'pessoa.id', '=', 'revisao.pessoa_id')
-						->join('projeto', 'revisao.projeto_id', '=', 'projeto.id')
-						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
-						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Homologador')->first()->id)
-						->where('funcao_pessoa.edicao_id', $edicao)
-						->orderBy('pessoa.nome')
-						->get();
+	public function csvPresencaVoluntarios($edicao) {
 
-		$filename = "RelatorioPresencaHomologaores.csv";
+		$subQuery = DB::raw('SELECT count(*) 
+			FROM presenca
+			WHERE presenca.id_pessoa = pessoa.id AND 
+				funcao_pessoa.edicao_id = presenca.edicao_id');
 
-		$handle = fopen($filename, 'w+');
+		$voluntarios = DB::table('funcao_pessoa')
+			->select('pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email')
+			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+			->join('presenca', 'pessoa.id', '=', 'presenca.id_pessoa')
+			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Voluntário')->first()->id)
+			->where('funcao_pessoa.edicao_id', $edicao)
+			->where(DB::raw('('.$subQuery.')'), '>', 0)
+			->orderBy('pessoa.nome')
+			->distinct('pessoa.id')
+			->get();
 
-		fputcsv($handle, array('NOME_PARTICIPANTE','EMAIL_PARTICIPANTE','CPF_PARTICIPANTE','PROJETO_PARTICIPANTE'), ';');
+		$header = ['NOME_PARTICIPANTE', 'EMAIL_PARTICIPANTE', 'CPF_PARTICIPANTE', 'RG_PARTICIPANTE'];
 
-		foreach ($homologadores as $row) {
-			$nome = utf8_decode($row->nome);
-			$email = utf8_decode($row->email);
-			$titulo = utf8_decode($row->titulo);
-			fputcsv($handle, array($nome,$email,$row->cpf,$titulo), ';');
+		$rows = [];
+		foreach ($voluntarios as $voluntario) {
+			array_push($rows, [
+				utf8_decode($voluntario->nome),
+				utf8_decode($voluntario->email),
+				$voluntario->cpf,
+				$voluntario->rg
+			]);
 		}
 
-		fclose($handle);
-
-		$headers = array(
-			'Content-Type' => 'text/csv',
-		);
-
-		return Response::download($filename, $filename, $headers);
+		return $this->csvFactory($header, $rows, 'RelatorioPresencaVoluntarios.csv');
 	}
 
-	public function csvPresencaComissaoOrganizadora()
-	{
-		$comissao = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email')
-						->where(function ($q){
-                                        $q->where('funcao_pessoa.funcao_id', Funcao::select(['id'])
-                                            ->where('funcao', 'Administrador')
-                                            ->first()->id);
-                                        $q->orWhere('funcao_pessoa.funcao_id', Funcao::select(['id'])
-                                            ->where('funcao', 'Organizador')
-                                            ->first()->id);
-                        })
-						->orderBy('pessoa.nome')
-						->distinct('pessoa.id')
-						->get();
+	public function csvPresencaHomologadores($edicao) {
 
-		$filename = "RelatorioPresencaComissao.csv";
+		$subQuery = DB::raw('SELECT count(*) 
+			FROM presenca
+			WHERE presenca.id_pessoa = pessoa.id AND 
+				projeto.edicao_id = presenca.edicao_id');
 
-		$handle = fopen($filename, 'w+');
+		$homologadores = DB::table('funcao_pessoa')
+			->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
+			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+			->join('revisao', 'pessoa.id', '=', 'revisao.pessoa_id')
+			->join('projeto', 'revisao.projeto_id', '=', 'projeto.id')
+			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Homologador')->first()->id)
+			->where('funcao_pessoa.edicao_id', $edicao)
+			->where('projeto.edicao_id', '=', $edicao)
+			->where(DB::raw('('.$subQuery.')'), '>', 0)
+			->orderBy('pessoa.nome')
+			->get();
 
-		fputcsv($handle, array('NOME_PARTICIPANTE','EMAIL_PARTICIPANTE','CPF_PARTICIPANTE'), ';');
+		$header = ['NOME_PARTICIPANTE', 'EMAIL_PARTICIPANTE', 'CPF_PARTICIPANTE', 'RG_PARTICIPANTE', 'PROJETO_PARTICIPANTE'];
 
-		foreach ($comissao as $row) {
-			$nome = utf8_decode($row->nome);
-			$email = utf8_decode($row->email);
-			fputcsv($handle, array($nome,$email,$row->cpf), ';');
+		$rows = [];
+		foreach ($homologadores as $homologador) {
+			array_push($rows, [
+				utf8_decode($homologador->nome),
+				utf8_decode($homologador->email),
+				$homologador->cpf,
+				$homologador->rg,
+				utf8_decode($homologador->titulo)
+			]);
 		}
 
-		fclose($handle);
+		return $this->csvFactory($header, $rows, 'RelatorioPresencaHomologaores.csv');
+	}
 
-		$headers = array(
-			'Content-Type' => 'text/csv',
-		);
+	public function csvPresencaComissaoOrganizadora() {
+		$comissao = DB::table('funcao_pessoa')
+			->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email')
+			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+			->where(function ($q){
+				$q->where('funcao_pessoa.funcao_id', Funcao::select(['id'])
+					->where('funcao', 'Administrador')
+					->first()->id);
+				$q->orWhere('funcao_pessoa.funcao_id', Funcao::select(['id'])
+					->where('funcao', 'Organizador')
+					->first()->id);
+			})
+			->orderBy('pessoa.nome')
+			->distinct('pessoa.id')
+			->get();
 
-		return Response::download($filename, $filename, $headers);
+		$header = ['NOME_PARTICIPANTE', 'EMAIL_PARTICIPANTE', 'CPF_PARTICIPANTE', 'RG_PARTICIPANTE'];
+
+		$rows = [];
+		foreach ($comissao as $c) {
+			array_push($rows, [
+				utf8_decode($c->nome),
+				utf8_decode($c->email),
+				$c->cpf,
+				$c->rg
+			]);
+		}
+
+		return $this->csvFactory($header, $rows, 'RelatorioPresencaComissao.csv');
 	}
 
 	public function notaProjetosArea(){
