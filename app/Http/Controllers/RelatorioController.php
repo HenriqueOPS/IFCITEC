@@ -645,11 +645,6 @@ class RelatorioController extends Controller {
 
 	public function csvPresencaCoorientadores($edicao) {
 
-		$subQuery = DB::raw('SELECT count(*) 
-			FROM presenca
-			WHERE presenca.id_pessoa = pessoa.id AND 
-				projeto.edicao_id = presenca.edicao_id');
-
 		$coorientadores = DB::table('funcao_pessoa')
 			->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email','projeto.titulo')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
@@ -660,7 +655,6 @@ class RelatorioController extends Controller {
 			->where('projeto.nota_avaliacao','<>',0)
 			->where('funcao_pessoa.edicao_id', '=', $edicao)
 			->where('projeto.edicao_id', '=', $edicao)
-			->where(DB::raw('('.$subQuery.')'), '>', 0)
 			->orderBy('pessoa.nome')
 			->get();
 
@@ -682,11 +676,6 @@ class RelatorioController extends Controller {
 
 	public function csvPresencaOrientadores($edicao) {
 
-		$subQuery = DB::raw('SELECT count(*) 
-			FROM presenca
-			WHERE presenca.id_pessoa = pessoa.id AND 
-				projeto.edicao_id = presenca.edicao_id');
-
 		$orientadores = DB::table('funcao_pessoa')
 			->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
@@ -697,7 +686,6 @@ class RelatorioController extends Controller {
 			->where('projeto.nota_avaliacao','<>',0)
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->where('projeto.edicao_id', '=', $edicao)
-			->where(DB::raw('('.$subQuery.')'), '>', 0)
 			->orderBy('pessoa.nome')
 			->get();
 
