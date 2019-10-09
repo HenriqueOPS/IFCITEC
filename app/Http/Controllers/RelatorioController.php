@@ -702,7 +702,7 @@ class RelatorioController extends Controller {
 			]);
 		}
 
-		return $this->csvFactory($header, $rows, 'RelatorioPresencaCoorientadores.csv');
+		return $this->csvFactory($header, $rows, 'RelatorioPresencaOrientadores.csv');
 	}
 
 	public function csvPresencaVoluntarios($edicao) {
