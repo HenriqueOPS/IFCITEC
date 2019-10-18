@@ -1,24 +1,53 @@
 @extends('layouts.app')
 
-@section('css')
-    <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
-@endsection
-
 @section('content')
+<div class="container">
+	<div class="row">
+
+		<div class="col-md-12 text-center">
+			<h2>Painel do Organizador</h2>
+		</div>
+
+		<div id="page" class="col-md-12">
+			<ul class="nav nav-pills nav-pills-primary"  role="tablist">
+				<li>
+					<a href="{{ route('organizador') }}">
+						<i class="material-icons">account_balance</i>
+						Escolas
+					</a>
+				</li>
+				<li class="active">
+					<a href="{{ route('organizacao.projetos') }}">
+						<i class="material-icons">list_alt</i>
+						Listar Projetos
+					</a>
+				</li>
+				<li>
+					<a href="{{ route('organizacao.presenca') }}">
+						<i class="material-icons">account_circle</i>
+						Presença
+					</a>
+				</li>
+				<li>
+					<a href="{{route('organizacao.usuarios')}}">
+						<i class="material-icons">person</i>
+						Usuários
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<br><br>
 <div class="container">
 
     <div class="row">
 
         <div class="col-md-12 main main-raised">
 
-            <div class="col-md-12 text-center">
-                <h2>Comissão Organizadora</h2>
-                <h3>Projetos</h3>
-            </div>
-
             <div class="list-projects">
-                <h5><b id="geral">Número de projetos: <span id="nProjetos">{{$numeroProjetos}}</span> </b></h5>
-                <h5><b id="situacao">Número de projetos: <span>{{$numeroProjetos}}</span> </b></h5>
+                <h5><b id="geral">Número de projetos: <span id="nProjetos">{{ count($projetos) }}</span> </b></h5>
+                <h5><b id="situacao">Número de projetos: <span>{{ count($projetos) }}</span> </b></h5>
 
                 <div>
                     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
@@ -63,84 +92,65 @@
 
                 <div>
 
-                    <a href="{{route('homologar-projetos')}}" id="homologarTrabalhos" class="btn btn-sm btn-primary">Homologar Trabalhos</a>
+						@foreach($projetos as $projeto)
 
-                    @foreach($projetos as $projeto)
+							<div class="row project situacao-{{ $projeto->situacao_id }}">
+								<div class="col-md-10">
+									<div class="project-title">
+										<span><a href="{{ route('projeto.show', ['projeto' => $projeto->id]) }}">{{ $projeto->titulo }}</a></span>
+									</div>
+									<div class="project-info">
+										Integrantes:
 
-                        <div class="row project situacao-{{$projeto->situacao_id}}">
-                            <div class="col-md-10">
-                                <div class="project-title">
-                                    <span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
-                                </div>
-                                <div class="project-info">
-                                    Integrantes:
-                                    @foreach ($autores as $autor)
-                                        @if($autor->projeto_id == $projeto->id)
-                                            {{$autor->nome}},
-                                        @endif
-                                    @endforeach
+										@foreach($projeto->pessoas as $pessoa)
+											{{ $pessoa->nome }},
+										@endforeach
+									</div>
+								</div>
+								<div class="col-md-2 actions text-center">
+									<div class="status">
+										@if($projeto->getStatus() == "Não Homologado" || $projeto->getStatus() == "Não Avaliado")
+											<span class="label label-info">{{$projeto->getStatus()}}</span>
+										@elseif ($projeto->getStatus() == "Homologado" || $projeto->getStatus() == "Avaliado")
+											<span class="label label-success">{{$projeto->getStatus()}}</span>
+										@elseif ($projeto->getStatus() == "Não Compareceu")
+											<span class="label label-danger">{{$projeto->getStatus()}}</span>
+										@else
+											<span class="label label-default">{{$projeto->getStatus()}}</span>
+										@endif
 
-                                    @foreach ($orientadores as $orientador)
-                                        @if($orientador->projeto_id == $projeto->id)
-                                            {{$orientador->nome}},
-                                        @endif
-                                    @endforeach
+										@if($projeto->getStatus() == "Homologado")
+											@if($projeto->statusPresenca())
+												<span class="label label-warning" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+											@else
+												<span class="label label-default" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+											@endif
+										@endif
 
-                                    @foreach($coorientadores as $coorientador)
-                                        @if($coorientador->projeto_id == $projeto->id)
-                                            {{$coorientador->nome}},
-                                        @endif
-                                    @endforeach
-                                </div>
-                            </div>
-                            <div class="col-md-2 actions text-center">
-                                <div class="status">
-                                    @if($projeto->getStatus() == "Não Homologado" || $projeto->getStatus() == "Não Avaliado")
-                                        <span class="label label-info">{{$projeto->getStatus()}}</span>
-                                    @elseif ($projeto->getStatus() == "Homologado" || $projeto->getStatus() == "Avaliado")
-                                        <span class="label label-success">{{$projeto->getStatus()}}</span>
-                                    @elseif ($projeto->getStatus() == "Não Compareceu")
-                                        <span class="label label-danger">{{$projeto->getStatus()}}</span>
-                                    @else
-                                        <span class="label label-default">{{$projeto->getStatus()}}</span>
-                                    @endif
+										@if($projeto->getStatus() == "Não Homologado")
+											@if($projeto->statusHomologacao())
+												<span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+											@else
+												<span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+											@endif
+										@elseif($projeto->getStatus() == "Não Avaliado")
+											@if($projeto->statusAvaliacao())
+												<span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+											@else
+												<span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+											@endif
+										@endif
 
-                                    @if($projeto->getStatus() == "Homologado")
-                                        @if($projeto->statusPresenca())
-                                            <span class="label label-warning" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
-                                        @else
-                                            <span class="label label-default" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
-                                        @endif
-                                    @endif
+									</div>
 
-                                    @if($projeto->getStatus() == "Não Homologado")
-                                        @if($projeto->statusHomologacao())
-                                            <span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
-                                        @else
-                                            <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
-                                        @endif
-                                    @elseif($projeto->getStatus() == "Não Avaliado")
-                                        @if($projeto->statusAvaliacao())
-                                            <span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
-                                        @else
-                                            <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
-                                        @endif
-                                    @endif
+									<a class="dados-projeto" projeto-id="{{$projeto->id}}" href="#"><i class="material-icons blue-icon">remove_red_eye</i></a>
 
-                                </div>
+								</div>
+							</div>
 
-                                <a class="dados-projeto" projeto-id="{{$projeto->id}}"><i class="material-icons blue-icon" href="#" >remove_red_eye</i></a>
+						@endforeach
 
-                                @if($projeto->getStatus() == "Não Avaliado" || $projeto->getStatus() == "Homologado")
-                                    <a href="{{route('vinculaAvaliador',$projeto->id)}}"><i class="material-icons">assignment_ind</i></a>
-                                @elseif ($projeto->getStatus() == "Não Homologado" || $projeto->getStatus() == "Cadastrado")
-                                    <a href="{{route('vinculaRevisor',$projeto->id)}}"><i class="material-icons">assignment_ind</i></a>
-                                @endif
 
-                            </div>
-                        </div>
-
-                    @endforeach
                 </div>
 
             </div>
@@ -220,13 +230,13 @@ $('.dados-projeto').click(function(){
 
         $("#projetoStatus").html('');
 
-        if(res.situacao == "Não Homologado" || res.situacao == "Não Avaliado"){
+        if (res.situacao == "Não Homologado" || res.situacao == "Não Avaliado") {
             $("#projetoStatus").html('<span class="label label-info">'+res.situacao+'</span>');
-        }else if(res.situacao == "Homologado" || res.situacao == "Avaliado"){
+        } else if(res.situacao == "Homologado" || res.situacao == "Avaliado") {
             $("#projetoStatus").html('<span class="label label-success">' + res.situacao + '</span>');
-        }else if(res.situacao == "Não Compareceu"){
+        } else if(res.situacao == "Não Compareceu") {
             $("#projetoStatus").html('<span class="label label-danger">' + res.situacao + '</span>');
-        }else{
+        } else {
             $("#projetoStatus").html('<span class="label label-default">' + res.situacao + '</span>');
         }
 
@@ -238,10 +248,7 @@ $('.dados-projeto').click(function(){
             $("#homologadores").html('');
 
             homologadores.forEach(function (homologador) {
-                if(homologador.revisado)
-                    $("#homologadores").append('<span>'+homologador.nome+' => '+homologador.nota_final+'</span><br>');
-                else
-                    $("#homologadores").append('<span>'+homologador.nome+'</span><br>');
+                $("#homologadores").append('<span>' + homologador.nome + '</span><br>');
             });
         }
 
@@ -250,10 +257,7 @@ $('.dados-projeto').click(function(){
             $("#avaliadores").html('');
 
             avaliadores.forEach(function (avaliador) {
-                if(avaliador.revisado)
-                    $("#avaliadores").append('<span>'+avaliador.nome+' => '+avaliador.nota_final+'</span><br>');
-                else
-                    $("#avaliadores").append('<span>'+avaliador.nome+'</span><br>');
+				$("#avaliadores").append('<span>' + avaliador.nome + '</span><br>');
             });
         }
 
@@ -271,7 +275,6 @@ $('.dados-projeto').click(function(){
 <script src="{{asset('js/main.js')}}"></script>
 <script type="application/javascript">
 $(document).ready(function () {
-    $('#homologarTrabalhos').hide();
     $("#situacao").hide();
 
     $('.tab-projetos').click(function (e) {
@@ -279,11 +282,6 @@ $(document).ready(function () {
 
         console.log('div.project.situacao-'+target.id);
 
-        if(target.id==2){
-            $('#homologarTrabalhos').show();
-        }else{
-            $('#homologarTrabalhos').hide();
-        }
 
         if(target.id=='situacao'){
             $("#geral").hide();
@@ -297,11 +295,6 @@ $(document).ready(function () {
             $('div.project.situacao-'+target.id).show();
             $('div[id='+target.id+']').show();
         }
-
-        
-        console.log(target.id);
-
-
     });
 
 });
@@ -319,7 +312,6 @@ function hideAll(){
     $('div[id=4]').hide();
     $('div[id=5]').hide();
     $('div[id=6]').hide();
-
 }
 
 function showAll(){

@@ -12,7 +12,7 @@ class Presenca extends Model
      * @var string
      */
     protected $table = 'presenca';
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -20,10 +20,11 @@ class Presenca extends Model
      */
     protected $fillable = [
         'id_pessoa',
+		'edicao_id',
     ];
-    
+
     public function pessoas() {
         return $this->hasMany('App\Pessoa', 'id_pessoa');
     }
-    
+
 }

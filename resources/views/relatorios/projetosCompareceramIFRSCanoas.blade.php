@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE PROJETOS QUE COMPARECERAM NA {{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC DO IFRS CAMPUS CANOAS</h2>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE PROJETOS QUE COMPARECERAM NA {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC DO IFRS CAMPUS CANOAS</h2>
 
       @foreach($areas as $area)
       <p style="text-align: center;"><b>{{$area->niveis->nivel}} : {{$area->area_conhecimento}}</b></p>
@@ -25,9 +25,9 @@
     				<td><a style="color: #000;">{{$projeto->titulo}}</a></td>
             <td><a style="color: #000;">{{$projeto->nome_curto}}</a></td>
     				<td><a style="color: #000;">{{$projeto->nota_avaliacao}}</a></td>
-            {{$coorientadores = $projeto->getCoorientadores($projeto->id)}}
-            {{$orientador = $projeto->getOrientador($projeto->id)}}
-            {{$autores = $projeto->getAutores($projeto->id)}}
+            {{$coorientadores = $projeto->getCoorientadores($projeto->id, $edicao)}}
+            {{$orientador = $projeto->getOrientador($projeto->id, $edicao)}}
+            {{$autores = $projeto->getAutores($projeto->id, $edicao)}}
             <td>
             @foreach($autores as $autor)
             {{$autor->nome}},

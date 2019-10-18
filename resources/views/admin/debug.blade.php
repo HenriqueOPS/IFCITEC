@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@section('css')
-	<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
-@endsection
-
 @section('content')
 	<div class="container">
 
@@ -46,7 +42,6 @@
 				@endphp
 
 				@endif
-
 
 			</div>
 

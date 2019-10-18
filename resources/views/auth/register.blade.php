@@ -2,7 +2,6 @@
 
 
 @section('css')
-<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 <link href="{{ asset('css/organization.css') }}" rel="stylesheet">
 <link href="{{ asset('css/datepicker/bootstrap-datepicker.standdalone.css') }}" rel="stylesheet">
 <link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
@@ -52,7 +51,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">RG</label>
-                                    <input type="text" class="form-control" name="rg" value="{{old('rg')}}" maxlength="14" required>
+                                    <input type="text" class="form-control" name="rg" value="{{old('rg')}}" maxlength="10" required>
                                 </div>
                                 @if ($errors->has('rg'))
                                 <span class="help-block">
@@ -60,7 +59,7 @@
                                 </span>
                                 @endif
                             </div>
-                            
+
                             <div class="col-md-offset-2">
                             <div class="checkbox">
                                 <label>
@@ -155,8 +154,8 @@
                                     @endif
                                 </div>
                             </div>
-                            
-                            
+
+
                             <div class="input-group{{ $errors->has('senha') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">lock_outline</i>
@@ -212,7 +211,7 @@ $(document).ready(function () {
             $('.selectize-input').addClass('form-control');
         },
     });
-});  
+});
 
 $('.datepicker').datepicker({
     format: 'dd/mm/yyyy',
@@ -224,7 +223,7 @@ $('.datepicker').datepicker({
 });
 
 function formatar(mascara, documento) {
-    
+
     var i = documento.value.length;
     var saida = mascara.substring(0, 1);
     var texto = mascara.substring(i)

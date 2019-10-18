@@ -1,10 +1,7 @@
 @extends('layouts.app')
 
-@section('css')
-<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
-@endsection
-
 @section('content')
+
 	<div class="container">
 		<div class="row">
 
@@ -41,160 +38,103 @@
 
 		</div>
 	</div>
-	<br><br>
+
+	<br>
+
 	<div class="container">
 
 		<div class="row">
 
 			<div class="col-md-12 main main-raised">
 
+				<a href="{{ route('projeto.create') }}" class="btn btn-primary btn-round">
+					<i class="material-icons">add</i> Novo Projeto
+				</a>
+
 				<table class="table">
-
-					<thead id="0">
-
-					<div id="0">
-						<div class="col-md-12">
-							<a href="{{route('projeto.create')}}" class="btn btn-primary btn-round">
-								<i class="material-icons">add</i> Novo Projeto
-							</a>
-						</div>
-					</div>
-
-					</thead>
 
 					<tbody id="0">
 
 					<div id="0" class="list-projects">
-						@php $flag = true @endphp
 
-						@foreach($projetosPessoa as $p)
-							@foreach($projetos as $projeto)
-
-								@if($p->projeto_id==$projeto->id && $p->funcao=='Autor')
-
-									@php $flag = false @endphp
-
-									<div class="project">
-										<div class="project-title">
-											<span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
-										</div>
-										<div class="project-info">
-											Integrantes:
-											@foreach($integrantes as $integrante)
-												@if($integrante->projeto_id == $projeto->id)
-													{{$integrante->nome}},
-												@endif
-											@endforeach
-										</div>
-									</div>
-								@endif
-
-							@endforeach
-						@endforeach
-
-						@if($flag)
+						@if(count($projetos['autor']) == 0)
 							<h3 class="text-center">Você não é <b>Autor</b> em nenhum Projeto</h3>
 						@endif
 
+						@foreach($projetos['autor'] as $projeto)
+
+							<div class="project">
+								<div class="project-title">
+									<span><a href="{{ route('projeto.show', ['projeto' => $projeto->id]) }}">{{ $projeto->titulo }}</a></span>
+								</div>
+								<div class="project-info">
+									Integrantes:
+									@foreach($projeto->pessoas as $pessoa)
+										{{$pessoa->nome}},
+									@endforeach
+								</div>
+							</div>
+
+						@endforeach
+
 					</div>
+
 					</tbody>
 
-
-					<thead id="1">
-
-					<div id="1">
-						<div class="col-md-12">
-							<a href="{{route('projeto.create')}}" class="btn btn-primary btn-round">
-								<i class="material-icons">add</i> Novo Projeto
-							</a>
-						</div>
-					</div>
-
-					</thead>
 
 					<tbody id="1">
 
 					<div id="1" class="list-projects">
-						@php $flag = true @endphp
 
-						@foreach($projetosPessoa as $p)
-							@foreach($projetos as $projeto)
-
-								@if($p->projeto_id==$projeto->id && $p->funcao=='Orientador')
-
-									@php $flag = false @endphp
-
-									<div class="project">
-										<div class="project-title">
-											<span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
-										</div>
-										<div class="project-info">
-											Integrantes:
-											@foreach($integrantes as $integrante)
-												@if($integrante->projeto_id == $projeto->id)
-													{{$integrante->nome}},
-												@endif
-											@endforeach
-										</div>
-									</div>
-								@endif
-
-							@endforeach
-						@endforeach
-
-						@if($flag)
+						@if(count($projetos['orientador']) == 0)
 							<h3 class="text-center">Você não é <b>Orientador</b> em nenhum Projeto</h3>
 						@endif
 
+						@foreach($projetos['orientador'] as $projeto)
+
+							<div class="project">
+								<div class="project-title">
+									<span><a href="{{ route('projeto.show', ['projeto' => $projeto->id]) }}">{{ $projeto->titulo }}</a></span>
+								</div>
+								<div class="project-info">
+									Integrantes:
+									@foreach($projeto->pessoas as $pessoa)
+										{{$pessoa->nome}},
+									@endforeach
+								</div>
+							</div>
+
+						@endforeach
+
 					</div>
+
 					</tbody>
 
-
-					<thead id="2">
-
-					<div id="2">
-						<div class="col-md-12">
-							<a href="{{route('projeto.create')}}" class="btn btn-primary btn-round">
-								<i class="material-icons">add</i> Novo Projeto
-							</a>
-						</div>
-					</div>
-
-					</thead>
 
 					<tbody id="2">
 
 					<div id="2" class="list-projects">
-						@php $flag = true @endphp
 
-						@foreach($projetosPessoa as $p)
-							@foreach($projetos as $projeto)
-
-								@if($p->projeto_id==$projeto->id && $p->funcao=='Coorientador')
-
-									@php $flag = false @endphp
-
-									<div class="project">
-										<div class="project-title">
-											<span><a href="{{route('projeto.show', ['projeto' => $projeto->id])}}">{{$projeto->titulo}}</a></span>
-										</div>
-										<div class="project-info">
-											Integrantes:
-											@foreach($integrantes as $integrante)
-												@if($integrante->projeto_id == $projeto->id)
-													{{$integrante->nome}},
-												@endif
-											@endforeach
-										</div>
-									</div>
-								@endif
-
-							@endforeach
-						@endforeach
-
-						@if($flag)
+						@if(count($projetos['coorientador']) == 0)
 							<h3 class="text-center">Você não é <b>Coorientador</b> em nenhum Projeto</h3>
 						@endif
+
+						@foreach($projetos['coorientador'] as $projeto)
+
+							<div class="project">
+								<div class="project-title">
+									<span><a href="{{ route('projeto.show', ['projeto' => $projeto->id]) }}">{{ $projeto->titulo }}</a></span>
+								</div>
+								<div class="project-info">
+									Integrantes:
+									@foreach($projeto->pessoas as $pessoa)
+										{{$pessoa->nome}},
+									@endforeach
+								</div>
+							</div>
+
+						@endforeach
+
 					</div>
 					</tbody>
 
@@ -206,41 +146,32 @@
 
 @endsection
 @section('js')
-	<script type="application/javascript">
-		$(document).ready(function () {
+<script type="application/javascript">
+	$(document).ready(function () {
 
-			hideHeads();
+		hideBodys();
+
+		$('tbody[id=0]').show();
+		$('div[id=0]').show();
+
+		$('.tab').click(function () {
+			var target = $(this)[0];
+
 			hideBodys();
-			$('thead[id=0]').show();
-			$('tbody[id=0]').show();
-			$('div[id=0]').show();
-			$('.tab').click(function (e) {
-				var target = $(this)[0];
-				hideHeads();
-				hideBodys();
-				$('thead[id=' + target.id + ']').show();
-				$('tbody[id=' + target.id + ']').show();
-				$('div[id=' + target.id + ']').show();
-			});
 
+			$('tbody[id=' + target.id + ']').show();
+			$('div[id=' + target.id + ']').show();
 		});
 
-		function hideBodys() {
-			$('tbody[id=0]').hide();
-			$('tbody[id=1]').hide();
-			$('tbody[id=2]').hide();
-			$('div[id=0]').hide();
-			$('div[id=1]').hide();
-			$('div[id=2]').hide();
-		}
+	});
 
-		function hideHeads() {
-			$('thead[id=0]').hide();
-			$('thead[id=1]').hide();
-			$('thead[id=2]').hide();
-			$('div[id=0]').hide();
-			$('div[id=1]').hide();
-			$('div[id=2]').hide();
-		}
-	</script>
+	function hideBodys() {
+		$('tbody[id=0]').hide();
+		$('tbody[id=1]').hide();
+		$('tbody[id=2]').hide();
+		$('div[id=0]').hide();
+		$('div[id=1]').hide();
+		$('div[id=2]').hide();
+	}
+</script>
 @endsection

@@ -11,3 +11,8 @@ Homestead.yaml
 npm-debug.log
 .env
 /nbproject
+composer.lock
+.vscode
+composer.lock
+node_modules/
+vendor/

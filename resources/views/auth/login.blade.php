@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('css')
-<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
-
 <style>
     .container-login{margin-top: 100px;}
     .box-logo{padding: 0 !important;}
@@ -13,7 +11,6 @@
     }
     .footer{margin-bottom: 25px;}
 </style>
-
 @endsection
 
 @section('content')
@@ -30,10 +27,11 @@
                 </div>
 
                 <form class="form" method="post" action="{{ route('login') }}">
+                    <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
                     <div class="content">
 
                         {{ csrf_field() }}
-                        
+
                         <div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <span class="input-group-addon">
                                 <i class="material-icons">email</i>

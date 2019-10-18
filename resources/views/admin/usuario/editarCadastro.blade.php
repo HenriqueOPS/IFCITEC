@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('css')
-    <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
     <link href="{{ asset('css/datepicker/bootstrap-datepicker.standdalone.css') }}" rel="stylesheet">
 @endsection
@@ -201,7 +200,7 @@
                                 </div>
                                 @endif
 
-                                
+
 
                             </div>
                         </div>
@@ -234,7 +233,7 @@
                     $('.selectize-input').addClass('form-control');
                 },
             });
-        }); 
+        });
         $('.datepicker').datepicker({
             format: 'dd/mm/yyyy',
             language: 'pt-BR',

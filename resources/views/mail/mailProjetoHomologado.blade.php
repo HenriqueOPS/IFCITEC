@@ -289,11 +289,25 @@
 										</table>
 									</td>
 								</tr>
+
 								<tr>
 									<td>
-										<p>Fique atento para as datas importantes disponíveis no site do evento. Em caso de qualquer dúvida, faça contato conosco pelo e-mail ifcitec@canoas.ifrs.edu.br</p>
+										<p>Fique atento para as datas importantes disponíveis no site do evento.</p>
 									</td>
 								</tr>
+
+								<tr>
+									<td>
+										<p><b>Importante:</b>  o espaço de exposição de cada um dos projetos contará com UMA classe e UMA cadeira. Contará, também, com um porta banner compartilhado com outro projeto. Convém avisar que não temos ponto de energia elétrica exclusivo para cada estande, sendo os pontos de energia compartilhados com quem necessita. Não dispomos de extensões, adaptadores de tomada ou benjamins (T) para emprestar, por isso, traga tudo que você acredita que irá necessitar!</p>
+									</td>
+								</tr>
+
+								<tr>
+									<td>
+										<p>Em caso de qualquer dúvida, faça contato conosco pelo e-mail ifcitec@canoas.ifrs.edu.br</p>
+									</td>
+								</tr>
+
 								<tr>
 									<td>
 										<br>

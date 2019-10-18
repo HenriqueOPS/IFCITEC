@@ -12,14 +12,15 @@ class MailVoluntario extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $nome;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
-    {
-        //
+    public function __construct($nome) {
+        $this->nome = $nome;
     }
 
     /**
@@ -29,6 +30,7 @@ class MailVoluntario extends Mailable
      */
     public function build()
     {
-        return  $this->subject('IFCITEC')->view('mail.mailVoluntario');
+        return $this->subject('IFCITEC')
+			->view('mail.mailVoluntario', ['nome' => $this->nome]);
     }
 }

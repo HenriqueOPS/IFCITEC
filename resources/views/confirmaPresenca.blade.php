@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@section('css')
-<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
-@endsection
-
 @section('content')
 <br><br><br>
 <div class="container">
@@ -13,13 +9,19 @@
                 <div class="row">
                     @if($p == 1)
                     <div class="col-md-10 col-md-offset-1">
-                        <center><h2>A presença do seu projeto está confirmada!</h2></center>
+                        <h2 style="text-align: center">A presença do seu projeto está confirmada!</h2>
                     </div>
                     @else
                     <div class="col-md-10 col-md-offset-1">
-                        <center><h2>A confirmação de presença não foi possível pois o seu projeto não foi homologado!</h2></center>
+                        <h2 style="text-align: center">A confirmação de presença não foi possível pois o seu projeto não foi homologado!</h2>
                     </div>
                     @endif
+
+					<div class="col-md-10 col-md-offset-1 text-center" style="margin-top: 50px;">
+						<a href="{{route('autor')}}" class="confirma btn btn-success">
+							<i class="material-icons">bookmarks</i> Ir para Projetos
+						</a>
+					</div>
                 </div>
                 <br><br><br>
             </div>

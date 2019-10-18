@@ -62,61 +62,69 @@ class ProjetoRequest extends FormRequest {
      */
     public function withValidator($validator) {
 
-		$dados = Nivel::find($validator->getData()['nivel']);
-		$validator->addRules(['resumo' => ('required|between: '.$dados->min_ch.','.$dados->max_ch)]);
+    	// Valida o numero de caracteres do resumo de acordo com o nível
+		$dadosNivel = Nivel::find($validator->getData()['nivel']);
+		$validator->addRules(['resumo' => ('required|between: ' . $dadosNivel->min_ch . ',' . $dadosNivel->max_ch)]);
 
-		$autor = $validator->getData()['autor'];
-
+		$autores = $validator->getData()['autor'];
 		$cont = 0;
-		foreach ($autor as $a) {
-			if($a != null){
+		foreach ($autores as $autor) {
+			if($autor != null)
 				$cont++;
-			}
 		}
 
-		if($cont == 0){
+		if ($cont == 0) {
 			$validator->sometimes('autor[]', 'required', function($input) use ($cont){
-			return $input->$cont == 0;
+				return $input->$cont == 0;
 			});
+
 			$validator->errors()->add('autor[]', 'É necessário ao menos um autor');
 		}
 
-		// XGH
-		// valida as palavras chaves por Callback
-		// ME PERDOE POR ISSO =(
+		// Faz algumas validações como "callback"
 		$validator->after(function ($validator) {
-			$totalPalavras = (count(explode(",", $validator->getData()['palavras_chaves'])));
 
-			$numPalavras = Nivel::find($validator->getData()['nivel']);
+			// conta as palavras-chaves
+			$countPalavrasChaves = explode(",", $validator->getData()['palavras_chaves']);
+			$countPalavrasChaves = count($countPalavrasChaves);
+			$numPalavras = Nivel::find($validator->getData()['nivel'])->palavras;
 
-			if($totalPalavras < $numPalavras->palavras) {
-				$validator->errors()->add('palavras_chaves', 'As palavras-chave devem conter pelo menos '.$numPalavras->palavras.' palavras');
-			}
+			// Valida o número de palavras-chaves de acordo com o requerido pelo nível
+			if ($countPalavrasChaves < $numPalavras)
+				$validator->errors()->add('palavras_chaves', 'As palavras-chave devem conter pelo menos ' . $numPalavras->palavras . ' palavras');
 
-			$autor = $validator->getData()['autor'];
+			// Valida se os corientadores já fazem parte da comissão avaliadora na mesma área
+			$coorientadores = $validator->getData()['coorientador'];
+            foreach ($coorientadores as $coorientador) {
+                if ($coorientador != null) {
+					if (Pessoa::find($coorientador)->comissaoArea($validator->getData()['area_conhecimento'], $coorientador) == false)
+						$validator->errors()->add('coorientador[]', 'Não é possível adicionar esse coorientador');
+                }
+            }
+
+            // Valida se o orientador já faz parte da comissão avaliadora na mesma área
 			$orientador = $validator->getData()['orientador'];
-			$coorientador = $validator->getData()['coorientador'];
+            if (Pessoa::find($orientador)->comissaoArea($validator->getData()['area_conhecimento'], $orientador) == false)
+				$validator->errors()->add('orientador', 'Não é possível adicionar esse orientador');
 
-            foreach ($coorientador as $c) {
-                if($c != null){
-                if(Pessoa::find($c)->comissaoArea($validator->getData()['area_conhecimento'], $c) == false){
-                    $validator->errors()->add('coorientador[]', 'Não é possível adicionar esse coorientador');
-                }
-                }
-            }
+            // Valida se não tem integrantes repetidos
+			$autores = $validator->getData()['autor'];
+			foreach ($autores as $autor) {
 
-            if(Pessoa::find($orientador)->comissaoArea($validator->getData()['area_conhecimento'], $orientador) == false){
-                    $validator->errors()->add('orientador', 'Não é possível adicionar esse orientador');
-            }
+				if (isset($autor) && $autor == $orientador) {
+					$validator->errors()->add('autor[]', 'Não é possível informar dois participantes iguais');
+					$validator->errors()->add('orientador', 'Não é possível informar dois participantes iguais');
+				}
 
-			foreach ($autor as $a) {
-				foreach ($coorientador as $c) {
-					if((isset($a) && $a == $orientador) ||
-					   (isset($a) && $a == $c) ||
-					   (isset($orientador) && $orientador == $c)){
+				foreach ($coorientadores as $coorientador) {
+					if (isset($autor) && $autor == $coorientador) {
 						$validator->errors()->add('autor[]', 'Não é possível informar dois participantes iguais');
-						$validator->errors()->add('orientador', 'Não é possível informar dois participantes iguais');
 						$validator->errors()->add('coorientador[]', 'Não é possível informar dois participantes iguais');
+					}
+
+					if (isset($orientador) && $orientador == $coorientador) {
+						$validator->errors()->add('coorientador[]', 'Não é possível informar dois participantes iguais');
+						$validator->errors()->add('orientador', 'Não é possível informar dois participantes iguais');
 					}
 				}
 			}

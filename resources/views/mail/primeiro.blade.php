@@ -248,7 +248,7 @@
 			<div class="content">
 
 				<!-- START CENTERED WHITE CONTAINER -->
-				<span class="preheader">Prezado(a) {{Auth::user()->nome}},</span>
+				<span class="preheader">Prezado(a) {{$nome}},</span>
 				<table class="main">
 
 					<!-- START MAIN CONTENT AREA -->
@@ -263,7 +263,7 @@
 								</tr>
 								<tr>
 									<td>
-										<p>Prezado(a) {{Auth::user()->nome}},</p>
+										<p>Prezado(a) {{$nome}},</p>
 										<br>
 										<p>Você inscreveu-se para Avaliador(a) e/ou Homologador(a) da Feira de Ciências e Inovação Tecnológica do IFRS - Campus Canoas.</p>
 										<br>
@@ -305,4 +305,3 @@
 </body>
 </html>
 
-               

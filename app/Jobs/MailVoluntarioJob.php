@@ -15,14 +15,24 @@ class MailVoluntarioJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+	/**
+	 * The number of times the job may be attempted.
+	 *
+	 * @var int
+	 */
+	public $tries = 10;
+
+	public $email;
+	public $nome;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
-    {
-        //
+    public function __construct($email, $nome) {
+		$this->email = $email;
+		$this->nome = $nome;
     }
 
     /**
@@ -32,8 +42,8 @@ class MailVoluntarioJob implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to(Auth::user()->email)
-            ->send(new MailVoluntario());
+        Mail::to($this->email)
+            ->send(new MailVoluntario($this->nome));
     }
 }
 

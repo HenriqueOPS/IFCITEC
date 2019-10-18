@@ -3,15 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\MailSenhaJob;
 use App\Pessoa;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
-class ForgotPasswordController extends Controller
-{
+class ForgotPasswordController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Password Reset Controller
@@ -23,7 +26,6 @@ class ForgotPasswordController extends Controller
     |
     */
 
-
     use SendsPasswordResetEmails;
 
     /**
@@ -31,22 +33,36 @@ class ForgotPasswordController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('guest');
     }
 
-    public function emailSenha(Request $req)
-    {
+    public function emailSenha(Request $req) {
         $data = $req->all();
-        if(! Pessoa::where('email',$data['email'])->get()->isEmpty()){
-        $emailJob = (new MailSenhaJob($data['email'], $data['_token']))->delay(\Carbon\Carbon::now()->addSeconds(3));
-        dispatch($emailJob);
-        $req->session()->flash('status', 'O email de recuperação de senha foi enviado com sucesso');
-        return view('auth.passwords.email');
+
+        if (Pessoa::where('email', $data['email'])->count()) {
+
+        	$hasher = new BcryptHasher();
+        	$token = Str::random(64);
+
+        	DB::table('password_resets')
+				->insert([
+					'email' => $data['email'],
+					'token' => $hasher->make($token),
+					'created_at' => DB::raw('now()')
+				]);
+
+			$emailJob = (new MailSenhaJob($data['email'], $token))
+				->delay(\Carbon\Carbon::now()->addSeconds(3));
+			dispatch($emailJob);
+
+			return view('auth.passwords.email', [
+				'success' => 'O email de recuperação de senha foi enviado com sucesso'
+			]);
         }
-        else{
-            return view('auth.passwords.email', array('error' => 'Algo deu errado com o e-mail informado'));
-        }
+
+        return view('auth.passwords.email', [
+        	'error' => 'O email informado não está cadastro no sistema'
+		]);
     }
 }

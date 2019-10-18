@@ -101,7 +101,7 @@
 	<div class="cracha">
 		<div class="content">
 
-			<h2 class="edicao">{{\App\Edicao::numeroEdicao(\App\Edicao::find(\App\Edicao::getEdicaoId())->ano)}} IFCITEC</h2>
+			<h2 class="edicao">{{\App\Edicao::numeroEdicao($edicao)}} IFCITEC</h2>
 
 			<div class="dados">
 				<h2>{{$funcao}}</h2>

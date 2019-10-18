@@ -58,7 +58,7 @@ use RegistersUsers;
                     'email' => 'required|string|email|max:255|unique:pgsql.pessoa',
                     'senha' => 'required|string|confirmed',
                     'dt_nascimento' => 'required|date_format:d/m/Y|before:today|after:01/01/1900',
-                    'rg' => 'required|string|unique:pgsql.pessoa',
+                    'rg' => 'required|max:10|string|unique:pgsql.pessoa',
                     'telefone' => 'string|min:8|max:15',
                     'cpf' => 'string|unique:pgsql.pessoa|min:11|max:14',
                     'confirmacaoRg' => 'required'
@@ -77,7 +77,7 @@ use RegistersUsers;
      * @return User
      */
     protected function create(array $data) {
-    
+
         if (session()->has('email')) {
             $data = $this->setSessionValues($data);
             session()->flush();
@@ -92,7 +92,7 @@ use RegistersUsers;
                     'rg' => isset($data['rg']) ? $data['rg'] : null,
                     'camisa' => isset($data['camisa']) ? $data['camisa'] : null
         ]);
-    
+
     }
 
     private function setSessionValues($data) {
@@ -111,7 +111,7 @@ use RegistersUsers;
      * @return mixed
      */
     protected function registered(Request $request, $pessoa) {
-        
+
         /*
         if ($request->inscricao == "avaliacao") {
             $pessoa->funcoes()->attach($request->funcao);
@@ -127,7 +127,7 @@ use RegistersUsers;
         }
         $pessoa->save();
         */
-        
+
     }
 
 }

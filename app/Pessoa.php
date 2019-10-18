@@ -73,52 +73,54 @@ class Pessoa extends Authenticatable {
 	 * @param String $check Uma string contento o nome da Role
 	 * @return boolean
 	 */
-	public function temFuncao($funcao, $flag = false) { // Não me Julgue
+	public function temFuncao($funcao, $flag = false) {
 
     	//pega o id da edição
 		$EdicaoId = Edicao::getEdicaoId();
 
-		if($EdicaoId || $funcao == 'Administrador'){
+		if ($EdicaoId || $funcao == 'Administrador') {
 
 			//Busca pela edição
-			if($EdicaoId) {
+			if ($EdicaoId) {
 				//Permissão apenas para a edição corrente ou para todas as edições
 				//quando a pessoa possuir permissão para a edição de id 1, tbm terá para todas as demais
 
 				//Faz a consulta na mão para a edição atual
 				$query = DB::table('funcao_pessoa')
-							->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
-							//Busca pela Função
-							->where('funcao.funcao','=',$funcao)
-							//Busca pela Pessoa
-							->where('funcao_pessoa.pessoa_id','=',$this->id)
-							->where('funcao_pessoa.edicao_id','=',$EdicaoId);
+					->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+					//Busca pela Função
+					->where('funcao.funcao','=',$funcao)
+					//Busca pela Pessoa
+					->where('funcao_pessoa.pessoa_id', '=', $this->id)
+					->where('funcao_pessoa.edicao_id', '=', $EdicaoId);
 
-				if(!$query->count()){ //Todas edições
+				if (!$query->count()) { //Todas edições
 					$query = DB::table('funcao_pessoa')
-								->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
-								//Busca pela Função
-								->where('funcao.funcao','=',$funcao)
-								//Busca pela Pessoa
-								->where('funcao_pessoa.pessoa_id','=',$this->id)
-								->where('funcao_pessoa.edicao_id','=',1);
+						->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+						//Busca pela Função
+						->where('funcao.funcao','=',$funcao)
+						//Busca pela Pessoa
+						->where('funcao_pessoa.pessoa_id', '=', $this->id)
+						->where('funcao_pessoa.edicao_id', '=', 1);
+
+
                 }
 
-			}else{
+			} else {
 				//Permissão para todas as edições
 				$query = DB::table('funcao_pessoa')
-							->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
-							//Busca pela Função
-							->where('funcao.funcao','=',$funcao)
-							//Busca pela Pessoa
-							->where('funcao_pessoa.pessoa_id','=',$this->id)
-							->where('funcao_pessoa.edicao_id','=',1);
+					->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+					//Busca pela Função
+					->where('funcao.funcao','=',$funcao)
+					//Busca pela Pessoa
+					->where('funcao_pessoa.pessoa_id', '=', $this->id)
+					->where('funcao_pessoa.edicao_id', '=', 1);
 			}
 
-			if($query->count()) {
-				//Verifica se não foi homologado como Homologador ou Avaliador
-				if(($funcao=='Homologador' || $funcao=='Avaliador')){
-                    if(!$query->get()[0]->homologado && !$flag){
+			if ($query->count()) {
+				// Verifica se não foi homologado como Homologador ou Avaliador
+				if ($funcao == 'Homologador' || $funcao == 'Avaliador') {
+                    if (!$query->get()[0]->homologado && !$flag) {
                         return false;
                     }
                 }
@@ -137,13 +139,13 @@ class Pessoa extends Authenticatable {
 
         if($EdicaoId){
 
-            //Faz a consulta na mão por causa dos Wheres
             $query = DB::table('funcao_pessoa')
-                            ->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
-                            //Busca pela Função
-                            ->where('funcao.funcao','=',$funcao)
-                            //Busca pela Pessoa
-                            ->where('funcao_pessoa.pessoa_id','=',$this->id);
+						->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+						//Busca pela Função
+						->where('funcao.funcao','=',$funcao)
+						//Busca pela Pessoa
+						->where('funcao_pessoa.pessoa_id','=',$this->id)
+            			->where('funcao_pessoa.homologado', '=', true);
 
             //Busca pela edição
             if($EdicaoId) {
@@ -190,27 +192,22 @@ class Pessoa extends Authenticatable {
         return false;
     }
 
-    public function temFuncaoProjeto($funcao, $projeto, $pessoa) {
-
-        //pega o id da edição
-        $EdicaoId = Edicao::getEdicaoId();
-
-        if($EdicaoId){
+    public function temFuncaoProjeto($funcao, $projeto, $pessoa, $edicao) {
+        if ($edicao) {
 
             $query = DB::table('escola_funcao_pessoa_projeto')
-                            //Busca pela Função
-                            ->where('funcao_id','=',Funcao::where('funcao', $funcao)->get()->first()->id)
-                            //Busca pela Pessoa
-                            ->where('pessoa_id',$pessoa)
-                            //Busca pelo Projeto
-                            ->where('projeto_id',$projeto)
-                            //Busca pela Edição
-                            ->where('edicao_id', $EdicaoId)
-                            ->get();
+				// Busca pela Função
+				->where('funcao_id', '=', Funcao::where('funcao', $funcao)->get()->first()->id)
+				// Busca pela Pessoa
+				->where('pessoa_id', $pessoa)
+				// Busca pelo Projeto
+				->where('projeto_id', $projeto)
+				// Busca pela Edição
+				->where('edicao_id', $edicao)
+				->get();
 
-            if($query->count()) {
+            if($query->count())
                 return true;
-            }
         }
 
         return false;
@@ -224,20 +221,19 @@ class Pessoa extends Authenticatable {
         if($EdicaoId){
 
             $query = DB::table('areas_comissao')
-                            ->join('area_conhecimento', 'areas_comissao.area_id', '=', 'area_conhecimento.id')
-                            ->join('comissao_edicao', 'areas_comissao.comissao_edicao_id', '=', 'comissao_edicao.id')
-                            //Busca pela Pessoa
-                            ->where('comissao_edicao.pessoa_id','=',$pessoa)
-                            //Busca pelo Nível
-                            ->where('area_conhecimento.id','=',$area)
-                            //Busca pela Edição
-                            ->where('comissao_edicao.edicao_id', $EdicaoId)
-                            ->orWhere('edicao_id',null)
-                            ->get();
+				->join('area_conhecimento', 'areas_comissao.area_id', '=', 'area_conhecimento.id')
+				->join('comissao_edicao', 'areas_comissao.comissao_edicao_id', '=', 'comissao_edicao.id')
+				//Busca pela Pessoa
+				->where('comissao_edicao.pessoa_id', '=', $pessoa)
+				//Busca pelo Nível
+				->where('area_conhecimento.id', '=', $area)
+				//Busca pela Edição
+				->where('comissao_edicao.edicao_id', $EdicaoId)
+				->orWhere('edicao_id', null)
+				->get();
 
-            if(!$query->count()) {
+            if(!$query->count())
                 return true;
-            }
         }
 
         return false;
@@ -293,19 +289,20 @@ class Pessoa extends Authenticatable {
         return $total->total;
     }
 
-    public function temTrabalho(){
+    public function temTrabalho() {
+
         $total = DB::table('escola_funcao_pessoa_projeto')
             ->select('escola_funcao_pessoa_projeto.projeto_id', 'projeto.situacao_id')
             ->join('projeto','escola_funcao_pessoa_projeto.projeto_id','=','projeto.id')
             ->where('escola_funcao_pessoa_projeto.pessoa_id','=',$this->id)
-            ->where('projeto.situacao_id','<>',Situacao::where('situacao', 'Não Homologado')->get()->first()->id)
+            ->where('projeto.situacao_id', '<>', Situacao::where('situacao', 'Não Homologado')->get()->first()->id)
+			->where('projeto.edicao_id', '=', Edicao::getEdicaoId())
             ->get();
-        if($total->count()){
+
+        if($total->count())
             return true;
-        }
-        else{
-            return false;
-        }
+
+        return false;
     }
 
     public function temTarefa(){
