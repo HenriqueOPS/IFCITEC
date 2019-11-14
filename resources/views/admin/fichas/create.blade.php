@@ -11,6 +11,14 @@
 					<h2>Cadastrar Nova Ficha</h2>
 				</div>
 
+				@if(!(\App\Edicao::consultaPeriodo('Feira')))
+					<div class="col-md-12 text-center">
+						<div class="alert alert-warning">
+							<strong>Atenção!</strong> Antes de criar uma ficha, crie uma edição para o período atual
+						</div>
+					</div>
+				@endif
+
 				<form method="post" id="formulario" action="{{ route('adminstrador.salvarFicha') }}">
 
 					{{ csrf_field() }}

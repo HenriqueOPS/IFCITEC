@@ -180,8 +180,18 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 
     // Fichas de Avaliação/Homologação
 	Route::get('/administrador/fichas','FichaController@index')->name('administrador.ficha');
-	Route::get('/administrador/fichas/cadastrar','FichaController@novaFicha')->name('adminstrador.cadastrarFicha');
-	Route::post('/administrador/fichas/cadastrar','FichaController@salvaFicha')->name('adminstrador.salvarFicha');
+	Route::get('/administrador/fichas/cadastrar','FichaController@create')->name('adminstrador.cadastrarFicha');
+	Route::post('/administrador/fichas/cadastrar','FichaController@store')->name('adminstrador.salvarFicha');
+	Route::get('/administrador/fichas/copiar','FichaController@copiarFicha')->name('adminstrador.copiarFicha');
+	Route::post('/administrador/fichas/copiar','FichaController@copiaFicha')->name('adminstrador.copiaFicha');
+
+	Route::get('/administrador/fichas/{id}','FichaController@show')->name('administrador.showFicha');
+	Route::get('/administrador/fichas/{id}/editar','FichaController@edit')->name('administrador.edit');
+	Route::post('/administrador/fichas/editar','FichaController@update')->name('administrador.alteraFicha');
+
+
+
+
 
     // Administrador
     Route::get('/projetos/homologar-projetos', 'ProjetoController@homologarProjetos')->name('homologar-projetos');

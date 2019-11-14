@@ -60,32 +60,35 @@ class Edicao extends Model
 	}
 
 	//Consulta se está dentro dos períodos
-	public static function consultaPeriodo($tipo){
+	public static function consultaPeriodo($tipo) {
 
 		$nome_campos = false;
 
 		switch ($tipo){
 			case 'Inscrição':
-				$nome_campos = array('inscricao_abertura','inscricao_fechamento');
+				$nome_campos = ['inscricao_abertura','inscricao_fechamento'];
 			break;
 			case 'Homologação':
-				$nome_campos = array('homologacao_abertura','homologacao_fechamento');
+				$nome_campos = ['homologacao_abertura','homologacao_fechamento'];
 			break;
 			case 'Avaliação':
-				$nome_campos = array('avaliacao_abertura','avaliacao_fechamento');
+				$nome_campos = ['avaliacao_abertura','avaliacao_fechamento'];
 			break;
 			case 'Credenciamento':
-				$nome_campos = array('credenciamento_abertura','credenciamento_fechamento');
+				$nome_campos = ['credenciamento_abertura','credenciamento_fechamento'];
 			break;
 			case 'Voluntário':
-				$nome_campos = array('voluntario_abertura','voluntario_fechamento');
+				$nome_campos = ['voluntario_abertura','voluntario_fechamento'];
 			break;
 			case 'Comissão':
-				$nome_campos = array('comissao_abertura','comissao_fechamento');
+				$nome_campos = ['comissao_abertura','comissao_fechamento'];
+			break;
+			case 'Feira':
+				$nome_campos = ['feira_abertura', 'feira_fechamento'];
 			break;
 		}
 
-		if($nome_campos){
+		if ($nome_campos) {
 			$edicao = Edicao::whereRaw("(NOW() AT TIME ZONE 'America/Sao_Paulo') >= ".$nome_campos[0])
 							->whereRaw("(NOW() AT TIME ZONE 'America/Sao_Paulo') <= ".$nome_campos[1])
 							->get();
@@ -94,8 +97,7 @@ class Edicao extends Model
 				return $edicao[0]->id;
 		}
 
-		return 0;
-
+		return false;
 	}
 
 	public static function numeroEdicao($n){
