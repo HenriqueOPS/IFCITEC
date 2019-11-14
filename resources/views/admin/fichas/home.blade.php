@@ -85,6 +85,10 @@
 					<a href="{{ route('adminstrador.cadastrarFicha') }}" class="btn btn-primary btn-round">
 						<i class="material-icons">add</i> Adicionar Ficha
 					</a>
+
+					<a href="{{ route('adminstrador.copiarFicha') }}" class="btn btn-primary btn-round">
+						<i class="material-icons">file_copy</i> Copiar Ficha
+					</a>
 				</div>
 
 			@foreach($formularios as $formulario)
@@ -104,7 +108,13 @@
 
 					</div>
 					<div class="col-md-2 actions text-center">
-						<a href="#"><i class="material-icons blue-icon">remove_red_eye</i></a>
+						<a href="{{ route('administrador.showFicha', $formulario->idformulario) }}">
+							<i class="material-icons blue-icon">remove_red_eye</i>
+						</a>
+
+						<a href="{{ route('administrador.edit', $formulario->idformulario) }}">
+							<i class="material-icons blue-icon">edit</i>
+						</a>
 					</div>
 				</div>
 
