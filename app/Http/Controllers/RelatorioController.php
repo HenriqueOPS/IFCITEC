@@ -19,12 +19,14 @@ class RelatorioController extends Controller {
 
 	public function csv($id, $edicao) {
 		if ($id == 1) {
+
 			$resultados = DB::table('funcao_pessoa')
 			->join('pessoa','funcao_pessoa.pessoa_id','=','pessoa.id')
 			->select('pessoa.email','pessoa.nome')
 			->where('funcao_pessoa.edicao_id',$edicao)
 			->where('funcao_pessoa.funcao_id', Funcao::select(['id'])->where('funcao', 'Avaliador')->first()->id)
 			->get();
+
 			$filename = "Avaliadores.csv";
 		} else if ($id == 2) {
 			$resultados = DB::table('funcao_pessoa')
@@ -347,8 +349,7 @@ class RelatorioController extends Controller {
 		return Response::download($filename, $filename, $headers);
 	}
 
-	public function csvProjetos()
-	{
+	public function csvProjetos() {
 		$subQuery = DB::table('revisao')
             ->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
             ->where('revisao.projeto_id','=',DB::raw('projeto.id'))
@@ -740,13 +741,13 @@ class RelatorioController extends Controller {
 
 	public function csvPresencaHomologadores($edicao) {
 
-		$subQuery = DB::raw('SELECT count(*) 
-			FROM presenca
-			WHERE presenca.id_pessoa = pessoa.id AND 
-				projeto.edicao_id = presenca.edicao_id');
+		$subQuery = DB::raw('SELECT count(*)
+			FROM revisao
+			WHERE revisao.pessoa_id = pessoa.id AND
+				revisao.projeto_id = projeto.id');
 
 		$homologadores = DB::table('funcao_pessoa')
-			->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
+			->select('pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->join('revisao', 'pessoa.id', '=', 'revisao.pessoa_id')
 			->join('projeto', 'revisao.projeto_id', '=', 'projeto.id')
