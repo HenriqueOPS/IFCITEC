@@ -134,7 +134,6 @@ $(document).ready(function () {
         placeholder: 'Escolha uma edição...',
         onInitialize: function () {
             this.setValue(oldEdicao, true);
-            //$('.selectize-control').addClass('form-group');
             $('.selectize-input').addClass('form-control');
         },
     });

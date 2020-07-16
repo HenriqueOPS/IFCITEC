@@ -2,7 +2,6 @@
 
 namespace App;
 
-use function GuzzleHttp\Promise\all;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable as Notifiable;
 //
@@ -76,12 +75,12 @@ class Pessoa extends Authenticatable {
 	public function temFuncao($funcao, $flag = false) {
 
     	//pega o id da edição
-		$EdicaoId = Edicao::getEdicaoId();
+		$edicaoId = Edicao::getEdicaoId();
 
-		if ($EdicaoId || $funcao == 'Administrador') {
+		if ($edicaoId || $funcao == 'Administrador') {
 
 			//Busca pela edição
-			if ($EdicaoId) {
+			if ($edicaoId) {
 				//Permissão apenas para a edição corrente ou para todas as edições
 				//quando a pessoa possuir permissão para a edição de id 1, tbm terá para todas as demais
 
@@ -92,7 +91,7 @@ class Pessoa extends Authenticatable {
 					->where('funcao.funcao','=',$funcao)
 					//Busca pela Pessoa
 					->where('funcao_pessoa.pessoa_id', '=', $this->id)
-					->where('funcao_pessoa.edicao_id', '=', $EdicaoId);
+					->where('funcao_pessoa.edicao_id', '=', $edicaoId);
 
 				if (!$query->count()) { //Todas edições
 					$query = DB::table('funcao_pessoa')

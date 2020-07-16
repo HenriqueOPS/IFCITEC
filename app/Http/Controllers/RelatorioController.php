@@ -555,11 +555,12 @@ class RelatorioController extends Controller {
 			->get();
 
 		return \PDF::loadView('relatorios.participantesCompareceram', array('autores' => $autores, 'coorientadores' => $coorientadores, 'orientadores' => $orientadores, 'voluntarios' => $voluntarios))->download('participantes_compareceram.pdf');
-}
+	}
 
-
-
-	public function csvFactory($header, $rows, $filename = 'relatorio.csv', $delimiter = ';') {
+	/*
+	 *  Gera um CSV de acordo com os parâmetros
+	 * */
+	public function buildCsv($header, $rows, $filename = 'relatorio.csv', $delimiter = ';') {
 		$handle = fopen($filename, 'w+');
 
 		fputcsv($handle, $header, $delimiter);
@@ -572,48 +573,75 @@ class RelatorioController extends Controller {
 		return Response::download($filename, $filename, $headers);
 	}
 
-	public function csvPresencaAutores($edicao) {
-
-		$subQuery = DB::raw('SELECT count(*) 
-			FROM presenca
-			WHERE presenca.id_pessoa = pessoa.id AND 
-				projeto.edicao_id = presenca.edicao_id');
-
-		$autores = DB::table('funcao_pessoa')
-			->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
+	/*
+	 *  Gera o CSV de certificados de acordo com a presença do PROJETO
+	 * */
+	public function generateCSVByFunction($funcaoId, $edicaoId, $filename = 'relatorio.csv') {
+		$participantes = DB::table('funcao_pessoa')
+			->select('pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
-			->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
-			->where('projeto.nota_avaliacao','<>',0)
-			->where('funcao_pessoa.edicao_id', '=', $edicao)
-			->where('projeto.edicao_id', '=', $edicao)
-			->where(DB::raw('('.$subQuery.')'), '>', 0)
+			->where('funcao_pessoa.funcao_id', $funcaoId)
+			->where('escola_funcao_pessoa_projeto.funcao_id', $funcaoId)
+			->where('projeto.nota_avaliacao', '<>', 0) // presença dada pela nota de avaliação diferente de zero
+			->where('funcao_pessoa.edicao_id', '=', $edicaoId)
+			->where('projeto.edicao_id', '=', $edicaoId)
 			->orderBy('pessoa.nome')
 			->get();
 
-		$header = ['NOME_PARTICIPANTE', 'EMAIL_PARTICIPANTE', 'CPF_PARTICIPANTE', 'CPF_PARTICIPANTE', 'PROJETO_PARTICIPANTE'];
+		$headerFields = [
+			'NOME_PARTICIPANTE',
+			'EMAIL_PARTICIPANTE',
+			'CPF_PARTICIPANTE',
+			'CPF_PARTICIPANTE',
+			'PROJETO_PARTICIPANTE'
+		];
 
 		$rows = [];
-		foreach ($autores as $autor) {
+		foreach ($participantes as $participante) {
 			array_push($rows, [
-				utf8_decode($autor->nome),
-				utf8_decode($autor->email),
-				$autor->cpf,
-				$autor->rg,
-				utf8_decode($autor->titulo)
+				utf8_decode($participante->nome),
+				utf8_decode($participante->email),
+				$participante->cpf,
+				$participante->rg,
+				utf8_decode($participante->titulo)
 			]);
 		}
 
-		return $this->csvFactory($header, $rows, 'RelatorioPresencaAutores.csv');
+		return $this->buildCsv($headerFields, $rows, $filename);
 	}
 
-	public function csvPresencaAvaliadores($edicao) {
+	/*
+	 *  Gera o CSV de certificados para os AUTORES de acordo com a presença do PROJETO
+	 * */
+	public function csvPresencaAutores($edicaoId) {
+		$authorId = Funcao::where('funcao', 'Autor')->first()->id;
+		return $this->generateCSVByFunction($authorId, $edicaoId, 'RelatorioPresencaAutores.csv');
+	}
 
-		$subQuery = DB::raw('SELECT count(*) 
+	/*
+	 *  Gera o CSV de certificados para os COORIENTADORES de acordo com a presença do PROJETO
+	 * */
+	public function csvPresencaCoorientadores($edicaoId) {
+		$coorientadorId = Funcao::where('funcao', 'Coorientador')->first()->id;
+		return $this->generateCSVByFunction($coorientadorId, $edicaoId, 'RelatorioPresencaCoorientadores.csv');
+	}
+
+	/*
+	 *  Gera o CSV de certificados para os ORIENTADORES de acordo com a presença do PROJETO
+	 * */
+	public function csvPresencaOrientadores($edicaoId) {
+		$orientadorId = Funcao::where('funcao', 'Orientador')->first()->id;
+		return $this->generateCSVByFunction($orientadorId, $edicaoId, 'RelatorioPresencaOrientadores.csv');
+	}
+
+
+
+	public function csvPresencaAvaliadores($edicao) {
+		$subQuery = DB::raw('SELECT count(*)
 			FROM presenca
-			WHERE presenca.id_pessoa = pessoa.id AND 
+			WHERE presenca.id_pessoa = pessoa.id AND
 				projeto.edicao_id = presenca.edicao_id');
 
 		$avaliadores = DB::table('funcao_pessoa')
@@ -641,76 +669,14 @@ class RelatorioController extends Controller {
 			]);
 		}
 
-		return $this->csvFactory($header, $rows, 'RelatorioPresencaAvaliadores.csv');
-	}
-
-	public function csvPresencaCoorientadores($edicao) {
-
-		$coorientadores = DB::table('funcao_pessoa')
-			->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email','projeto.titulo')
-			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
-			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
-			->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
-			->where('projeto.nota_avaliacao','<>',0)
-			->where('funcao_pessoa.edicao_id', '=', $edicao)
-			->where('projeto.edicao_id', '=', $edicao)
-			->orderBy('pessoa.nome')
-			->get();
-
-		$header = ['NOME_PARTICIPANTE', 'EMAIL_PARTICIPANTE', 'CPF_PARTICIPANTE', 'RG_PARTICIPANTE', 'PROJETO_PARTICIPANTE'];
-
-		$rows = [];
-		foreach ($coorientadores as $coorientador) {
-			array_push($rows, [
-				utf8_decode($coorientador->nome),
-				utf8_decode($coorientador->email),
-				$coorientador->cpf,
-				$coorientador->rg,
-				utf8_decode($coorientador->titulo)
-			]);
-		}
-
-		return $this->csvFactory($header, $rows, 'RelatorioPresencaCoorientadores.csv');
-	}
-
-	public function csvPresencaOrientadores($edicao) {
-
-		$orientadores = DB::table('funcao_pessoa')
-			->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
-			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
-			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
-			->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
-			->where('projeto.nota_avaliacao','<>',0)
-			->where('funcao_pessoa.edicao_id', $edicao)
-			->where('projeto.edicao_id', '=', $edicao)
-			->orderBy('pessoa.nome')
-			->get();
-
-		$header = ['NOME_PARTICIPANTE', 'EMAIL_PARTICIPANTE', 'CPF_PARTICIPANTE', 'RG_PARTICIPANTE', 'PROJETO_PARTICIPANTE'];
-
-		$rows = [];
-		foreach ($orientadores as $orientador) {
-			array_push($rows, [
-				utf8_decode($orientador->nome),
-				utf8_decode($orientador->email),
-				$orientador->cpf,
-				$orientador->rg,
-				utf8_decode($orientador->titulo)
-			]);
-		}
-
-		return $this->csvFactory($header, $rows, 'RelatorioPresencaOrientadores.csv');
+		return $this->buildCsv($header, $rows, 'RelatorioPresencaAvaliadores.csv');
 	}
 
 	public function csvPresencaVoluntarios($edicao) {
 
-		$subQuery = DB::raw('SELECT count(*) 
+		$subQuery = DB::raw('SELECT count(*)
 			FROM presenca
-			WHERE presenca.id_pessoa = pessoa.id AND 
+			WHERE presenca.id_pessoa = pessoa.id AND
 				funcao_pessoa.edicao_id = presenca.edicao_id');
 
 		$voluntarios = DB::table('funcao_pessoa')
@@ -736,7 +702,7 @@ class RelatorioController extends Controller {
 			]);
 		}
 
-		return $this->csvFactory($header, $rows, 'RelatorioPresencaVoluntarios.csv');
+		return $this->buildCsv($header, $rows, 'RelatorioPresencaVoluntarios.csv');
 	}
 
 	public function csvPresencaHomologadores($edicao) {
@@ -771,7 +737,7 @@ class RelatorioController extends Controller {
 			]);
 		}
 
-		return $this->csvFactory($header, $rows, 'RelatorioPresencaHomologaores.csv');
+		return $this->buildCsv($header, $rows, 'RelatorioPresencaHomologaores.csv');
 	}
 
 	public function csvPresencaComissaoOrganizadora() {
@@ -802,7 +768,7 @@ class RelatorioController extends Controller {
 			]);
 		}
 
-		return $this->csvFactory($header, $rows, 'RelatorioPresencaComissao.csv');
+		return $this->buildCsv($header, $rows, 'RelatorioPresencaComissao.csv');
 	}
 
 	public function notaProjetosArea(){
