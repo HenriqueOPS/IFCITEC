@@ -1,5 +1,4 @@
 FROM php:7.1.7-apache
-RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
 RUN apt-get update -yqq && \
     apt-get install supervisor nano zlib1g-dev libpq-dev libpng-dev -yqq --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
