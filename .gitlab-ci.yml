@@ -15,7 +15,7 @@ job-composer:
   stage: build
   image: php:7.1.7-apache
   script:
-    - printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
+#    - printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
     - apt-get update && apt-get install git zlib1g-dev libtool-bin libpq-dev unzip libpng-dev -yqq --no-install-recommends
     - docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
     - docker-php-ext-install zip gd pdo_pgsql pgsql
