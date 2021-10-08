@@ -11,6 +11,13 @@
   |
  */
 use App\Http\Middleware;
+/*use App\Http\Controllers\MailController;
+
+Route::get('/teste-email', function()
+{
+	$mc = new MailController();
+	$mc->sendEmail();
+});*/
 
 Route::get('/version', function (){
 	$strData = explode(':', file_get_contents('version.txt'));
