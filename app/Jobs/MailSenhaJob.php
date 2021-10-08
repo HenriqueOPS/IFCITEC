@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\TestMail;
 use App\Mail\MailSenha;
 
 class MailSenhaJob implements ShouldQueue
@@ -41,7 +42,11 @@ class MailSenhaJob implements ShouldQueue
      */
     public function handle()
     {
+        $information = [
+            'title' => $this->email,
+            'body' => $this->token
+        ];
          Mail::to($this->email)
-         ->send(new MailSenha($this->token));
+         ->send(new MailSenha($information));
     }
 }
