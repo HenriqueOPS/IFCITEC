@@ -147,10 +147,11 @@ class ProjetoController extends Controller
 						'edicao_id' => Edicao::getEdicaoId()
 					]);
 
-				$emailJob = (new MailAutorJob($dataAutor->email, $dataAutor->nome, $projeto->titulo))
+					// ORIGINAL
+				/*$emailJob = (new MailAutorJob($dataAutor->email, $dataAutor->nome, $projeto->titulo))
 					->delay(\Carbon\Carbon::now()->addSeconds(60));
-				dispatch($emailJob);
-
+				dispatch($emailJob);*/
+				dispatch(new MailAutorJob($dataAutor->email, $dataAutor->nome, $projeto->titulo));
 			}
 
 		}
@@ -176,9 +177,11 @@ class ProjetoController extends Controller
 				'edicao_id' => Edicao::getEdicaoId()
 			]);
 
-		$emailJob = (new MailOrientadorJob($dataOrientador->email, $dataOrientador->nome, $projeto->titulo))
+			// ORIGINAL
+		/*$emailJob = (new MailOrientadorJob($dataOrientador->email, $dataOrientador->nome, $projeto->titulo))
 			->delay(\Carbon\Carbon::now()->addSeconds(60));
-		dispatch($emailJob);
+		dispatch($emailJob);*/
+		dispatch(new MailOrientadorJob($dataOrientador->email, $dataOrientador->nome, $projeto->titulo));
 
 		// Coorientadores
 		foreach ($request['coorientador'] as $idCoorientador) {
@@ -205,9 +208,11 @@ class ProjetoController extends Controller
 						'edicao_id' => Edicao::getEdicaoId(),
 					]);
 
-				$emailJob = (new MailCoorientadorJob($dataCoorientador->email, $dataCoorientador->nome, $projeto->titulo))
+					// ORIGINAL
+				/*$emailJob = (new MailCoorientadorJob($dataCoorientador->email, $dataCoorientador->nome, $projeto->titulo))
 					->delay(\Carbon\Carbon::now()->addSeconds(60));
-				dispatch($emailJob);
+				dispatch($emailJob);*/
+				dispatch(new MailCoorientadorJob($dataCoorientador->email, $dataCoorientador->nome, $projeto->titulo));
 			}
 
 		}
@@ -396,10 +401,11 @@ class ProjetoController extends Controller
 							'edicao_id' => Edicao::getEdicaoId()
 						]);
 
-					$emailJob = (new MailAutorJob($dataAutor->email, $dataAutor->nome, $projeto->titulo))
+						// ORIGINAL
+					/*$emailJob = (new MailAutorJob($dataAutor->email, $dataAutor->nome, $projeto->titulo))
 						->delay(\Carbon\Carbon::now()->addSeconds(60));
-					dispatch($emailJob);
-
+					dispatch($emailJob);*/
+					dispatch(new MailAutorJob($dataAutor->email, $dataAutor->nome, $projeto->titulo));
 				}
 
 			}
@@ -425,9 +431,11 @@ class ProjetoController extends Controller
 					'edicao_id' => Edicao::getEdicaoId()
 				]);
 
-			$emailJob = (new MailOrientadorJob($dataOrientador->email, $dataOrientador->nome, $projeto->titulo))
+				// ORIGINAL
+			/*$emailJob = (new MailOrientadorJob($dataOrientador->email, $dataOrientador->nome, $projeto->titulo))
 				->delay(\Carbon\Carbon::now()->addSeconds(60));
-			dispatch($emailJob);
+			dispatch($emailJob);*/
+			dispatch(new MailOrientadorJob($dataOrientador->email, $dataOrientador->nome, $projeto->titulo));
 
 			// Cria o vinculo dos Coorientadores ao projeto
 			foreach ($req->all()['coorientador'] as $idCoorientador) {
@@ -454,9 +462,11 @@ class ProjetoController extends Controller
 							'edicao_id' => Edicao::getEdicaoId(),
 						]);
 
-					$emailJob = (new MailCoorientadorJob($dataCoorientador->email, $dataCoorientador->nome, $projeto->titulo))
+						// ORIGINAL
+					/*$emailJob = (new MailCoorientadorJob($dataCoorientador->email, $dataCoorientador->nome, $projeto->titulo))
 						->delay(\Carbon\Carbon::now()->addSeconds(60));
-					dispatch($emailJob);
+						dispatch($emailJob);*/
+					dispatch(new MailCoorientadorJob($dataCoorientador->email, $dataCoorientador->nome, $projeto->titulo));
 				}
 
 			}
@@ -645,9 +655,11 @@ class ProjetoController extends Controller
                     //homologador
                     $pessoa = Pessoa::find($revisao->pessoa_id);
 
-                    $emailJob = (new MailVinculaProjetoJob($pessoa->email, $pessoa->nome, $projeto->titulo))
+					// ORIGINAL
+                    /*$emailJob = (new MailVinculaProjetoJob($pessoa->email, $pessoa->nome, $projeto->titulo))
                         ->delay(\Carbon\Carbon::now()->addSeconds(60));
-                    dispatch($emailJob);
+						dispatch($emailJob)*/
+                    dispatch(new MailVinculaProjetoJob($pessoa->email, $pessoa->nome, $projeto->titulo));
 
                 }
             }
@@ -900,9 +912,11 @@ class ProjetoController extends Controller
                 if ($projeto->count()) {
 
                     foreach ($projeto[0]->pessoas as $pessoa) {
-                        $emailJob = (new MailProjetoHomologadoJob($pessoa->email, $pessoa->nome, $projeto[0]->titulo, $projeto[0]->id))
+						// ORIGINAL	
+                        /*$emailJob = (new MailProjetoHomologadoJob($pessoa->email, $pessoa->nome, $projeto[0]->titulo, $projeto[0]->id))
 							->delay(\Carbon\Carbon::now()->addSeconds(3));
-                        dispatch($emailJob);
+                        dispatch($emailJob);*/
+						dispatch(new MailProjetoHomologadoJob($pessoa->email, $pessoa->nome, $projeto[0]->titulo, $projeto[0]->id));
                     }
 
                 }
@@ -921,9 +935,11 @@ class ProjetoController extends Controller
 					if ($projeto->count()) {
 
 						foreach ($projeto[0]->pessoas as $pessoa) {
-							$emailJob = (new MailProjetoNaoHomologadoJob($pessoa->email, $pessoa->nome, $projeto[0]->titulo))
+							// ORIGINAL
+							/*$emailJob = (new MailProjetoNaoHomologadoJob($pessoa->email, $pessoa->nome, $projeto[0]->titulo))
 								->delay(\Carbon\Carbon::now()->addSeconds(3));
-							dispatch($emailJob);
+							dispatch($emailJob);*/
+							dispatch(new MailProjetoNaoHomologadoJob($pessoa->email, $pessoa->nome, $projeto[0]->titulo));
 						}
 
 					}

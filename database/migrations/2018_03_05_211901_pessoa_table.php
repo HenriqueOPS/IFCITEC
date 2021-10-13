@@ -20,6 +20,7 @@ class PessoaTable extends Migration
             $table->string('senha');
             $table->string('cpf', 14)->nullable();
             $table->string('rg', 10)->nullable();
+            $table->string('camisa', 5)->nullable();
             $table->date('dt_nascimento');
             $table->string('telefone', 14)->nullable();
             $table->string('lattes')->nullable();
