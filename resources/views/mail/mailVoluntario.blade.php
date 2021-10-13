@@ -257,7 +257,7 @@
 							<table border="0" cellpadding="0" cellspacing="0">
 								<tr>
 									<td align="center">
-										<img src="<?php echo $message->embed('http://inscricao.ifcitec.canoas.ifrs.edu.br/img/logonormal.png'); ?>" title="IFCITEC" height="110">
+										<img src="http://inscricao.ifcitec.canoas.ifrs.edu.br/img/logonormal.png" title="IFCITEC" height="110">
 										<br><br>
 									</td>
 								</tr>
