@@ -10,10 +10,11 @@
 	<div class="row">
 		<div class="col-md-12 main main-raised" style="padding-top: 20px;">
 
-			<h3 style="text-align: center; border: 0 !important;">Algo de errado aconteceu aqui, se o erro persistir por favor tira um print dessa tela e entre em contato conosco.</h3>
+			<h3 style="text-align: center; border: 0 !important;">Algo de errado aconteceu aqui!<br/>
+				Se o erro persistir, por favor tire um print desta tela e nos envie.</h3>
 
 			<div class="col-md-10 col-md-offset-1">
-				<p>{{ $error }}</p>
+				<p>ID do erro: {{ $erro_id }}</p>
 			</div>
 
 			<div class="col-md-10 col-md-offset-1 text-center">
