@@ -257,7 +257,7 @@
                             <table border="0" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td align="center">
-                                        <img src="http://inscricao.ifcitec.canoas.ifrs.edu.br/img/logonormal.png" title="IFCITEC" height="110">
+                                        <img src="http://inscricao-ifcitec.canoas.ifrs.edu.br/img/logonormal.png" title="IFCITEC" height="110">
                                         <br><br>
                                     </td>
                                 </tr>
@@ -281,7 +281,7 @@
                                                     <table border="0" cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td> <a href="http://inscricao.ifcitec.canoas.ifrs.edu.br" target="_blank">Clique aqui para ver seus projetos</a> </td>
+                                                            <td> <a href="http://inscricao-ifcitec.canoas.ifrs.edu.br" target="_blank">Clique aqui para ver seus projetos</a> </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
