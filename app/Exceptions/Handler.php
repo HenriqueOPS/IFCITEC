@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
+use App\Erro;
 
 class Handler extends ExceptionHandler
 {
@@ -49,9 +50,30 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception){
         //return parent::render($request, $exception);
-        Log::error("Excessão gerada. Informações detalhadas: " . $exception->getMessage());
+		if ($exception instanceof AuthenticationException)
+		{
+			parent::render($request, $exception);
+		}
+		else
+		{
+			Log::error("Excessão gerada. Informações detalhadas: " . $exception->getTraceAsString());
+			$erro = Erro::where('fingerprint', '=', $request->fingerprint())->first();
 
-        return view('errors.custom', ['error' => $exception->getMessage()]);
+			if ($erro === null)
+			{
+				$erroEloquent = new Erro();
+				$erroEloquent->fill(['descricao_erro' => $exception->getTraceAsString(), 'fingerprint' => $request->fingerprint()]);
+				$erroEloquent->save();
+				return view('errors.custom', ['error' => $exception->getTraceAsString(), "erro_id" => $erroEloquent->getId(), "fingerprint" => $request->fingerprint()]);
+			}
+			else
+			{
+				$erro->incrementarDescricaoErro('\n' . $exception->getTraceAsString());
+				$erro->save();
+			}
+
+        	return view('errors.custom', ["error" => $exception->getTraceAsString(), "erro_id" => $erro->getId(), "fingerprint" => $erro->getFingerprint()]);
+		}
     }
 
     /**
