@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
 
 class Handler extends ExceptionHandler
 {
@@ -47,7 +48,10 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $exception){
-        return parent::render($request, $exception);
+        //return parent::render($request, $exception);
+        Log::error("Excessão gerada. Informações detalhadas: " . $exception->getMessage());
+
+        return view('errors.custom', ['error' => $exception->getMessage()]);
     }
 
     /**
