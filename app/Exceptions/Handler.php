@@ -56,7 +56,7 @@ class Handler extends ExceptionHandler
 		}
 		else
 		{
-			Log::error("Excessão gerada. Informações detalhadas: " . $exception->getTraceAsString());
+			/*Log::error("Excessão gerada. Informações detalhadas: " . $exception->getTraceAsString());
 			$erro = Erro::where('fingerprint', '=', $request->fingerprint())->first();
 
 			if ($erro === null)
@@ -70,9 +70,9 @@ class Handler extends ExceptionHandler
 			{
 				$erro->incrementarDescricaoErro('\n' . $exception->getTraceAsString());
 				$erro->save();
-			}
+			}*/
 
-        	return view('errors.custom', ["error" => $exception->getTraceAsString(), "erro_id" => $erro->getId(), "fingerprint" => $erro->getFingerprint()]);
+        	return view('errors.custom', ["error" => '', "erro_id" => strlen($exception->getMessage()), "fingerprint" => 'fingerprintttttt']);
 		}
     }
 
