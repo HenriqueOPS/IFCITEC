@@ -56,23 +56,23 @@ class Handler extends ExceptionHandler
 		}
 		else
 		{
-			/*Log::error("Excessão gerada. Informações detalhadas: " . $exception->getTraceAsString());
+			//Log::error("Excessão gerada. Informações detalhadas: " . $exception->getTraceAsString());
 			$erro = Erro::where('fingerprint', '=', $request->fingerprint())->first();
 
 			if ($erro === null)
 			{
 				$erroEloquent = new Erro();
-				$erroEloquent->fill(['descricao_erro' => $exception->getTraceAsString(), 'fingerprint' => $request->fingerprint()]);
+				$erroEloquent->fill(['descricao_erro' => $exception->getMessage(), 'fingerprint' => $request->fingerprint()]);
 				$erroEloquent->save();
-				return view('errors.custom', ['error' => $exception->getTraceAsString(), "erro_id" => $erroEloquent->getId(), "fingerprint" => $request->fingerprint()]);
+				return view('errors.custom', ['error' => $exception->getMessage(), "erro_id" => $erroEloquent->getId(), "fingerprint" => $request->fingerprint()]);
 			}
 			else
 			{
-				$erro->incrementarDescricaoErro('\n' . $exception->getTraceAsString());
+				$erro->incrementarDescricaoErro('\n' . $exception->getMessage());
 				$erro->save();
-			}*/
+			}
 
-        	return view('errors.custom', ["error" => '', "erro_id" => strlen($exception->getMessage()), "fingerprint" => 'fingerprintttttt']);
+        	return view('errors.custom', ["error" => $exception->getMessage(), "erro_id" => $erro->getId(), "fingerprint" => $erro->getFingerprint()]);
 		}
     }
 
