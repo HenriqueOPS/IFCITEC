@@ -68,7 +68,7 @@ class Handler extends ExceptionHandler
 			}
 			else
 			{
-				$erro->incrementarDescricaoErro('\n' . $exception->getMessage());
+				$erro->incrementarDescricaoErro("\n" . $exception->getMessage());
 				$erro->save();
 			}
 
