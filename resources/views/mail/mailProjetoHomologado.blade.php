@@ -265,9 +265,9 @@
 									<td>
 										<p>Prezado(a) {{$nome}},</p>
 										<br>
-										<p>Seu trabalho intitulado "{{$titulo}}" foi homologado. Verifique as observações dos homologadores e em caso de alguma solicitação de mudança a mesma deverá ser realizada para a apresentação no dia da feira. Esperamos sua participação na Feira de Ciências e Inovação Tecnológica do IFRS - Campus Canoas.</p>
+										<p>Seu trabalho intitulado "{{$titulo}}" foi homologado. Verifique as observações dos homologadores e em caso de alguma solicitação de mudança a mesma deverá ser realizada para no vídeo a ser apresentado na feira. Esperamos sua participação virtual na Feira de Ciências e Inovação Tecnológica do IFRS - Campus Canoas.</p>
 										<br>
-										<p>ATENÇÃO! É necessária a confirmação de presença do projeto na feira, clique no botão abaixo e faça seu login no site, se o seu projeto comparecerá a feira.</p>
+										<p><span style="font-weight: bold;">ATENÇÃO! É necessária a confirmação de presença do projeto na feira, clique no botão abaixo e faça seu login no site, se o seu projeto enviará os vídeos da próxima etapa o que configura a participação na IFCITEC.</span></p>
 									</td>
 								</tr>
 								<tr>
@@ -279,7 +279,7 @@
 													<table border="0" cellpadding="0" cellspacing="0">
 														<tbody>
 														<tr>
-															<td> <a href="{{route('confirmaPresenca', $idProj)}}" target="_blank">Clique aqui para confirmar sua presença na IFCITEC</a> </td>
+															<td> <a href="{{route('confirmaPresenca', $idProj)}}" target="_blank">Clique aqui para confirmar sua presença virtual na IFCITEC</a> </td>
 														</tr>
 														</tbody>
 													</table>
@@ -298,13 +298,18 @@
 
 								<tr>
 									<td>
-										<p><b>Importante:</b>  o espaço de exposição de cada um dos projetos contará com UMA classe e UMA cadeira. Contará, também, com um porta banner compartilhado com outro projeto. Convém avisar que não temos ponto de energia elétrica exclusivo para cada estande, sendo os pontos de energia compartilhados com quem necessita. Não dispomos de extensões, adaptadores de tomada ou benjamins (T) para emprestar, por isso, traga tudo que você acredita que irá necessitar!</p>
+										<p>
+											<b>Importante:</b>  agora o seu projeto precisa, até o dia 27/10/2021, enviar o vídeo de divulgação de sua pesquisa com até 60 segundos em formato MP4 para o REELS da IFCITEC e o link do vídeo de apresentação de seu projeto postado no YouTube (ver detalhes no regulamento).
+											<br/>
+											<br/>
+											O envio do vídeo e do link do YouTube deve ser feito através <a href="https://forms.gle/yL5qPZoxVw3hAJVP8">deste formulário</a>.
+										</p>
 									</td>
 								</tr>
 
 								<tr>
 									<td>
-										<p>Em caso de qualquer dúvida, faça contato conosco pelo e-mail ifcitec@canoas.ifrs.edu.br</p>
+										<p>Em caso de qualquer dúvida, faça contato conosco pelo e-mail <a href="mailto:ifcitec@canoas.ifrs.edu.br">ifcitec@canoas.ifrs.edu.br</a> ou pelo nosso Instagram <a href="https://www.instagram.com/ifcitec">@ifcitec</a>.</p>
 									</td>
 								</tr>
 
