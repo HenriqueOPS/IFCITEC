@@ -27,7 +27,8 @@ class ProjetoTableSeeder extends Seeder
                 'area_id' => 1,
                 'nivel_id' => 1,
                 'edicao_id' => 6,
-                'situacao_id' => 1
+                'situacao_id' => 1,
+				'presenca' => false
             ]
         ];
 
