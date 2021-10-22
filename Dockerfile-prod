@@ -12,8 +12,7 @@ COPY ci/customphp.ini /usr/local/etc/php/conf.d/
 COPY supervisord.conf /etc/supervisor/
 COPY ./ /var/www/html/
 RUN chmod 777 -R storage/ bootstrap/cache/ && chown -R www-data:www-data /var/www/ && \
-    find /var/www/ -type d -exec chmod -R 755 {} \; && find /var/www/ -type f -exec chmod -R 644 {} \;
+    find /var/www/ -type d -exec chmod -R 755 {} \; && find /var/www/ -type f -exec chmod -R 644 {} \; && \
+	find storage/framework/cache/ -type f -exec chmod 664 {} \; && find storage/framework/cache/ -type d -exec chmod 775 {} \;
 RUN cp .env.prod .env
-RUN find storage/framework/cache/ -type f -exec chmod 664 {} \; && \
-	find storage/framework/cache/ -type d -exec chmod 775 {} \;
 CMD ["/usr/bin/supervisord","-c","/etc/supervisor/supervisord.conf"]
