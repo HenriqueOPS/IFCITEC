@@ -13,4 +13,6 @@ COPY ./ /var/www/html/
 RUN touch /var/www/html/storage/logs/laravel.log
 RUN chmod 777 -R storage/ bootstrap/cache/ && chown -R www-data:www-data /var/www/ && \
     find /var/www/ -type d -exec chmod -R 755 {} \; && find /var/www/ -type f -exec chmod -R 644 {} \;
+RUN find /var/www/html/storage/framework/cache/data -type f -exec chmod 664 {} \; && \
+	find /var/www/html/storage/framework/cache/data -type d -exec chmod 775 {} \;
 CMD ["/usr/bin/supervisord","-c","/etc/supervisor/supervisord.conf"]
