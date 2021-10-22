@@ -1,4 +1,5 @@
 FROM php:7.1.7-apache
+RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
 RUN apt-get update -yqq && \
     apt-get install supervisor nano zlib1g-dev libpq-dev libpng-dev -yqq --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
@@ -11,8 +12,6 @@ COPY ci/customphp.ini /usr/local/etc/php/conf.d/
 COPY supervisord.conf /etc/supervisor/
 COPY ./ /var/www/html/
 RUN chmod 777 -R storage/ bootstrap/cache/ && chown -R www-data:www-data /var/www/ && \
-    find /var/www/ -type d -exec chmod -R 755 {} \; && find /var/www/ -type f -exec chmod -R 644 {} \; && \
-	mkdir -p /var/www/html/storage/framework/cache/data && chown -R $USER:www-data /var/www/html/storage/framework/cache/data && \
-	chmod -R 777 /var/www/html/storage/framework/cache/data
+    find /var/www/ -type d -exec chmod -R 755 {} \; && find /var/www/ -type f -exec chmod -R 644 {} \;
 RUN cp .env.prod .env
 CMD ["/usr/bin/supervisord","-c","/etc/supervisor/supervisord.conf"]
