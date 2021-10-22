@@ -574,8 +574,8 @@ class ProjetoController extends Controller
             abort(404);
         }
 
-        $numProjetos = DB::raw('SELECT count(*) 
-                                FROM revisao 
+        $numProjetos = DB::raw('SELECT count(*)
+                                FROM revisao
                                 JOIN projeto ON projeto.id = revisao.projeto_id
                                 WHERE pessoa_id = pessoa.id AND projeto.edicao_id = comissao_edicao.edicao_id');
 
@@ -679,8 +679,8 @@ class ProjetoController extends Controller
             abort(404);
         }
 
-        $numProjetos = DB::raw('SELECT count(*) 
-                                FROM avaliacao 
+        $numProjetos = DB::raw('SELECT count(*)
+                                FROM avaliacao
                                 INNER JOIN projeto ON projeto.id = avaliacao.projeto_id
                                 WHERE pessoa_id = pessoa.id AND projeto.edicao_id = comissao_edicao.edicao_id');
 
@@ -912,7 +912,7 @@ class ProjetoController extends Controller
                 if ($projeto->count()) {
 
                     foreach ($projeto[0]->pessoas as $pessoa) {
-						// ORIGINAL	
+						// ORIGINAL
                         /*$emailJob = (new MailProjetoHomologadoJob($pessoa->email, $pessoa->nome, $projeto[0]->titulo, $projeto[0]->id))
 							->delay(\Carbon\Carbon::now()->addSeconds(3));
                         dispatch($emailJob);*/
@@ -959,7 +959,7 @@ class ProjetoController extends Controller
 			->where('situacao_id', '!=', Situacao::where('situacao', 'Não Homologado')->get()->first()->id)
 			->update(['presenca' => true]);
 
-    	return view('confirmaPresenca', ['p' => $p]);
+    	return response()->view('confirmaPresenca', ['p' => $p]);
     }
 
     public function dadosNivel($id)
