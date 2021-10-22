@@ -265,7 +265,7 @@
 									<td>
 										<p>Prezado(a) {{$nome}},</p>
 										<br>
-										<p>Infelizmente seu trabalho intitulado "{{$titulo}}" não foi homologado. Ainda sim esperamos sua visita na Feira de Ciências e Inovação Tecnológica do IFRS - Campus Canoas.</p>
+										<p>Infelizmente seu trabalho intitulado "{{$titulo}}" não foi homologado. Ainda sim esperamos sua visita virtual na Feira de Ciências e Inovação Tecnológica do IFRS - Campus Canoas e convidamos você a nos seguir no Instagram <a href="https://www.instagram.com/ifcitec">@ifcitec</a>.</p>
 									</td>
 								</tr>
 								<tr>
