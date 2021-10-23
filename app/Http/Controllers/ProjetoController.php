@@ -39,7 +39,7 @@ class ProjetoController extends Controller
 	 */
 	public function __construct()
 	{
-		$this->middleware('auth');
+		$this->middleware('auth')->except('confirmaPresenca');
 	}
 
 	/**
@@ -954,12 +954,13 @@ class ProjetoController extends Controller
 
     }
 
-    public function confirmaPresenca($id){
-    	$p = Projeto::where('id', $id)
+    public function confirmaPresenca($id)
+	{
+		$p = Projeto::where('id', $id)
 			->where('situacao_id', '!=', Situacao::where('situacao', 'Não Homologado')->get()->first()->id)
 			->update(['presenca' => true]);
 
-    	return response()->view('confirmaPresenca', ['p' => $p]);
+		return response()->view('confirmaPresenca', ['p' => $p]);
     }
 
     public function dadosNivel($id)
