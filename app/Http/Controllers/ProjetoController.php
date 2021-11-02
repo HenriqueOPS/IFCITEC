@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\MailVinculaProjetoJob;
+use App\Jobs\MailVinculaAvaliadorJob;
 use App\Mail\MailVinculaProjeto;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ProjetoRequest;
@@ -755,6 +756,14 @@ class ProjetoController extends Controller
                     $avaliacao->observacao = '';
                     $avaliacao->avaliado = false;
                     $avaliacao->save();
+
+					//dados projeto
+                    $projeto = Projeto::find($request->projeto_id);
+
+					//avaliador
+					$pessoa = Pessoa::find($avaliacao->pessoa_id);
+
+					dispatch(new MailVinculaAvaliadorJob($pessoa->email, $pessoa->nome, $projeto->titulo));
                 }
 
             }
