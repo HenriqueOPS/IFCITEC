@@ -9,7 +9,7 @@
 			<h1>Olá {{ Auth::user()->nome }}</h1>
 
 			<div class="alert alert-warning" style="background: #bd8c0e">
-				<strong>Ainda não abriram as inscrições!</strong> acompanhe a gente por nosso <a href="http://ifcitec.canoas.ifrs.edu.br">site</a> e por nossa <a href="https://www.facebook.com/IFCITEC/">página no facebook</a> para quaisquer novidades.
+				<strong>Ainda não abriram as inscrições!</strong> acompanhe a gente por nosso <a href="http://ifcitec.canoas.ifrs.edu.br">site</a> e por nossa <a href="https://www.instagram.com/ifcitec/">página no Instagram</a> para quaisquer novidades.
 			</div>
 		</div>
 

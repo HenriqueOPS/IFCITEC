@@ -260,7 +260,7 @@
                         </tr>
 						<tr>
 							<td>4</td>
-							<td>Relatório de CSV das Etiquetas</td>
+							<td>Relatório de CSV das Etiquetas das Escolas</td>
 							<td class="text-right">
 								<a href="{{route('csvEtiquetas')}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
 							</td>
