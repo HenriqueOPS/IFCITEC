@@ -18,7 +18,7 @@
                     </div>
 
                 </div>
-                <form name="f1" method="POST" action="{{route('register')}}">
+                <form name="f1" method="POST" action="{{ route('register') }}">
 
                     <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 
@@ -32,7 +32,7 @@
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true"><i class="material-icons">clear</i></span>
                                     </button>
-                                    <b>ATENÇÃO: </b>É de total resposabilidade do usuário a veracidade dos dados informados, pois será utilizado para a emissão de certificados
+                                    <b>ATENÇÃO: </b>É de total responsabilidade do usuário a veracidade dos dados informados, pois será utilizado para a emissão de certificados
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">RG</label>
-                                    <input type="text" class="form-control" name="rg" value="{{old('rg')}}" maxlength="10" required>
+                                    <input type="text" class="form-control" name="rg" value="{{ old('rg') }}" maxlength="10" required>
                                 </div>
                                 @if ($errors->has('rg'))
                                 <span class="help-block">
@@ -80,7 +80,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Nome</label>
-                                    <input type="text" class="form-control" name="nome" value="{{old('nome')}}" required>
+                                    <input type="text" class="form-control" name="nome" value="{{ old('nome') }}" required>
                                 </div>
                                 @if ($errors->has('nome'))
                                 <span class="help-block">
@@ -126,6 +126,10 @@
                                 <div class="form-group label-floating">
                                     <label class="control-label">Email</label>
                                     <input type="text" class="form-control" name="email" value="{{ old('email') }}" required>
+                                </div>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Confirmar Email</label>
+                                    <input type="text" class="form-control" name="confirm-email" value="{{ old('email') }}" required>
                                 </div>
                                 @if ($errors->has('email'))
                                 <span class="help-block">
