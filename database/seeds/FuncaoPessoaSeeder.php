@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
 class FuncaoPessoaSeeder extends Seeder
@@ -14,7 +15,7 @@ class FuncaoPessoaSeeder extends Seeder
     {
         $pessoaId = DB::table('pessoa')->where('email', 'apvgroll@gmail.com')->value('id');
         $funcaoId = DB::table('funcao')->where('funcao', 'Administrador')->value('id');
-        $edicaoId = 6;
+        $edicaoId = 7;
 
         DB::insert('INSERT INTO funcao_pessoa(pessoa_id, funcao_id, edicao_id, homologado) VALUES (?, ?, ?, false)', [$pessoaId, $funcaoId, $edicaoId]);
     }
