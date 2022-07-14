@@ -6,6 +6,13 @@
 
 #### Não deixe de ler o [Tutorial de navegação do Gitlab](https://about.gitlab.com/2016/03/08/gitlab-tutorial-its-all-connected/)
 
+## Portas
+
+### Site do ifcitec
+localhost:8088
+
+### Banco de dados
+localhost:16543
 
 ## Regras de Commit
 
@@ -50,8 +57,7 @@ Algumas melhorias de código (Sejam elas de performance, de limpeza, ou de docum
 
 ## Links úteis
 
-[phppgadmin](http://webacademico.canoas.ifrs.edu.br/phppgadmin/)
-
+[PGAdmin Documentation] (https://www.pgadmin.org/docs/pgadmin4/latest/index.html)
 
 [Laravel Documentation](https://laravel.com/docs/5.5/)
 
