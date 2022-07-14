@@ -57,7 +57,7 @@ Algumas melhorias de código (Sejam elas de performance, de limpeza, ou de docum
 
 ## Links úteis
 
-[PGAdmin Documentation] (https://www.pgadmin.org/docs/pgadmin4/latest/index.html)
+[PGAdmin Documentation](https://www.pgadmin.org/docs/pgadmin4/latest/index.html)
 
 [Laravel Documentation](https://laravel.com/docs/5.5/)
 
