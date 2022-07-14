@@ -139,8 +139,8 @@
                                     <i class="material-icons">done</i>
                                 </span>
                                 <div class="form-group label-floating">
-                                    <label class="control-label">Confirm Email</label>
-                                    <input type="text" class="form-control" name="email" required>
+                                    <label class="control-label">Confirme o Email</label>
+                                    <input type="text" class="form-control" name="email_confirmation" value="{{ old('email') }}" required>
                                 </div>
                             </div>
 
