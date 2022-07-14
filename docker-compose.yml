@@ -12,6 +12,8 @@ services:
       - '8088:80'
     links:
       - postgres
+    networks:
+      - ifcitec-compose-network
 
   postgres:
     build:
@@ -28,7 +30,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4
-    environment:
+    environment:  
       PGADMIN_DEFAULT_EMAIL: "ifcitec@canoas.ifrs.edu.br"
       PGADMIN_DEFAULT_PASSWORD: "123"
     ports:
