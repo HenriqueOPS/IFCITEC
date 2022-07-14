@@ -12,6 +12,8 @@ services:
       - '8088:80'
     links:
       - postgres
+    networks:
+      - ifcitec-compose-network
 
   postgres:
     image: postgres:9.3
@@ -20,10 +22,22 @@ services:
       - POSTGRES_PASSWORD=secret
       - POSTGRES_DB=ifcitec
     ports:
-      - '5432'
+      - "15432:5432"
+    networks:
+      - ifcitec-compose-network
 
-  phppgadmin:
-    image: bitnami/phppgadmin
-    env_file: pgadmin.env
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:  
+      PGADMIN_DEFAULT_EMAIL: "ifcitec@canoas.ifrs.edu.br"
+      PGADMIN_DEFAULT_PASSWORD: "123"
     ports:
-      - '8080:8080'
+      - "16543:80"
+    depends_on:
+      - postgres
+    networks:
+      - ifcitec-compose-network
+
+networks:
+  ifcitec-compose-network:
+    driver: bridge
