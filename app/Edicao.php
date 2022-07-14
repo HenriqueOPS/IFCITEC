@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Mods\Model;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
@@ -23,12 +24,16 @@ class Edicao extends Model
     //Pega o ID da edição atual pelo período da feira
 	public static function getEdicaoId() {
 
+
 		$edicao = Edicao::whereRaw("(NOW() AT TIME ZONE 'America/Sao_Paulo') >= feira_abertura")
 						->whereRaw("(NOW() AT TIME ZONE 'America/Sao_Paulo') <= feira_fechamento")
 						->get();
 
-		if($edicao->count())
+		Log::debug("bruh".$edicao);
+
+		if($edicao->count()) {
 			return $edicao[0]->id;
+		}
 
 		return 0;
 	}

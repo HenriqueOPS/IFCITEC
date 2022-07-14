@@ -116,6 +116,23 @@ class EdicaoTableSeeder extends Seeder
 				'comissao_fechamento' => '2022-06-26 00:00:00',
 				'feira_abertura' => '2017-06-26 00:00:00',
 				'feira_fechamento' => '2022-06-26 00:00:00',
+			],[
+				'ano' => 7,
+				'projetos' => 10,
+				'inscricao_abertura' => '2017-06-26 00:00:00',
+				'inscricao_fechamento' => '2023-06-26 00:00:00',
+				'homologacao_abertura' => '2017-06-26 00:00:00',
+				'homologacao_fechamento' => '2023-06-26 00:00:00',
+				'avaliacao_abertura' => '2017-06-26 00:00:00',
+				'avaliacao_fechamento' => '2023-06-26 00:00:00',
+				'credenciamento_abertura' => '2017-06-26 00:00:00',
+				'credenciamento_fechamento' => '2023-06-26 00:00:00',
+				'voluntario_abertura' => '2017-06-26 00:00:00',
+				'voluntario_fechamento' => '2023-06-26 00:00:00',
+				'comissao_abertura' => '2017-06-26 00:00:00',
+				'comissao_fechamento' => '2023-06-26 00:00:00',
+				'feira_abertura' => '2017-06-26 00:00:00',
+				'feira_fechamento' => '2023-06-26 00:00:00',
 			]
 
 		];

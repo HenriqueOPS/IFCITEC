@@ -127,15 +127,21 @@
                                     <label class="control-label">Email</label>
                                     <input type="text" class="form-control" name="email" value="{{ old('email') }}" required>
                                 </div>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Confirmar Email</label>
-                                    <input type="text" class="form-control" name="confirm-email" value="{{ old('email') }}" required>
-                                </div>
                                 @if ($errors->has('email'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('email') }}</strong>
                                 </span>
                                 @endif
+                            </div>
+
+                            <div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">done</i>
+                                </span>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Confirm Email</label>
+                                    <input type="text" class="form-control" name="email" required>
+                                </div>
                             </div>
 
                             <div class="input-group{{ $errors->has('camisa') ? ' has-error' : '' }}">
