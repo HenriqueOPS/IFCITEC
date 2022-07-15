@@ -1,0 +1,2 @@
+FROM postgres:9.3
+COPY ./dump.sql /var/lib/dump_banco_ifcitec/

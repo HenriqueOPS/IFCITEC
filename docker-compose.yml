@@ -16,7 +16,9 @@ services:
       - ifcitec-compose-network
 
   postgres:
-    image: postgres:9.3
+    build:
+      context: .
+      dockerfile: Dockerfile-postgres
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=secret
