@@ -152,6 +152,11 @@
                                 <span class="input-group-addon">
                                     <i class="material-icons">format_quote</i>
                                 </span>
+								<div class="alert alert-info text-center">
+									<div class="container-fluid">
+										<b>ATENÇÃO:</b> Para inserir as palavras-chave, tecle enter ao final de cada palavra!
+									</div>
+								</div>
                                 <div class="form-group">
                                     <label class="control-label">Palavras Chaves</label>
                                     <input type="text" id="palavras-chaves" name="palavras_chaves" value="{{old('palavras_chaves')}}" required>
@@ -469,6 +474,10 @@ $(document).ready(function () {
             $("#nivelModal").html(res.nivel);
             $("#min_chModal").html(res.min_ch);
             $("#max_chModal").html(res.max_ch);
+
+			window.document.getElementById("resumo").setAttribute("minlength", res.min_ch);
+			window.document.getElementById("resumo").setAttribute("maxlength", res.max_ch);
+
             $("#palavrasModal").html(res.palavras);
 
             $("#ModalNivel").modal();
