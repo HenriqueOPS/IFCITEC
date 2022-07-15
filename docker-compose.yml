@@ -1,4 +1,4 @@
-version: '2'
+version: "3.9"
 
 services:
   web:
@@ -24,9 +24,7 @@ services:
       - '5432'
 
   phppgadmin:
-    image: tozd/phppgadmin
-    environment:
-      - PHPPGADMIN_HOST=postgres
-      - PHPPGADMIN_PORT=5432
+    image: dockage/phppgadmin
+    env_file: "pgadmin.env"
     ports:
       - '8080:80'
