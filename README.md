@@ -1,5 +1,5 @@
 # IFCITEC 
-#
+
 
 ## Reuniões TODAS as terças em algum auditório às 10h
 
