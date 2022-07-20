@@ -1,8 +1,2 @@
 FROM postgres:9.3
-<<<<<<< HEAD
 COPY ./dump.sql /var/lib/dump_banco_ifcitec/
-
-RUN su postgres && psql ifcitec < /var/lib/dump_banco_ifcitec/dump.sql
-=======
-COPY ./dump.sql /var/lib/dump_banco_ifcitec/
->>>>>>> 9d0997f (comissao e docker)
