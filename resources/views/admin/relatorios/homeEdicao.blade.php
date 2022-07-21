@@ -286,6 +286,13 @@
                                 <a href="{{route('relatorioNivel', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>Relatorio em CSV com nome e email das escolas</td>
+                            <td class="text-right">
+                                <a href="{{route('csvEmailNomeEscolas')}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
                     </tbody>
 
                     <tbody id="3">

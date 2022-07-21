@@ -297,6 +297,7 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/relatorio/edicoes', 'RelatorioController@edicoes')->name('relatorioEdicao');
 	Route::get('/relatorio/escolas', 'RelatorioController@escolas')->name('relatorioEscola');
 	Route::get('/relatorio/niveis/{edicao}', 'RelatorioController@niveis')->name('relatorioNivel');
+	Route::get('escolasContato', 'RelatorioController@csvEmailNomeEscolas')->name('csvEmailNomeEscolas');
 
 	// Relatórios - Lanche
 	Route::get('/relatorio/vale-lanche/gerar/{edicao}', 'RelatorioController@gerarValeLanche')->name('geraValeLanche');
