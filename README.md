@@ -1,5 +1,5 @@
-﻿# IFCITEC 
-#
+# IFCITEC 
+
 
 ## Reuniões TODAS as terças em algum auditório às 10h
 
@@ -42,18 +42,16 @@ Algumas melhorias de código (Sejam elas de performance, de limpeza, ou de docum
 ## Lista de users
 
 
-* @muchsousa - Bruno Sousa
-
+* @GatoImorrivel - Guilherme Viana
 * @marcio.bigolin - Marcio Bigolin
-
-* @rafaellabueno - Rafaella Bueno
-
 * @sandro.silva - Sandro Silva
-
 * @vinicius_raupp - Vinícius Raupp
-
 * @vitor_bertoncello - Victor Beroncello
 
+-Talvez possa pedir ajuda
+
+* @muchsousa - Bruno Sousa
+* @rafaellabueno - Rafaella Bueno
 
 ## Links úteis
 

@@ -223,8 +223,7 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 
 
 
-
-
+	require_once "webRoutes/reportRoutes.php";
 
 
 	// mostra os erros do arquivo laravel.log
@@ -266,4 +265,3 @@ Route::get('mail/voluntario', function(){
 
 });
 
-require_once "webRoutes/reportRoutes.php";

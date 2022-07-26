@@ -1,4 +1,3 @@
 FROM postgres:9.3
-COPY ./dump.sql /var/lib/dump_banco_ifcitec/
 
-# RUN su postgres && psql ifcitec < /var/lib/dump_banco_ifcitec/dump.sql
+COPY ./dump.sql /var/lib/dump_banco_ifcitec/

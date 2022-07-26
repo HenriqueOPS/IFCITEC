@@ -19,6 +19,7 @@ job-composer:
     - docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
     - docker-php-ext-install zip gd pdo_pgsql pgsql
     - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    - composer config --no-plugins allow-plugins.kylekatarnls/update-helper true
     - composer install
 
 #jod-code-test:

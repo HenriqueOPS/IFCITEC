@@ -58,7 +58,7 @@ use RegistersUsers;
 
         return Validator::make($data, [
                     'nome' => 'required|string|max:255',
-                    'email' => 'required|string|email|max:255|unique:pgsql.pessoa',
+                    'email' => 'required|string|email|max:255|unique:pgsql.pessoa|confirmed',
                     'senha' => 'required|string|confirmed',
                     'dt_nascimento' => 'required|date_format:d/m/Y|before:today|after:01/01/1900',
                     'rg' => 'required|max:10|string|unique:pgsql.pessoa',
@@ -114,7 +114,7 @@ use RegistersUsers;
      * @return mixed
      */
     protected function registered(Request $request, $pessoa) {
-
+        /*
         Log::debug("Checking registration");
 
         if ($request->inscricao == "avaliacao") {
@@ -130,6 +130,7 @@ use RegistersUsers;
             $pessoa->funcoes()->attach(1);
         }
         $pessoa->save();
+*/
     }
 
 }

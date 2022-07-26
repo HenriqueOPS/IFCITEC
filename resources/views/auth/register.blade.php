@@ -140,7 +140,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Confirme o Email</label>
-                                    <input type="text" class="form-control" name="email_confirmation" value="{{ old('email') }}" required>
+                                    <input type="text" class="form-control" name="email_confirmation" required>
                                 </div>
                             </div>
 

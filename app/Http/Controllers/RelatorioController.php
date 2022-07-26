@@ -13,6 +13,7 @@ use App\Tarefa;
 use App\Situacao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 
 
@@ -64,15 +65,6 @@ class RelatorioController extends Controller {
 
 		return response()->stream($callback, 200, $httpHeaders);
 	}
-
-
-	public function testStream() {
-
-		dd(EnumSituacaoProjeto::getValue('Cadastrado'));
-		dd(EnumSituacaoProjeto::getValue('Cadastrado'));
-
-		return response()->json();
-    }
 
 	public function csv($id, $edicao) {
 		$mapper = [
@@ -1646,5 +1638,22 @@ class RelatorioController extends Controller {
 			->download('premiacao_certificados.pdf');
 	}
 
+	public function csvEmailNomeEscolas() {
+		$filename = "RelatorioEscolaNomeEmail.csv";
 
+		$escolas = DB::table('escola')->get();
+
+		$handle = fopen($filename, 'w+');
+
+		fputcsv($handle, array('Escola', 'Email'), ';');
+
+		foreach ($escolas as $escola) {
+			fputcsv($handle, array($escola->nome_curto, $escola->email), ';');
+		}
+
+		fclose($handle);
+		$headers = ['Content-Type' => 'text/csv'];
+
+		return Response::download($filename, $filename, $headers);
+	}
 }

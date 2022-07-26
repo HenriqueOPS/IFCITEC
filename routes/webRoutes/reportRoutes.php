@@ -1,21 +1,8 @@
 <?php
 
-Route::get('/relatorio/test-stream', 'RelatorioController@testStream');
-
-
-
-
-
-Route::group(['prefix' => 'relatorio'], function() {
-
-
-});
-
-
+// Relatórios
 Route::get('/csv/{id}/{edicao?}', 'RelatorioController@csv')->name('csv');
-
-
-
+Route::get('/projetos/csv', 'RelatorioController@csvCertificados')->name('csvCertificados');
 Route::get('/pessoas/csv', 'RelatorioController@csvProjetos')->name('csvProjetos');
 Route::get('/pessoas/csv/autores/homologados', 'RelatorioController@csvAutoresHomologados')->name('csvAutoresHomologados');
 Route::get('/pessoas/csv/autores/confirmaram-presenca/{edicao}', 'RelatorioController@csvAutoresConfirmaramPresenca')->name('csvAutoresConfirmaramPresenca');
@@ -30,6 +17,7 @@ Route::get('/relatorio/projetos/notas/homologadores/niveis', 'RelatorioControlle
 Route::get('/relatorio/escolas/projetos/{id}', 'RelatorioController@escolaProjetos')->name('escolaProjetos');
 Route::get('/relatorio/areas/projetos/{id}', 'RelatorioController@areaProjetos')->name('areaProjetos');
 Route::get('/relatorio/funcoes/usuarios', 'RelatorioController@funcoesUsuarios')->name('relatorioFuncoesUsuarios');
+Route::get('/relatorio/usuarios/homologados', 'RelatorioController@usuariosPosHomologacao')->name('usuariosPosHomologacao');
 Route::get('/relatorio/tarefa/voluntarios/{id}', 'RelatorioController@tarefaVoluntarios')->name('tarefaVoluntarios');
 Route::get('/relatorio/usuarios', 'RelatorioController@usuarios')->name('relatorioUsuarios');
 Route::get('/relatorio/autores/{edicao}', 'RelatorioController@autores')->name('relatorioAutores');
@@ -54,8 +42,15 @@ Route::get('/relatorio/avaliadores/area/{edicao}', 'RelatorioController@avaliado
 Route::get('/relatorio/avaliadores/projeto/{edicao}', 'RelatorioController@avaliadoresProjeto')->name('avaliadoresProjeto');
 Route::get('/relatorio/projetos/avaliador/{edicao}', 'RelatorioController@projetosAvaliador')->name('projetosAvaliador');
 
-
-
+// Relatórios - Crachás
+Route::get('/cracha/gerar-crachas/autores/{edicao}', 'CrachaController@generateCrachasAutores')->name('generateCrachasAutores');
+Route::get('/cracha/gerar-crachas/coorientadores/{edicao}', 'CrachaController@generateCrachasCoorientadores')->name('generateCrachasCoorientadores');
+Route::get('/cracha/gerar-crachas/comissao-avaliadora/{edicao}', 'CrachaController@generateCrachasComissaoAvaliadora')->name('generateCrachasComissaoAvaliadora');
+Route::get('/cracha/gerar-crachas/comissao-organizadora/{edicao}', 'CrachaController@generateCrachasComissaoOrganizadora')->name('generateCrachasComissaoOrganizadora');
+Route::get('/cracha/gerar-crachas/orientadores/{edicao}', 'CrachaController@generateCrachasOrientadores')->name('generateCrachasOrientadores');
+Route::get('/cracha/gerar-crachas/voluntarios/{edicao}', 'CrachaController@generateCrachasVoluntarios')->name('generateCrachasVoluntarios');
+Route::get('/cracha/gerar-crachas/branco/{edicao}', 'CrachaController@generateCrachas')->name('generateCrachas');
+Route::get('/cracha/qr-code/{id}', 'CrachaController@generateQrCode')->name('qrcode'); // QrCode image
 
 // Relatórios - Gerais
 Route::get('/csv/anais/ifcitec/{edicao}', 'RelatorioController@csvAnais')->name('csvAnais');
@@ -65,6 +60,7 @@ Route::get('/relatorio/csv/escolas', 'RelatorioController@csvEtiquetas')->name('
 Route::get('/relatorio/edicoes', 'RelatorioController@edicoes')->name('relatorioEdicao');
 Route::get('/relatorio/escolas', 'RelatorioController@escolas')->name('relatorioEscola');
 Route::get('/relatorio/niveis/{edicao}', 'RelatorioController@niveis')->name('relatorioNivel');
+Route::get('escolasContato', 'RelatorioController@csvEmailNomeEscolas')->name('csvEmailNomeEscolas');
 
 // Relatórios - Lanche
 Route::get('/relatorio/vale-lanche/gerar/{edicao}', 'RelatorioController@gerarValeLanche')->name('geraValeLanche');
@@ -104,12 +100,3 @@ Route::post('/relatorio/gera/localizacao/projetos/{edicao}', 'RelatorioControlle
 Route::get('/relatorio/voluntario/tarefa/{edicao}', 'RelatorioController@voluntarioTarefa')->name('relatorioVoluntarioTarefa');
 
 
-// Relatórios - Crachás
-Route::get('/cracha/gerar-crachas/autores/{edicao}', 'CrachaController@generateCrachasAutores')->name('generateCrachasAutores');
-Route::get('/cracha/gerar-crachas/coorientadores/{edicao}', 'CrachaController@generateCrachasCoorientadores')->name('generateCrachasCoorientadores');
-Route::get('/cracha/gerar-crachas/comissao-avaliadora/{edicao}', 'CrachaController@generateCrachasComissaoAvaliadora')->name('generateCrachasComissaoAvaliadora');
-Route::get('/cracha/gerar-crachas/comissao-organizadora/{edicao}', 'CrachaController@generateCrachasComissaoOrganizadora')->name('generateCrachasComissaoOrganizadora');
-Route::get('/cracha/gerar-crachas/orientadores/{edicao}', 'CrachaController@generateCrachasOrientadores')->name('generateCrachasOrientadores');
-Route::get('/cracha/gerar-crachas/voluntarios/{edicao}', 'CrachaController@generateCrachasVoluntarios')->name('generateCrachasVoluntarios');
-Route::get('/cracha/gerar-crachas/branco/{edicao}', 'CrachaController@generateCrachas')->name('generateCrachas');
-Route::get('/cracha/qr-code/{id}', 'CrachaController@generateQrCode')->name('qrcode'); // QrCode image
