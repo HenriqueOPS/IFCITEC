@@ -310,12 +310,11 @@ class Pessoa extends Authenticatable {
             ->join('tarefa','pessoa_tarefa.tarefa_id','=','tarefa.id')
             ->where('pessoa_tarefa.pessoa_id','=',$this->id)
             ->get();
-        if($total->count()){
+
+        if($total->count())
             return true;
-        }
-        else{
-            return false;
-        }
+
+		return false;
     }
 
 	public function getProjetosAvaliador($id, $edicao){

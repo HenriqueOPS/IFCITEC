@@ -8,8 +8,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 
-class MailOrientador extends Mailable
-{
+class MailOrientador extends Mailable {
     use Queueable, SerializesModels;
 
     /**
@@ -28,10 +27,10 @@ class MailOrientador extends Mailable
      *
      * @return $this
      */
-    public function build()
-    {
-        return  $this->subject('IFCITEC - Você é um Orientador(a)')->view('mail.mailOrientador')
-        ->withNome($this->nome)
-        ->withTitulo($this->titulo);
+    public function build() {
+        return  $this->subject('IFCITEC - Você é um Orientador(a)')
+			->view('mail.orientador')
+			->withNome($this->nome)
+			->withTitulo($this->titulo);
     }
 }

@@ -16,3 +16,5 @@ composer.lock
 composer.lock
 node_modules/
 vendor/
+supervisord.log
+.csv

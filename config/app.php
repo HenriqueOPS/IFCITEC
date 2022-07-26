@@ -181,6 +181,7 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
 
 		LaravelQRCode\Providers\QRCodeServiceProvider::class,
+		BenSampo\Enum\EnumServiceProvider::class
 	],
 
     /*

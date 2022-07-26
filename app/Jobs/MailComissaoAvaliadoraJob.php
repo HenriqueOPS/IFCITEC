@@ -9,10 +9,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MailComissao;
-use Illuminate\Support\Facades\Auth;
 
-class MailComissaoAvaliadoraJob implements ShouldQueue
-{
+class MailComissaoAvaliadoraJob implements ShouldQueue {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 	/**
@@ -40,9 +38,8 @@ class MailComissaoAvaliadoraJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
-    {
-         Mail::to($this->email)
-         ->send(new MailComissao($this->nome));
+    public function handle() {
+		Mail::to($this->email)
+			->send(new MailComissao($this->nome));
     }
 }

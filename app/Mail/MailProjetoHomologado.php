@@ -7,8 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class MailProjetoHomologado extends Mailable
-{
+class MailProjetoHomologado extends Mailable {
     use Queueable, SerializesModels;
 
     /**
@@ -16,8 +15,7 @@ class MailProjetoHomologado extends Mailable
      *
      * @return void
      */
-    public function __construct($nome, $titulo, $idProj)
-    {
+    public function __construct($nome, $titulo, $idProj) {
         $this->nome = $nome;
         $this->titulo = $titulo;
         $this->idProj = $idProj;
@@ -28,10 +26,10 @@ class MailProjetoHomologado extends Mailable
      *
      * @return $this
      */
-    public function build()
-    {
-        return  $this->subject('IFCITEC - Projeto Homologado')->view('mail.mailProjetoHomologado', array('idProj' => $this->idProj))
-        ->withNome($this->nome)
-        ->withTitulo($this->titulo);
+    public function build() {
+        return  $this->subject('IFCITEC - Projeto Homologado')
+			->view('mail.projetoHomologado', ['idProj' => $this->idProj])
+			->withNome($this->nome)
+			->withTitulo($this->titulo);
     }
 }

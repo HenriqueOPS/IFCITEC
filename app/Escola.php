@@ -28,8 +28,8 @@ class Escola extends Model {
     ];
 
     public function getPessoas() {
-        //REFACT 
-        //NOTE: Infelizmente o laravel não possui suporte para a cláusula DISTINCT ON. 
+        //REFACT
+        //NOTE: Infelizmente o laravel não possui suporte para a cláusula DISTINCT ON.
         //Futuramente uma issue será aberta na tentativa de solução do problema
         $query = DB::table('pessoa')->select('pessoa.*')
                 ->join('escola_funcao_pessoa_projeto', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
@@ -48,8 +48,8 @@ class Escola extends Model {
     }
 
     public function getProjetos() {
-         //REFACT 
-        //NOTE: Infelizmente o laravel não possui suporte para a cláusula DISTINCT ON. 
+         //REFACT
+        //NOTE: Infelizmente o laravel não possui suporte para a cláusula DISTINCT ON.
         //Futuramente uma issue será aberta na tentativa de solução do problema
         $query = DB::table('projeto')->select('projeto.*')
                 ->join('escola_funcao_pessoa_projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
@@ -63,7 +63,7 @@ class Escola extends Model {
 
         return $eloquent->get();
     }
-    
+
     public function projetos(){
          return $this->belongsToMany('App\Projeto', 'escola_funcao_pessoa_projeto');
     }

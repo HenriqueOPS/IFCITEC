@@ -35,19 +35,17 @@ class Funcao extends Model {
         //NOTE: Infelizmente o laravel não possui suporte para a cláusula DISTINCT ON.
         //Futuramente uma issue será aberta na tentativa de solução do problema
         $query = DB::table('pessoa')->select('pessoa.*')
-                ->join('escola_funcao_pessoa_projeto', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
-                ->leftJoin('funcao', 'escola_funcao_pessoa_projeto.funcao_id', '=', 'funcao.id')
-                ->where('funcao.id', $this->id)
-                ->distinct()
-                ->orderBy('pessoa.id');
+			->join('escola_funcao_pessoa_projeto', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
+			->leftJoin('funcao', 'escola_funcao_pessoa_projeto.funcao_id', '=', 'funcao.id')
+			->where('funcao.id', $this->id)
+			->distinct()
+			->orderBy('pessoa.id');
 
         $eloquent = new Builder($query);
 
         $eloquent->setModel(new Pessoa);
 
         return $eloquent->get();
-
-        // return $this->belongsToMany('App\Pessoa','escola_funcao_pessoa_projeto');
     }
 
     static function getByCategory($category){

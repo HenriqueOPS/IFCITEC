@@ -11,8 +11,7 @@ use Illuminate\Http\Request;
 use Response;
 use QRCode;
 
-class CrachaController extends Controller
-{
+class CrachaController extends Controller {
 
 	public function __construct() {
 		$this->middleware('auth');

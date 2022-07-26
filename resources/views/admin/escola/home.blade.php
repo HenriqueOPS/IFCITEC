@@ -129,10 +129,5 @@
 @endsection
 
 @section('partials')
-
     @include('partials.modalEscola')
-
 @endsection
-
-
-

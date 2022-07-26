@@ -9,10 +9,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MailAutor;
-use Illuminate\Support\Facades\Auth;
 
-class MailAutorJob implements ShouldQueue
-{
+class MailAutorJob implements ShouldQueue {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 	/**
@@ -25,13 +23,13 @@ class MailAutorJob implements ShouldQueue
     public $email;
     public $nome;
     public $titulo;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($email, $nome, $titulo)
-    {
+    public function __construct($email, $nome, $titulo) {
         $this->email = $email;
         $this->nome = $nome;
         $this->titulo = $titulo;
@@ -42,9 +40,8 @@ class MailAutorJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
-    {
-         Mail::to($this->email)
-         ->send(new MailAutor($this->nome, $this->titulo));
+    public function handle() {
+        Mail::to($this->email)
+        	->send(new MailAutor($this->nome, $this->titulo));
     }
 }
