@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Edicao;
 use Illuminate\Http\Request;
-use App\Presenca;
 use Illuminate\Support\Facades\DB;
+
+use App\Presenca;
+use App\Projeto;
+use App\Edicao;
 
 class ApiController extends Controller {
 
 	public function presenca(Request $req) {
-
 		$data = $req->all();
 
 		if(is_numeric($data['id'])){
@@ -26,6 +27,7 @@ class ApiController extends Controller {
 				'edicao_id' => Edicao::getEdicaoId(),
 				'created_at' => date('Y-m-d H:i:s')
 			]);
+
 			return response()->json('ok', 200);
 		}
 
@@ -46,7 +48,6 @@ class ApiController extends Controller {
 					'observacao' => $data['observacao'],
 					'avaliado' => true
 				]);
-
 
 			//altera a média da nota de avaliação na tabela de projeto
 			$subQuery = DB::table('avaliacao')
@@ -89,7 +90,6 @@ class ApiController extends Controller {
 					'observacao' => $data['observacao'],
 					'revisado' => true
 				]);
-
 
 			//altera a média da nota de homologação na tabela de projeto
 			$subQuery = DB::table('revisao')

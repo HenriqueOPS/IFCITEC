@@ -7,8 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class MailCoorientador extends Mailable
-{
+class MailCoorientador extends Mailable {
     use Queueable, SerializesModels;
 
     /**
@@ -16,8 +15,7 @@ class MailCoorientador extends Mailable
      *
      * @return void
      */
-    public function __construct($nome, $titulo)
-    {
+    public function __construct($nome, $titulo) {
         $this->nome = $nome;
         $this->titulo = $titulo;
     }
@@ -27,10 +25,10 @@ class MailCoorientador extends Mailable
      *
      * @return $this
      */
-    public function build()
-    {
-        return  $this->subject('IFCITEC - Você é um Coorientador(a)')->view('mail.mailCoorientador')
-        ->withNome($this->nome)
-        ->withTitulo($this->titulo);
+    public function build() {
+        return  $this->subject('IFCITEC - Você é um Coorientador(a)')
+			->view('mail.coorientador')
+			->withNome($this->nome)
+			->withTitulo($this->titulo);
     }
 }

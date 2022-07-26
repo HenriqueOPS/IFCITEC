@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Categoria;
 use App\Http\Requests\AreaRequest;
 use App\Http\Requests\NivelRequest;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+
 use App\AreaConhecimento;
 use App\Edicao;
 use App\Endereco;
@@ -21,8 +21,7 @@ use App\Projeto;
 use App\Situacao;
 use App\Tarefa;
 
-class AdminController extends Controller
-{
+class AdminController extends Controller {
 	/**
 	 * Create a new controller instance.
 	 *
@@ -65,7 +64,6 @@ class AdminController extends Controller
 	}
 
 	public function dashboard() {
-
 		$response = [];
 
 		$response['projetos']['avaliados'] = Projeto::where('edicao_id', '=', Edicao::getEdicaoId())
@@ -200,14 +198,17 @@ class AdminController extends Controller
     		->where('revisao.projeto_id', $data['projeto'])
     		->get()->toArray();
 
-		return view('admin.notaRevisao', [
-			'projeto' => $projeto,
-			'situacoes' => $situacoes,
-			'revisao' => $revisao
-		]);
+		return view(
+			'admin.notaRevisao',
+			[
+				'projeto' => $projeto,
+				'situacoes' => $situacoes,
+				'revisao' => $revisao
+			]
+		);
 	}
 
-	public function notaAvaliacao($id){
+	public function notaAvaliacao($id) {
     	$projeto = Projeto::find($id);
     	$situacoes = Situacao::all();
 
@@ -439,8 +440,7 @@ class AdminController extends Controller
 
 	}
 
-	public function editaEscola(Request $req)
-	{
+	public function editaEscola(Request $req) {
 
 		$data = $req->all();
 
@@ -567,8 +567,7 @@ class AdminController extends Controller
 		return compact('dados');
 	}
 
-	public function excluiTarefa($id, $s)
-	{
+	public function excluiTarefa($id, $s) {
 
 		if (password_verify($s, Auth::user()['attributes']['senha'])) {
 			Tarefa::find($id)->delete();
@@ -708,11 +707,5 @@ class AdminController extends Controller
 
 		return redirect()->route('administrador.usuarios');
 	}
-
-
-
-
-
-
 
 }

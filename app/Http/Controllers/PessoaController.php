@@ -16,7 +16,7 @@ class PessoaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        
+
     }
 
     /**
@@ -83,8 +83,6 @@ class PessoaController extends Controller {
      */
     public function update(Request $request, $id) {
 
-
-
     }
 
     /**
@@ -149,11 +147,11 @@ class PessoaController extends Controller {
             'confirmacaoRg' => 'required'
         ]);
     }
-    
+
     public function editarCadastro() {
         $dados = Pessoa::find(Auth::user()->id);
         $dados->dt_nascimento = implode("/", array_reverse(explode("-", $dados->dt_nascimento)));
-        
+
         return view('user.edit', compact('dados'));
     }
 
@@ -178,8 +176,6 @@ class PessoaController extends Controller {
         return redirect()->route('administrador.usuarios');
 
     }
-
-    
 
 
 }

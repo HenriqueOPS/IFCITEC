@@ -8,11 +8,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\TestMail;
 use App\Mail\MailSenha;
 
-class MailSenhaJob implements ShouldQueue
-{
+class MailSenhaJob implements ShouldQueue {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 	/**
@@ -46,7 +44,9 @@ class MailSenhaJob implements ShouldQueue
             'title' => $this->email,
             'body' => $this->token
         ];
-         Mail::to($this->email)
-         ->send(new MailSenha($information));
+
+        Mail::to($this->email)->send(
+			new MailSenha($information)
+		);
     }
 }

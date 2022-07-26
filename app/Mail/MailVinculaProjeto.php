@@ -7,8 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class MailVinculaProjeto extends Mailable
-{
+class MailVinculaProjeto extends Mailable {
     use Queueable, SerializesModels;
 
     public $email;
@@ -20,8 +19,7 @@ class MailVinculaProjeto extends Mailable
      *
      * @return void
      */
-    public function __construct($email, $nome, $titulo)
-    {
+    public function __construct($email, $nome, $titulo) {
         $this->email = $email;
         $this->nome = $nome;
         $this->titulo = $titulo;
@@ -32,11 +30,10 @@ class MailVinculaProjeto extends Mailable
      *
      * @return $this
      */
-    public function build()
-    {
-        return  $this->subject('IFCITEC')
-            ->view('mail.mailVinculaProjeto')
+    public function build() {
+        return $this->subject('IFCITEC - Projeto Vinculado')
+            ->view('mail.vinculaProjeto')
             ->withNome($this->nome)
-            ->withTitulo($this->titulo);;
+            ->withTitulo($this->titulo);
     }
 }

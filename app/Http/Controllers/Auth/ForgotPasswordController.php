@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\MailSenhaJob;
 use App\Mail\MailSenha;
-use App\Mail\TestMail;
 use App\Pessoa;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;

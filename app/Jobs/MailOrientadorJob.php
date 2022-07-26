@@ -9,10 +9,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MailOrientador;
-use Illuminate\Support\Facades\Auth;
 
-class MailOrientadorJob implements ShouldQueue
-{
+class MailOrientadorJob implements ShouldQueue {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 	/**
@@ -30,8 +28,7 @@ class MailOrientadorJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($email, $nome, $titulo)
-    {
+    public function __construct($email, $nome, $titulo) {
         $this->email = $email;
         $this->nome = $nome;
         $this->titulo = $titulo;
@@ -42,9 +39,8 @@ class MailOrientadorJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
-    {
-         Mail::to($this->email)
-         ->send(new MailOrientador($this->nome, $this->titulo));
+    public function handle() {
+        Mail::to($this->email)
+    		->send(new MailOrientador($this->nome, $this->titulo));
     }
 }

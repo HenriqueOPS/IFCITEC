@@ -54,7 +54,6 @@ class Projeto extends Model {
     }
 
     public function getStatus() {
-
         $situacao = DB::table('situacao')
             ->select('situacao')
             ->where('id', '=', $this->situacao_id)
@@ -77,6 +76,7 @@ class Projeto extends Model {
             ->where('edicao_id','=',Edicao::getEdicaoId())
             ->where('projeto.id','=',$id)
             ->get();
+
         return $projeto->first()->nota;
     }
 
@@ -101,7 +101,6 @@ class Projeto extends Model {
      *
      */
     public function statusHomologacao(){
-
         $homologadores = DB::table('revisao')
             ->select('revisado')
             ->where('projeto_id', '=', $this->id)
@@ -159,7 +158,14 @@ class Projeto extends Model {
 
     public function getTotalFuncoes($funcoes) {
         foreach ($funcoes as $funcao) {
-            $totalFuncoes[$funcao->funcao] = (DB::table('escola_funcao_pessoa_projeto')->where([['projeto_id', $this->id], ['funcao_id', $funcao->id]])->count('funcao_id'));
+            $totalFuncoes[$funcao->funcao] = (
+				DB::table('escola_funcao_pessoa_projeto')
+					->where([
+						['projeto_id', $this->id],
+						['funcao_id', $funcao->id]
+					])
+					->count('funcao_id')
+			);
         }
         return $totalFuncoes;
     }

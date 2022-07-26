@@ -2,14 +2,12 @@
 
 namespace App\Mail;
 
-
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class MailComissao extends Mailable
-{
+class MailComissao extends Mailable {
     use Queueable, SerializesModels;
 
     public $nome;
@@ -28,6 +26,8 @@ class MailComissao extends Mailable
      * @return $this
      */
     public function build() {
-        return $this->subject('IFCITEC')->view('mail.primeiro')->withNome($this->nome);
+        return $this->subject('IFCITEC')
+			->view('mail.comissaoAvaliadora')
+			->withNome($this->nome);
     }
 }

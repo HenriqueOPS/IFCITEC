@@ -27,11 +27,9 @@
                 </div>
 
                 <form class="form" method="post" action="{{ route('login') }}">
-                    <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
-                    <div class="content">
+					{{ csrf_field() }}
 
-                        {{ csrf_field() }}
-
+					<div class="content">
                         <div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <span class="input-group-addon">
                                 <i class="material-icons">email</i>
@@ -71,5 +69,3 @@
     </div>
 </div>
 @endsection
-
-

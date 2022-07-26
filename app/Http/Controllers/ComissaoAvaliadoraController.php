@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\MailComissaoAvaliadoraJob;
 
-class ComissaoAvaliadoraController extends Controller
-{
+class ComissaoAvaliadoraController extends Controller {
     /**
      * Create a new controller instance.
      *
@@ -115,12 +114,8 @@ class ComissaoAvaliadoraController extends Controller
 			->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
 			->where('pessoa_id', Auth::user()->id)
 			->where(function ($q){
-				$q->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])
-					->where('funcao', 'Orientador')
-					->first()->id);
-				$q->orWhere('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])
-					->where('funcao', 'Coorientador')
-					->first()->id);
+				$q->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id);
+				$q->orWhere('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id);
 			})
 			->where('projeto.situacao_id','!=', Situacao::where('situacao', 'Não Homologado')->get()->first()->id)
 			->orderBy('area_conhecimento.id', 'asc')

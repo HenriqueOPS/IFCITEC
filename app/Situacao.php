@@ -31,7 +31,7 @@ class Situacao extends Model {
 			->where('projeto.edicao_id','=',Edicao::getEdicaoId())
 			->where('projeto.situacao_id','=',$id)
 			->get();
-		//dd($projetos);
+
 		return $projetos->count();
 	}
 }
