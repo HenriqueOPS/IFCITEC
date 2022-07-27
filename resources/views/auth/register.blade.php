@@ -5,6 +5,11 @@
 <link href="{{ asset('css/organization.css') }}" rel="stylesheet">
 <link href="{{ asset('css/datepicker/bootstrap-datepicker.standdalone.css') }}" rel="stylesheet">
 <link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
+<style>
+  .news {
+    margin-top: 4.5%;
+  }
+</style>
 @endsection
 
 @section('content')
@@ -190,12 +195,25 @@
                                     <input type="password" class="form-control" name="senha_confirmation" required>
                                 </div>
                             </div>
+
+                            <div class="input-group{{ $errors->has('senha') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">assignment</i>
+                                </span>
+                                <div class="checkbox news">
+                                    <label>
+                                      <span style="margin-right: 5pt;">
+                                        Deseja receber informações sobre as novas edições da IFCITEC?
+                                      </span>
+                                      <input type="checkbox" name="confirmacaoRg" value="false">
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">
                             <button class="btn btn-primary">Inscrever</button>
-
                         </div>
                     </div>
                 </form>
