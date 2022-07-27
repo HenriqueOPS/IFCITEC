@@ -33,6 +33,8 @@ use App\Revisao;
 use App\Avaliacao;
 use App\Situacao;
 
+use App\Enums\EnumSituacaoProjeto;
+
 class ProjetoController extends Controller {
 
 	/**
@@ -102,7 +104,7 @@ class ProjetoController extends Controller {
 		$projeto = new Projeto();
 		$projeto->fill($request->toArray());
 		$projeto->titulo = strtoupper($request->titulo);
-		$projeto->situacao_id = Situacao::where('situacao', 'Cadastrado')->get()->first()->id;
+		$projeto->situacao_id = EnumSituacaoProjeto::getValue('Cadastrado');
 		//
 		$areaConhecimento = AreaConhecimento::find($request->area_conhecimento);
 		$nivel = Nivel::find($request->nivel);
@@ -148,10 +150,6 @@ class ProjetoController extends Controller {
 						'edicao_id' => Edicao::getEdicaoId()
 					]);
 
-					// ORIGINAL
-				/*$emailJob = (new MailAutorJob($dataAutor->email, $dataAutor->nome, $projeto->titulo))
-					->delay(\Carbon\Carbon::now()->addSeconds(60));
-				dispatch($emailJob);*/
 				dispatch(new MailAutorJob($dataAutor->email, $dataAutor->nome, $projeto->titulo));
 			}
 
@@ -178,10 +176,6 @@ class ProjetoController extends Controller {
 				'edicao_id' => Edicao::getEdicaoId()
 			]);
 
-			// ORIGINAL
-		/*$emailJob = (new MailOrientadorJob($dataOrientador->email, $dataOrientador->nome, $projeto->titulo))
-			->delay(\Carbon\Carbon::now()->addSeconds(60));
-		dispatch($emailJob);*/
 		dispatch(new MailOrientadorJob($dataOrientador->email, $dataOrientador->nome, $projeto->titulo));
 
 		// Coorientadores

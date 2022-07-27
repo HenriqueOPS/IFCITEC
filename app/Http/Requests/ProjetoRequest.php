@@ -83,7 +83,6 @@ class ProjetoRequest extends FormRequest {
 
 		// Faz algumas validações como "callback"
 		$validator->after(function ($validator) {
-
 			// conta as palavras-chaves
 			$countPalavrasChaves = explode(",", $validator->getData()['palavras_chaves']);
 			$countPalavrasChaves = count($countPalavrasChaves);
@@ -91,23 +90,23 @@ class ProjetoRequest extends FormRequest {
 
 			// Valida o número de palavras-chaves de acordo com o requerido pelo nível
 			if ($countPalavrasChaves < $numPalavras)
-				$validator->errors()->add('palavras_chaves', 'As palavras-chave devem conter pelo menos ' . $numPalavras->palavras . ' palavras');
+				$validator->errors()->add('palavras_chaves', 'As palavras-chave devem conter pelo menos ' . $numPalavras . ' palavras');
 
 			// Valida se os corientadores já fazem parte da comissão avaliadora na mesma área
 			$coorientadores = $validator->getData()['coorientador'];
-            foreach ($coorientadores as $coorientador) {
-                if ($coorientador != null) {
+			foreach ($coorientadores as $coorientador) {
+				if ($coorientador != null) {
 					if (Pessoa::find($coorientador)->comissaoArea($validator->getData()['area_conhecimento'], $coorientador) == false)
 						$validator->errors()->add('coorientador[]', 'Não é possível adicionar esse coorientador');
-                }
-            }
+				}
+			}
 
-            // Valida se o orientador já faz parte da comissão avaliadora na mesma área
+			// Valida se o orientador já faz parte da comissão avaliadora na mesma área
 			$orientador = $validator->getData()['orientador'];
-            if (Pessoa::find($orientador)->comissaoArea($validator->getData()['area_conhecimento'], $orientador) == false)
+			if (Pessoa::find($orientador)->comissaoArea($validator->getData()['area_conhecimento'], $orientador) == false)
 				$validator->errors()->add('orientador', 'Não é possível adicionar esse orientador');
 
-            // Valida se não tem integrantes repetidos
+			// Valida se não tem integrantes repetidos
 			$autores = $validator->getData()['autor'];
 			foreach ($autores as $autor) {
 
@@ -128,7 +127,6 @@ class ProjetoRequest extends FormRequest {
 					}
 				}
 			}
-
 		});
     }
 
