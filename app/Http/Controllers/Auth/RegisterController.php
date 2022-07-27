@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Pessoa;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -49,8 +48,6 @@ use RegistersUsers;
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data) {
-
-        Log::debug($data);
 
         if (session()->has('email')) {
             $data = $this->setSessionValues($data);
