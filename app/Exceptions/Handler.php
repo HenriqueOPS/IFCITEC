@@ -34,10 +34,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        //if(env('APP_DEBUG'))
+        if(env('APP_DEBUG'))
             parent::report($exception);
 
-        //return response()->view('errors.custom', [], 500);
+        // return response()->view('errors.custom', [], 500);
 
     }
 
@@ -48,8 +48,9 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception){
-        //return parent::render($request, $exception);
+    public function render($request, Exception $exception) {
+        return parent::render($request, $exception);
+
 		if ($exception instanceof AuthenticationException)
 		{
 			parent::render($request, $exception);
@@ -83,8 +84,7 @@ class Handler extends ExceptionHandler
      * @param  \Illuminate\Auth\AuthenticationException  $exception
      * @return \Illuminate\Http\Response
      */
-    protected function unauthenticated($request, AuthenticationException $exception)
-    {
+    protected function unauthenticated($request, AuthenticationException $exception) {
         if ($request->expectsJson()) {
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }

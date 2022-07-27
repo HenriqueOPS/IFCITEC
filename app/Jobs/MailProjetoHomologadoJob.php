@@ -9,7 +9,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MailProjetoHomologado;
-use Illuminate\Support\Facades\Auth;
 
 class MailProjetoHomologadoJob implements ShouldQueue
 {

@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\MailVinculaProjetoJob;
-use App\Jobs\MailVinculaAvaliadorJob;
-use App\Mail\MailVinculaProjeto;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\ProjetoRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Mail;
+
+use App\Http\Requests\ProjetoRequest;
+
+// Mail Jobs
 use App\Jobs\MailAutorJob;
 use App\Jobs\MailOrientadorJob;
 use App\Jobs\MailCoorientadorJob;
 use App\Jobs\MailProjetoHomologadoJob;
 use App\Jobs\MailProjetoNaoHomologadoJob;
+use App\Jobs\MailVinculaProjetoJob;
+use App\Jobs\MailVinculaAvaliadorJob;
+
 //
 use App\Pessoa;
 use App\Funcao;
@@ -30,16 +33,16 @@ use App\Revisao;
 use App\Avaliacao;
 use App\Situacao;
 
-class ProjetoController extends Controller
-{
+use App\Enums\EnumSituacaoProjeto;
+
+class ProjetoController extends Controller {
 
 	/**
 	 * Instantiate a new controller instance.
 	 *
 	 * @return void
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		$this->middleware('auth')->except('confirmaPresenca');
 	}
 
@@ -48,8 +51,7 @@ class ProjetoController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
-	{
+	public function index() {
 		//
 	}
 
@@ -102,7 +104,7 @@ class ProjetoController extends Controller
 		$projeto = new Projeto();
 		$projeto->fill($request->toArray());
 		$projeto->titulo = strtoupper($request->titulo);
-		$projeto->situacao_id = Situacao::where('situacao', 'Cadastrado')->get()->first()->id;
+		$projeto->situacao_id = EnumSituacaoProjeto::getValue('Cadastrado');
 		//
 		$areaConhecimento = AreaConhecimento::find($request->area_conhecimento);
 		$nivel = Nivel::find($request->nivel);
@@ -148,10 +150,6 @@ class ProjetoController extends Controller
 						'edicao_id' => Edicao::getEdicaoId()
 					]);
 
-					// ORIGINAL
-				/*$emailJob = (new MailAutorJob($dataAutor->email, $dataAutor->nome, $projeto->titulo))
-					->delay(\Carbon\Carbon::now()->addSeconds(60));
-				dispatch($emailJob);*/
 				dispatch(new MailAutorJob($dataAutor->email, $dataAutor->nome, $projeto->titulo));
 			}
 
@@ -178,10 +176,6 @@ class ProjetoController extends Controller
 				'edicao_id' => Edicao::getEdicaoId()
 			]);
 
-			// ORIGINAL
-		/*$emailJob = (new MailOrientadorJob($dataOrientador->email, $dataOrientador->nome, $projeto->titulo))
-			->delay(\Carbon\Carbon::now()->addSeconds(60));
-		dispatch($emailJob);*/
 		dispatch(new MailOrientadorJob($dataOrientador->email, $dataOrientador->nome, $projeto->titulo));
 
 		// Coorientadores
@@ -246,17 +240,17 @@ class ProjetoController extends Controller
 
 		//Busca pelas observações dos Homologadores
 		$obsHomologadores = DB::table('revisao')
-                                ->select('observacao', 'nota_final')
-                                ->where('projeto_id', '=', $projeto->id)
-                                ->where('revisado', '=', true)
-                                ->get();
+			->select('observacao', 'nota_final')
+			->where('projeto_id', '=', $projeto->id)
+			->where('revisado', '=', true)
+			->get();
 
 		//Busca pelas observações dos Avaliadores
         $obsAvaliadores = DB::table('avaliacao')
-                                ->select('observacao', 'nota_final')
-                                ->where('projeto_id', '=', $projeto->id)
-                                ->where('avaliado', '=', true)
-                                ->get();
+			->select('observacao', 'nota_final')
+			->where('projeto_id', '=', $projeto->id)
+			->where('avaliado', '=', true)
+			->get();
 
 		return view('projeto.show', compact('ehHomologador', 'ehAvaliador', 'obsHomologadores', 'obsAvaliadores'))
             ->withProjeto($projeto);
@@ -501,13 +495,13 @@ class ProjetoController extends Controller
 		//
 	}
 
-	public function searchPessoaByEmail($email)
-	{
+	public function searchPessoaByEmail($email) {
 
 		$pessoa = Pessoa::findByEmail($email);
 		if (!($pessoa instanceof Pessoa)) {
 			return response()->json(['error' => "A pessoa não está inscrita no sistema!"], 200);
 		}
+
 		return compact('pessoa');
 	}
 
@@ -581,27 +575,25 @@ class ProjetoController extends Controller
                                 WHERE pessoa_id = pessoa.id AND projeto.edicao_id = comissao_edicao.edicao_id');
 
         $revisores = DB::table('areas_comissao')
-                            ->select('pessoa.id', 'pessoa.nome',
-                                     'pessoa.instituicao', 'pessoa.titulacao',
-                                     DB::raw('('.$numProjetos.') as num_projetos'))
-                            //busca pelo registro na comissao avaliadora
-                            ->join('comissao_edicao', function ($join){
-                                $join->on('comissao_edicao.id', '=', 'areas_comissao.comissao_edicao_id');
-                                $join->where('comissao_edicao.edicao_id', '=', Edicao::getEdicaoId());
-                            })
-                            //busca pela pessoa
-                            ->join('pessoa', 'pessoa.id', '=', 'comissao_edicao.pessoa_id')
-                            //busca pela função homologador (id => 4) HARD CODED e foda-se
-                            ->join('funcao_pessoa', function($join) {
-                                $join->on('pessoa.id', '=', 'funcao_pessoa.pessoa_id');
-                                $join->where('funcao_pessoa.edicao_id', '=', Edicao::getEdicaoId());
-                                $join->where('funcao_pessoa.funcao_id', '=', 4);
-								$join->where('funcao_pessoa.homologado', '=', true);
-                            })
-                            ->where('area_id','=',$projeto->area_id)
-                            ->where('areas_comissao.homologado','=',true)
-                            ->orderBy('pessoa.nome')
-                            ->get();
+			->select('pessoa.id', 'pessoa.nome', 'pessoa.instituicao', 'pessoa.titulacao', DB::raw('('.$numProjetos.') as num_projetos'))
+			//busca pelo registro na comissao avaliadora
+			->join('comissao_edicao', function ($join){
+				$join->on('comissao_edicao.id', '=', 'areas_comissao.comissao_edicao_id');
+				$join->where('comissao_edicao.edicao_id', '=', Edicao::getEdicaoId());
+			})
+			//busca pela pessoa
+			->join('pessoa', 'pessoa.id', '=', 'comissao_edicao.pessoa_id')
+			//busca pela função homologador (id => 4) HARD CODED e foda-se
+			->join('funcao_pessoa', function($join) {
+				$join->on('pessoa.id', '=', 'funcao_pessoa.pessoa_id');
+				$join->where('funcao_pessoa.edicao_id', '=', Edicao::getEdicaoId());
+				$join->where('funcao_pessoa.funcao_id', '=', 4);
+				$join->where('funcao_pessoa.homologado', '=', true);
+			})
+			->where('area_id','=',$projeto->area_id)
+			->where('areas_comissao.homologado','=',true)
+			->orderBy('pessoa.nome')
+			->get();
 
         $revisoresProjeto = DB::table('revisao')->where('projeto_id', '=', $id)->get();
 
@@ -779,20 +771,19 @@ class ProjetoController extends Controller
 
 	    $projeto = Projeto::find($id);
 
-	    $res = array();
-
-	    $res['titulo'] = $projeto->titulo;
-        $res['nivel'] = $projeto->nivel->nivel;
-        $res['area'] = $projeto->areaConhecimento->area_conhecimento;
-
-        $res['situacao'] = $projeto->getStatus();
-        $res['homologacao'] = array();
-        $res['avaliacao'] = array();
+	    $response = [
+			'titulo' => $projeto->titulo,
+			'nivel' => $projeto->nivel->nivel,
+			'area' => $projeto->areaConhecimento->area_conhecimento,
+			'situacao' => $projeto->getStatus(),
+			'homologacao' => array(),
+			'avaliacao' => array(),
+		];
 
         //Busca o nome dos Homologadores
-        if($res['situacao'] != "Cadastrado"){
+        if($response['situacao'] != "Cadastrado"){
 
-            $res['homologacao'] = DB::table('revisao')
+            $response['homologacao'] = DB::table('revisao')
                 ->select('pessoa.nome', 'revisao.nota_final', 'revisao.revisado')
                 ->join('pessoa', 'revisao.pessoa_id','=','pessoa.id')
                 ->where('projeto_id',$id)
@@ -801,11 +792,11 @@ class ProjetoController extends Controller
         }
 
         //Busca o nome dos Avaliadores
-        if($res['situacao'] == "Não Avaliado" ||
-           $res['situacao'] == "Avaliado" ||
-           $res['situacao'] == "Não Compareceu"){
+        if($response['situacao'] == "Não Avaliado" ||
+           $response['situacao'] == "Avaliado" ||
+           $response['situacao'] == "Não Compareceu"){
 
-            $res['avaliacao'] = DB::table('avaliacao')
+            $response['avaliacao'] = DB::table('avaliacao')
                 ->select('pessoa.nome', 'avaliacao.nota_final', 'avaliacao.avaliado')
                 ->join('pessoa', 'avaliacao.pessoa_id','=','pessoa.id')
                 ->where('projeto_id',$id)
@@ -813,8 +804,7 @@ class ProjetoController extends Controller
                 ->toArray();
         }
 
-        return response()->json($res, 200);
-
+        return response()->json($response, 200);
     }
 
     public function homologarProjetos(){
@@ -958,13 +948,10 @@ class ProjetoController extends Controller
 
 	    }
 
-	    //dd($IDprojetos);
         return redirect(route('administrador.projetos'));
-
     }
 
-    public function confirmaPresenca($id)
-	{
+    public function confirmaPresenca($id) {
 		$p = Projeto::where('id', $id)
 			->where('situacao_id', '!=', Situacao::where('situacao', 'Não Homologado')->get()->first()->id)
 			->update(['presenca' => true]);
@@ -972,13 +959,11 @@ class ProjetoController extends Controller
 		return response()->view('confirmaPresenca', ['p' => $p]);
     }
 
-    public function dadosNivel($id)
-	{ //Ajax
+    public function dadosNivel($id) { //Ajax
 		return Nivel::find($id);
 	}
 
-	public function projetoNaoCompareceu($id, $s)
-	{ //Ajax
+	public function projetoNaoCompareceu($id, $s) { //Ajax
 		if (password_verify($s, Auth::user()['attributes']['senha'])) {
 			Projeto::where('id', $id)
 				->update(['situacao_id' => Situacao::where('situacao', 'Não Compareceu')->get()->first()->id,
@@ -990,8 +975,7 @@ class ProjetoController extends Controller
 		return 'false';
 	}
 
-	public function projetoCompareceuAvaliado($id, $s)
-	{ //Ajax
+	public function projetoCompareceuAvaliado($id, $s) { //Ajax
 		if (password_verify($s, Auth::user()['attributes']['senha'])) {
 			Projeto::where('id', $id)
 				->update(['situacao_id' => Situacao::where('situacao', 'Avaliado')->get()->first()->id,
@@ -1003,8 +987,7 @@ class ProjetoController extends Controller
 		return 'false';
 	}
 
-	public function projetoCompareceuNaoAvaliado($id, $s)
-	{ //Ajax
+	public function projetoCompareceuNaoAvaliado($id, $s) { //Ajax
 		if (password_verify($s, Auth::user()['attributes']['senha'])) {
 			Projeto::where('id', $id)
 				->update(['situacao_id' => Situacao::where('situacao', 'Não Avaliado')->get()->first()->id,

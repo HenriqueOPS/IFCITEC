@@ -16,15 +16,13 @@
             {{$cont = 0}}
             @foreach($autores as $autor)
             <tr>
-            <td>
-    		<a style="color: #000;">{{$autor->nome}}</a>
-            </td>  
-            {{$cont++}}
-             </tr>  
-            @endforeach	
-  			</tbody>	
+				<td><a style="color: #000;">{{$autor->nome}}</a></td>
+				{{$cont++}}
+             </tr>
+            @endforeach
+  			</tbody>
 		  </table>
-          <p><b> Total de Autores: {{$cont}}</b></p> 
+          <p><b> Total de Autores: {{$cont}}</b></p>
         <br>
         <table class="bordered striped centered" style="width:100%;">
             <thead>
@@ -38,13 +36,13 @@
             <tr>
             <td>
             <a style="color: #000;">{{$coorientador->nome}}</a>
-            </td>  
+            </td>
             {{$cont++}}
-             </tr>  
-            @endforeach 
-            </tbody>    
+             </tr>
+            @endforeach
+            </tbody>
           </table>
-          <p><b> Total de Coorientadores: {{$cont}}</b></p> 
+          <p><b> Total de Coorientadores: {{$cont}}</b></p>
         <br>
         <table class="bordered striped centered" style="width:100%;">
             <thead>
@@ -58,13 +56,13 @@
             <tr>
             <td>
             <a style="color: #000;">{{$orientador->nome}}</a>
-            </td>  
+            </td>
             {{$cont++}}
-             </tr>  
-            @endforeach 
-            </tbody>    
+             </tr>
+            @endforeach
+            </tbody>
           </table>
-          <p><b> Total de Orientadores: {{$cont}}</b></p> 
+          <p><b> Total de Orientadores: {{$cont}}</b></p>
         <br>
         <table class="bordered striped centered" style="width:100%;">
             <thead>
@@ -78,13 +76,13 @@
             <tr>
             <td>
             <a style="color: #000;">{{$voluntario->nome}}</a>
-            </td>  
+            </td>
             {{$cont++}}
-             </tr>  
-            @endforeach 
-            </tbody>    
+             </tr>
+            @endforeach
+            </tbody>
           </table>
-          <p><b> Total de Voluntários: {{$cont}}</b></p> 
+          <p><b> Total de Voluntários: {{$cont}}</b></p>
         <br>
 	</div>
 </div>

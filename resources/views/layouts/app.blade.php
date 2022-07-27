@@ -101,8 +101,8 @@
 									\App\Edicao::consultaPeriodo('Homologação') ||
 									\App\Edicao::consultaPeriodo('Avaliação') ||
 									Auth::user()->temFuncao('Administrador') ||
-                  Auth::user()->temFuncao('Homologador')
-                )
+                  					Auth::user()->temFuncao('Homologador')
+                				)
 									<li><a href="{{ route('comissao') }}">Comissão Avaliadora</a></li>
 								@endif
 

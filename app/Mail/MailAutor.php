@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -10,8 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Projeto;
 use App\Pessoa;
 
-class MailAutor extends Mailable
-{
+class MailAutor extends Mailable {
     use Queueable, SerializesModels;
 
     /**
@@ -19,8 +17,7 @@ class MailAutor extends Mailable
      *
      * @return void
      */
-    public function __construct($nome, $titulo)
-    {
+    public function __construct($nome, $titulo) {
         $this->nome = $nome;
         $this->titulo = $titulo;
     }
@@ -30,10 +27,10 @@ class MailAutor extends Mailable
      *
      * @return $this
      */
-    public function build()
-    {
-        return  $this->subject('IFCITEC - Você é um Autor(a)')->view('mail.mailAutor')
-        ->withNome($this->nome)
-        ->withTitulo($this->titulo);
+    public function build() {
+        return $this->subject('IFCITEC - Você é um Autor(a)')
+			->view('mail.autor')
+			->withNome($this->nome)
+			->withTitulo($this->titulo);
     }
 }

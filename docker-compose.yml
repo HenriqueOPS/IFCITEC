@@ -5,38 +5,48 @@ services:
     container_name: ifcitecweb
     build:
       context: .
-      dockerfile: Dockerfile-dev
+      dockerfile: ./Dockerfile
     volumes:
       - ./:/var/www/html/
     ports:
       - '8088:80'
     links:
       - postgres
+      - smtp4dev
     networks:
       - ifcitec-compose-network
 
   postgres:
     build:
       context: .
-      dockerfile: Dockerfile-postgres
+      dockerfile: ./Dockerfile-postgres
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=secret
       - POSTGRES_DB=ifcitec
     ports:
-      - "15432:5432"
+      - "5432:5432"
     networks:
       - ifcitec-compose-network
 
   pgadmin:
     image: dpage/pgadmin4
-    environment:  
+    environment:
       PGADMIN_DEFAULT_EMAIL: "ifcitec@canoas.ifrs.edu.br"
       PGADMIN_DEFAULT_PASSWORD: "123"
     ports:
       - "16543:80"
     depends_on:
       - postgres
+    networks:
+      - ifcitec-compose-network
+
+  smtp4dev:
+    image: rnwood/smtp4dev
+    ports:
+      - '5000:80' # Web interface
+      - '25:25'   # SMTP server
+      - '143:143' # IMAP server
     networks:
       - ifcitec-compose-network
 

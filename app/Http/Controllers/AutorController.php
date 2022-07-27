@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Edicao;
-use App\Projeto;
 use Illuminate\Support\Facades\Auth;
 
-class AutorController extends Controller
-{
+use App\Edicao;
+use App\Projeto;
+
+class AutorController extends Controller {
     /**
      * Create a new controller instance.
      *
@@ -23,7 +23,6 @@ class AutorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-
 		$projetos = [];
 
 		$projetos['autor'] = Projeto::select('id', 'titulo')

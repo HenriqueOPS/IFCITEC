@@ -2,14 +2,12 @@
 
 namespace App\Mail;
 
-
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class MailSenha extends Mailable
-{
+class MailSenha extends Mailable {
     use Queueable, SerializesModels;
 
     /**
@@ -21,8 +19,7 @@ class MailSenha extends Mailable
     public $token;
     public $details;
 
-    public function __construct($information)
-    {
+    public function __construct($information) {
         $this->details = $information;
         $this->token = $information['body'];
     }
@@ -32,8 +29,7 @@ class MailSenha extends Mailable
      *
      * @return $this
      */
-    public function build()
-    {
-        return  $this->subject('Redefinir Senha')->view('mail.mailSenha');
+    public function build() {
+        return $this->subject('IFCITEC - Redefinir Senha')->view('mail.senha');
     }
 }
