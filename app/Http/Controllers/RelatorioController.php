@@ -13,7 +13,6 @@ use App\Tarefa;
 use App\Situacao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 
 
@@ -1656,4 +1655,24 @@ class RelatorioController extends Controller {
 
 		return Response::download($filename, $filename, $headers);
 	}
+
+  public function csvMailing() {
+    $usuariosComMailing = DB::table('pessoa')
+        ->where('newsletter', true)
+        ->select('nome', 'email')
+        ->get(); 
+
+    $fileRows = [];
+
+    foreach($usuariosComMailing as $row) {
+      $rowData = [
+        utf8_decode($row->nome),
+        utf8_decode($row->email),
+      ];
+
+      array_push($fileRows, $rowData);
+    }
+
+    return $this->returnsCSVStream('MailingUsuarios.csv', ['Nome', 'Email'], $fileRows);
+  }
 }
