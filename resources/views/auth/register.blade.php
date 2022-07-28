@@ -205,7 +205,7 @@
                                       <span style="margin-right: 5pt;">
                                         Deseja receber informações sobre as novas edições da IFCITEC?
                                       </span>
-                                      <input type="checkbox" name="confirmacaoRg" value="false">
+                                      <input type="checkbox" name="newsletter" value=true>
                                     </label>
                                 </div>
                             </div>

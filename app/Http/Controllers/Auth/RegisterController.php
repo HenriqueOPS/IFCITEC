@@ -61,7 +61,8 @@ use RegistersUsers;
                     'rg' => 'required|max:10|string|unique:pgsql.pessoa',
                     'telefone' => 'string|min:8|max:15',
                     'cpf' => 'string|unique:pgsql.pessoa|min:11|max:14',
-                    'confirmacaoRg' => 'required'
+                    'confirmacaoRg' => 'required',
+                    'newletter' => 'boolean',
 
                     //COMECO do código que necessitará um refact issue #40
                     //'lattes' => 'required_if:inscricao,avaliacao|string',
@@ -90,7 +91,8 @@ use RegistersUsers;
                     'dt_nascimento' => Carbon::createFromFormat('d/m/Y', $data['dt_nascimento']),
                     'cpf' => isset($data['cpf']) ? $data['cpf'] : null,
                     'rg' => isset($data['rg']) ? $data['rg'] : null,
-                    'camisa' => isset($data['camisa']) ? $data['camisa'] : null
+                    'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
+                    'newsletter' => isset($data['newsletter']) ? $data['newsletter'] : false
         ]);
 
     }
