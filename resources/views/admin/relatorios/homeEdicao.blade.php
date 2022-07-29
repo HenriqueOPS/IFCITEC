@@ -233,6 +233,49 @@
                             <td class="text-right">
                                 <a href="{{route('generateCrachas', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
+
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>Crachás Autores Resumo</td>
+                            <td class="text-right">
+                                <a href="{{route('generateCrachasAutoresResumo', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>Crachás Coorientadores Resumo</td>
+                            <td class="text-right">
+                                <a href="{{route('generateCrachasCoorientadoresResumo', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>Crachás Comissão Avaliadora Resumo</td>
+                            <td class="text-right">
+                                <a href="{{route('generateCrachasComissaoAvaliadoraResumo', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>Crachás Comissão Organizadora Resumo</td>
+                            <td class="text-right">
+                                <a href="{{route('generateCrachasComissaoOrganizadoraResumo', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>Crachás Orientadores Resumo</td>
+                            <td class="text-right">
+                                <a href="{{route('generateCrachasOrientadoresResumo', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td>Crachás Voluntários Resumo</td>
+                            <td class="text-right">
+                                <a href="{{route('generateCrachasVoluntariosResumo', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
+                            </td>
                         </tr>
                     </tbody>
 

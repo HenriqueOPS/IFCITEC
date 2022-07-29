@@ -44,11 +44,17 @@ Route::get('/relatorio/projetos/avaliador/{edicao}', 'RelatorioController@projet
 
 // Relatórios - Crachás
 Route::get('/cracha/gerar-crachas/autores/{edicao}', 'CrachaController@generateCrachasAutores')->name('generateCrachasAutores');
+Route::get('/cracha/gerar-crachas/autores-resumo/{edicao}', 'CrachaController@generateCrachasAutoresResumo')->name('generateCrachasAutoresResumo');
 Route::get('/cracha/gerar-crachas/coorientadores/{edicao}', 'CrachaController@generateCrachasCoorientadores')->name('generateCrachasCoorientadores');
+Route::get('/cracha/gerar-crachas/coorientadores-resumo/{edicao}', 'CrachaController@generateCrachasCoorientadoresResumo')->name('generateCrachasCoorientadoresResumo');
 Route::get('/cracha/gerar-crachas/comissao-avaliadora/{edicao}', 'CrachaController@generateCrachasComissaoAvaliadora')->name('generateCrachasComissaoAvaliadora');
+Route::get('/cracha/gerar-crachas/comissao-avaliadora-resumo/{edicao}', 'CrachaController@generateCrachasComissaoAvaliadoraResumo')->name('generateCrachasComissaoAvaliadoraResumo');
 Route::get('/cracha/gerar-crachas/comissao-organizadora/{edicao}', 'CrachaController@generateCrachasComissaoOrganizadora')->name('generateCrachasComissaoOrganizadora');
+Route::get('/cracha/gerar-crachas/comissao-organizadora-resumo/{edicao}', 'CrachaController@generateCrachasComissaoOrganizadoraResumo')->name('generateCrachasComissaoOrganizadoraResumo');
 Route::get('/cracha/gerar-crachas/orientadores/{edicao}', 'CrachaController@generateCrachasOrientadores')->name('generateCrachasOrientadores');
+Route::get('/cracha/gerar-crachas/orientadores-resumo/{edicao}', 'CrachaController@generateCrachasOrientadoresResumo')->name('generateCrachasOrientadoresResumo');
 Route::get('/cracha/gerar-crachas/voluntarios/{edicao}', 'CrachaController@generateCrachasVoluntarios')->name('generateCrachasVoluntarios');
+Route::get('/cracha/gerar-crachas/voluntarios-resumo/{edicao}', 'CrachaController@generateCrachasVoluntariosResumo')->name('generateCrachasVoluntariosResumo');
 Route::get('/cracha/gerar-crachas/branco/{edicao}', 'CrachaController@generateCrachas')->name('generateCrachas');
 Route::get('/cracha/qr-code/{id}', 'CrachaController@generateQrCode')->name('qrcode'); // QrCode image
 
