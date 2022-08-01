@@ -1,6 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 use App\Endereco;
 use App\Funcao;
 use App\Pessoa;
@@ -8,11 +13,10 @@ use App\Edicao;
 use App\Projeto;
 use App\Avaliacao;
 use App\Revisao;
-use App\Situacao;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use App\Jobs\MailComissaoAvaliadoraJob;
+
+use App\Enums\EnumSituacaoProjeto;
+use App\Enums\EnumFuncaoPessoa;
 
 class ComissaoAvaliadoraController extends Controller {
     /**
@@ -113,11 +117,14 @@ class ComissaoAvaliadoraController extends Controller {
 			->select('area_conhecimento.area_conhecimento', 'area_conhecimento.id')
 			->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
 			->where('pessoa_id', Auth::user()->id)
-			->where(function ($q){
-				$q->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id);
-				$q->orWhere('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id);
-			})
-			->where('projeto.situacao_id','!=', Situacao::where('situacao', 'Não Homologado')->get()->first()->id)
+			->whereIn(
+				'escola_funcao_pessoa_projeto.funcao_id',
+				[
+					EnumFuncaoPessoa::getValue('Orientador'),
+					EnumFuncaoPessoa::getValue('Coorientador'),
+				]
+			)
+			->where('projeto.situacao_id', '!=', EnumSituacaoProjeto::getValue('NaoHomologado'))
 			->orderBy('area_conhecimento.id', 'asc')
 			->get()
 			->keyBy('id')
@@ -162,7 +169,6 @@ class ComissaoAvaliadoraController extends Controller {
 		$data = $req->all();
 
 		if (Pessoa::find(Auth::id())->endereco_id != null) { // altera o endereço do caboclo
-
 			$idEndereco = DB::table('endereco')
 				->where('id', '=', Pessoa::find(Auth::id())->endereco_id)
 				->update([
@@ -173,7 +179,6 @@ class ComissaoAvaliadoraController extends Controller {
 					'uf' => $data['uf'],
 					'numero' => $data['numero']
 				]);
-
 		} else { // cria um registro de endereço
 
 			$idEndereco = Endereco::create([
@@ -280,9 +285,11 @@ class ComissaoAvaliadoraController extends Controller {
 			}
       	}
 
-        $emailJob = (new MailComissaoAvaliadoraJob(Auth::user()->nome, Auth::user()->email))
-			->delay(\Carbon\Carbon::now()->addSeconds(3));
-        dispatch($emailJob);
+        $emailJob = (
+			new MailComissaoAvaliadoraJob(Auth::user()->nome, Auth::user()->email)
+		)->delay(\Carbon\Carbon::now()->addSeconds(3));
+
+		dispatch($emailJob);
 
         return redirect()->route('autor');
     }
@@ -324,15 +331,14 @@ class ComissaoAvaliadoraController extends Controller {
             ->select('area_conhecimento.area_conhecimento', 'area_conhecimento.id')
             ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
             ->where('pessoa_id', $comissaoEdicao->pessoa_id)
-            ->where(function ($q){
-                $q->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])
-                    ->where('funcao', 'Orientador')
-                    ->first()->id);
-                $q->orWhere('escola_funcao_pessoa_projeto.funcao_id', Funcao::select(['id'])
-                    ->where('funcao', 'Coorientador')
-                    ->first()->id);
-            })
-            ->where('projeto.situacao_id','!=',Situacao::where('situacao', 'Não Homologado')->get()->first()->id)
+			->whereIn(
+				'escola_funcao_pessoa_projeto.funcao_id',
+				[
+					EnumFuncaoPessoa::getValue('Orientador'),
+					EnumFuncaoPessoa::getValue('Coorientador'),
+				]
+			)
+            ->where('projeto.situacao_id', '!=', EnumSituacaoProjeto::getValue('NaoHomologado'))
             ->orderBy('area_conhecimento.id', 'asc')
             ->get()
             ->keyBy('id')
@@ -370,7 +376,7 @@ class ComissaoAvaliadoraController extends Controller {
             DB::table('funcao_pessoa')
 				->insert([
 					'pessoa_id' => $data['pessoa_id'],
-					'funcao_id' => Funcao::where('funcao', 'Avaliador')->first()->id,
+					'funcao_id' => EnumFuncaoPessoa::getValue('Avaliador'),
 					'edicao_id' => Edicao::getEdicaoId(),
 					'homologado' => true
 				]);
@@ -381,7 +387,7 @@ class ComissaoAvaliadoraController extends Controller {
             DB::table('funcao_pessoa')
 				->insert([
 					'pessoa_id' => $data['pessoa_id'],
-					'funcao_id' => Funcao::where('funcao', 'Homologador')->first()->id,
+					'funcao_id' => EnumFuncaoPessoa::getValue('Homologador'),
 					'edicao_id' => Edicao::getEdicaoId(),
 					'homologado' => true
 				]);
@@ -391,11 +397,16 @@ class ComissaoAvaliadoraController extends Controller {
 		DB::table('funcao_pessoa')
 			->where('pessoa_id', '=', $data['pessoa_id'])
 			->where('edicao_id', '=', Edicao::getEdicaoId())
-			->where(function ($q) {
-				$q->where('funcao_id', '=', Funcao::where('funcao', 'Homologador')->first()->id);
-				$q->orWhere('funcao_id', '=', Funcao::where('funcao', 'Avaliador')->first()->id);
-			})
-			->update(['homologado' => false]);
+			->whereIn(
+				'funcao_id',
+				[
+					EnumFuncaoPessoa::getValue('Homologador'),
+					EnumFuncaoPessoa::getValue('Avaliador'),
+				]
+			)
+			->update([
+				'homologado' => false
+			]);
 
 		$areasComissao = DB::table('areas_comissao')
 			->select('area_id')
@@ -436,7 +447,9 @@ class ComissaoAvaliadoraController extends Controller {
                 ->select('area_id')
                 ->where('comissao_edicao_id', '=', $data['comissao_edicao_id'])
                 ->whereIn('area_id', array_intersect($idsAreas, $data['area_id']))
-                ->update(['homologado' => true]);
+                ->update([
+					'homologado' => true
+				]);
 
             // Avaliador
 			if (isset($data['avaliador'])) {
@@ -444,8 +457,11 @@ class ComissaoAvaliadoraController extends Controller {
 					->where([
 						'pessoa_id' => $data['pessoa_id'],
 						'edicao_id' => Edicao::getEdicaoId(),
-						'funcao_id' => 3
-					])->update(['homologado' => true]);
+						'funcao_id' => EnumFuncaoPessoa::getValue('Avaliador')
+					])
+					->update([
+						'homologado' => true
+					]);
 			}
 
             // Homologador
@@ -454,11 +470,13 @@ class ComissaoAvaliadoraController extends Controller {
 					->where([
 						'pessoa_id' => $data['pessoa_id'],
 						'edicao_id' => Edicao::getEdicaoId(),
-						'funcao_id' => 4
-					])->update(['homologado' => true]);
+						'funcao_id' => EnumFuncaoPessoa::getValue('Homologador')
+					])
+					->update([
+						'homologado' => true
+					]);
 			}
-
-        }else{ // Não existem áreas então NÃO HOMOLOGA
+        } else { // Não existem áreas então NÃO HOMOLOGA
 
 		    // Deleta os campos das areas
             DB::table('areas_comissao')
@@ -470,24 +488,28 @@ class ComissaoAvaliadoraController extends Controller {
                 ->where([
                     'pessoa_id' => $data['pessoa_id'],
                     'edicao_id' => Edicao::getEdicaoId(),
-                    'funcao_id' => 3
-                ])->update(['homologado' => false]);
+                    'funcao_id' => EnumFuncaoPessoa::getValue('Avaliador')
+                ])
+				->update([
+					'homologado' => false
+				]);
 
             // Homologador
             DB::table('funcao_pessoa')
                 ->where([
                     'pessoa_id' => $data['pessoa_id'],
                     'edicao_id' => Edicao::getEdicaoId(),
-                    'funcao_id' => 4
-                ])->update(['homologado' => false]);
-
+                    'funcao_id' => EnumFuncaoPessoa::getValue('Homologador')
+                ])
+				->update([
+					'homologado' => false
+				]);
         }
 
 		return redirect()->route('administrador.comissao');
 	}
 
-    public function excluiComissao($idC, $idF, $s)
-    {
+    public function excluiComissao($idC, $idF, $s) {
         if (password_verify($s, Auth::user()['attributes']['senha'])) {
             $pessoa = DB::table('comissao_edicao')
                 ->join('pessoa', 'comissao_edicao.pessoa_id', '=', 'pessoa.id')
@@ -502,25 +524,47 @@ class ComissaoAvaliadoraController extends Controller {
             $avaliacoes = Avaliacao::select('id')
                 ->where('pessoa_id', $pessoa->first()->id)
                 ->get();
+
             if ($revisoes->count() == 0 && $avaliacoes->count() == 0) {
-                DB::table('areas_comissao')->where('comissao_edicao_id', $idC)->delete();
-                DB::table('comissao_edicao')->where('id', $idC)->where('edicao_id', Edicao::getEdicaoId())->delete();
+                DB::table('areas_comissao')
+					->where('comissao_edicao_id', $idC)
+					->delete();
+
+                DB::table('comissao_edicao')
+					->where('id', $idC)
+					->where('edicao_id', Edicao::getEdicaoId())
+					->delete();
+
                 $usuario = Pessoa::find($pessoa->first()->id);
-                if($usuario->temFuncao('Homologador', TRUE)){
-                    DB::table('funcao_pessoa')->where('pessoa_id', $pessoa->first()->id)->where('funcao_id', Funcao::where('funcao', 'Homologador')->first()->id)->where('edicao_id', Edicao::getEdicaoId())->delete();
+
+				if($usuario->temFuncao('Homologador', TRUE)){
+                    DB::table('funcao_pessoa')
+						->where('pessoa_id', $pessoa->first()->id)
+						->where('funcao_id', EnumFuncaoPessoa::getValue('Homologador'))
+						->where('edicao_id', Edicao::getEdicaoId())
+						->delete();
                 }
-                if($usuario->temFuncao('Avaliador', TRUE)){
-                    DB::table('funcao_pessoa')->where('pessoa_id', $pessoa->first()->id)->where('funcao_id', Funcao::where('funcao', 'Avaliador')->first()->id)->where('edicao_id', Edicao::getEdicaoId())->delete();
+
+				if ($usuario->temFuncao('Avaliador', TRUE)) {
+                    DB::table('funcao_pessoa')
+						->where('pessoa_id', $pessoa->first()->id)
+						->where('funcao_id', EnumFuncaoPessoa::getValue('Avaliador'))
+						->where('edicao_id', Edicao::getEdicaoId())
+						->delete();
                 }
-                return 'true';
-            }
-            else if($idF == Funcao::where('funcao', 'Avaliador')->first()->id){
+
+				return 'true';
+            } else if ($idF == EnumFuncaoPessoa::getValue('Avaliador')) {
                 if ($revisoes->count() != 0 && $avaliacoes->count() == 0) {
-                    DB::table('funcao_pessoa')->where('pessoa_id', $pessoa->first()->id)->where('funcao_id', $idF)->where('edicao_id', Edicao::getEdicaoId())->delete();
+                    DB::table('funcao_pessoa')
+						->where('pessoa_id', $pessoa->first()->id)
+						->where('funcao_id', $idF)
+						->where('edicao_id', Edicao::getEdicaoId())
+						->delete();
+
                     return 'true';
                 }
-            }
-            else{
+            } else {
                return 'Não foi possível excluir usuário da comissão';
             }
         }
