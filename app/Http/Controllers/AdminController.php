@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\AreaConhecimento;
 use App\Edicao;
 use App\Endereco;
+use App\Enums\EnumFuncaoPessoa;
 use App\Escola;
 use App\Funcao;
 use App\Nivel;
@@ -643,14 +644,20 @@ class AdminController extends Controller {
 		if (!empty($funcoes)) {
 			$funcaoId = array_keys($funcoes);
 			foreach ($funcoes as $funcao) {
-				if($funcao->funcao_id == Funcao::select(['id'])->where('funcao', 'Voluntário')->first()->id){
+				if($funcao->funcao_id == EnumFuncaoPessoa::getValue('Voluntario')){
 					if (!isset($data['funcao']) || (!in_array($funcao->funcao_id, $data['funcao']))) {
-						DB::table('pessoa_tarefa')->where('edicao_id', Edicao::getEdicaoId())->where('pessoa_id', $id)->delete();
+						DB::table('pessoa_tarefa')
+							->where('edicao_id', Edicao::getEdicaoId())
+							->where('pessoa_id', $id)
+							->delete();
 					}
 				}
-				if ($funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Autor')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Avaliador')->first()->id && $funcao->funcao_id != Funcao::select(['id'])->where('funcao', 'Homologador')->first()->id) {
+				if ($funcao->funcao_id != EnumFuncaoPessoa::getValue('Autor') && $funcao->funcao_id != EnumFuncaoPessoa::getValue('Orientador') && $funcao->funcao_id != EnumFuncaoPessoa::getValue('Coorientador') && $funcao->funcao_id != EnumFuncaoPessoa::getValue('Avaliador') && $funcao->funcao_id != EnumFuncaoPessoa::getValue('Homologador')) {
 					if (!isset($data['funcao']) || (!in_array($funcao->funcao_id, $data['funcao']))) {
-						DB::table('funcao_pessoa')->where('funcao_id', $funcao->funcao_id)->where('pessoa_id', $id)->delete();
+						DB::table('funcao_pessoa')
+							->where('funcao_id', $funcao->funcao_id)
+							->where('pessoa_id', $id)
+							->delete();
 					}
 				}
 			}
@@ -658,18 +665,16 @@ class AdminController extends Controller {
 			if (isset($data['funcao'])) {
 				foreach ($data['funcao'] as $funcao) {
 					if (!in_array($funcao, $funcaoId)) {
-						if ($funcao == Funcao::select(['id'])->where('funcao', 'Voluntário')->first()->id && Pessoa::find($id)->temTrabalho()) {
-						}
-						else{
-							if ($funcao == Funcao::select(['id'])->where('funcao', 'Administrador')->first()->id) {
+						if ($funcao == EnumFuncaoPessoa::getValue('Voluntario') && Pessoa::find($id)->temTrabalho()) {
+						} else {
+							if ($funcao == EnumFuncaoPessoa::getValue('Administrador')) {
 								DB::table('funcao_pessoa')->insert([
 									'funcao_id' => $funcao,
 									'pessoa_id' => $id,
 									'edicao_id' => 1,
 									'homologado' => TRUE
 								]);
-							}
-							else{
+							} else {
 								DB::table('funcao_pessoa')->insert([
 									'funcao_id' => $funcao,
 									'pessoa_id' => $id,
@@ -683,10 +688,9 @@ class AdminController extends Controller {
 			}
 		} else {
 			foreach ($data['funcao'] as $funcao) {
-				if ($funcao == Funcao::select(['id'])->where('funcao', 'Voluntário')->first()->id && Pessoa::find($id)->temTrabalho()) {
-
+				if ($funcao == EnumFuncaoPessoa::getValue('Voluntario') && Pessoa::find($id)->temTrabalho()) {
 				} else {
-					if ($funcao == Funcao::select(['id'])->where('funcao', 'Administrador')->first()->id) {
+					if ($funcao == EnumFuncaoPessoa::getValue('Administrador')) {
 						DB::table('funcao_pessoa')->insert([
 							'funcao_id' => $funcao,
 							'pessoa_id' => $id,

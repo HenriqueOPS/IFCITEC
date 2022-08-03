@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Pessoa;
-use App\Situacao;
-use App\Funcao;
-use App\Edicao;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Response;
 use QRCode;
+
+use App\Enums\EnumSituacaoProjeto;
+use App\Enums\EnumFuncaoPessoa;
 
 class CrachaController extends Controller {
 
@@ -17,13 +16,13 @@ class CrachaController extends Controller {
 		$this->middleware('auth');
 	}
 
-	public function generateQrCode($id){
+	public function generateQrCode($id) {
 		return QRCode::text($id)
-				->setMargin(1)
-				->svg();
+			->setMargin(1)
+			->svg();
 	}
 
-	public function generateCrachas($edicao){
+	public function generateCrachas($edicao) {
 		return Response::view('impressao.crachas', compact('edicao'));
 	}
 
@@ -33,20 +32,21 @@ class CrachaController extends Controller {
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-			->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-			})
+			->whereIn('projeto.situacao_id', [
+				EnumSituacaoProjeto::getValue('Homologado'),
+				EnumSituacaoProjeto::getValue('NaoAvaliado'),
+				EnumSituacaoProjeto::getValue('Avaliado')
+			])
 			->where('funcao_pessoa.edicao_id', '=', $edicao)
 			->where('projeto.edicao_id', '=', $edicao)
 			->where('projeto.presenca', '=', true)
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Autor'))
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
 
 		$funcao = 'Autor';
+
 		return Response::view('impressao.cracha_verde', compact('pessoas', 'funcao', 'edicao'));
 	}
 
@@ -56,7 +56,7 @@ class CrachaController extends Controller {
 			->select('pessoa.nome', 'pessoa.id')
 			->where('funcao_pessoa.edicao_id', '=',$edicao)
 			->where('funcao_pessoa.homologado', '=', true)
-			->where('funcao_pessoa.funcao_id', '=', Funcao::where('funcao', 'Avaliador')->first()->id)
+			->where('funcao_pessoa.funcao_id', '=', EnumFuncaoPessoa::getValue('Avaliador'))
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
@@ -69,19 +69,19 @@ class CrachaController extends Controller {
 		$pessoas = DB::table('funcao_pessoa')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->select('pessoa.nome', 'pessoa.id')
-			->where(function ($q){
-				$q->where('funcao_pessoa.funcao_id', Funcao::select(['id'])
-					->where('funcao', 'Administrador')
-					->first()->id);
-				$q->orWhere('funcao_pessoa.funcao_id', Funcao::select(['id'])
-					->where('funcao', 'Organizador')
-					->first()->id);
-			})
+			->whereIn(
+				'funcao_pessoa.funcao_id',
+				[
+					EnumFuncaoPessoa::getValue('Administrador'),
+					EnumFuncaoPessoa::getValue('Organizador')
+				]
+			)
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
 
 		$funcao = 'Comissão Organizadora';
+
 		return view('impressao.cracha_vermelho', compact('pessoas', 'funcao', 'edicao'));
 	}
 
@@ -90,15 +90,15 @@ class CrachaController extends Controller {
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 			->select('pessoa.nome', 'pessoa.id')
-			->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-			})
+			->whereIn('projeto.situacao_id', [
+				EnumSituacaoProjeto::getValue('Homologado'),
+				EnumSituacaoProjeto::getValue('NaoAvaliado'),
+				EnumSituacaoProjeto::getValue('Avaliado')
+			])
 			->where('funcao_pessoa.edicao_id', '=', $edicao)
 			->where('projeto.edicao_id', '=', $edicao)
 			->where('projeto.presenca', '=', true)
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Orientador'))
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
@@ -113,15 +113,15 @@ class CrachaController extends Controller {
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 			->select('pessoa.nome', 'pessoa.id')
-			->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-			})
+			->whereIn('projeto.situacao_id', [
+				EnumSituacaoProjeto::getValue('Homologado'),
+				EnumSituacaoProjeto::getValue('NaoAvaliado'),
+				EnumSituacaoProjeto::getValue('Avaliado')
+			])
 			->where('funcao_pessoa.edicao_id', '=', $edicao)
 			->where('projeto.edicao_id', '=', $edicao)
 			->where('projeto.presenca', '=', true)
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Coorientador'))
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
@@ -138,7 +138,7 @@ class CrachaController extends Controller {
 			->join('tarefa', 'pessoa_tarefa.tarefa_id', '=', 'tarefa.id')
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->where('pessoa_tarefa.edicao_id', $edicao)
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Voluntário')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Voluntario'))
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
