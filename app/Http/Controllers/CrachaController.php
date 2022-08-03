@@ -45,7 +45,6 @@ class CrachaController extends Controller {
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
-
 		$funcao = 'Autor';
 		return Response::view('impressao.cracha_verde', compact('pessoas', 'funcao', 'edicao'));
 	}
@@ -68,7 +67,9 @@ class CrachaController extends Controller {
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
-			
+			foreach ($pessoas as $pessoa) {
+				$pessoa->nome = explode(' ',$pessoa->nome, 2)[0];
+			}
 		$funcao = 'Autor';
 		return Response::view('impressao.cracha_verde_resumo', compact('pessoas', 'funcao', 'edicao'));
 	}
@@ -83,7 +84,6 @@ class CrachaController extends Controller {
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
-
 		$funcao = 'Comissão Avaliadora';
 		return view('impressao.cracha_vermelho', compact('pessoas', 'funcao', 'edicao'));
 	}
@@ -98,7 +98,9 @@ class CrachaController extends Controller {
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
-
+			foreach ($pessoas as $pessoa) {
+				$pessoa->nome = explode(' ',$pessoa->nome, 2)[0];
+			}
 		$funcao = 'Comissão Avaliadora';
 		return view('impressao.cracha_vermelho_resumo', compact('pessoas', 'funcao', 'edicao'));
 	}
@@ -118,7 +120,6 @@ class CrachaController extends Controller {
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
-
 		$funcao = 'Comissão Organizadora';
 		return view('impressao.cracha_vermelho', compact('pessoas', 'funcao', 'edicao'));
 	}
@@ -138,7 +139,9 @@ class CrachaController extends Controller {
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
-
+			foreach ($pessoas as $pessoa) {
+				$pessoa->nome = explode(' ',$pessoa->nome, 2)[0];
+			}
 		$funcao = 'Comissão Organizadora';
 		return view('impressao.cracha_vermelho_resumo', compact('pessoas', 'funcao', 'edicao'));
 	}
@@ -160,7 +163,7 @@ class CrachaController extends Controller {
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
-
+			
 		$funcao = 'Orientador';
 		return view('impressao.cracha_verde', compact('pessoas','funcao', 'edicao'));
 	}
@@ -182,7 +185,9 @@ class CrachaController extends Controller {
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
-
+			foreach ($pessoas as $pessoa) {
+				$pessoa->nome = explode(' ',$pessoa->nome, 2)[0];
+			}
 		$funcao = 'Orientador';
 		return view('impressao.cracha_verde_resumo', compact('pessoas','funcao', 'edicao'));
 	}
@@ -228,7 +233,9 @@ class CrachaController extends Controller {
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
-
+			foreach ($pessoas as $pessoa) {
+				$pessoa->nome = explode(' ',$pessoa->nome, 2)[0];
+			}
 		$funcao = 'Coorientador';
 		return view('impressao.cracha_verde_resumo', compact('pessoas', 'funcao', 'edicao'));
 	}
@@ -260,7 +267,9 @@ class CrachaController extends Controller {
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
-
+			foreach ($pessoas as $pessoa) {
+				$pessoa->nome = explode(' ',$pessoa->nome, 2)[0];
+			}
 		return view('impressao.cracha_azul_resumo', compact('pessoas', 'edicao'));
 	}
 
