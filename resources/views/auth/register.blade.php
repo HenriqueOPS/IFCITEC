@@ -56,7 +56,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">RG</label>
-                                    <input type="text" class="form-control" name="rg" value="{{ old('rg') }}" maxlength="10" required>
+                                    <input type="text" pattern="\d*" class="form-control" name="rg" value="{{ old('rg') }}" maxlength="10" required>
                                 </div>
                                 @if ($errors->has('rg'))
                                 <span class="help-block">
@@ -100,7 +100,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">CPF</label>
-                                    <input type="text" OnKeyPress="formatar('###.###.###-##', this)" maxlength="14" class="form-control" name="cpf" value="{{old('cpf')}}">
+                                    <input type="text" OnKeyPress="formatar('###.###.###-##', this)" maxlength="14" class="form-control" pattern="^([0-9][0-9][0-9].)+([0-9][0-9])" name="cpf" value="{{old('cpf')}}">
                                 </div>
                                 @if ($errors->has('cpf'))
                                 <span class="help-block">
