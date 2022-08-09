@@ -712,4 +712,11 @@ class AdminController extends Controller {
 		return redirect()->route('administrador.usuarios');
 	}
 
+  public function ocultarUsuario($id) {
+    DB::table('pessoa')
+      ->where('id', $id)
+      ->update(['oculto' => true]);
+
+		return redirect()->route('administrador.usuarios');
+  }
 }

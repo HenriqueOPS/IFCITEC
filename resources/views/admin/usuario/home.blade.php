@@ -92,20 +92,22 @@
                     </thead>
 
                     <tbody id="5">
+                        @php ($i = 1)
                         @foreach($usuarios as $key=>$usuario)
-                        <tr>
-                            <td class="text-center">{{$key + 1}}</td>
-                            <td>{{$usuario->nome}}</td>
-                            <td>{{$usuario->email}}</td>
-                            <td class="text-right">
-                            <a href="{{route('editarUsuario',$usuario->id)}}"><i class="material-icons">edit</i></a>
-
-                            <a href="{{route('editarFuncaoUsuario',$usuario->id)}}"><i class="material-icons">star</i></a>
-
-                            <a href="javascript:void(0);" class="exclusaoUsuario" id-usuario="{{ $usuario['id'] }}"><i class="material-icons blue-icon">delete</i></a>
-
-                            </td>
-                        </tr>
+                          @if($usuario->oculto != true)
+                            <tr>
+                                <td class="text-center">{{$i}}</td>
+                                <td>{{$usuario->nome}}</td>
+                                <td>{{$usuario->email}}</td>
+                                <td class="text-right">
+                                <a href="{{route('editarUsuario',$usuario->id)}}"><i class="material-icons">edit</i></a>
+                                <a href="{{route('editarFuncaoUsuario',$usuario->id)}}"><i class="material-icons">star</i></a>
+                                <a href="javascript:void(0);" class="exclusaoUsuario" id-usuario="{{ $usuario['id'] }}"><i class="material-icons blue-icon">delete</i></a>
+                                <a href="{{route('ocultarUsuario',$usuario->id)}}"><i class="material-icons">remove_red_eye</i></a>
+                              </td>
+                            </tr>
+                            @php ($i += 1)
+'                         @endif
                         @endforeach
                     </tbody>
                     </table>
