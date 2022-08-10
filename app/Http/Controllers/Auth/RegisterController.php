@@ -92,7 +92,8 @@ use RegistersUsers;
                     'cpf' => isset($data['cpf']) ? $data['cpf'] : null,
                     'rg' => isset($data['rg']) ? $data['rg'] : null,
                     'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
-                    'newsletter' => isset($data['newsletter']) ? $data['newsletter'] : false
+                    'newsletter' => isset($data['newsletter']) ? $data['newsletter'] : false,
+                    'oculto' => false
         ]);
 
     }

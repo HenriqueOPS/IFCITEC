@@ -79,7 +79,7 @@
     <div class="row">
         <div class="col-md-12 main main-raised">
             <div class="list-projects">
-                    <table class="table">
+              <table class="table">
                 <thead id="5">
                     <div id="5">
                         <tr>
@@ -92,11 +92,9 @@
                     </thead>
 
                     <tbody id="5">
-                        @php ($i = 1)
                         @foreach($usuarios as $key=>$usuario)
-                          @if($usuario->oculto != true)
                             <tr>
-                                <td class="text-center">{{$i}}</td>
+                                <td class="text-center">{{$key + 1}}</td>
                                 <td>{{$usuario->nome}}</td>
                                 <td>{{$usuario->email}}</td>
                                 <td class="text-right">
@@ -106,8 +104,6 @@
                                 <a href="{{route('ocultarUsuario',$usuario->id)}}"><i class="material-icons">remove_red_eye</i></a>
                               </td>
                             </tr>
-                            @php ($i += 1)
-'                         @endif
                         @endforeach
                     </tbody>
                     </table>

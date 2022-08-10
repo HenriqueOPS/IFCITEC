@@ -146,7 +146,9 @@ class AdminController extends Controller {
     }
 
     public function usuarios(){
-    	$usuarios = Pessoa::orderBy('nome')->get();
+      $usuarios = Pessoa::orderBy('nome')
+        ->where('oculto', false)
+        ->get();
 
     	return view('admin.usuario.home')->withUsuarios($usuarios);
     }
