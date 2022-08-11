@@ -7,6 +7,8 @@ use Illuminate\Notifications\Notifiable as Notifiable;
 //
 use Illuminate\Support\Facades\DB;
 
+use App\Enums\EnumSituacaoProjeto;
+
 class Pessoa extends Authenticatable {
 
     use Notifiable;
@@ -32,7 +34,7 @@ class Pessoa extends Authenticatable {
      */
     protected $fillable = [
         'nome', 'email', 'senha', 'cpf', 'rg', 'dt_nascimento',
-        'camisa', 'lattes', 'telefone',
+        'camisa', 'lattes', 'telefone', 'newsletter', 'oculto',
 
         //Referentes a comição Avaliadora, necessário um estudo mais aprofundado
         //desta característica no sistema issue #40
@@ -172,16 +174,16 @@ class Pessoa extends Authenticatable {
         if($EdicaoId){
 
             $query = DB::table('escola_funcao_pessoa_projeto')
-                            //Busca pela Função
-                            ->where('funcao_id','=',$funcao)
-                            //Busca pela Pessoa
-                            ->where('pessoa_id','=',$pessoa)
-                            //Busca pelo Projeto
-                            ->where('projeto_id','!=',$projeto)
-                            //Busca pela Edição
-                            ->where('edicao_id', $EdicaoId)
-                            ->orWhere('edicao_id',null)
-                            ->get();
+				//Busca pela Função
+				->where('funcao_id','=',$funcao)
+				//Busca pela Pessoa
+				->where('pessoa_id','=',$pessoa)
+				//Busca pelo Projeto
+				->where('projeto_id','!=',$projeto)
+				//Busca pela Edição
+				->where('edicao_id', $EdicaoId)
+				->orWhere('edicao_id',null)
+				->get();
 
             if(!$query->count()) {
                 return true;
@@ -193,7 +195,6 @@ class Pessoa extends Authenticatable {
 
     public function temFuncaoProjeto($funcao, $projeto, $pessoa, $edicao) {
         if ($edicao) {
-
             $query = DB::table('escola_funcao_pessoa_projeto')
 				// Busca pela Função
 				->where('funcao_id', '=', Funcao::where('funcao', $funcao)->get()->first()->id)
@@ -289,12 +290,11 @@ class Pessoa extends Authenticatable {
     }
 
     public function temTrabalho() {
-
         $total = DB::table('escola_funcao_pessoa_projeto')
             ->select('escola_funcao_pessoa_projeto.projeto_id', 'projeto.situacao_id')
             ->join('projeto','escola_funcao_pessoa_projeto.projeto_id','=','projeto.id')
             ->where('escola_funcao_pessoa_projeto.pessoa_id','=',$this->id)
-            ->where('projeto.situacao_id', '<>', Situacao::where('situacao', 'Não Homologado')->get()->first()->id)
+            ->where('projeto.situacao_id', '<>', EnumSituacaoProjeto::getValue('NaoHomologado'))
 			->where('projeto.edicao_id', '=', Edicao::getEdicaoId())
             ->get();
 

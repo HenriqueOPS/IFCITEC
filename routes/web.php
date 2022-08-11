@@ -166,6 +166,7 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 
 	// Usuários
 	Route::get('/usuario/exclui-usuario/{id}/{s}', 'AdminController@excluiUsuario');
+	Route::get('/usuario/oculta-usuario/{id}', 'AdminController@ocultarUsuario')->name('ocultarUsuario');
 
     // Edição dos dados de usuario
     Route::get('/usuario/{id}/editar/', 'PessoaController@editarUsuario')->name('editarUsuario');

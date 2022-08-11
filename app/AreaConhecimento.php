@@ -5,6 +5,8 @@ namespace App;
 use App\Mods\Model;
 use Illuminate\Support\Facades\DB;
 
+use App\Enums\EnumSituacaoProjeto;
+
 class AreaConhecimento extends Model {
 
     /**
@@ -47,7 +49,7 @@ class AreaConhecimento extends Model {
             ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
             ->where('projeto.edicao_id','=',$edicao)
             ->where('projeto.area_id','=',$id)
-            ->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
+            ->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('Avaliado'))
             ->where('projeto.nota_avaliacao','<>',NULL)
             ->groupBy('projeto.id')
             ->groupBy('escola.nome_curto')
@@ -69,7 +71,7 @@ class AreaConhecimento extends Model {
             ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
             ->where('projeto.edicao_id','=',$edicao)
             ->where('projeto.area_id','=',$id)
-            ->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
+            ->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('Avaliado'))
             ->where('escola.id','=', Escola::where('nome_curto', 'IFRS Canoas')->get()->first()->id)
             ->where('projeto.nota_avaliacao','<>',NULL)
             ->groupBy('projeto.id')
@@ -93,7 +95,7 @@ class AreaConhecimento extends Model {
             ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
             ->where('projeto.edicao_id','=',$edicao)
             ->where('projeto.area_id','=',$id)
-            ->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
+            ->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('Avaliado'))
             ->where('projeto.nota_avaliacao','<>',NULL)
             ->groupBy('projeto.id')
             ->groupBy('escola.nome_curto')
@@ -117,7 +119,7 @@ class AreaConhecimento extends Model {
             ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
             ->where('projeto.edicao_id','=',$edicao)
             ->where('projeto.area_id','=',$id)
-            ->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
+            ->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('Avaliado'))
             ->where('projeto.nota_avaliacao','<>',NULL)
             ->groupBy('projeto.id')
             ->groupBy('escola.nome_curto')
@@ -139,7 +141,7 @@ class AreaConhecimento extends Model {
         $projetos = Projeto::select(DB::raw('('.$subQuery.') as nota'),'projeto.titulo', 'projeto.situacao_id')
             ->where('projeto.edicao_id','=',$edicao)
             ->where('projeto.area_id','=',$id)
-            ->where('projeto.situacao_id','=', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+            ->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('Homologado'))
             ->orderBy('nota', 'desc')
             ->orderBy('projeto.created_at', 'asc')
             ->get();

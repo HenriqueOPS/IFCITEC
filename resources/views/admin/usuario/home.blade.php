@@ -79,7 +79,7 @@
     <div class="row">
         <div class="col-md-12 main main-raised">
             <div class="list-projects">
-                    <table class="table">
+              <table class="table">
                 <thead id="5">
                     <div id="5">
                         <tr>
@@ -93,19 +93,17 @@
 
                     <tbody id="5">
                         @foreach($usuarios as $key=>$usuario)
-                        <tr>
-                            <td class="text-center">{{$key + 1}}</td>
-                            <td>{{$usuario->nome}}</td>
-                            <td>{{$usuario->email}}</td>
-                            <td class="text-right">
-                            <a href="{{route('editarUsuario',$usuario->id)}}"><i class="material-icons">edit</i></a>
-
-                            <a href="{{route('editarFuncaoUsuario',$usuario->id)}}"><i class="material-icons">star</i></a>
-
-                            <a href="javascript:void(0);" class="exclusaoUsuario" id-usuario="{{ $usuario['id'] }}"><i class="material-icons blue-icon">delete</i></a>
-
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="text-center">{{$key + 1}}</td>
+                                <td>{{$usuario->nome}}</td>
+                                <td>{{$usuario->email}}</td>
+                                <td class="text-right">
+                                <a href="{{route('editarUsuario',$usuario->id)}}"><i class="material-icons">edit</i></a>
+                                <a href="{{route('editarFuncaoUsuario',$usuario->id)}}"><i class="material-icons">star</i></a>
+                                <a href="javascript:void(0);" class="exclusaoUsuario" id-usuario="{{ $usuario['id'] }}"><i class="material-icons blue-icon">delete</i></a>
+                                <a href="{{route('ocultarUsuario',$usuario->id)}}"><i class="material-icons">remove_red_eye</i></a>
+                              </td>
+                            </tr>
                         @endforeach
                     </tbody>
                     </table>

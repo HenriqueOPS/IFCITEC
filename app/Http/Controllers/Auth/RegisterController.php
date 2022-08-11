@@ -48,10 +48,55 @@ use RegistersUsers;
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data) {
+        
+        $messages = [
+          'validate_cpf' => 'CPF invalido'
+        ];
 
         if (session()->has('email')) {
             $data = $this->setSessionValues($data);
         }
+
+        Validator::extend('validateCpf', function($field, $cpf, $parameters) {
+          // Elimina possivel mascara
+          $cpf = preg_replace("/[^0-9]/", "", $cpf);
+          $cpf = str_pad($cpf, 11, '0', STR_PAD_LEFT);
+	
+          // Verifica se o numero de digitos informados é igual a 11 
+          if (strlen($cpf) != 11) {
+            return false;
+          }
+          // Verifica se nenhuma das sequências invalidas abaixo 
+          // foi digitada. Caso afirmativo, retorna falso
+          else if ($cpf == '00000000000' || 
+            $cpf == '11111111111' || 
+            $cpf == '22222222222' || 
+            $cpf == '33333333333' || 
+            $cpf == '44444444444' || 
+            $cpf == '55555555555' || 
+            $cpf == '66666666666' || 
+            $cpf == '77777777777' || 
+            $cpf == '88888888888' || 
+            $cpf == '99999999999') {
+            return false;
+           // Calcula os digitos verificadores para verificar se o
+           // CPF é válido
+          } else {   
+		
+            for ($t = 9; $t < 11; $t++) {
+        
+            for ($d = 0, $c = 0; $c < $t; $c++) {
+            $d += $cpf{$c} * (($t + 1) - $c);
+          }
+            $d = ((10 * $d) % 11) % 10;
+            if ($cpf{$c} != $d) {
+              return false;
+          }
+		}
+
+		return true;
+	}
+        });
 
         return Validator::make($data, [
                     'nome' => 'required|string|max:255',
@@ -60,14 +105,15 @@ use RegistersUsers;
                     'dt_nascimento' => 'required|date_format:d/m/Y|before:today|after:01/01/1900',
                     'rg' => 'required|max:10|string|unique:pgsql.pessoa',
                     'telefone' => 'string|min:8|max:15',
-                    'cpf' => 'string|unique:pgsql.pessoa|min:11|max:14',
-                    'confirmacaoRg' => 'required'
+                    'cpf' => 'string|unique:pgsql.pessoa|min:11|max:14|validateCpf',
+                    'confirmacaoRg' => 'required',
+                    'newletter' => 'boolean',
 
                     //COMECO do código que necessitará um refact issue #40
                     //'lattes' => 'required_if:inscricao,avaliacao|string',
                     //'cpf' => 'required_if:inscricao,avaliacao|cpf|unique:pgsql.pessoa',
                     //FIM do código que necessitará um refact issue #40
-        ]);
+        ], $messages);
     }
 
     /**
@@ -90,7 +136,9 @@ use RegistersUsers;
                     'dt_nascimento' => Carbon::createFromFormat('d/m/Y', $data['dt_nascimento']),
                     'cpf' => isset($data['cpf']) ? $data['cpf'] : null,
                     'rg' => isset($data['rg']) ? $data['rg'] : null,
-                    'camisa' => isset($data['camisa']) ? $data['camisa'] : null
+                    'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
+                    'newsletter' => isset($data['newsletter']) ? $data['newsletter'] : false,
+                    'oculto' => false
         ]);
 
     }

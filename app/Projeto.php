@@ -6,6 +6,8 @@ use App\Mods\Model;
 //
 use Illuminate\Support\Facades\DB;
 
+use App\Enums\EnumFuncaoPessoa;
+
 class Projeto extends Model {
 
     /**
@@ -176,7 +178,7 @@ class Projeto extends Model {
 			->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->where('escola_funcao_pessoa_projeto.projeto_id', $this->id)
-			->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Autor')->get()->first()->id)
+			->where('escola_funcao_pessoa_projeto.funcao_id', EnumFuncaoPessoa::getValue('Autor'))
 			->orderBy('pessoa.nome')
 			->get();
 
@@ -188,7 +190,7 @@ class Projeto extends Model {
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
 			->where('escola_funcao_pessoa_projeto.projeto_id', $this->id)
-			->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Orientador')->get()->first()->id)
+			->where('escola_funcao_pessoa_projeto.funcao_id', EnumFuncaoPessoa::getValue('Orientador'))
 			->orderBy('pessoa.nome')
 			->get();
 
@@ -200,7 +202,7 @@ class Projeto extends Model {
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->select('pessoa.id', 'pessoa.nome', 'pessoa.email')
 			->where('escola_funcao_pessoa_projeto.projeto_id', $this->id)
-			->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Coorientador')->get()->first()->id)
+			->where('escola_funcao_pessoa_projeto.funcao_id', EnumFuncaoPessoa::getValue('Coorientador'))
 			->orderBy('pessoa.nome')
 			->get();
 

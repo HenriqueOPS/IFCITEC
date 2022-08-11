@@ -5,6 +5,8 @@ namespace App;
 use App\Mods\Model;
 use Illuminate\Support\Facades\DB;
 
+use App\Enums\EnumSituacaoProjeto;
+
 class Nivel extends Model {
 
     /**
@@ -40,12 +42,10 @@ class Nivel extends Model {
 			->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
 			->where('revisao.projeto_id','=',DB::raw('projeto.id'))
 			->toSql();
-
-
 		$projetos = Projeto::select(DB::raw('('.$subQuery.') as nota'),'projeto.titulo', 'projeto.situacao_id')
 			->where('projeto.edicao_id','=',$edicao)
 			->where('projeto.nivel_id','=',$id)
-			->where('projeto.situacao_id','=', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+			->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('Homologado'))
 			->orderBy('nota', 'desc')
 			->orderBy('projeto.created_at', 'asc')
 			->get();
@@ -62,7 +62,7 @@ class Nivel extends Model {
 		$projetos = Projeto::select(DB::raw('('.$subQuery.') as nota'),'projeto.titulo', 'projeto.situacao_id')
 			->where('projeto.edicao_id','=',$edicao)
 			->where('projeto.nivel_id','=',$id)
-			->where('projeto.situacao_id','=', Situacao::where('situacao', 'Não Homologado')->get()->first()->id)
+			->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('NaoHomologado'))
 			->orderBy('nota', 'desc')
 			->orderBy('projeto.created_at', 'asc')
 			->get();
@@ -96,7 +96,7 @@ class Nivel extends Model {
 			->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
 			->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
             ->where('projeto.edicao_id','=',$edicao)
-            ->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
+            ->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('Avaliado'))
             ->where('projeto.nota_avaliacao','<>',NULL)
             ->where('projeto.nivel_id',$id)
             ->groupBy('projeto.id')
@@ -108,8 +108,5 @@ class Nivel extends Model {
 
         return $projetos;
 	}
-
-
-
 
 }

@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
+
+use Barryvdh\DomPDF\Facade as PDF;
+
 use App\AreaConhecimento;
 use App\Nivel;
 use App\Edicao;
 use App\Escola;
 use App\Projeto;
 use App\Pessoa;
-use App\Funcao;
 use App\Tarefa;
-use App\Situacao;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Response;
-
-
 
 use App\Enums\EnumFuncaoPessoa;
 use App\Enums\EnumSituacaoProjeto;
@@ -29,21 +27,21 @@ class RelatorioController extends Controller {
      * @return void
      */
     public function __construct() {
-        // $this->middleware('auth');
+        $this->middleware('auth');
     }
 
 	/**
 	 * This function retuns a CSV file as data stream
 	 *
 	 * @param string 	$filename	The name for file generated
-	 * @param array 	$headers 	Array with column labels
-	 * @param array 	$items 		Array with arrays containing values for columns
+	 * @param array 	$fileHeader Array with column labels
+	 * @param array 	$fileRows	Array with arrays containing values for columns
 	 * @param string 	$delimiter 	The delimiter of CSV data
 	 *
 	 * @return stream 	Returns CSV file stream
 	 */
 
-	private function returnsCSVStream($filename, $headers = [], $items = [], $delimiter = ';') {
+	private function returnsCSVStream($filename, $fileHeader = [], $fileRows = [], $delimiter = ';') {
 		$httpHeaders = [
 			'Cache-Control'			=> 'must-revalidate, post-check=0, pre-check=0',
 			'Content-type'		  	=> 'text/csv',
@@ -52,13 +50,14 @@ class RelatorioController extends Controller {
 			'Pragma'              	=> 'public'
 		];
 
-		$callback = function() use ($headers, $items, $delimiter) {
+		$callback = function() use ($fileHeader, $fileRows, $delimiter) {
 			$stream = fopen('php://output', 'w');
 
-			fputcsv($stream, $headers, ';');
+			if (count($fileHeader))
+				fputcsv($stream, $fileHeader, ';');
 
-			foreach ($items as $item)
-				fputcsv($stream, $item, $delimiter);
+			foreach ($fileRows as $row)
+				fputcsv($stream, $row, $delimiter);
 
 			fclose($stream);
 		};
@@ -82,7 +81,7 @@ class RelatorioController extends Controller {
 				->join('pessoa','funcao_pessoa.pessoa_id','=','pessoa.id')
 				->select('pessoa.email','pessoa.nome')
 				->where('funcao_pessoa.edicao_id',$edicao)
-				->where('funcao_pessoa.funcao_id', Funcao::select(['id'])->where('funcao', 'Avaliador')->first()->id)
+				->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Avaliador'))
 				->get();
 
 			$filename = "Avaliadores.csv";
@@ -91,7 +90,7 @@ class RelatorioController extends Controller {
 				->join('pessoa','funcao_pessoa.pessoa_id','=','pessoa.id')
 				->select('pessoa.email','pessoa.nome')
 				->where('funcao_pessoa.edicao_id', $edicao)
-				->where('funcao_pessoa.funcao_id', Funcao::select(['id'])->where('funcao', 'Homologador')->first()->id)
+				->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Homologador'))
 				->get();
 
 			$filename = "Homologadores.csv";
@@ -100,9 +99,14 @@ class RelatorioController extends Controller {
 				->join('pessoa','funcao_pessoa.pessoa_id','=','pessoa.id')
 				->select('pessoa.email','pessoa.nome')
 				->where('funcao_pessoa.edicao_id', $edicao)
-				->where('funcao_pessoa.funcao_id', Funcao::select(['id'])->where('funcao', 'Autor')->first()->id)
-				->orWhere('funcao_pessoa.funcao_id', Funcao::select(['id'])->where('funcao', 'Orientador')->first()->id)
-				->orWhere('funcao_pessoa.funcao_id', Funcao::select(['id'])->where('funcao', 'Coorientador')->first()->id)
+				->whereIn(
+					'funcao_pessoa.funcao_id',
+					[
+						EnumFuncaoPessoa::getValue('Autor'),
+						EnumFuncaoPessoa::getValue('Orientador'),
+						EnumFuncaoPessoa::getValue('Coorientador'),
+					]
+				)
 				->get();
 
 			$filename = "ParticipantesProjeto.csv";
@@ -111,7 +115,7 @@ class RelatorioController extends Controller {
 				->join('pessoa','funcao_pessoa.pessoa_id','=','pessoa.id')
 				->select('pessoa.email','pessoa.nome')
 				->where('funcao_pessoa.edicao_id', $edicao)
-				->where('funcao_pessoa.funcao_id', Funcao::select(['id'])->where('funcao', 'Voluntário')->first()->id)
+				->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Voluntario'))
 				->get();
 
 			$filename = "Voluntarios.csv";
@@ -120,13 +124,17 @@ class RelatorioController extends Controller {
 				->join('nivel','projeto.nivel_id','=','nivel.id')
 				->join('area_conhecimento','projeto.area_id','=','area_conhecimento.id')
 				->select('projeto.titulo', 'nivel.nivel', 'area_conhecimento.area_conhecimento')
-				->where('projeto.edicao_id',$edicao)
+				->where('projeto.edicao_id', $edicao)
 				->get();
 
 			$filename = "Projetos.csv";
 		}
 
-		$fileHeaders = ['Nome', 'Email'];
+		$fileHeaders = [
+			'Nome',
+			'Email'
+		];
+
 		$fileRows = [];
 		foreach ($resultados as $row) {
 			$rowData = [
@@ -141,16 +149,13 @@ class RelatorioController extends Controller {
 	}
 
 	public function csvMOSTRATEC($edicao) {
-
-		$filename = "RelatorioMOSTRATEC.csv";
-
 		$projetos = Projeto::select( 'projeto.id', 'projeto.titulo', 'escola.nome_completo', 'nivel.nivel', 'area_conhecimento.area_conhecimento', 'projeto.resumo')
 			->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
 			->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
 			->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
 			->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
 			->where('escola_funcao_pessoa_projeto.edicao_id', $edicao)
-			->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
+			->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('Avaliado'))
 			->where('projeto.nota_avaliacao','<>',0)
 			->orderBy('nivel.nivel')
 			->orderBy('area_conhecimento.area_conhecimento')
@@ -177,38 +182,43 @@ class RelatorioController extends Controller {
 
 		$niveis = Nivel::all();
 
-		$handle = fopen($filename, 'w+');
-
-		fputcsv($handle, ['Projetos 01 Aluno', $projetosComUmAutor], ';');
-		fputcsv($handle, ['Projetos 02 Alunos', $projetosComDoisAutores], ';');
-		fputcsv($handle, ['Projetos 03 Alunos', $projetosComTresAutores], ';');
+		$fileRows = [
+			['Projetos 01 Aluno', $projetosComUmAutor],
+			['Projetos 02 Alunos', $projetosComDoisAutores],
+			['Projetos 03 Alunos', $projetosComTresAutores]
+		];
 
 		// numero de orientadores e coorientadores por nivel
 		foreach ($niveis as $nivel){
-
 			$orientadores = Pessoa::select( 'pessoa.id')
 				->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 				->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-				->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
+				->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('Avaliado'))
 				->where('projeto.nota_avaliacao','<>',0)
 				->where('projeto.nivel_id', $nivel->id)
-				->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
+				->where('escola_funcao_pessoa_projeto.funcao_id', EnumFuncaoPessoa::getValue('Orientador'))
 				->distinct('pessoa.id')
 				->count();
 
-			fputcsv($handle, array('Quantidade de Orientadores do nivel ' . $nivel->nivel, $orientadores), ';');
+			array_push(
+				$fileRows,
+				['Quantidade de Orientadores do nivel '.$nivel->nivel, $orientadores]
+			);
 
 			$coorientadores = Pessoa::select( 'pessoa.id')
 				->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 				->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-				->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
+				->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('Avaliado'))
 				->where('projeto.nota_avaliacao','<>',0)
 				->where('projeto.nivel_id', $nivel->id)
-				->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
+				->where('escola_funcao_pessoa_projeto.funcao_id', EnumFuncaoPessoa::getValue('Coorientador'))
 				->distinct('pessoa.id')
 				->count();
 
-			fputcsv($handle, array('Quantidade de Coorientadores do nivel ' . $nivel->nivel, $coorientadores), ';');
+			array_push(
+				$fileRows,
+				['Quantidade de Coorientadores do nivel '.$nivel->nivel, $coorientadores]
+			);
 		}
 
 		// numero de escolas
@@ -218,7 +228,10 @@ class RelatorioController extends Controller {
 			->distinct('escola_id')
 			->get();
 
-		fputcsv($handle, array('Quantidade de escolas participantes ', $countEscolas[0]->num), ';');
+		array_push(
+			$fileRows,
+			['Quantidade de escolas participantes', $countEscolas[0]->num]
+		);
 
 		// numero de escolas por nivel
 		foreach ($niveis as $nivel){
@@ -228,7 +241,10 @@ class RelatorioController extends Controller {
 				->where('projeto.nivel_id', '=', $nivel->id)
 				->get();
 
-			fputcsv($handle, array('Quantidade de Escolas no nivel ' . $nivel->nivel, $countEscolasNivel[0]->num), ';');
+			array_push(
+				$fileRows,
+				['Quantidade de Escolas no nivel '.$nivel->nivel, $countEscolasNivel[0]->num]
+			);
 		}
 
 		// numero de projetos
@@ -236,7 +252,10 @@ class RelatorioController extends Controller {
 			->where('edicao_id', $edicao)
 			->count();
 
-		fputcsv($handle, array('Projetos cadastrados', $countProjetos), ';');
+		array_push(
+			$fileRows,
+			['Projetos cadastrados', $countProjetos]
+		);
 
 		// numero de projetos por niveis
 		foreach ($niveis as $nivel){
@@ -245,32 +264,40 @@ class RelatorioController extends Controller {
 				->where('nivel_id', '=', $nivel->id)
 				->count();
 
-			fputcsv($handle, array('Projetos cadastrados no nivel ' . $nivel->nivel, $countProjetosNivel), ';');
+			array_push(
+				$fileRows,
+				['Projetos cadastrados no nivel '.$nivel->nivel, $countProjetosNivel]
+			);
 		}
 
 		// numero de avaliadores
 		$countAvaliadores = DB::table('funcao_pessoa')
-			->where('funcao_id', '=', Funcao::where('funcao', 'Avaliador')->first()->id)
+			->where('funcao_id', '=', EnumFuncaoPessoa::getValue('Avaliador'))
 			->where('edicao_id', '=', $edicao)
 			->where('homologado', '=', true)
 			->count();
 
-		fputcsv($handle, array('Numero de avaliadores ', $countAvaliadores), ';');
+		array_push(
+			$fileRows,
+			['Numero de avaliadores', $countAvaliadores]
+		);
 
 		// numero de homologadores
 		$countHomologadores = DB::table('funcao_pessoa')
-			->where('funcao_id', '=', Funcao::where('funcao', 'Homologador')->first()->id)
+			->where('funcao_id', '=', EnumFuncaoPessoa::getValue('Homologador'))
 			->where('edicao_id', '=', $edicao)
 			->where('homologado', '=', true)
 			->count();
 
-		fputcsv($handle, array('Numero de homologadores ', $countHomologadores), ';');
+		array_push(
+			$fileRows,
+			['Numero de homologadores', $countHomologadores]
+		);
 
-		fclose($handle);
+		$filename = "RelatorioMOSTRATEC.csv";
+		$fileHeaders = null;
 
-		$headers = ['Content-Type' => 'text/csv'];
-
-		return Response::download($filename, $filename, $headers);
+		return $this->returnsCSVStream($filename, $fileHeaders, $fileRows);
 	}
 
 	public function csvAnais($edicao) {
@@ -281,7 +308,7 @@ class RelatorioController extends Controller {
 			->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
 			->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
 			->where('escola_funcao_pessoa_projeto.edicao_id', $edicao)
-			->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
+			->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('Avaliado'))
 			->where('projeto.nota_avaliacao','<>',0)
 			->orderBy('nivel.nivel')
 			->orderBy('area_conhecimento.area_conhecimento')
@@ -446,7 +473,6 @@ class RelatorioController extends Controller {
 	}
 
 	public function csvEtiquetas() {
-
 		$filename = "EscolasEtiquetas.csv";
 
 		$escolas = DB::table('escola')
@@ -461,7 +487,6 @@ class RelatorioController extends Controller {
 		fputcsv($handle, ['Escola', 'Email', 'Telefone', $endereco, $municipio, 'Estado', 'CEP'], ';');
 
 		foreach ($escolas as $escola) {
-
 			fputcsv($handle, [
 				utf8_decode($escola->nome_curto),
 				$escola->email,
@@ -485,13 +510,16 @@ class RelatorioController extends Controller {
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 			->select('pessoa.nome', 'pessoa.email')
-			->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-			})
+			->whereIn(
+				'projeto.situacao_id',
+				[
+					EnumSituacaoProjeto::getValue('Homologado'),
+					EnumSituacaoProjeto::getValue('NaoAvaliado'),
+					EnumSituacaoProjeto::getValue('Avaliado'),
+				]
+			)
 			->where('funcao_pessoa.edicao_id', $edicao)
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Autor'))
 			->where('projeto.presenca', TRUE)
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
@@ -522,12 +550,15 @@ class RelatorioController extends Controller {
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 			->select('pessoa.nome', 'pessoa.email')
-			->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-			})
+			->whereIn(
+				'projeto.situacao_id',
+				[
+					EnumSituacaoProjeto::getValue('Homologado'),
+					EnumSituacaoProjeto::getValue('NaoAvaliado')
+				]
+			)
 			->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Autor'))
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
@@ -551,20 +582,22 @@ class RelatorioController extends Controller {
 		return Response::download($filename, $filename, $headers);
 	}
 
-
 	public function participantesCompareceram($edicao) {
 		$autores = DB::table('funcao_pessoa')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 			->select( 'pessoa.nome', 'pessoa.id')
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
-			->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
-			->where('projeto.nota_avaliacao','<>',0)
-			->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-			})
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Autor'))
+			->where('escola_funcao_pessoa_projeto.funcao_id', EnumFuncaoPessoa::getValue('Autor'))
+			->where('projeto.nota_avaliacao', '<>', 0)
+			->whereIn(
+				'projeto.situacao_id',
+				[
+					EnumSituacaoProjeto::getValue('Avaliado'),
+					EnumSituacaoProjeto::getValue('NaoAvaliado')
+				]
+			)
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->distinct('pessoa.id')
 			->get();
@@ -573,12 +606,15 @@ class RelatorioController extends Controller {
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 			->select( 'pessoa.nome','pessoa.id')
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
-			->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
-			->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-			})
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Coorientador'))
+			->where('escola_funcao_pessoa_projeto.funcao_id', EnumFuncaoPessoa::getValue('Coorientador'))
+			->whereIn(
+				'projeto.situacao_id',
+				[
+					EnumSituacaoProjeto::getValue('Avaliado'),
+					EnumSituacaoProjeto::getValue('NaoAvaliado')
+				]
+			)
 			->where('projeto.nota_avaliacao','<>',0)
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->orderBy('pessoa.nome')
@@ -589,12 +625,15 @@ class RelatorioController extends Controller {
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 			->select( 'pessoa.nome', 'pessoa.id')
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
-			->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
-			->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-			})
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Orientador'))
+			->where('escola_funcao_pessoa_projeto.funcao_id', EnumFuncaoPessoa::getValue('Orientador'))
+			->whereIn(
+				'projeto.situacao_id',
+				[
+					EnumSituacaoProjeto::getValue('Avaliado'),
+					EnumSituacaoProjeto::getValue('NaoAvaliado')
+				]
+			)
 			->where('projeto.nota_avaliacao','<>',0)
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->orderBy('pessoa.nome')
@@ -604,29 +643,21 @@ class RelatorioController extends Controller {
 		$voluntarios = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->join('presenca', 'pessoa.id', '=', 'presenca.id_pessoa')
 			->select( 'pessoa.nome', 'pessoa.id')
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Voluntário')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Voluntario'))
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
 
-		return \PDF::loadView('relatorios.participantesCompareceram', array('autores' => $autores, 'coorientadores' => $coorientadores, 'orientadores' => $orientadores, 'voluntarios' => $voluntarios))->download('participantes_compareceram.pdf');
-	}
-
-	/*
-	 *  Gera um CSV de acordo com os parâmetros
-	 * */
-	public function buildCsv($header, $rows, $filename = 'relatorio.csv', $delimiter = ';') {
-		$handle = fopen($filename, 'w+');
-
-		fputcsv($handle, $header, $delimiter);
-		foreach ($rows as $row)
-			fputcsv($handle, $row, $delimiter);
-
-		fclose($handle);
-
-		$headers = ['Content-Type' => 'text/csv'];
-		return Response::download($filename, $filename, $headers);
+		return PDF::loadView(
+			'relatorios.participantesCompareceram',
+			[
+				'autores' => $autores,
+				'coorientadores' => $coorientadores,
+				'orientadores' => $orientadores,
+				'voluntarios' => $voluntarios
+			]
+		)->download('participantes_compareceram.pdf');
 	}
 
 	/*
@@ -665,34 +696,38 @@ class RelatorioController extends Controller {
 			]);
 		}
 
-		return $this->buildCsv($headerFields, $rows, $filename);
+		return $this->returnsCSVStream($filename, $headerFields, $rows);
 	}
 
 	/*
 	 *  Gera o CSV de certificados para os AUTORES de acordo com a presença do PROJETO
 	 * */
 	public function csvPresencaAutores($edicaoId) {
-		$authorId = Funcao::where('funcao', 'Autor')->first()->id;
-		return $this->generateCSVByFunction($authorId, $edicaoId, 'RelatorioPresencaAutores.csv');
+		$authorId = EnumFuncaoPessoa::getValue('Autor');
+		$filename = 'RelatorioPresencaAutores.csv';
+
+		return $this->generateCSVByFunction($authorId, $edicaoId, $filename);
 	}
 
 	/*
 	 *  Gera o CSV de certificados para os COORIENTADORES de acordo com a presença do PROJETO
 	 * */
 	public function csvPresencaCoorientadores($edicaoId) {
-		$coorientadorId = Funcao::where('funcao', 'Coorientador')->first()->id;
-		return $this->generateCSVByFunction($coorientadorId, $edicaoId, 'RelatorioPresencaCoorientadores.csv');
+		$coorientadorId = EnumFuncaoPessoa::getValue('Coorientador');
+		$filename = 'RelatorioPresencaCoorientadores.csv';
+
+		return $this->generateCSVByFunction($coorientadorId, $edicaoId, $filename);
 	}
 
 	/*
 	 *  Gera o CSV de certificados para os ORIENTADORES de acordo com a presença do PROJETO
 	 * */
 	public function csvPresencaOrientadores($edicaoId) {
-		$orientadorId = Funcao::where('funcao', 'Orientador')->first()->id;
-		return $this->generateCSVByFunction($orientadorId, $edicaoId, 'RelatorioPresencaOrientadores.csv');
+		$orientadorId = EnumFuncaoPessoa::getValue('Orientador');
+		$filename = 'RelatorioPresencaOrientadores.csv';
+
+		return $this->generateCSVByFunction($orientadorId, $edicaoId, $filename);
 	}
-
-
 
 	public function csvPresencaAvaliadores($edicao) {
 		$subQuery = DB::raw('SELECT count(*)
@@ -705,14 +740,20 @@ class RelatorioController extends Controller {
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->join('avaliacao', 'pessoa.id', '=', 'avaliacao.pessoa_id')
 			->join('projeto', 'avaliacao.projeto_id', '=', 'projeto.id')
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Avaliador')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Avaliador'))
 			->where('funcao_pessoa.edicao_id', '=', $edicao)
 			->where('projeto.edicao_id', '=', $edicao)
 			->where(DB::raw('('.$subQuery.')'), '>', 0)
 			->orderBy('pessoa.nome')
 			->get();
 
-		$header = ['NOME_PARTICIPANTE', 'EMAIL_PARTICIPANTE', 'CPF_PARTICIPANTE', 'RG_PARTICIPANTE', 'PROJETO_PARTICIPANTE'];
+		$header = [
+			'NOME_PARTICIPANTE',
+			'EMAIL_PARTICIPANTE',
+			'CPF_PARTICIPANTE',
+			'RG_PARTICIPANTE',
+			'PROJETO_PARTICIPANTE'
+		];
 
 		$rows = [];
 		foreach ($avaliadores as $avaliador) {
@@ -725,11 +766,11 @@ class RelatorioController extends Controller {
 			]);
 		}
 
-		return $this->buildCsv($header, $rows, 'RelatorioPresencaAvaliadores.csv');
+		$filename = 'RelatorioPresencaAvaliadores.csv';
+		return $this->returnsCSVStream($filename, $header, $rows);
 	}
 
 	public function csvPresencaVoluntarios($edicao) {
-
 		$subQuery = DB::raw('SELECT count(*)
 			FROM presenca
 			WHERE presenca.id_pessoa = pessoa.id AND
@@ -739,14 +780,19 @@ class RelatorioController extends Controller {
 			->select('pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->join('presenca', 'pessoa.id', '=', 'presenca.id_pessoa')
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Voluntário')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Voluntario'))
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->where(DB::raw('('.$subQuery.')'), '>', 0)
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
 
-		$header = ['NOME_PARTICIPANTE', 'EMAIL_PARTICIPANTE', 'CPF_PARTICIPANTE', 'RG_PARTICIPANTE'];
+		$header = [
+			'NOME_PARTICIPANTE',
+			'EMAIL_PARTICIPANTE',
+			'CPF_PARTICIPANTE',
+			'RG_PARTICIPANTE'
+		];
 
 		$rows = [];
 		foreach ($voluntarios as $voluntario) {
@@ -758,7 +804,8 @@ class RelatorioController extends Controller {
 			]);
 		}
 
-		return $this->buildCsv($header, $rows, 'RelatorioPresencaVoluntarios.csv');
+		$filename = 'RelatorioPresencaVoluntarios.csv';
+		return $this->returnsCSVStream($filename, $header, $rows);
 	}
 
 	public function csvPresencaHomologadores($edicao) {
@@ -773,14 +820,20 @@ class RelatorioController extends Controller {
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->join('revisao', 'pessoa.id', '=', 'revisao.pessoa_id')
 			->join('projeto', 'revisao.projeto_id', '=', 'projeto.id')
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Homologador')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Homologador'))
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->where('projeto.edicao_id', '=', $edicao)
 			->where(DB::raw('('.$subQuery.')'), '>', 0)
 			->orderBy('pessoa.nome')
 			->get();
 
-		$header = ['NOME_PARTICIPANTE', 'EMAIL_PARTICIPANTE', 'CPF_PARTICIPANTE', 'RG_PARTICIPANTE', 'PROJETO_PARTICIPANTE'];
+		$header = [
+			'NOME_PARTICIPANTE',
+			'EMAIL_PARTICIPANTE',
+			'CPF_PARTICIPANTE',
+			'RG_PARTICIPANTE',
+			'PROJETO_PARTICIPANTE'
+		];
 
 		$rows = [];
 		foreach ($homologadores as $homologador) {
@@ -793,26 +846,31 @@ class RelatorioController extends Controller {
 			]);
 		}
 
-		return $this->buildCsv($header, $rows, 'RelatorioPresencaHomologaores.csv');
+		$filename = 'RelatorioPresencaHomologaores.csv';
+		return $this->returnsCSVStream($filename, $header, $rows);
 	}
 
 	public function csvPresencaComissaoOrganizadora() {
 		$comissao = DB::table('funcao_pessoa')
-			->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email')
+			->select('pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-			->where(function ($q){
-				$q->where('funcao_pessoa.funcao_id', Funcao::select(['id'])
-					->where('funcao', 'Administrador')
-					->first()->id);
-				$q->orWhere('funcao_pessoa.funcao_id', Funcao::select(['id'])
-					->where('funcao', 'Organizador')
-					->first()->id);
-			})
+			->whereIn(
+				'funcao_pessoa.funcao_id',
+				[
+					EnumFuncaoPessoa::getValue('Administrador'),
+					EnumFuncaoPessoa::getValue('Organizador')
+				]
+			)
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
 
-		$header = ['NOME_PARTICIPANTE', 'EMAIL_PARTICIPANTE', 'CPF_PARTICIPANTE', 'RG_PARTICIPANTE'];
+		$header = [
+			'NOME_PARTICIPANTE',
+			'EMAIL_PARTICIPANTE',
+			'CPF_PARTICIPANTE',
+			'RG_PARTICIPANTE'
+		];
 
 		$rows = [];
 		foreach ($comissao as $c) {
@@ -824,7 +882,8 @@ class RelatorioController extends Controller {
 			]);
 		}
 
-		return $this->buildCsv($header, $rows, 'RelatorioPresencaComissao.csv');
+		$filename = 'RelatorioPresencaComissao.csv';
+		return $this->returnsCSVStream($filename, $header, $rows);
 	}
 
 	public function notaProjetosArea(){
@@ -843,21 +902,23 @@ class RelatorioController extends Controller {
             ->orderBy('nota','desc')
             ->get();
 
-        return \PDF::loadView('relatorios.notaProjetosArea', array('projetos' => $projetos))->setPaper('A4', 'landscape')->download('nota_projetos_cadastrados.pdf');
-
+        return PDF::loadView('relatorios.notaProjetosArea', ['projetos' => $projetos])
+			->setPaper('A4', 'landscape')
+			->download('nota_projetos_cadastrados.pdf');
 	}
 
 	public function notaProjetosNivel() {
 		$niveis = Edicao::find(Edicao::getEdicaoId())->niveis;
 
-		return \PDF::loadView('relatorios.notaProjetosNivel', array('niveis' => $niveis))->setPaper('A4', 'landscape')->download('nota_projetos_cadastrados.pdf');
-
+		return PDF::loadView('relatorios.notaProjetosNivel', ['niveis' => $niveis])
+			->setPaper('A4', 'landscape')
+			->download('nota_projetos_cadastrados.pdf');
 	}
 
 	public function projetosClassificados($edicao) {
         $areas = Edicao::find($edicao)->areas;
 
-        return \PDF::loadView('relatorios.homologacao.projetosClassificados', ['areas' => $areas, 'edicao' => $edicao])
+        return PDF::loadView('relatorios.homologacao.projetosClassificados', ['areas' => $areas, 'edicao' => $edicao])
 			->setPaper('A4', 'landscape')
 			->download('projetos_classificados_area.pdf');
 	}
@@ -865,7 +926,7 @@ class RelatorioController extends Controller {
 	public function projetosClassificadosNivel($edicao) {
 		$niveis = Edicao::find($edicao)->niveis;
 
-		return \PDF::loadView('relatorios.homologacao.projetosClassificadosNivel', ['niveis' => $niveis, 'edicao' => $edicao])
+		return PDF::loadView('relatorios.homologacao.projetosClassificadosNivel', ['niveis' => $niveis, 'edicao' => $edicao])
 			->setPaper('A4', 'landscape')
 			->download('projetos_classificados_nivel.pdf');
 	}
@@ -874,7 +935,7 @@ class RelatorioController extends Controller {
 
 		$niveis = Edicao::find($edicao)->niveis;
 
-		return \PDF::loadView('relatorios.homologacao.projetosNaoHomologadosNivel', ['niveis' => $niveis, 'edicao' => $edicao])
+		return PDF::loadView('relatorios.homologacao.projetosNaoHomologadosNivel', ['niveis' => $niveis, 'edicao' => $edicao])
 			->setPaper('A4', 'landscape')
 			->download('projetos_nao_homologados_nivel.pdf');
 	}
@@ -883,17 +944,17 @@ class RelatorioController extends Controller {
 
 		$projetos = Projeto::select('projeto.titulo', 'projeto.situacao_id')
 			->where('projeto.edicao_id','=',$edicao)
-			->where('projeto.situacao_id','=', Situacao::where('situacao', 'Homologado')->get()->first()->id)
+			->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('Homologado'))
 			->orderBy('projeto.titulo', 'asc')
 			->get();
 
-		return \PDF::loadView('relatorios.homologacao.projetosClassificadosSemNota', array('projetos' => $projetos, 'edicao' => $edicao))->download('projetos_classificados.pdf');
+		return PDF::loadView('relatorios.homologacao.projetosClassificadosSemNota', array('projetos' => $projetos, 'edicao' => $edicao))->download('projetos_classificados.pdf');
 	}
 
 	public function niveis($edicao){
 		$niveis = Edicao::find($edicao)->niveis;
 
-		return \PDF::loadView('relatorios.gerais.niveis', ['niveis' => $niveis])
+		return PDF::loadView('relatorios.gerais.niveis', ['niveis' => $niveis])
 			->setPaper('A4', 'landscape')
 			->download('niveis.pdf');
 	}
@@ -904,104 +965,123 @@ class RelatorioController extends Controller {
 			->orderBy('escola.nome_curto')
 			->get();
 
-		return \PDF::loadView('relatorios.gerais.escolas', ['escolas' => $escolas])->download('escolas.pdf');
+		return PDF::loadView('relatorios.gerais.escolas', ['escolas' => $escolas])
+			->download('escolas.pdf');
 	}
 
-	public function autores($edicao){
+	public function autores($edicao) {
 		$autores = DB::table('funcao_pessoa')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
-			->where('funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+			->where('funcao_id', EnumFuncaoPessoa::getValue('Autor'))
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->orderBy('pessoa.nome')
 			->get();
 
 		$cont = 0;
 
-		return \PDF::loadView('relatorios.autores', array('autores' => $autores, 'cont' => $cont, 'edicao' => $edicao))->download('autores.pdf');
+		return PDF::loadView('relatorios.autores', ['autores' => $autores, 'cont' => $cont, 'edicao' => $edicao])
+			->download('autores.pdf');
 	}
 
-	public function orientadores($edicao){
+	public function orientadores($edicao) {
 		$orientadores = DB::table('funcao_pessoa')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->select('funcao_pessoa.edicao_id', 'pessoa.nome','pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
-			->where('funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
+			->where('funcao_id', EnumFuncaoPessoa::getValue('Orientador'))
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->orderBy('pessoa.nome')
 			->get();
 
 		$cont = 0;
 
-		return \PDF::loadView('relatorios.orientadores', array('orientadores' => $orientadores, 'cont' => $cont, 'edicao' => $edicao))->download('orientadores.pdf');
+		return PDF::loadView('relatorios.orientadores', ['orientadores' => $orientadores, 'cont' => $cont, 'edicao' => $edicao])
+			->download('orientadores.pdf');
 	}
 
 	public function coorientadores($edicao){
 		$coorientadores = DB::table('funcao_pessoa')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->select('funcao_pessoa.edicao_id', 'pessoa.nome','pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
-			->where('funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
+			->where('funcao_id', EnumFuncaoPessoa::getValue('Coorientador'))
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->orderBy('pessoa.nome')
 			->get();
 
 		$cont = 0;
 
-		return \PDF::loadView('relatorios.coorientadores', array('coorientadores' => $coorientadores, 'cont' => $cont, 'edicao' => $edicao))->download('coorientadores.pdf');
+		return PDF::loadView('relatorios.coorientadores', array('coorientadores' => $coorientadores, 'cont' => $cont, 'edicao' => $edicao))->download('coorientadores.pdf');
 	}
 
-	public function voluntarios($edicao){
+	public function voluntarios($edicao) {
 		$voluntarios = DB::table('funcao_pessoa')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
-			->where('funcao_id', Funcao::where('funcao', 'Voluntário')->first()->id)
+			->where('funcao_id', EnumFuncaoPessoa::getValue('Voluntario'))
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->orderBy('pessoa.nome')
 			->get();
 
 		$cont = 0;
 
-		return \PDF::loadView('relatorios.voluntarios', array('voluntarios' => $voluntarios, 'cont' => $cont, 'edicao' => $edicao))->download('voluntarios.pdf');
+		return PDF::loadView('relatorios.voluntarios', array('voluntarios' => $voluntarios, 'cont' => $cont, 'edicao' => $edicao))->download('voluntarios.pdf');
 	}
 
 	public function homologadores($edicao){
 		$homologadores = DB::table('funcao_pessoa')
 			->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-			->where('funcao_id', Funcao::where('funcao', 'Homologador')->first()->id)
+			->where('funcao_id', EnumFuncaoPessoa::getValue('Homologador'))
 			->where('funcao_pessoa.edicao_id', '=', $edicao)
 			->orderBy('pessoa.nome')
 			->get();
 
-		return \PDF::loadView('relatorios.homologacao.homologadores', ['homologadores' => $homologadores, 'edicao' => $edicao])->download('homologadores.pdf');
+		return PDF::loadView(
+			'relatorios.homologacao.homologadores',
+			[
+				'homologadores' => $homologadores,
+				'edicao' => $edicao
+			]
+		)->download('homologadores.pdf');
 	}
 
 	public function avaliadores($edicao){
 		$avaliadores = DB::table('funcao_pessoa')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
-			->where('funcao_id', Funcao::where('funcao', 'Avaliador')->first()->id)
+			->where('funcao_id', EnumFuncaoPessoa::getValue('Avaliador'))
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->orderBy('pessoa.nome')
 			->get();
 
 		$cont = 0;
 
-		return \PDF::loadView('relatorios.avaliadores', array('avaliadores' => $avaliadores, 'cont' => $cont, 'edicao' => $edicao))->download('avaliadores.pdf');
+		return PDF::loadView(
+			'relatorios.avaliadores',
+			[
+				'avaliadores' => $avaliadores,
+				'cont' => $cont,
+				'edicao' => $edicao
+			]
+		)->download('avaliadores.pdf');
 	}
 
 	public function projetosAvaliador($edicao){
 		$avaliadores = Pessoa::select('pessoa.nome', 'pessoa.id')
 			->join('funcao_pessoa', 'pessoa.id', '=', 'funcao_pessoa.pessoa_id')
-			->where('funcao_id', Funcao::where('funcao', 'Avaliador')->first()->id)
+			->where('funcao_id', EnumFuncaoPessoa::getValue('Avaliador'))
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->where('funcao_pessoa.homologado', true)
 			->orderBy('pessoa.nome')
 			->get();
 
-		return \PDF::loadView('relatorios.avaliacao.projetosAvaliador', [
-			'avaliadores' => $avaliadores,
-			'edicao' => $edicao
-		])->download('projetos_avaliador.pdf');
+		return PDF::loadView(
+			'relatorios.avaliacao.projetosAvaliador',
+			[
+				'avaliadores' => $avaliadores,
+				'edicao' => $edicao
+			]
+		)->download('projetos_avaliador.pdf');
 	}
 
 	public function autoresLanche($edicao){
@@ -1011,22 +1091,32 @@ class RelatorioController extends Controller {
 			->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 			->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.telefone', 'projeto.presenca')
-			 ->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-             })
+			->whereIn(
+				'projeto.situacao_id',
+				[
+					EnumSituacaoProjeto::getValue('Homologado'),
+					EnumSituacaoProjeto::getValue('NaoAvaliado'),
+					EnumSituacaoProjeto::getValue('Avaliado')
+				]
+			)
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->where('projeto.presenca', TRUE)
 			->where('escola.nome_curto', '!=' , 'IFRS Canoas')
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Autor'))
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
 
 		$cont = 0;
 
-		return \PDF::loadView('relatorios.autoresLanche', array('autores' => $autores, 'cont' => $cont, 'edicao' => $edicao))->download('autores_lanche.pdf');
+		return PDF::loadView(
+			'relatorios.autoresLanche',
+			[
+				'autores' => $autores,
+				'cont' => $cont,
+				'edicao' => $edicao
+			]
+		)->download('autores_lanche.pdf');
 	}
 
 	public function autoresPosHomologacao($edicao) {
@@ -1035,20 +1125,31 @@ class RelatorioController extends Controller {
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 			->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.telefone', 'projeto.presenca')
-			->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-			})
+			->whereIn(
+				'projeto.situacao_id',
+				[
+					EnumSituacaoProjeto::getValue('Homologado'),
+					EnumSituacaoProjeto::getValue('NaoAvaliado'),
+					EnumSituacaoProjeto::getValue('Avaliado')
+				]
+			)
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->where('projeto.presenca', TRUE)
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Autor'))
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
+
 		$cont = 0;
 
-		return \PDF::loadView('relatorios.autoresPosHomologacao', array('autores' => $autores, 'cont' => $cont, 'edicao' => $edicao))->download('autores_pos_homologacao.pdf');
+		return PDF::loadView(
+			'relatorios.autoresPosHomologacao',
+			[
+				'autores' => $autores,
+				'cont' => $cont,
+				'edicao' => $edicao
+			]
+		)->download('autores_pos_homologacao.pdf');
 	}
 
 	public function camisaTamanho($edicao){
@@ -1057,19 +1158,28 @@ class RelatorioController extends Controller {
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 			->select('pessoa.nome', 'pessoa.camisa')
-			->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-			})
+			->whereIn(
+				'projeto.situacao_id',
+				[
+					EnumSituacaoProjeto::getValue('Homologado'),
+					EnumSituacaoProjeto::getValue('NaoAvaliado'),
+					EnumSituacaoProjeto::getValue('Avaliado')
+				]
+			)
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->where('projeto.presenca', TRUE)
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Autor'))
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
 
-		return \PDF::loadView('relatorios.camisaTamanho', array('autores' => $autores, 'edicao' => $edicao))->download('autores_tamanho_camisa.pdf');
+		return PDF::loadView(
+			'relatorios.camisaTamanho',
+			[
+				'autores' => $autores,
+				'edicao' => $edicao
+			]
+		)->download('autores_tamanho_camisa.pdf');
 	}
 
 	public function camisaTamanhoAssinatura($edicao){
@@ -1078,19 +1188,25 @@ class RelatorioController extends Controller {
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 			->select('pessoa.nome', 'pessoa.camisa')
-				->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-			})
+			->whereIn(
+				'projeto.situacao_id',
+				[
+					EnumSituacaoProjeto::getValue('Homologado'),
+					EnumSituacaoProjeto::getValue('NaoAvaliado'),
+					EnumSituacaoProjeto::getValue('Avaliado')
+				]
+			)
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->where('projeto.presenca', TRUE)
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Autor'))
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
 
-		return \PDF::loadView('relatorios.camisaTamanhoAssinatura', array('autores' => $autores, 'edicao' => $edicao))->setPaper('A4', 'landscape')->download('autores_tamanho_camisa_assinatura.pdf');
+		return PDF::loadView(
+			'relatorios.camisaTamanhoAssinatura',
+			['autores' => $autores, 'edicao' => $edicao]
+		)->setPaper('A4', 'landscape')->download('autores_tamanho_camisa_assinatura.pdf');
 	}
 
 	public function participantesAssinatura($edicao){
@@ -1099,14 +1215,17 @@ class RelatorioController extends Controller {
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 			->select('pessoa.nome', 'pessoa.id')
-			->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-			})
+			->whereIn(
+				'projeto.situacao_id',
+				[
+					EnumSituacaoProjeto::getValue('Homologado'),
+					EnumSituacaoProjeto::getValue('NaoAvaliado'),
+					EnumSituacaoProjeto::getValue('Avaliado')
+				]
+			)
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->where('projeto.presenca', TRUE)
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Autor'))
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
@@ -1116,13 +1235,16 @@ class RelatorioController extends Controller {
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 			->select('pessoa.nome', 'pessoa.id')
-			->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-			})
+			->whereIn(
+				'projeto.situacao_id',
+				[
+					EnumSituacaoProjeto::getValue('Homologado'),
+					EnumSituacaoProjeto::getValue('NaoAvaliado')
+				]
+			)
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->where('projeto.presenca', TRUE)
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Orientador'))
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
@@ -1132,19 +1254,22 @@ class RelatorioController extends Controller {
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 			->select('pessoa.nome', 'pessoa.id')
-			->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-			})
+			->whereIn(
+				'projeto.situacao_id',
+				[
+					EnumSituacaoProjeto::getValue('Homologado'),
+					EnumSituacaoProjeto::getValue('NaoAvaliado')
+				]
+			)
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->where('projeto.presenca', TRUE)
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Coorientador'))
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
 
 
-		return \PDF::loadView('relatorios.participantesAssinatura', array('autores' => $autores, 'orientadores' => $orientadores, 'coorientadores' => $coorientadores, 'edicao' => $edicao))->setPaper('A4', 'landscape')->download('participantes_assinatura.pdf');
+		return PDF::loadView('relatorios.participantesAssinatura', array('autores' => $autores, 'orientadores' => $orientadores, 'coorientadores' => $coorientadores, 'edicao' => $edicao))->setPaper('A4', 'landscape')->download('participantes_assinatura.pdf');
 	}
 
 	public function orientadoresPosHomologacao($edicao){
@@ -1153,20 +1278,24 @@ class RelatorioController extends Controller {
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 			->select('funcao_pessoa.edicao_id', 'pessoa.nome','pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
-			->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-			})
+			->whereIn(
+				'projeto.situacao_id',
+				[
+					EnumSituacaoProjeto::getValue('Homologado'),
+					EnumSituacaoProjeto::getValue('NaoAvaliado'),
+					EnumSituacaoProjeto::getValue('Avaliado')
+				]
+			)
 			->where('funcao_pessoa.edicao_id', $edicao)
 			->where('projeto.presenca', TRUE)
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Orientador')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Orientador'))
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
+
 		$cont = 0;
 
-		return \PDF::loadView('relatorios.orientadoresPosHomologacao', array('orientadores' => $orientadores,'cont' => $cont, 'edicao' => $edicao))->download('orientadores_pos_homologacao.pdf');
+		return PDF::loadView('relatorios.orientadoresPosHomologacao', array('orientadores' => $orientadores,'cont' => $cont, 'edicao' => $edicao))->download('orientadores_pos_homologacao.pdf');
 	}
 
 	public function coorientadoresPosHomologacao($edicao){
@@ -1174,20 +1303,24 @@ class RelatorioController extends Controller {
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
 			->select('funcao_pessoa.edicao_id', 'pessoa.nome','pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
-			->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-			})
+			->whereIn(
+				'projeto.situacao_id',
+				[
+					EnumSituacaoProjeto::getValue('Homologado'),
+					EnumSituacaoProjeto::getValue('NaoAvaliado'),
+					EnumSituacaoProjeto::getValue('Avaliado')
+				]
+			)
 			->where('projeto.presenca', TRUE)
 			->where('funcao_pessoa.edicao_id', $edicao)
-			->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Coorientador')->first()->id)
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Coorientador'))
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
+
 		$cont = 0;
 
-		return \PDF::loadView('relatorios.coorientadoresPosHomologacao', array('coorientadores' => $coorientadores,'cont' => $cont, 'edicao' => $edicao))->download('coorientadores_pos_homologacao.pdf');
+		return PDF::loadView('relatorios.coorientadoresPosHomologacao', array('coorientadores' => $coorientadores,'cont' => $cont, 'edicao' => $edicao))->download('coorientadores_pos_homologacao.pdf');
 	}
 
 	public function projetosAreas($edicao) {
@@ -1230,7 +1363,7 @@ class RelatorioController extends Controller {
 			]);
 		}
 
-		return \PDF::loadView('relatorios.projetosAreas', compact('projetosNivelArea'))
+		return PDF::loadView('relatorios.projetosAreas', compact('projetosNivelArea'))
 			->download('projetos_area.pdf');
 	}
 
@@ -1242,13 +1375,13 @@ class RelatorioController extends Controller {
 			->orderBy('titulo')
 			->get();
 
-		return \PDF::loadView('relatorios.projetos', ['projetos' => $projetos])->download('projetos.pdf');
+		return PDF::loadView('relatorios.projetos', ['projetos' => $projetos])->download('projetos.pdf');
 	}
 
 	public function areas($edicao){
 		$areas = Edicao::find($edicao)->areas;
 
-		return \PDF::loadView('relatorios.gerais.areas', ['areas' => $areas])
+		return PDF::loadView('relatorios.gerais.areas', ['areas' => $areas])
 			->setPaper('A4', 'landscape')
 			->download('areas.pdf');
 	}
@@ -1256,14 +1389,14 @@ class RelatorioController extends Controller {
 	public function edicoes(){
 		$edicoes = Edicao::orderBy('ano')->get();
 
-		return \PDF::loadView('relatorios.gerais.edicoes', ['edicoes' => $edicoes])->download('edicoes.pdf');
+		return PDF::loadView('relatorios.gerais.edicoes', ['edicoes' => $edicoes])->download('edicoes.pdf');
 	}
 
 	public function funcoesUsuarios(){
 		$usuarios = Pessoa::select('pessoa.id', 'pessoa.nome', 'pessoa.email')
 				->get();
 
-		return \PDF::loadView('relatorios.funcoesUsuarios', array('usuarios' => $usuarios))->download('funcoes.pdf');
+		return PDF::loadView('relatorios.funcoesUsuarios', array('usuarios' => $usuarios))->download('funcoes.pdf');
 	}
 
 	public function escolaProjetos($id){
@@ -1280,7 +1413,7 @@ class RelatorioController extends Controller {
 
 		$numeroProjetos = count($projetos);
 
-		return \PDF::loadView('relatorios.escolaProjetos', array('escola' => $escola, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->download('escola_projetos.pdf');
+		return PDF::loadView('relatorios.escolaProjetos', array('escola' => $escola, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->download('escola_projetos.pdf');
 	}
 
 	public function nivelProjetos($id) {
@@ -1289,7 +1422,7 @@ class RelatorioController extends Controller {
 
 		$numeroProjetos = count($projetos);
 
-		return \PDF::loadView('relatorios.nivelProjetos', array('nivel' => $nivel, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->download('nivelProjetos.pdf');
+		return PDF::loadView('relatorios.nivelProjetos', array('nivel' => $nivel, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->download('nivelProjetos.pdf');
 	}
 
 	public function areaProjetos($id){
@@ -1299,7 +1432,7 @@ class RelatorioController extends Controller {
 
 		$numeroProjetos = count($projetos);
 
-		return \PDF::loadView('relatorios.areaProjetos', array('area' => $area, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->download('areaProjetos.pdf');
+		return PDF::loadView('relatorios.areaProjetos', array('area' => $area, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->download('areaProjetos.pdf');
 	}
 
 	public function voluntarioTarefa($edicao){
@@ -1315,14 +1448,14 @@ class RelatorioController extends Controller {
             ->orderBy('pessoa.nome')
             ->get();
 
-		return \PDF::loadView('relatorios.voluntarios.voluntarioTarefa', ['voluntarios' => $voluntarios])
+		return PDF::loadView('relatorios.voluntarios.voluntarioTarefa', ['voluntarios' => $voluntarios])
 			->download('voluntarios_tarefas.pdf');
 	}
 
 	public function tarefaVoluntarios($id){
 		$tarefa = Tarefa::find($id);
 
-		return \PDF::loadView('relatorios.tarefaVoluntarios', array('tarefa' => $tarefa))->download('tarefaVoluntarios.pdf');
+		return PDF::loadView('relatorios.tarefaVoluntarios', array('tarefa' => $tarefa))->download('tarefaVoluntarios.pdf');
 	}
 
 	public function homologadoresArea($edicao){
@@ -1345,7 +1478,7 @@ class RelatorioController extends Controller {
 				->join('comissao_edicao', 'pessoa.id', '=', 'comissao_edicao.pessoa_id')
 				->join('funcao_pessoa', 'pessoa.id', '=', 'funcao_pessoa.pessoa_id')
 				->join('areas_comissao', 'comissao_edicao.id', '=', 'areas_comissao.comissao_edicao_id')
-				->where('funcao_pessoa.funcao_id', '=', Funcao::select(['id'])->where('funcao', 'Homologador')->first()->id)
+				->where('funcao_pessoa.funcao_id', '=', EnumFuncaoPessoa::getValue('Homologador'))
 				->where('funcao_pessoa.homologado', '=', true)
 				->where('funcao_pessoa.edicao_id', '=', $edicao)
 				->where('comissao_edicao.edicao_id', '=', $edicao)
@@ -1361,7 +1494,7 @@ class RelatorioController extends Controller {
 			]);
 		}
 
-		return \PDF::loadView('relatorios.homologacao.homologadoresArea', compact('homologadoresAreas'))->download('homologadores_area.pdf');
+		return PDF::loadView('relatorios.homologacao.homologadoresArea', compact('homologadoresAreas'))->download('homologadores_area.pdf');
 	}
 
 	public function avaliadoresArea($edicao){
@@ -1382,7 +1515,7 @@ class RelatorioController extends Controller {
 				->join('comissao_edicao', 'pessoa.id', '=', 'comissao_edicao.pessoa_id')
 				->join('funcao_pessoa', 'pessoa.id', '=', 'funcao_pessoa.pessoa_id')
 				->join('areas_comissao', 'comissao_edicao.id', '=', 'areas_comissao.comissao_edicao_id')
-				->where('funcao_pessoa.funcao_id', Funcao::select(['id'])->where('funcao', 'Avaliador')->first()->id)
+				->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Avaliador'))
 				->where('funcao_pessoa.edicao_id', '=', $edicao)
 				->where('funcao_pessoa.homologado', '=', true)
 				->where('areas_comissao.area_id', '=', $area->id)
@@ -1392,7 +1525,7 @@ class RelatorioController extends Controller {
 				->toArray();
 		}
 
-		return \PDF::loadView('relatorios.avaliacao.avaliadoresArea', ['areas' => $areas])->download('avaliadores_area.pdf');
+		return PDF::loadView('relatorios.avaliacao.avaliadoresArea', ['areas' => $areas])->download('avaliadores_area.pdf');
 	}
 
 	public function homologadoresProjeto($edicao){
@@ -1401,7 +1534,7 @@ class RelatorioController extends Controller {
 			->orderBy('projeto.titulo')
 			->get();
 
-		return \PDF::loadView('relatorios.homologacao.homologadoresProjeto', ['projetos' => $projetos])->download('homologadores_projeto.pdf');
+		return PDF::loadView('relatorios.homologacao.homologadoresProjeto', ['projetos' => $projetos])->download('homologadores_projeto.pdf');
 	}
 
 
@@ -1409,14 +1542,20 @@ class RelatorioController extends Controller {
 		$projetos = Projeto::select('projeto.id', 'projeto.titulo')
 			->where('projeto.edicao_id', '=', $edicao)
 			->orderBy('projeto.titulo')
-			->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-			})
+			->whereIn(
+				'projeto.situacao_id',
+				[
+					EnumSituacaoProjeto::getValue('Homologado'),
+					EnumSituacaoProjeto::getValue('NaoAvaliado'),
+					EnumSituacaoProjeto::getValue('Avaliado')
+				]
+			)
 			->get();
 
-		return \PDF::loadView('relatorios.avaliacao.avaliadoresProjeto', array('projetos' => $projetos))->download('avaliadores_projeto.pdf');
+		return PDF::loadView(
+			'relatorios.avaliacao.avaliadoresProjeto',
+			[ 'projetos' => $projetos ]
+		)->download('avaliadores_projeto.pdf');
 	}
 
 	public function projetosConfirmaramPresenca($edicao){
@@ -1428,13 +1567,13 @@ class RelatorioController extends Controller {
 			->get()
 			->toArray();
 
-		return \PDF::loadView('relatorios.projetosConfirmaramPresenca', array('projetos' => $projetos))->download('projetos_comparecerão.pdf');
+		return PDF::loadView('relatorios.projetosConfirmaramPresenca', array('projetos' => $projetos))->download('projetos_comparecerão.pdf');
 	}
 
 	public function classificacaoProjetos($edicao){
 		$areas = Edicao::find($edicao)->areas;
 
-        return \PDF::loadView('relatorios.premiacao.classificacaoProjetos', ['areas' => $areas, 'edicao' => $edicao])
+        return PDF::loadView('relatorios.premiacao.classificacaoProjetos', ['areas' => $areas, 'edicao' => $edicao])
 			->setPaper('A4', 'landscape')
 			->download('classificacao_projetos.pdf');
 	}
@@ -1442,7 +1581,7 @@ class RelatorioController extends Controller {
 	public function premiacaoProjetos($edicao){
 		$areas = Edicao::find($edicao)->areas;
 
-        return \PDF::loadView('relatorios.premiacao.premiacaoProjetos', ['areas' => $areas, 'edicao' => $edicao])
+        return PDF::loadView('relatorios.premiacao.premiacaoProjetos', ['areas' => $areas, 'edicao' => $edicao])
 			->setPaper('A4', 'landscape')
 			->download('premiacao_projetos.pdf');
 	}
@@ -1450,7 +1589,7 @@ class RelatorioController extends Controller {
 	public function classificacaoGeral($edicao){
 		$niveis = Edicao::find($edicao)->niveis;
 
-        return \PDF::loadView('relatorios.premiacao.classificacaoGeral', ['niveis' => $niveis, 'edicao' => $edicao])
+        return PDF::loadView('relatorios.premiacao.classificacaoGeral', ['niveis' => $niveis, 'edicao' => $edicao])
 			->setPaper('A4', 'landscape')
 			->download('classificacao_geral.pdf');
 	}
@@ -1465,7 +1604,7 @@ class RelatorioController extends Controller {
 				->get()
 				->toArray();
 
-		return \PDF::loadView('relatorios.statusProjetos', ['projetos' => $projetos])
+		return PDF::loadView('relatorios.statusProjetos', ['projetos' => $projetos])
 			->download('status_projetos.pdf');
 	}
 
@@ -1481,33 +1620,42 @@ class RelatorioController extends Controller {
 				->get()
 				->toArray();
 
-		return \PDF::loadView('relatorios.projetosCompareceram', array('projetos' => $projetos, 'edicao' => $edicao))->download('projetos_compareceram.pdf');
+		return PDF::loadView('relatorios.projetosCompareceram', array('projetos' => $projetos, 'edicao' => $edicao))->download('projetos_compareceram.pdf');
 	}
 
 	public function projetosCompareceramPorAutor($edicao){
 		$autores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-						->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
-						->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-						->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
-						->where('funcao_pessoa.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
-						->where('escola_funcao_pessoa_projeto.funcao_id', Funcao::where('funcao', 'Autor')->first()->id)
-						->where(function ($q){
-                            $q->where('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-                            $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-             			})
-						->where('funcao_pessoa.edicao_id', $edicao)
-						->where('projeto.edicao_id', $edicao)
-						->orderBy('pessoa.nome')
-						->get();
+			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+			->select( 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo')
+			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Autor'))
+			->where('escola_funcao_pessoa_projeto.funcao_id', EnumFuncaoPessoa::getValue('Autor'))
+			->whereIn(
+				'projeto.situacao_id',
+				[
+					EnumSituacaoProjeto::getValue('Avaliado'),
+					EnumSituacaoProjeto::getValue('NaoAvaliado')
+				]
+			)
+			->where('funcao_pessoa.edicao_id', $edicao)
+			->where('projeto.edicao_id', $edicao)
+			->orderBy('pessoa.nome')
+			->get();
 
-		return \PDF::loadView('relatorios.projetosCompareceramPorAutor', array('autores' => $autores, 'edicao' => $edicao))->download('projetos_compareceram_autor.pdf');
+		return PDF::loadView(
+			'relatorios.projetosCompareceramPorAutor',
+			[
+				'autores' => $autores,
+				'edicao' => $edicao
+			]
+		)->download('projetos_compareceram_autor.pdf');
 	}
 
 	public function projetosCompareceramIFRSCanoas($edicao){
 
         $areas = Edicao::find($edicao)->areas;
 
-        return \PDF::loadView('relatorios.projetosCompareceramIFRSCanoas', array('areas' => $areas, 'edicao' => $edicao))->setPaper('A4', 'landscape')->download('projetos_compareceram_ifrs_canoas.pdf');
+        return PDF::loadView('relatorios.projetosCompareceramIFRSCanoas', array('areas' => $areas, 'edicao' => $edicao))->setPaper('A4', 'landscape')->download('projetos_compareceram_ifrs_canoas.pdf');
 	}
 
 	public function gerarLocalizacaoProjetos($edicao){
@@ -1538,12 +1686,15 @@ class RelatorioController extends Controller {
                     ->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
                     ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
                     ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
-                    ->where('projeto.edicao_id',$edicao)
-                    ->where(function ($q){
-                        $q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-                        $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-                        $q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-                    })
+                    ->where('projeto.edicao_id', $edicao)
+					->whereIn(
+						'projeto.situacao_id',
+						[
+							EnumSituacaoProjeto::getValue('Homologado'),
+							EnumSituacaoProjeto::getValue('NaoAvaliado'),
+							EnumSituacaoProjeto::getValue('Avaliado')
+						]
+					)
                     ->where('projeto.presenca', TRUE)
                     ->where('nivel.id', $data['nivel'][$key])
                     ->whereNotIn('projeto.id', $ids)
@@ -1562,10 +1713,10 @@ class RelatorioController extends Controller {
 
 		$cont = 1;
 		if($num == 1){
-			return \PDF::loadView('relatorios.geraLocalizacaoProjetos',array('projetos' => $projetos, 'cont' => $cont))->setPaper('A4', 'landscape')->download('projetos_identificacao.pdf');
+			return PDF::loadView('relatorios.geraLocalizacaoProjetos',array('projetos' => $projetos, 'cont' => $cont))->setPaper('A4', 'landscape')->download('projetos_identificacao.pdf');
 		}
 		if ($num == 2) {
-			return \PDF::loadView('relatorios.identificacaoProjetos',array('projetos' => $projetos, 'cont' => $cont))->setPaper('A4', 'landscape')->download('projetos_localizacao.pdf');
+			return PDF::loadView('relatorios.identificacaoProjetos',array('projetos' => $projetos, 'cont' => $cont))->setPaper('A4', 'landscape')->download('projetos_localizacao.pdf');
 		}
 	}
 
@@ -1583,15 +1734,18 @@ class RelatorioController extends Controller {
 			->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
 			->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
 			->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-			->where(function ($q){
-				$q->where('projeto.situacao_id', Situacao::where('situacao', 'Homologado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Não Avaliado')->get()->first()->id);
-				$q->orWhere('projeto.situacao_id', Situacao::where('situacao', 'Avaliado')->get()->first()->id);
-             })
+			->whereIn(
+				'projeto.situacao_id',
+				[
+					EnumSituacaoProjeto::getValue('Homologado'),
+					EnumSituacaoProjeto::getValue('NaoAvaliado'),
+					EnumSituacaoProjeto::getValue('Avaliado')
+				]
+			)
 			->where('funcao_pessoa.edicao_id', '=', $edicao)
 			->where('projeto.presenca', '=', true)
 			->where('escola.nome_curto', '!=' , 'IFRS Canoas')
-			->where('funcao_pessoa.funcao_id', '=', Funcao::where('funcao', 'Autor')->first()->id)
+			->where('funcao_pessoa.funcao_id', '=', EnumFuncaoPessoa::getValue('Autor'))
 			->distinct('pessoa.id')
 			->count();
 
@@ -1600,13 +1754,19 @@ class RelatorioController extends Controller {
 		return view('relatorios.lanche.valeLanche', ['cont' => $cont]);
 	}
 
-	public function projetosConfirmaramPresencaArea($edicao){
+	public function projetosConfirmaramPresencaArea($edicao) {
 		$areas = Edicao::find($edicao)->areas;
 
-		return \PDF::loadView('relatorios.projetosConfirmaramPresencaArea', array('areas' => $areas, 'edicao' => $edicao))->download('projetos_presenca_nivel.pdf');
+		return PDF::loadView(
+			'relatorios.projetosConfirmaramPresencaArea',
+			[
+				'areas' => $areas,
+				'edicao' => $edicao
+			]
+		)->download('projetos_presenca_nivel.pdf');
 	}
 
-	public function premiacaoCertificados($edicao){
+	public function premiacaoCertificados($edicao) {
 		$areas = Edicao::find($edicao)->areas;
 
 		$subQuery = DB::table('revisao')
@@ -1619,7 +1779,7 @@ class RelatorioController extends Controller {
             ->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
             ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
             ->where('projeto.edicao_id','=',$edicao)
-            ->where('projeto.situacao_id','=', Situacao::where('situacao', 'Avaliado')->get()->first()->id)
+            ->where('projeto.situacao_id', '=', EnumSituacaoProjeto::getValue('Avaliado'))
             ->where('projeto.nota_avaliacao','<>',NULL)
             ->groupBy('projeto.id')
             ->groupBy('area_conhecimento.area_conhecimento')
@@ -1631,11 +1791,20 @@ class RelatorioController extends Controller {
 
         $data = Edicao::select('feira_fechamento')
         	->where('id',$edicao)->get();
+
         $data = date('d/m/Y', strtotime($data->first()->feira_fechamento));
 
-		return \PDF::loadView('relatorios.premiacao.premiacaoCertificados', ['areas' => $areas, 'projetos' => $projetos, 'data' => $data, 'edicao' => $edicao])
-			->setPaper('A4', 'landscape')
-			->download('premiacao_certificados.pdf');
+		return PDF::loadView(
+			'relatorios.premiacao.premiacaoCertificados',
+			[
+				'areas' => $areas,
+				'projetos' => $projetos,
+				'data' => $data,
+				'edicao' => $edicao
+			]
+		)
+		->setPaper('A4', 'landscape')
+		->download('premiacao_certificados.pdf');
 	}
 
 	public function csvEmailNomeEscolas() {
@@ -1656,4 +1825,26 @@ class RelatorioController extends Controller {
 
 		return Response::download($filename, $filename, $headers);
 	}
+
+  public function csvMailing() {
+    $usuariosComMailing = DB::table('pessoa')
+        ->where('newsletter', true)
+        ->select('nome', 'email')
+        ->get();
+
+    $fileRows = [];
+    foreach($usuariosComMailing as $row) {
+      $rowData = [
+        utf8_decode($row->nome),
+        utf8_decode($row->email),
+      ];
+
+      array_push($fileRows, $rowData);
+    }
+
+	$headerFields = ['Nome', 'Email'];
+
+	return $this->returnsCSVStream('MailingUsuarios.csv', $headerFields, $fileRows);
+  }
+
 }
