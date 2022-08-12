@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Pessoa;
 
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -158,6 +159,7 @@ class PessoaController extends Controller {
     public function editaCadastro(Request $req) {
         $data = $req->all();
         $data['dt_nascimento'] = implode('-',array_reverse(explode('/', $data['dt_nascimento'])));
+        $req->has('newsletter') ? : $data = Arr::add($data, 'newsletter', false);
         Pessoa::find(Auth::user()->id)->update($data);
         return redirect()->route('editarCadastro');
     }
@@ -172,9 +174,9 @@ class PessoaController extends Controller {
     public function editaUsuario(Request $req, $id) {
         $data = $req->all();
         $data['dt_nascimento'] = implode('-',array_reverse(explode('/', $data['dt_nascimento'])));
+        $req->has('newsletter') ? : $data = Arr::add($data, 'newsletter', false);
         Pessoa::find($id)->update($data);
         return redirect()->route('administrador.usuarios');
-
     }
 
 
