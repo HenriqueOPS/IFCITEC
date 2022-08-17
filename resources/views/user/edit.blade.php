@@ -100,21 +100,6 @@
                                 @endif
                             </div>
 
-                            <div class="input-group{{ $errors->has('telefone') ? ' has-error' : '' }}">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">phone</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Telefone</label>
-                                    <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="15" class="form-control" name="telefone" value="{{isset($dados->telefone) ? $dados->telefone : ''}}">
-                                </div>
-                                @if ($errors->has('telefone'))
-                                    <span class="help-block">
-                                    <strong>{{ $errors->first('telefone') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-
                             <div class="input-group{{ $errors->has('camisa') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <img class="gray-icon" src="{{ asset('img/tshirt-crew.svg') }}"  />
