@@ -1,82 +1,81 @@
 <!-- Modal -->
-<div id="ModalEdicao" class="modal fade bd-example-modal-lg"  role="dialog" aria-labelledby="ModalEdicao">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="anoModal"></h5>
-			</div>
-			<div class="modal-body">
-				<div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">today</i>
-                </span>
-					<div class="form-group label-floating">
-						<span id="pinsModal"></span>
-					</div>
-				</div>
-				<div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">today</i>
-                </span>
-					<div class="form-group label-floating">
-						<span id="phomModal"></span>
-					</div>
-				</div>
-				<div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">today</i>
-                </span>
-					<div class="form-group label-floating">
-						<span id="pcreModal"></span>
-					</div>
-				</div>
-				<div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">today</i>
-                </span>
-					<div class="form-group label-floating">
-						<span id="pavaModal"></span>
-					</div>
-				</div>
-				<div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">today</i>
-                </span>
-					<div class="form-group label-floating">
-						<span id="pvolModal"></span>
-					</div>
-				</div>
-				<div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">today</i>
-                </span>
-					<div class="form-group label-floating">
-						<span id="piahModal"></span>
-					</div>
-				</div>
-				<div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">today</i>
-                </span>
-					<div class="form-group label-floating">
-						<span id="pfeiModal"></span>
-					</div>
-				</div>
-				<div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">school</i>
-                </span>
-					<div class="form-group label-floating">
-						<span id="testeModal"></span>
-					</div>
-				</div>
-
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
-			</div>
+<div id="ModalEdicao" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="ModalEdicao">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="anoModal"></h5>
+            </div>
+            <div class="modal-body">
+		<div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">today</i>
+                    </span>
+                    <div class="form-group label-floating">
+                        <span id="pfeiModal"></span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">school</i>
+                    </span>
+                    <div class="form-group label-floating">
+                        <span id="testeModal"></span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">today</i>
+                    </span>
+                    <div class="form-group label-floating">
+                        <span id="pinsModal"></span>
+                    </div>
 		</div>
-	</div>
+		<div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">today</i>
+                    </span>
+                    <div class="form-group label-floating">
+                        <span id="piahModal"></span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">today</i>
+                    </span>
+                    <div class="form-group label-floating">
+                        <span id="phomModal"></span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">today</i>
+                    </span>
+                    <div class="form-group label-floating">
+                        <span id="pvolModal"></span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">today</i>
+                    </span>
+                    <div class="form-group label-floating">
+                        <span id="pcreModal"></span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">today</i>
+                    </span>
+                    <div class="form-group label-floating">
+                        <span id="pavaModal"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Fim Modal -->
 
@@ -173,48 +172,49 @@ function horario(string){
 
 <!-- Modal Delete Edição -->
 <div id="ModalDeleteEdicao" class="modal fade bd-example-modal-lg" role="dialog4" aria-labelledby="ModalDeleteEdicao">
-	<div class="modal-dialog" role="document4">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Deletar Edição</h5>
-			</div>
+    <div class="modal-dialog" role="document4">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Deletar Edição</h5>
+            </div>
 
-			<div class="modal-body">
-				<span>Para deletar a edição, confirme sua senha.</span>
-				<div class="input-group">
+            <div class="modal-body">
+                <span>Para deletar a edição, confirme sua senha.</span>
+                <div class="input-group">
                     <span class="input-group-addon">
                         <i class="material-icons">lock_outline</i>
                     </span>
-					<input type="password" placeholder="Senha..." class="form-control" id="passwordDeleteEdicao" name="password" required>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary excluir" data-dismiss="modal">Excluir</button>
-			</div>
-		</div>
-	</div>
+                    <input type="password" placeholder="Senha..." class="form-control" id="passwordDeleteEdicao"
+                        name="password" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary excluir" data-dismiss="modal">Excluir</button>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Fim Modal -->
 
 <script type="text/javascript">
-	$('.excluirEdicao').click(function(){
-		var idEdicao = $(this).attr('id-edicao');
+    $('.excluirEdicao').click(function() {
+        var idEdicao = $(this).attr('id-edicao');
 
-		$("#ModalDeleteEdicao").modal();
+        $("#ModalDeleteEdicao").modal();
 
-		$('.excluir').click(function(){
-			var urlConsulta = './edicao/exclui-edicao/'+idEdicao+'/'+$('#passwordDeleteEdicao').val();
-			$.get(urlConsulta, function (res){
-				if(res == 'true'){
-					bootbox.alert("Edição excluída com sucesso");
-					window.location.reload();
-				}else{
-					bootbox.alert("Senha incorreta");
-				}
+        $('.excluir').click(function() {
+            var urlConsulta = './edicao/exclui-edicao/' + idEdicao + '/' + $('#passwordDeleteEdicao')
+                .val();
+            $.get(urlConsulta, function(res) {
+                if (res == 'true') {
+                    bootbox.alert("Edição excluída com sucesso");
+                    window.location.reload();
+                } else {
+                    bootbox.alert("Senha incorreta");
+                }
 
-			});
-		});
+            });
+        });
 
-	});
+    });
 </script>
-
