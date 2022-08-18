@@ -4,7 +4,6 @@
 <link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
 <link href="{{ asset('css/datepicker/bootstrap-datepicker.standdalone.css') }}" rel="stylesheet">
 @endsection
-
 @section('content')
 <div class="container">
     <div class="row">
@@ -118,6 +117,24 @@
                                         <strong>{{ $errors->first('camisa') }}</strong>
                                     </span>
                                     @endif
+                                </div>
+                            </div>
+
+                            <div class="input-group{{ $errors->has('senha') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">assignment</i>
+                                </span>
+                                <div class="checkbox news" style="margin-top: 4.5%">
+                                    <label>
+                                      <span style="margin-right: 5pt;">
+                                        Deseja receber informações sobre as novas edições da IFCITEC?
+                                      </span>
+                                      @if($dados->newsletter)
+                                        <input type="checkbox" name="newsletter" value=true checked>
+                                      @else
+                                        <input type="checkbox" name="newsletter" value=true>
+                                      @endif
+                                    </label>
                                 </div>
                             </div>
 
