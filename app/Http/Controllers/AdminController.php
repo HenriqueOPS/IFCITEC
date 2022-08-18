@@ -740,7 +740,7 @@ class AdminController extends Controller
     {
         DB::table('pessoa')
             ->where('id', $id)
-            ->update(['oculto' => true]);
+            ->update(['oculto' => true, 'newsletter' => false]);
 
         return redirect()->route('administrador.usuarios');
     }
