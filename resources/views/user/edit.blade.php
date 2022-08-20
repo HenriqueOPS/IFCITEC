@@ -4,7 +4,6 @@
 <link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
 <link href="{{ asset('css/datepicker/bootstrap-datepicker.standdalone.css') }}" rel="stylesheet">
 @endsection
-
 @section('content')
 <div class="container">
     <div class="row">
@@ -100,21 +99,6 @@
                                 @endif
                             </div>
 
-                            <div class="input-group{{ $errors->has('telefone') ? ' has-error' : '' }}">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">phone</i>
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Telefone</label>
-                                    <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="15" class="form-control" name="telefone" value="{{isset($dados->telefone) ? $dados->telefone : ''}}">
-                                </div>
-                                @if ($errors->has('telefone'))
-                                    <span class="help-block">
-                                    <strong>{{ $errors->first('telefone') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-
                             <div class="input-group{{ $errors->has('camisa') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <img class="gray-icon" src="{{ asset('img/tshirt-crew.svg') }}"  />
@@ -133,6 +117,24 @@
                                         <strong>{{ $errors->first('camisa') }}</strong>
                                     </span>
                                     @endif
+                                </div>
+                            </div>
+
+                            <div class="input-group{{ $errors->has('senha') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">assignment</i>
+                                </span>
+                                <div class="checkbox news" style="margin-top: 4.5%">
+                                    <label>
+                                      <span style="margin-right: 5pt;">
+                                        Deseja receber informações sobre as novas edições da IFCITEC?
+                                      </span>
+                                      @if($dados->newsletter)
+                                        <input type="checkbox" name="newsletter" value=true checked>
+                                      @else
+                                        <input type="checkbox" name="newsletter" value=true>
+                                      @endif
+                                    </label>
                                 </div>
                             </div>
 
@@ -207,7 +209,6 @@
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">
                             <button class="btn btn-primary">Salvar Alterações</button>
-
                         </div>
                     </div>
                 </form>

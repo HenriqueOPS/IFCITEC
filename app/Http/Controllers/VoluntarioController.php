@@ -12,6 +12,8 @@ use App\Pessoa;
 use App\Funcao;
 use App\Tarefa;
 
+use App\Enums\EnumFuncaoPessoa;
+
 class VoluntarioController extends Controller
 {
     /**
@@ -54,8 +56,7 @@ class VoluntarioController extends Controller
     public function cadastraVoluntario(Request $req){
 
         if(!Auth::user()->temTrabalho()) {
-
-        	$funcaoVoluntarioId = Funcao::where('funcao', 'Voluntário')->first()->id;
+        	$funcaoVoluntarioId = EnumFuncaoPessoa::getValue('Voluntario');
 
         	$voluntario = DB::table('funcao_pessoa')
 				->where('edicao_id', '=', Edicao::getEdicaoId())

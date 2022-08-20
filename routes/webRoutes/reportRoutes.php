@@ -36,6 +36,7 @@ Route::get('/relatorio/projetos/confirma/{edicao}', 'RelatorioController@projeto
 Route::get('/relatorio/projetos/confirma/area/{edicao}', 'RelatorioController@projetosConfirmaramPresencaArea')->name('relatorioProjetosConfirmaArea');
 Route::get('/relatorio/projetos/{edicao}', 'RelatorioController@projetos')->name('relatorioProjetos');
 Route::get('/relatorio/projetos/{edicao}/area', 'RelatorioController@projetosAreas')->name('relatorioProjetosArea');
+Route::get('/relatorio/mailing', 'RelatorioController@csvMailing')->name('csvMailing');
 
 // Relatórios - Avaliação
 Route::get('/relatorio/avaliadores/area/{edicao}', 'RelatorioController@avaliadoresArea')->name('avaliadoresArea');

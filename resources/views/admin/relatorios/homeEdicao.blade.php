@@ -699,6 +699,13 @@
                                 <a href="{{route('participantesAssinatura', $edicao)}}"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+                        <tr>
+                            <td>16</td>
+                            <td>CSV Mailing Usuários</td>
+                            <td class="text-right">
+                                <a href="{{route('csvMailing')}}"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
                     </tbody>
                     </table>
                 </div>
