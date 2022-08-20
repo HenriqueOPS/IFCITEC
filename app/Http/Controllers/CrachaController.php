@@ -68,7 +68,11 @@ class CrachaController extends Controller {
 			->distinct('pessoa.id')
 			->get();
 			foreach ($pessoas as $pessoa) {
-				$pessoa->nome = explode(' ',$pessoa->nome, 2)[0];
+				
+				$partes = explode(' ', $pessoa->nome);
+				$primeiroNome = array_shift($partes);
+				$ultimoNome = array_pop($partes);
+					$pessoa->nome = $primeiroNome." ".$ultimoNome;
 			}
 		$funcao = 'Autor';
 		return Response::view('impressao.cracha_verde_resumo', compact('pessoas', 'funcao', 'edicao'));
@@ -99,7 +103,11 @@ class CrachaController extends Controller {
 			->distinct('pessoa.id')
 			->get();
 			foreach ($pessoas as $pessoa) {
-				$pessoa->nome = explode(' ',$pessoa->nome, 2)[0];
+				
+				$partes = explode(' ', $pessoa->nome);
+				$primeiroNome = array_shift($partes);
+				$ultimoNome = array_pop($partes);
+					$pessoa->nome = $primeiroNome." ".$ultimoNome;
 			}
 		$funcao = 'Comissão Avaliadora';
 		return view('impressao.cracha_vermelho_resumo', compact('pessoas', 'funcao', 'edicao'));
@@ -140,7 +148,11 @@ class CrachaController extends Controller {
 			->distinct('pessoa.id')
 			->get();
 			foreach ($pessoas as $pessoa) {
-				$pessoa->nome = explode(' ',$pessoa->nome, 2)[0];
+			
+				$partes = explode(' ', $pessoa->nome);
+				$primeiroNome = array_shift($partes);
+				$ultimoNome = array_pop($partes);
+					$pessoa->nome = $primeiroNome." ".$ultimoNome;
 			}
 		$funcao = 'Comissão Organizadora';
 		return view('impressao.cracha_vermelho_resumo', compact('pessoas', 'funcao', 'edicao'));
@@ -186,7 +198,11 @@ class CrachaController extends Controller {
 			->distinct('pessoa.id')
 			->get();
 			foreach ($pessoas as $pessoa) {
-				$pessoa->nome = explode(' ',$pessoa->nome, 2)[0];
+				
+				$partes = explode(' ', $pessoa->nome);
+				$primeiroNome = array_shift($partes);
+				$ultimoNome = array_pop($partes);
+					$pessoa->nome = $primeiroNome." ".$ultimoNome;
 			}
 		$funcao = 'Orientador';
 		return view('impressao.cracha_verde_resumo', compact('pessoas','funcao', 'edicao'));
@@ -234,7 +250,14 @@ class CrachaController extends Controller {
 			->distinct('pessoa.id')
 			->get();
 			foreach ($pessoas as $pessoa) {
-				$pessoa->nome = explode(' ',$pessoa->nome, 2)[0];
+				
+				
+					$partes = explode(' ', $pessoa->nome);
+				$primeiroNome = array_shift($partes);
+				$ultimoNome = array_pop($partes);
+					$pessoa->nome = $primeiroNome." ".$ultimoNome;
+				
+				
 			}
 		$funcao = 'Coorientador';
 		return view('impressao.cracha_verde_resumo', compact('pessoas', 'funcao', 'edicao'));
@@ -268,7 +291,10 @@ class CrachaController extends Controller {
 			->distinct('pessoa.id')
 			->get();
 			foreach ($pessoas as $pessoa) {
-				$pessoa->nome = explode(' ',$pessoa->nome, 2)[0];
+				$partes = explode(' ', $pessoa->nome);
+				$primeiroNome = array_shift($partes);
+				$ultimoNome = array_pop($partes);
+					$pessoa->nome = $primeiroNome." ".$ultimoNome;
 			}
 		return view('impressao.cracha_azul_resumo', compact('pessoas', 'edicao'));
 	}

@@ -27,19 +27,21 @@
 
 	.cracha{
 		width: calc(99mm - 2pt);
-		height: 70mm;
-		border: 1pt solid #000;
+		height: 55mm;
 		display: inline-flex;
 		padding: 0;
 		margin: 0;
 		overflow: hidden;
 	}
 
-	.cracha:nth-child(8n){page-break-before: always; }
+	.cracha:nth-child(10n){page-break-before: always; }
 
 	.cracha .content{
 		width: 100%;
 		margin-top: 0mm;
+		display: flex;
+		align-items: center;
+		flex-direction: column;
 	}
 	
 	.cracha .dados{
@@ -64,7 +66,7 @@
 		line-height: 8mm;
 		overflow: hidden;
 		padding: 1mm;
-		background: #3fa041;
+		background: #000;
 		margin-left: 5mm;
 		margin-top: 0mm;
 		text-transform: uppercase;
@@ -78,9 +80,9 @@
 	}
 
 	.cracha .qrcode{
-		width: 28mm;
-		margin-top: 4mm;
-		margin-left: 35mm;
+		width: 25mm;
+		margin-top: 1mm;
+		
 	}
 
 }
