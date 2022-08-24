@@ -28,7 +28,7 @@
 						<td>
 							<br />
 							<p>Um abraço,</p>
-							<p>Comissão Origanizadora - IFCITEC</p>
+							<p>Comissão Organizadora - IFCITEC</p>
 						</td>
 					</tr>
 				</table>

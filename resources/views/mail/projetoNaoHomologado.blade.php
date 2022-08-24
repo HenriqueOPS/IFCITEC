@@ -19,14 +19,14 @@
 						<td>
 							<p>Prezado(a) {{$nome}},</p>
 							<br />
-							<p>Infelizmente seu trabalho intitulado "{{$titulo}}" não foi homologado. Ainda sim esperamos sua visita virtual na Feira de Ciências e Inovação Tecnológica do IFRS - Campus Canoas e convidamos você a nos seguir no Instagram <a href="https://www.instagram.com/ifcitec">@ifcitec</a>.</p>
+							<p>Infelizmente seu trabalho intitulado "{{$titulo}}" não foi homologado. Ainda sim esperamos sua visita presencial na Feira de Ciências e Inovação Tecnológica do IFRS - Campus Canoas e convidamos você a nos seguir no Instagram <a href="https://www.instagram.com/ifcitec">@ifcitec</a>.</p>
 						</td>
 					</tr>
 					<tr>
 						<td>
 							<br />
 							<p>Um abraço,</p>
-							<p>Comissão Origanizadora - IFCITEC</p>
+							<p>Comissão Organizadora - IFCITEC</p>
 						</td>
 					</tr>
 				</table>
