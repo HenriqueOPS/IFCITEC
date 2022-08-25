@@ -19,9 +19,9 @@
 						<td>
 							<p>Prezado(a) {{$nome}},</p>
 							<br>
-							<p>Seu trabalho intitulado "{{$titulo}}" foi homologado. Verifique as observações dos homologadores e em caso de alguma solicitação de mudança a mesma deverá ser realizada para no vídeo a ser apresentado na feira. Esperamos sua participação virtual na Feira de Ciências e Inovação Tecnológica do IFRS - Campus Canoas.</p>
+							<p>Seu trabalho intitulado "{{$titulo}}" foi homologado. Verifique as observações dos homologadores e em caso de alguma solicitação de mudança a mesma deverá ser realizada para a apresentação na feira. Esperamos sua participação presencial na Feira de Ciências e Inovação Tecnológica do IFRS - Campus Canoas.</p>
 							<br>
-							<p><span style="font-weight: bold;">ATENÇÃO! É necessária a confirmação de presença do projeto na feira, clique no botão abaixo e faça seu login no site, se o seu projeto enviará os vídeos da próxima etapa o que configura a participação na IFCITEC.</span></p>
+							<p><span style="font-weight: bold;">ATENÇÃO! É necessária a confirmação de presença do projeto na feira, clique no botão abaixo e faça seu login no site.</span></p>
 						</td>
 					</tr>
 					<tr>
@@ -54,16 +54,6 @@
 
 					<tr>
 						<td>
-							<p>
-								<b>Importante:</b>  agora o seu projeto precisa, até o dia 27/10/2021, enviar o vídeo de divulgação de sua pesquisa com até 60 segundos em formato MP4 para o REELS da IFCITEC e o link do vídeo de apresentação de seu projeto postado no YouTube (ver detalhes no regulamento).
-								<br /><br />
-								O envio do vídeo e do link do YouTube deve ser feito através <a href="https://forms.gle/yL5qPZoxVw3hAJVP8">deste formulário</a>.
-							</p>
-						</td>
-					</tr>
-
-					<tr>
-						<td>
 							<p>Em caso de qualquer dúvida, faça contato conosco pelo e-mail <a href="mailto:ifcitec@canoas.ifrs.edu.br">ifcitec@canoas.ifrs.edu.br</a> ou pelo nosso Instagram <a href="https://www.instagram.com/ifcitec">@ifcitec</a>.</p>
 						</td>
 					</tr>
@@ -72,7 +62,7 @@
 						<td>
 							<br>
 							<p>Um abraço,</p>
-							<p>Comissão Origanizadora - IFCITEC</p>
+							<p>Comissão Organizadora - IFCITEC</p>
 						</td>
 					</tr>
 				</table>
