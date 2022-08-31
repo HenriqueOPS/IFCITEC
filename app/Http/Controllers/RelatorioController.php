@@ -1375,7 +1375,8 @@ class RelatorioController extends Controller {
 			->orderBy('titulo')
 			->get();
 
-		return PDF::loadView('relatorios.projetos', ['projetos' => $projetos])->download('projetos.pdf');
+		//return PDF::loadView('relatorios.projetos', ['projetos' => $projetos])->download('projetos.pdf');
+		return view('relatorios.projetos', ['projetos' => $projetos]);
 	}
 
 	public function areas($edicao){

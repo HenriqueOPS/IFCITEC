@@ -1,9 +1,58 @@
 @extends('relatorios.relatorio')
 
 @section('content')
-<div class="container">
-    <div class="row">
+<style>
+	header {
+	}
+
+	.table-wrapper {
+	}
+
+	body {
+		background-image: unset;
+	}
+
+	@media print {
+		@page {
+			margin: 0mm;
+			padding-top: 0mm;
+		}
+
+		header {
+			position: fixed;
+			page-break-before: auto; /* 'always,' 'avoid,' 'left,' 'inherit,' or 'right' */
+			page-break-after: auto; /* 'always,' 'avoid,' 'left,' 'inherit,' or 'right' */
+			page-break-inside: avoid; /* or 'auto' */;	
+			top: 0;
+			width: 98%;
+			overflow: hidden;
+		}
+
+		header > img {
+			width: 100%;	
+		}
+
+		header > h2 {
+			margin-top: -1pt;
+		}
+
+		table { page-break-inside:auto }
+
+		tr    { page-break-inside:avoid; page-break-after:auto }
+
+		thead { display:table-header-group }
+
+		tfoot { display:table-footer-group }
+	}
+</style>
+
+<header>
+	<img src="{{ asset('img/ifcitecheader.png')  }}"/>
 	<h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE PROJETOS</h2>
+</header>
+
+<div class="container table-wrapper">
+    <div class="row">
 
 	<table class="bordered striped centered" style="width: 100%;">
 		<thead>

@@ -256,6 +256,7 @@ class Pessoa extends Authenticatable {
     }
 
     static function findByEmail($email) {
+	dd(Pessoa::where('email', $email)->first());
         return Pessoa::where('email', $email)->first();
     }
 
