@@ -2,24 +2,22 @@
 
 @section('content')
 <style>
-	header {
-	}
-
-	.table-wrapper {
-	}
-
 	body {
 		background-image: unset;
 	}
 
 	@media print {
-		@page {
-			margin: 0mm;
+		body {
 			padding-top: 0mm;
+			margin: 0pt;
+		}
+
+		@page {
+			margin:  10mm 0mm 0mm 0mm;
+			padding-top: 10mm;
 		}
 
 		header {
-			position: fixed;
 			page-break-before: auto; /* 'always,' 'avoid,' 'left,' 'inherit,' or 'right' */
 			page-break-after: auto; /* 'always,' 'avoid,' 'left,' 'inherit,' or 'right' */
 			page-break-inside: avoid; /* or 'auto' */;	
@@ -38,11 +36,12 @@
 
 		table { page-break-inside:auto }
 
-		tr    { page-break-inside:avoid; page-break-after:auto }
-
-		thead { display:table-header-group }
-
-		tfoot { display:table-footer-group }
+		tr    {	
+			page-break-inside:avoid;
+			page-break-after:auto;
+			font-size: 10pt !important;
+			width: 100%;
+		}
 	}
 </style>
 

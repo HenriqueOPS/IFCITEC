@@ -1495,7 +1495,8 @@ class RelatorioController extends Controller {
 			]);
 		}
 
-		return PDF::loadView('relatorios.homologacao.homologadoresArea', compact('homologadoresAreas'))->download('homologadores_area.pdf');
+		//return PDF::loadView('relatorios.homologacao.homologadoresArea', compact('homologadoresAreas'))->download('homologadores_area.pdf');
+		return view('relatorios.homologacao.homologadoresArea', compact('homologadoresAreas'));
 	}
 
 	public function avaliadoresArea($edicao){
@@ -1535,7 +1536,8 @@ class RelatorioController extends Controller {
 			->orderBy('projeto.titulo')
 			->get();
 
-		return PDF::loadView('relatorios.homologacao.homologadoresProjeto', ['projetos' => $projetos])->download('homologadores_projeto.pdf');
+		//return PDF::loadView('relatorios.homologacao.homologadoresProjeto', ['projetos' => $projetos])->download('homologadores_projeto.pdf');
+		return view('relatorios.homologacao.homologadoresProjeto', ['projetos' => $projetos]);
 	}
 
 
