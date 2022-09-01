@@ -1,9 +1,13 @@
 @extends('relatorios.relatorioPaisagem')
 
 @section('content')
+<header>
+	<img src="{{ asset('img/ifcitecheader.png')  }}"/>
+	<h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE PROJETOS CLASSIFICADOS PARA A {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC</h2>
+</header>
+
 	<div class="container">
 		<div class="row">
-			<h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE PROJETOS CLASSIFICADOS PARA A {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC</h2>
 
 			@foreach($niveis as $nivel)
 				<p style="text-align: center;"><b>{{$nivel->nivel}}</b></p>
@@ -15,8 +19,8 @@
 					</tr>
 					</thead>
 					<tbody>
-					{{$cont = 0}}
-					{{$projetos = $nivel->getProjetosClassificados($nivel->id, $edicao)}}
+					@php ($cont = 0)
+					@php ($projetos = $nivel->getProjetosClassificados($nivel->id, $edicao))
 					@foreach($projetos as $projeto)
 						<tr>
 							<td><a style="color: #000;">{{$projeto->titulo}}</a></td>

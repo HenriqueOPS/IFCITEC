@@ -1,9 +1,12 @@
 @extends('relatorios.relatorioPaisagem')
 
 @section('content')
+<header>
+	<img src="{{ asset('img/ifcitecheader.png')  }}"/>
+	<h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE PROJETOS NÃO HOMOLOGADOS {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC</h2>
+</header>
 	<div class="container">
 		<div class="row">
-			<h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE PROJETOS NÃO HOMOLOGADOS {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC</h2>
 
 			@foreach($niveis as $nivel)
 			<p style="text-align: center;"><b>{{$nivel->nivel}}</b></p>

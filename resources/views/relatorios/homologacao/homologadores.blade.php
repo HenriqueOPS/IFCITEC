@@ -1,10 +1,14 @@
 @extends('relatorios.relatorio')
 
 @section('content')
+
+<header>
+	<img src="{{ asset('img/ifcitecheader.png')  }}"/>
+	<h5 style="text-align: center; font-size: 25px;">RELATÓRIO DE HOMOLOGADORES DA {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC</h5>
+</header>
+
 <div class="container">
     <div class="row">
-        <h5 style="text-align: center; font-size: 25px;">RELATÓRIO DE HOMOLOGADORES DA {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC
-        </h5>
         <br>
         <table class="bordered striped centered" style="width:100%;">
             <thead>
@@ -17,7 +21,7 @@
             </thead>
             <tbody>
             {{$cont = 0}}
-            @foreach($homologadores as $homologador)
+            @foreach($homologadores s $homologador)
             <tr>
             <td>
             <a style="color: #000;">{{$homologador->nome}}</a>
