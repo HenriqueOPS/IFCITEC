@@ -50,6 +50,8 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception) {
 		try {
+			return parent::render($request, $exception);
+
 			if ($exception instanceof AuthenticationException) {
 				return parent::render($request, $exception);
 			}

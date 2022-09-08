@@ -28,7 +28,8 @@
                 @endif
 
                 <form method="POST" action="{{ route('recuperar.senha') }}">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+					{{ csrf_field() }}
+
                     <div class="row">
                     <div class="col-md-10 col-md-offset-1">
                             <div class="col-xs-11">
