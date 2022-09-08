@@ -578,7 +578,6 @@ class RelatorioController extends Controller
                 'projeto.situacao_id',
                 [
                     EnumSituacaoProjeto::getValue('Homologado'),
-                    EnumSituacaoProjeto::getValue('NaoAvaliado'),
                 ]
             )
             ->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
@@ -588,22 +587,22 @@ class RelatorioController extends Controller
             ->get();
 
         $filename = "AutoresHomologados.csv";
+	$fileheaders = [
+	    "Nome",
+	    "Email"
+	];
 
-        $handle = fopen($filename, 'w+');
-        fputcsv($handle, array('Nome', 'Email'), ';');
-
+        $fileRows = [];
         foreach ($resultados as $row) {
-            $nome = utf8_decode($row->nome);
-            fputcsv($handle, array($nome, $row->email), ';');
+            $rowData = [
+                utf8_decode($row->nome),
+                utf8_decode($row->email),
+            ];
+
+            array_push($fileRows, $rowData);
         }
-
-        fclose($handle);
-
-        $headers = array(
-            'Content-Type' => 'text/csv',
-        );
-
-        return Response::download($filename, $filename, $headers);
+	
+	return $this->returnsCSVStream($filename, $fileheaders, $fileRows);
     }
 
     public function participantesCompareceram($edicao)
@@ -966,9 +965,9 @@ class RelatorioController extends Controller
         $niveis = Edicao::find($edicao)->niveis;
 
         //return PDF::loadView('relatorios.homologacao.projetosClassificadosNivel', ['niveis' => $niveis, 'edicao' => $edicao])
-            //->setPaper('A4', 'landscape')
-            //->download('projetos_classificados_nivel.pdf');
-	return view('relatorios.homologacao.projetosClassificadosNivel',['niveis' => $niveis, 'edicao' => $edicao]);
+        //->setPaper('A4', 'landscape')
+        //->download('projetos_classificados_nivel.pdf');
+        return view('relatorios.homologacao.projetosClassificadosNivel', ['niveis' => $niveis, 'edicao' => $edicao]);
     }
 
     public function projetosNaoHomologadosNivel($edicao)
@@ -977,9 +976,9 @@ class RelatorioController extends Controller
         $niveis = Edicao::find($edicao)->niveis;
 
         //return PDF::loadView('relatorios.homologacao.projetosNaoHomologadosNivel', ['niveis' => $niveis, 'edicao' => $edicao])
-            //->setPaper('A4', 'landscape')
-            //->download('projetos_nao_homologados_nivel.pdf');
-	return view('relatorios.homologacao.projetosNaoHomologadosNivel', ['niveis' => $niveis, 'edicao' => $edicao]);
+        //->setPaper('A4', 'landscape')
+        //->download('projetos_nao_homologados_nivel.pdf');
+        return view('relatorios.homologacao.projetosNaoHomologadosNivel', ['niveis' => $niveis, 'edicao' => $edicao]);
     }
 
     public function projetosClassificadosSemNota($edicao)
@@ -992,7 +991,7 @@ class RelatorioController extends Controller
             ->get();
 
         //return PDF::loadView('relatorios.homologacao.projetosClassificadosSemNota', array('projetos' => $projetos, 'edicao' => $edicao))->download('projetos_classificados.pdf');
-	return view('relatorios.homologacao.projetosClassificadosSemNota', array('projetos' => $projetos, 'edicao' => $edicao));
+        return view('relatorios.homologacao.projetosClassificadosSemNota', array('projetos' => $projetos, 'edicao' => $edicao));
     }
 
     public function niveis($edicao)
@@ -1381,6 +1380,7 @@ class RelatorioController extends Controller
 
         return PDF::loadView('relatorios.coorientadoresPosHomologacao', array('coorientadores' => $coorientadores, 'cont' => $cont, 'edicao' => $edicao))->download('coorientadores_pos_homologacao.pdf');
     }
+
 
     public function projetosAreas($edicao)
     {
@@ -1936,6 +1936,82 @@ class RelatorioController extends Controller
         $headerFields = ['Nome', 'Email'];
 
         return $this->returnsCSVStream('MailingUsuarios.csv', $headerFields, $fileRows);
+    }
+
+    public function csvMailingOrientadoresPosHomologacao($edicao)
+    {
+        $orientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+            ->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+            ->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+            ->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.email')
+            ->whereIn(
+                'projeto.situacao_id',
+                [
+                    EnumSituacaoProjeto::getValue('Homologado'),
+                ]
+            )
+            ->where('projeto.presenca', true)
+            ->where('funcao_pessoa.edicao_id', $edicao)
+            ->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Orientador'))
+            ->orderBy('pessoa.nome')
+            ->distinct('pessoa.id')
+            ->get();
+
+	$filename = "csvOrientadoresPosHomologacao.csv";
+	$fileHeaders = [
+	    "Nome",
+	    "Email"
+	];
+
+        $fileRows = [];
+        foreach ($orientadores as $row) {
+            $rowData = [
+                utf8_decode($row->nome),
+                utf8_decode($row->email),
+            ];
+
+            array_push($fileRows, $rowData);
+        }
+
+	return $this->returnsCSVStream($filename, $fileHeaders, $fileRows);
+    }
+
+    public function csvMailingCoorientadoresPosHomologacao($edicao)
+    {
+        $coorientadores = DB::table('funcao_pessoa')->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+            ->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+            ->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+            ->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.email')
+            ->whereIn(
+                'projeto.situacao_id',
+                [
+                    EnumSituacaoProjeto::getValue('Homologado'),
+                ]
+            )
+            ->where('projeto.presenca', true)
+            ->where('funcao_pessoa.edicao_id', $edicao)
+            ->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Coorientador'))
+            ->orderBy('pessoa.nome')
+            ->distinct('pessoa.id')
+            ->get();
+
+	$filename = "csvCoorientadoresPosHomologacao.csv";
+	$fileHeaders = [
+	    "Nome",
+	    "Email",
+	];
+
+        $fileRows = [];
+        foreach ($coorientadores as $row) {
+            $rowData = [
+                utf8_decode($row->nome),
+                utf8_decode($row->email),
+            ];
+
+            array_push($fileRows, $rowData);
+        }
+
+	return $this->returnsCSVStream($filename, $fileHeaders, $fileRows);
     }
 
 }
