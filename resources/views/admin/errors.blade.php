@@ -5,14 +5,21 @@
 
 		<div class="page-header">
 			<h1>Erros - laravel.log</h1>
-
 		</div>
 
 		<div class="row">
 
 			<div class="col-md-12 main main-raised">
 
-				<pre style="font-size: 10px;">@php echo file_get_contents('../storage/logs/laravel.log'); @endphp</pre>
+				<pre style="font-size: 10px;">
+				@php
+					try {
+						echo file_get_contents(dirname(__DIR__).'/../logs/laravel.log');
+					} catch(Exception $e) {
+						echo 'Exception ' . $e->getMessage();
+					}
+				@endphp
+				</pre>
 
 			</div>
 

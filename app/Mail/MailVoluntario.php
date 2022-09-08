@@ -27,7 +27,6 @@ class MailVoluntario extends Mailable {
      * @return $this
      */
     public function build() {
-        return $this->subject('IFCITEC')
-			->view('mail.mailVoluntario', ['nome' => $this->nome]);
+        return $this->subject('IFCITEC')->view('mail.voluntario', ['nome' => $this->nome]);
     }
 }
