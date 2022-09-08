@@ -34,7 +34,7 @@
 											<tbody>
 											<tr>
 												<td>
-													<a href="{{ route('confirmaPresenca', $idProj) }}" target="_blank">Clique aqui para confirmar sua presença virtual na IFCITEC</a>
+													<a href="{{ route('confirmaPresenca', $idProj) }}" target="_blank">Clique aqui para confirmar sua presença na IFCITEC</a>
 												</td>
 											</tr>
 											</tbody>
