@@ -10,7 +10,7 @@
 	size: A4 portrait;
 	width: 21cm;
 	height: 29.7cm;
-	margin: 0.5cm;
+	margin: 0;
 }
 
 @media all {
@@ -23,30 +23,33 @@
 		color-adjust: exact !important;                 /*Firefox*/
 	}
 
-	body{font-family: "Roboto", "Helvetica", "Arial", sans-serif;}
-
+	body{font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+		margin-left: 4.7mm;
+		margin-right: 4.7mm;
+ 
+	}
+    
 	.cracha{
-		width: calc(99mm - 2pt);
+		width: calc(99mm);
 		height: 55mm;
-		display: inline-flex;
-		padding: 0;
+		display: inline-block;
+		padding:0;
 		margin: 0;
 		overflow: hidden;
+		margin-top: -1.5px;
+		
 	}
 
 	.cracha:nth-child(10n){page-break-before: always; }
 
 	.cracha .content{
 		width: 100%;
-		margin-top: 0mm;
-		display: flex;
-		align-items: center;
-		flex-direction: column;
+		margin: 0mm;
+		
 	}
 
 	.cracha .dados{
 		width: 100%;
-		margin-top: 5mm;
 		text-align: center;
 	}
 
@@ -59,7 +62,7 @@
 		margin: 0;
 		color: #fff;
 	}
-
+	
 	.cracha .dados h2{
 		width: calc(100% - 12mm);
 		height: 8mm;
@@ -82,7 +85,8 @@
 	.cracha .qrcode{
 		width: 25mm;
 		margin-top: 1mm;
-		
+		margin-left: 37mm;
+		margin-right: 37mm ;
 	}
 
 }
