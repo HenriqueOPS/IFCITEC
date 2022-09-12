@@ -28,7 +28,9 @@ Route::get('/relatorio/avaliadores/{edicao}', 'RelatorioController@avaliadores')
 Route::get('/relatorio/autores/lanche/{edicao}', 'RelatorioController@autoresLanche')->name('relatorioAutoresLanche');
 Route::get('/relatorio/autores/pos/homologacao/{edicao}', 'RelatorioController@autoresPosHomologacao')->name('relatorioAutoresPos');
 Route::get('/relatorio/orientadores/pos/homologacao/{edicao}', 'RelatorioController@orientadoresPosHomologacao')->name('relatorioOrientadoresPos');
+Route::get('/relatorio/orientadores/pos/homologacaocsv/{edicao}', 'RelatorioController@csvMailingOrientadoresPosHomologacao')->name('csvMailingOrientadoresPos');
 Route::get('/relatorio/coorientadores/pos/homologacao/{edicao}', 'RelatorioController@coorientadoresPosHomologacao')->name('relatorioCoorientadoresPos');
+Route::get('/relatorio/coorientadores/pos/homologacaocsv/{edicao}', 'RelatorioController@csvMailingCoorientadoresPosHomologacao')->name('csvMailingCoorientadoresPos');
 Route::get('/relatorio/autores/tamanho/camisa/{edicao}', 'RelatorioController@camisaTamanho')->name('camisaTamanho');
 Route::get('/relatorio/autores/tamanho/camisa/assinatura/{$edicao}', 'RelatorioController@camisaTamanhoAssinatura')->name('camisaTamanhoAssinatura');
 Route::get('/relatorio/participantes/assinatura/{edicao}', 'RelatorioController@participantesAssinatura')->name('participantesAssinatura');

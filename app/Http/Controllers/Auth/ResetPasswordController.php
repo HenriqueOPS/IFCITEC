@@ -72,25 +72,30 @@ class ResetPasswordController extends Controller
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
 	public function showResetForm(Request $request, $token = null) {
-		return view('auth.passwords.reset')->with([
-			'token' => $token,
-			'email' => $request->email
-		]);
+		return view('auth.passwords.reset')
+			->with([
+				'token' => $token,
+				'email' => $request->email
+			]);
 	}
 
 	protected function tokenExpired($createdAt) {
-		return Carbon::parse($createdAt)->addSeconds($this->expires)->isPast();
+		return Carbon::parse($createdAt)
+			->addSeconds($this->expires)
+			->isPast();
 	}
 
 	public function exists($email, $token) {
-		$passwordResets = DB::table('password_resets')
+		$passwordReset = DB::table('password_resets')
 			->where('email', '=', $email)
+			->orderBy('created_at', 'desc')
+			->limit(1)
 			->get()
 			->first();
 
-		return $passwordResets &&
-			! $this->tokenExpired($passwordResets->created_at) &&
-			$this->hasher->check($token, $passwordResets->token);
+		return $passwordReset &&
+			!$this->tokenExpired($passwordReset->created_at) &&
+			$this->hasher->check($token, $passwordReset->token);
 	}
 
 	/**
@@ -100,17 +105,20 @@ class ResetPasswordController extends Controller
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function reset(Request $request) {
-
-		$this->validate($request, $this->rules(), $this->validationErrorMessages());
+		$this->validate($request, $this->rules());
 
 		//XGH
 		//reseta na mão pq o laravel não acha a model de pessoa
 		$data = $this->credentials($request);
 
 		if (!$this->exists($data['email'], $data['token']))
-			return false;
+			return $this->sendResetFailedResponse(
+				$request,
+				'Opps, tempo limite para a troca de senha foi atingido, por gentileza solicite novamente.'
+			);
 
-		$this->resetPassword(Pessoa::findByEmail($data['email']), $data['senha']);
+		$pessoa = Pessoa::findByEmail($data['email']);
+		$this->resetPassword($pessoa, $data['senha']);
 
 		return redirect('home');
 	}
@@ -145,7 +153,9 @@ class ResetPasswordController extends Controller
 	 */
 	protected function credentials(Request $request) {
 		return $request->only(
-			'email', 'senha', 'token'
+			'email',
+			'senha',
+			'token'
 		);
 	}
 
@@ -156,14 +166,13 @@ class ResetPasswordController extends Controller
 	 * @param  string  $password
 	 * @return void
 	 */
-	protected function resetPassword($email, $senha)
-	{
-		$email->forceFill([
+	protected function resetPassword($pessoa, $senha) {
+		$pessoa->forceFill([
 			'senha' => bcrypt($senha),
 			'remember_token' => Str::random(60),
 		])->save();
 
-		$this->guard()->login($email);
+		$this->guard()->login($pessoa);
 	}
 
 	/**
@@ -172,8 +181,7 @@ class ResetPasswordController extends Controller
 	 * @param  string  $response
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	protected function sendResetResponse($response)
-	{
+	protected function sendResetResponse($response) {
 		return redirect($this->redirectPath())
 			->with('status', trans($response));
 	}
@@ -185,11 +193,13 @@ class ResetPasswordController extends Controller
 	 * @param  string  $response
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	protected function sendResetFailedResponse(Request $request, $response)
-	{
-		return redirect()->back()
+	protected function sendResetFailedResponse(Request $request, $error) {
+		return redirect()
+			->back()
 			->withInput($request->only('email'))
-			->withErrors(['email' => trans($response)]);
+			->withErrors([
+				'email' => trans($error)
+			]);
 	}
 
 	/**

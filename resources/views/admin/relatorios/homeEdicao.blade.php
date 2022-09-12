@@ -602,7 +602,6 @@
                             </td>
                             <td class="text-right">
                                 <a href="{{route('relatorioAutoresPos', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
-                                <a href="{{route('csvAutoresHomologados')}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                         <tr>
@@ -704,6 +703,27 @@
                             <td>CSV Mailing Usuários</td>
                             <td class="text-right">
                                 <a href="{{route('csvMailing')}}"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td>CSV Mailing Orientador Pós Homologação</td>
+                            <td class="text-right">
+                                <a href="{{route('csvMailingOrientadoresPos', $edicao)}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td>CSV Mailing Coorientador Pós Homologação</td>
+                            <td class="text-right">
+                                <a href="{{route('csvMailingCoorientadoresPos', $edicao)}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td>CSV Mailing Autores Pós Homologação</td>
+                            <td class="text-right">
+                                <a href="{{route('csvAutoresHomologados')}}"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
                     </tbody>
