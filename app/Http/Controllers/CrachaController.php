@@ -143,6 +143,10 @@ class CrachaController extends Controller {
 					EnumFuncaoPessoa::getValue('Organizador')
 				]
 			)
+			->where(function ($q){
+				$q->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Administrador'));
+				$q->orWhere('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Organizador'));
+			})
 			->orderBy('pessoa.nome')
 			->distinct('pessoa.id')
 			->get();
