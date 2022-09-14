@@ -587,10 +587,10 @@ class RelatorioController extends Controller
             ->get();
 
         $filename = "AutoresHomologados.csv";
-	$fileheaders = [
-	    "Nome",
-	    "Email"
-	];
+        $fileheaders = [
+            "Nome",
+            "Email",
+        ];
 
         $fileRows = [];
         foreach ($resultados as $row) {
@@ -601,8 +601,8 @@ class RelatorioController extends Controller
 
             array_push($fileRows, $rowData);
         }
-	
-	return $this->returnsCSVStream($filename, $fileheaders, $fileRows);
+
+        return $this->returnsCSVStream($filename, $fileheaders, $fileRows);
     }
 
     public function participantesCompareceram($edicao)
@@ -1381,7 +1381,6 @@ class RelatorioController extends Controller
         return PDF::loadView('relatorios.coorientadoresPosHomologacao', array('coorientadores' => $coorientadores, 'cont' => $cont, 'edicao' => $edicao))->download('coorientadores_pos_homologacao.pdf');
     }
 
-
     public function projetosAreas($edicao)
     {
         $niveis = DB::table('nivel')
@@ -1423,8 +1422,9 @@ class RelatorioController extends Controller
             ]);
         }
 
-        return PDF::loadView('relatorios.projetosAreas', compact('projetosNivelArea'))
-            ->download('projetos_area.pdf');
+        //return PDF::loadView('relatorios.projetosAreas', compact('projetosNivelArea'))
+        //->download('projetos_area.pdf');
+        return view('relatorios.projetosAreas', compact('projetosNivelArea'));
     }
 
     public function projetos($edicao)
@@ -1643,7 +1643,8 @@ class RelatorioController extends Controller
             ->get()
             ->toArray();
 
-        return PDF::loadView('relatorios.projetosConfirmaramPresenca', array('projetos' => $projetos))->download('projetos_comparecerão.pdf');
+        //return PDF::loadView('relatorios.projetosConfirmaramPresenca', array('projetos' => $projetos))->download('projetos_comparecerão.pdf');
+        return view('relatorios.projetosConfirmaramPresenca', array('projetos' => $projetos));
     }
 
     public function classificacaoProjetos($edicao)
@@ -1684,8 +1685,9 @@ class RelatorioController extends Controller
             ->get()
             ->toArray();
 
-        return PDF::loadView('relatorios.statusProjetos', ['projetos' => $projetos])
-            ->download('status_projetos.pdf');
+        //return PDF::loadView('relatorios.statusProjetos', ['projetos' => $projetos])
+        //->download('status_projetos.pdf');
+        return view('relatorios.statusProjetos', ['projetos' => $projetos]);
     }
 
     public function projetosCompareceram($edicao)
@@ -1701,7 +1703,8 @@ class RelatorioController extends Controller
             ->get()
             ->toArray();
 
-        return PDF::loadView('relatorios.projetosCompareceram', array('projetos' => $projetos, 'edicao' => $edicao))->download('projetos_compareceram.pdf');
+        //return PDF::loadView('relatorios.projetosCompareceram', array('projetos' => $projetos, 'edicao' => $edicao))->download('projetos_compareceram.pdf');
+        return view('relatorios.projetosCompareceram', array('projetos' => $projetos, 'edicao' => $edicao));
     }
 
     public function projetosCompareceramPorAutor($edicao)
@@ -1724,13 +1727,21 @@ class RelatorioController extends Controller
             ->orderBy('pessoa.nome')
             ->get();
 
+        /*
         return PDF::loadView(
-            'relatorios.projetosCompareceramPorAutor',
+        'relatorios.projetosCompareceramPorAutor',
+        [
+        'autores' => $autores,
+        'edicao' => $edicao,
+        ]
+        )->download('projetos_compareceram_autor.pdf');
+         */
+        return view('relatorios.projetosCompareceramPorAutor',
             [
                 'autores' => $autores,
                 'edicao' => $edicao,
             ]
-        )->download('projetos_compareceram_autor.pdf');
+        );
     }
 
     public function projetosCompareceramIFRSCanoas($edicao)
@@ -1738,7 +1749,8 @@ class RelatorioController extends Controller
 
         $areas = Edicao::find($edicao)->areas;
 
-        return PDF::loadView('relatorios.projetosCompareceramIFRSCanoas', array('areas' => $areas, 'edicao' => $edicao))->setPaper('A4', 'landscape')->download('projetos_compareceram_ifrs_canoas.pdf');
+        //return PDF::loadView('relatorios.projetosCompareceramIFRSCanoas', array('areas' => $areas, 'edicao' => $edicao))->setPaper('A4', 'landscape')->download('projetos_compareceram_ifrs_canoas.pdf');
+        return view('relatorios.projetosCompareceramIFRSCanoas', array('areas' => $areas, 'edicao' => $edicao));
     }
 
     public function gerarLocalizacaoProjetos($edicao)
@@ -1845,13 +1857,21 @@ class RelatorioController extends Controller
     {
         $areas = Edicao::find($edicao)->areas;
 
+        /*
         return PDF::loadView(
-            'relatorios.projetosConfirmaramPresencaArea',
+        'relatorios.projetosConfirmaramPresencaArea',
+        [
+        'areas' => $areas,
+        'edicao' => $edicao,
+        ]
+        )->download('projetos_presenca_nivel.pdf');
+         */
+        return view('relatorios.projetosConfirmaramPresencaArea',
             [
                 'areas' => $areas,
                 'edicao' => $edicao,
             ]
-        )->download('projetos_presenca_nivel.pdf');
+        );
     }
 
     public function premiacaoCertificados($edicao)
@@ -1957,11 +1977,11 @@ class RelatorioController extends Controller
             ->distinct('pessoa.id')
             ->get();
 
-	$filename = "csvOrientadoresPosHomologacao.csv";
-	$fileHeaders = [
-	    "Nome",
-	    "Email"
-	];
+        $filename = "csvOrientadoresPosHomologacao.csv";
+        $fileHeaders = [
+            "Nome",
+            "Email",
+        ];
 
         $fileRows = [];
         foreach ($orientadores as $row) {
@@ -1973,7 +1993,7 @@ class RelatorioController extends Controller
             array_push($fileRows, $rowData);
         }
 
-	return $this->returnsCSVStream($filename, $fileHeaders, $fileRows);
+        return $this->returnsCSVStream($filename, $fileHeaders, $fileRows);
     }
 
     public function csvMailingCoorientadoresPosHomologacao($edicao)
@@ -1995,11 +2015,11 @@ class RelatorioController extends Controller
             ->distinct('pessoa.id')
             ->get();
 
-	$filename = "csvCoorientadoresPosHomologacao.csv";
-	$fileHeaders = [
-	    "Nome",
-	    "Email",
-	];
+        $filename = "csvCoorientadoresPosHomologacao.csv";
+        $fileHeaders = [
+            "Nome",
+            "Email",
+        ];
 
         $fileRows = [];
         foreach ($coorientadores as $row) {
@@ -2011,7 +2031,7 @@ class RelatorioController extends Controller
             array_push($fileRows, $rowData);
         }
 
-	return $this->returnsCSVStream($filename, $fileHeaders, $fileRows);
+        return $this->returnsCSVStream($filename, $fileHeaders, $fileRows);
     }
 
 }

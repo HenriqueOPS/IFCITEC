@@ -1,9 +1,12 @@
 @extends('relatorios.relatorio')
 
 @section('content')
+<header>
+	<img src="{{ asset('img/ifcitecheader.png')  }}"/>
+	<h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE PROJETOS POR NÍVEL E ÁREA</h4>
+</header>
 	<div class="container">
 		<div class="row">
-			<h4 style="text-align: center; font-size: 25px;">RELATÓRIO DE PROJETOS POR NÍVEL E ÁREA</h4>
 			<br>
 
 			@foreach($projetosNivelArea as $projetosNivel)

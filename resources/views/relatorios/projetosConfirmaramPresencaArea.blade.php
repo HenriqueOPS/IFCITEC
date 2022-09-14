@@ -1,9 +1,12 @@
 @extends('relatorios.relatorio')
 
 @section('content')
+<header>
+	<img src="{{ asset('img/ifcitecheader.png')  }}"/>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE PROJETOS QUE COMPARECERÃO NA IFCITEC (ÁREA DO CONHECIMENTO)</h2>
+</header>
 <div class="container">
     <div class="row">
-        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE PROJETOS QUE COMPARECERÃO NA IFCITEC (ÁREA DO CONHECIMENTO)</h2>
 
         <br>
         @foreach($areas as $area)
@@ -17,7 +20,7 @@
             </tr>
           </thead>
         <tbody>
-          {{$projetos = $area->getProjetos($area->id, $edicao)}}
+	  @php($projetos = $area->getProjetos($area->id, $edicao))
           @foreach($projetos as $projeto)
             <tr>
               <td><a style="color: #000;">{{$projeto->titulo}}</a></td>
