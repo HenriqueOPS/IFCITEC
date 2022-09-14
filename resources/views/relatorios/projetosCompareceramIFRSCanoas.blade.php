@@ -1,9 +1,12 @@
 @extends('relatorios.relatorioPaisagem')
 
 @section('content')
+<header>
+	<img src="{{ asset('img/ifcitecheader.png')  }}"/>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE PROJETOS QUE COMPARECERAM NA {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC DO IFRS CAMPUS CANOAS</h2>
+</header>
 <div class="container">
     <div class="row">
-        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE PROJETOS QUE COMPARECERAM NA {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC DO IFRS CAMPUS CANOAS</h2>
 
       @foreach($areas as $area)
       <p style="text-align: center;"><b>{{$area->niveis->nivel}} : {{$area->area_conhecimento}}</b></p>
@@ -19,15 +22,15 @@
   				</tr>
         	</thead>
   			<tbody>
-      {{$projetos = $area->getClassificacaoProjetosIFRSCanoas($area->id, $edicao)}}
+      @php ($projetos = $area->getClassificacaoProjetosIFRSCanoas($area->id, $edicao))
 		  @foreach($projetos as $projeto)
   				<tr>
     				<td><a style="color: #000;">{{$projeto->titulo}}</a></td>
             <td><a style="color: #000;">{{$projeto->nome_curto}}</a></td>
     				<td><a style="color: #000;">{{$projeto->nota_avaliacao}}</a></td>
-            {{$coorientadores = $projeto->getCoorientadores($projeto->id, $edicao)}}
-            {{$orientador = $projeto->getOrientador($projeto->id, $edicao)}}
-            {{$autores = $projeto->getAutores($projeto->id, $edicao)}}
+	    @php($coorientadores = $projeto->getCoorientadores($projeto->id, $edicao))
+	    @php($orientador = $projeto->getOrientador($projeto->id, $edicao))
+	    @php($autores = $projeto->getAutores($projeto->id, $edicao))
             <td>
             @foreach($autores as $autor)
             {{$autor->nome}},
