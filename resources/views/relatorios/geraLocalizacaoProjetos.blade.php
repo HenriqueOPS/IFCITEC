@@ -65,6 +65,12 @@
 </style>
 </head>
 <body>
+
+<header>
+	<img src="{{ asset('img/ifcitecheader.png')  }}"/>
+	<h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE IDENTIFICAÇÂO DE PROJETOS</h2>
+</header>
+
 @foreach($projetos as $bloco => $proj)
 @foreach($proj as $sala => $p)
 @foreach($p as $projeto)
