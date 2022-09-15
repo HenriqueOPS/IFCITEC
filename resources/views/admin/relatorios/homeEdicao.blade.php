@@ -562,6 +562,13 @@
                                 <a href="{{route('projetosCompareceramAutor', $edicao)}}" target="_blank"><i class="material-icons">visibility</i></a>
                             </td>
                         </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>Gerar Identificação dos Projetos CSV</td>
+                            <td class="text-right">
+                                <a href="{{route('csvIdentificacaoMontagem', $edicao)}}"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
                     </tbody>
                     <tbody id="8">
                         <tr>

@@ -1026,12 +1026,12 @@ class RelatorioController extends Controller
 
         $cont = 0;
 
-	/*
+        /*
         return PDF::loadView('relatorios.autores', ['autores' => $autores, 'cont' => $cont, 'edicao' => $edicao])
-            ->download('autores.pdf');
-	 */
+        ->download('autores.pdf');
+         */
 
-	return view('relatorios.autores', ['autores' => $autores, 'cont' => $cont, 'edicao' => $edicao]);
+        return view('relatorios.autores', ['autores' => $autores, 'cont' => $cont, 'edicao' => $edicao]);
     }
 
     public function orientadores($edicao)
@@ -1046,12 +1046,12 @@ class RelatorioController extends Controller
 
         $cont = 0;
 
-	/*
+        /*
         return PDF::loadView('relatorios.orientadores', ['orientadores' => $orientadores, 'cont' => $cont, 'edicao' => $edicao])
-            ->download('orientadores.pdf');
-	*/
+        ->download('orientadores.pdf');
+         */
 
-	return view('relatorios.orientadores', ['orientadores' => $orientadores, 'cont' => $cont, 'edicao' => $edicao]);
+        return view('relatorios.orientadores', ['orientadores' => $orientadores, 'cont' => $cont, 'edicao' => $edicao]);
     }
 
     public function coorientadores($edicao)
@@ -1067,7 +1067,7 @@ class RelatorioController extends Controller
         $cont = 0;
 
         //return PDF::loadView('relatorios.coorientadores', array('coorientadores' => $coorientadores, 'cont' => $cont, 'edicao' => $edicao))->download('coorientadores.pdf');
-	return view('relatorios.coorientadores', array('coorientadores' => $coorientadores, 'cont' => $cont, 'edicao' => $edicao));
+        return view('relatorios.coorientadores', array('coorientadores' => $coorientadores, 'cont' => $cont, 'edicao' => $edicao));
     }
 
     public function voluntarios($edicao)
@@ -1083,7 +1083,7 @@ class RelatorioController extends Controller
         $cont = 0;
 
         //return PDF::loadView('relatorios.voluntarios', array('voluntarios' => $voluntarios, 'cont' => $cont, 'edicao' => $edicao))->download('voluntarios.pdf');
-	return view('relatorios.voluntarios', array('voluntarios' => $voluntarios, 'cont' => $cont, 'edicao' => $edicao));
+        return view('relatorios.voluntarios', array('voluntarios' => $voluntarios, 'cont' => $cont, 'edicao' => $edicao));
     }
 
     public function homologadores($edicao)
@@ -1096,22 +1096,22 @@ class RelatorioController extends Controller
             ->orderBy('pessoa.nome')
             ->get();
 
-	/*
+        /*
         return PDF::loadView(
-            'relatorios.homologacao.homologadores',
-            [
-                'homologadores' => $homologadores,
-                'edicao' => $edicao,
-            ]
+        'relatorios.homologacao.homologadores',
+        [
+        'homologadores' => $homologadores,
+        'edicao' => $edicao,
+        ]
         )->download('homologadores.pdf');
-	*/
+         */
 
-	return view('relatorios.homologacao.homologadores',
+        return view('relatorios.homologacao.homologadores',
             [
                 'homologadores' => $homologadores,
                 'edicao' => $edicao,
             ]
-	);
+        );
     }
 
     public function avaliadores($edicao)
@@ -1126,24 +1126,24 @@ class RelatorioController extends Controller
 
         $cont = 0;
 
-	/*
+        /*
         return PDF::loadView(
-            'relatorios.avaliadores',
-            [
-                'avaliadores' => $avaliadores,
-                'cont' => $cont,
-                'edicao' => $edicao,
-            ]
+        'relatorios.avaliadores',
+        [
+        'avaliadores' => $avaliadores,
+        'cont' => $cont,
+        'edicao' => $edicao,
+        ]
         )->download('avaliadores.pdf');
-	 */
+         */
 
-	return view('relatorios.avaliadores',
+        return view('relatorios.avaliadores',
             [
                 'avaliadores' => $avaliadores,
                 'cont' => $cont,
                 'edicao' => $edicao,
             ]
-	);
+        );
     }
 
     public function projetosAvaliador($edicao)
@@ -1852,8 +1852,8 @@ class RelatorioController extends Controller
 
         $cont = 1;
         if ($num == 1) {
-            //return PDF::loadView('relatorios.geraLocalizacaoProjetos', array('projetos' => $projetos, 'cont' => $cont))->setPaper('A4', 'landscape')->download('projetos_identificacao.pdf');
-            return view('relatorios.geraLocalizacaoProjetos', array('projetos' => $projetos, 'cont' => $cont));
+            return PDF::loadView('relatorios.geraLocalizacaoProjetos', array('projetos' => $projetos, 'cont' => $cont))->setPaper('A4', 'landscape')->download('projetos_identificacao.pdf');
+            //return view('relatorios.geraLocalizacaoProjetos', array('projetos' => $projetos, 'cont' => $cont));
         }
         if ($num == 2) {
             //return PDF::loadView('relatorios.identificacaoProjetos', array('projetos' => $projetos, 'cont' => $cont))->setPaper('A4', 'landscape')->download('projetos_localizacao.pdf');
@@ -2076,6 +2076,55 @@ class RelatorioController extends Controller
         }
 
         return $this->returnsCSVStream($filename, $fileHeaders, $fileRows);
+    }
+
+    public function csvIdentificacaoMontagem($edicao)
+    {
+        $projetos = DB::table('projeto')
+            ->select('projeto.id', 'projeto.titulo', 'area_conhecimento.area_conhecimento', 'nivel.nivel', 'escola.nome_curto')
+            ->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
+            ->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
+            ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+            ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+            ->where('projeto.edicao_id', $edicao)
+            ->whereIn(
+                'projeto.situacao_id',
+                [
+                    EnumSituacaoProjeto::getValue('Homologado'),
+                    EnumSituacaoProjeto::getValue('NaoAvaliado'),
+                    EnumSituacaoProjeto::getValue('Avaliado'),
+                ]
+            )
+            ->where('projeto.presenca', true)
+            ->distinct('projeto.id')
+            ->orderBy('area_conhecimento.area_conhecimento')
+            ->orderBy('nivel.nivel')
+            ->orderBy('projeto.titulo')
+            ->get()
+            ->toArray();
+
+        $filename = "csvIdentificacaoMontagem.csv";
+        $fileheaders = [
+            "NomeProj",
+            "EscolaCurta",
+            "Area",
+            "Nivel",
+        ];
+
+
+        $fileRows = [];
+        foreach ($projetos as $row) {
+            $rowData = [
+                utf8_decode($row->titulo),
+                utf8_decode($row->nome_curto),
+                utf8_decode($row->area_conhecimento),
+                utf8_decode($row->nivel),
+            ];
+
+            array_push($fileRows, $rowData);
+        }
+
+        return $this->returnsCSVStream($filename, $fileheaders, $fileRows);
     }
 
 }
