@@ -1,10 +1,12 @@
 @extends('relatorios.relatorio')
 
 @section('content')
+<header>
+	<img src="{{ asset('img/ifcitecheader.png')  }}"/>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE AUTORES, ORIENTADORES, COORIENTADORES, VOLUNTÁRIOS, HOMOLOGADORES E AVALIADORES POR EDIÇÃO</h2>
+</header>
 <div class="container">
     <div class="row">
-        <h5 style="text-align: center; font-size: 25px;">RELATÓRIO DE AUTORES, ORIENTADORES, COORIENTADORES, VOLUNTÁRIOS, HOMOLOGADORES E AVALIADORES POR EDIÇÃO
-        </h5>
         <br>
         @foreach($edicoes as $edicao)
         @if($edicao->ano > 5)
@@ -20,7 +22,7 @@
   				</tr>
         	</thead>
   			<tbody>
-            {{$cont = 0}}
+	    @php($cont = 0)
             @foreach($autores as $autor)
             @if($autor->edicao_id == $edicao->id)
             <tr>
@@ -36,7 +38,7 @@
             <td>
             <a style="color: #000;">{{$autor->telefone}}</a>
             </td>  
-            {{$cont++}}
+	    @php($cont++)
              </tr>  
             @endif
             @endforeach	

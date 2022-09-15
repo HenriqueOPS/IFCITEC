@@ -1026,8 +1026,12 @@ class RelatorioController extends Controller
 
         $cont = 0;
 
+	/*
         return PDF::loadView('relatorios.autores', ['autores' => $autores, 'cont' => $cont, 'edicao' => $edicao])
             ->download('autores.pdf');
+	 */
+
+	return view('relatorios.autores', ['autores' => $autores, 'cont' => $cont, 'edicao' => $edicao]);
     }
 
     public function orientadores($edicao)
@@ -1042,8 +1046,12 @@ class RelatorioController extends Controller
 
         $cont = 0;
 
+	/*
         return PDF::loadView('relatorios.orientadores', ['orientadores' => $orientadores, 'cont' => $cont, 'edicao' => $edicao])
             ->download('orientadores.pdf');
+	*/
+
+	return view('relatorios.orientadores', ['orientadores' => $orientadores, 'cont' => $cont, 'edicao' => $edicao]);
     }
 
     public function coorientadores($edicao)
@@ -1058,7 +1066,8 @@ class RelatorioController extends Controller
 
         $cont = 0;
 
-        return PDF::loadView('relatorios.coorientadores', array('coorientadores' => $coorientadores, 'cont' => $cont, 'edicao' => $edicao))->download('coorientadores.pdf');
+        //return PDF::loadView('relatorios.coorientadores', array('coorientadores' => $coorientadores, 'cont' => $cont, 'edicao' => $edicao))->download('coorientadores.pdf');
+	return view('relatorios.coorientadores', array('coorientadores' => $coorientadores, 'cont' => $cont, 'edicao' => $edicao));
     }
 
     public function voluntarios($edicao)
@@ -1073,7 +1082,8 @@ class RelatorioController extends Controller
 
         $cont = 0;
 
-        return PDF::loadView('relatorios.voluntarios', array('voluntarios' => $voluntarios, 'cont' => $cont, 'edicao' => $edicao))->download('voluntarios.pdf');
+        //return PDF::loadView('relatorios.voluntarios', array('voluntarios' => $voluntarios, 'cont' => $cont, 'edicao' => $edicao))->download('voluntarios.pdf');
+	return view('relatorios.voluntarios', array('voluntarios' => $voluntarios, 'cont' => $cont, 'edicao' => $edicao));
     }
 
     public function homologadores($edicao)
@@ -1086,6 +1096,7 @@ class RelatorioController extends Controller
             ->orderBy('pessoa.nome')
             ->get();
 
+	/*
         return PDF::loadView(
             'relatorios.homologacao.homologadores',
             [
@@ -1093,6 +1104,14 @@ class RelatorioController extends Controller
                 'edicao' => $edicao,
             ]
         )->download('homologadores.pdf');
+	*/
+
+	return view('relatorios.homologacao.homologadores',
+            [
+                'homologadores' => $homologadores,
+                'edicao' => $edicao,
+            ]
+	);
     }
 
     public function avaliadores($edicao)
@@ -1107,6 +1126,7 @@ class RelatorioController extends Controller
 
         $cont = 0;
 
+	/*
         return PDF::loadView(
             'relatorios.avaliadores',
             [
@@ -1115,6 +1135,15 @@ class RelatorioController extends Controller
                 'edicao' => $edicao,
             ]
         )->download('avaliadores.pdf');
+	 */
+
+	return view('relatorios.avaliadores',
+            [
+                'avaliadores' => $avaliadores,
+                'cont' => $cont,
+                'edicao' => $edicao,
+            ]
+	);
     }
 
     public function projetosAvaliador($edicao)

@@ -1,10 +1,13 @@
 @extends('relatorios.relatorio')
 
 @section('content')
+<header>
+	<img src="{{ asset('img/ifcitecheader.png')  }}"/>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE COORIENTADORES DA {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC
+        </h2>
+</header>
 <div class="container">
     <div class="row">
-        <h5 style="text-align: center; font-size: 25px;">RELATÓRIO DE COORIENTADORES DA {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC
-        </h5>
         <br>
         <table class="bordered striped centered" style="width:100%;">
             <thead>
@@ -16,7 +19,7 @@
                 </tr>
             </thead>
             <tbody>
-            {{$cont = 0}}
+						@php($cont = 0)
             @foreach($coorientadores as $coorientador)
             <tr>
             <td>
@@ -31,7 +34,7 @@
             <td>
             <a style="color: #000;">{{$coorientador->telefone}}</a>
             </td>  
-            {{$cont++}}
+            @php($cont++)
              </tr>  
             @endforeach 
             </tbody>    

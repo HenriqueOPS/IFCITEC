@@ -20,8 +20,8 @@
                 </tr>
             </thead>
             <tbody>
-            {{$cont = 0}}
-            @foreach($homologadores s $homologador)
+	    @php($cont = 0)
+            @foreach($homologadores as $homologador)
             <tr>
             <td>
             <a style="color: #000;">{{$homologador->nome}}</a>
@@ -35,7 +35,7 @@
             <td>
             <a style="color: #000;">{{$homologador->telefone}}</a>
             </td>  
-            {{$cont++}}
+	    @php($cont++)
              </tr>  
             @endforeach 
             </tbody>    
