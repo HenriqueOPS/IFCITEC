@@ -1127,13 +1127,21 @@ class RelatorioController extends Controller
             ->orderBy('pessoa.nome')
             ->get();
 
+        /*
         return PDF::loadView(
-            'relatorios.avaliacao.projetosAvaliador',
+        'relatorios.avaliacao.projetosAvaliador',
+        [
+        'avaliadores' => $avaliadores,
+        'edicao' => $edicao,
+        ]
+        )->download('projetos_avaliador.pdf');
+         */
+        return view('relatorios.avaliacao.projetosAvaliador',
             [
                 'avaliadores' => $avaliadores,
                 'edicao' => $edicao,
             ]
-        )->download('projetos_avaliador.pdf');
+        );
     }
 
     public function autoresLanche($edicao)
@@ -1598,7 +1606,8 @@ class RelatorioController extends Controller
                 ->toArray();
         }
 
-        return PDF::loadView('relatorios.avaliacao.avaliadoresArea', ['areas' => $areas])->download('avaliadores_area.pdf');
+        //return PDF::loadView('relatorios.avaliacao.avaliadoresArea', ['areas' => $areas])->download('avaliadores_area.pdf');
+        return view('relatorios.avaliacao.avaliadoresArea', ['areas' => $areas]);
     }
 
     public function homologadoresProjeto($edicao)
@@ -1627,10 +1636,14 @@ class RelatorioController extends Controller
             )
             ->get();
 
+        /*
         return PDF::loadView(
-            'relatorios.avaliacao.avaliadoresProjeto',
-            ['projetos' => $projetos]
+        'relatorios.avaliacao.avaliadoresProjeto',
+        ['projetos' => $projetos]
         )->download('avaliadores_projeto.pdf');
+         */
+
+        return view('relatorios.avaliacao.avaliadoresProjeto', ['projetos' => $projetos]);
     }
 
     public function projetosConfirmaramPresenca($edicao)
@@ -1811,11 +1824,11 @@ class RelatorioController extends Controller
         $cont = 1;
         if ($num == 1) {
             //return PDF::loadView('relatorios.geraLocalizacaoProjetos', array('projetos' => $projetos, 'cont' => $cont))->setPaper('A4', 'landscape')->download('projetos_identificacao.pdf');
-	    return view('relatorios.geraLocalizacaoProjetos', array('projetos' => $projetos, 'cont' => $cont));
+            return view('relatorios.geraLocalizacaoProjetos', array('projetos' => $projetos, 'cont' => $cont));
         }
         if ($num == 2) {
             //return PDF::loadView('relatorios.identificacaoProjetos', array('projetos' => $projetos, 'cont' => $cont))->setPaper('A4', 'landscape')->download('projetos_localizacao.pdf');
-	    return view('relatorios.identificacaoProjetos', array('projetos' => $projetos, 'cont' => $cont));
+            return view('relatorios.identificacaoProjetos', array('projetos' => $projetos, 'cont' => $cont));
         }
     }
 

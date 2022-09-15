@@ -2,9 +2,12 @@
 
 
 @section('content')
+<header>
+	<img src="{{ asset('img/ifcitecheader.png')  }}"/>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE PROJETOS POR AVALIADOR</h2>
+</header>
 <div class="container">
     <div class="row">
-        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE PROJETOS POR AVALIADOR</h2>
 
         @foreach($avaliadores as $avaliador)
         <table class="bordered striped centered" style="width: 100%;">
