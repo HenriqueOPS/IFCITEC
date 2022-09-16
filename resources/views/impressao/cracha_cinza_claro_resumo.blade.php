@@ -66,14 +66,14 @@
 	.cracha .dados h2{
 		width: calc(100% - 12mm);
 		height: 8mm;
+		font-size: 23px;
 		line-height: 8mm;
 		overflow: hidden;
 		padding: 2mm;
-		background: blue;
+		background: rgb(168, 166, 166);
 		margin-left: 5mm;
 		margin-top: 0mm;
 		text-transform: uppercase;
-		font-size: 23px;
 	}
 	.cracha .dados h3{
 		font-size: 20px;

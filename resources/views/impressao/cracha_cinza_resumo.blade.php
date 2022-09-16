@@ -69,11 +69,11 @@
 		line-height: 8mm;
 		overflow: hidden;
 		padding: 2mm;
-		background: blue;
+		font-size: 23px;
+		background: rgb(95, 95, 95);
 		margin-left: 5mm;
 		margin-top: 0mm;
 		text-transform: uppercase;
-		font-size: 23px;
 	}
 	.cracha .dados h3{
 		font-size: 20px;

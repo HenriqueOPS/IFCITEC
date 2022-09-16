@@ -67,9 +67,10 @@
 		width: calc(100% - 12mm);
 		height: 8mm;
 		line-height: 8mm;
+		font-size: 23px;
 		overflow: hidden;
-		padding: 1mm;
-		background: #273746;
+		padding: 2mm;
+		background: red;
 		margin-left: 5mm;
 		margin-top: 0mm;
 		text-transform: uppercase;
@@ -78,6 +79,7 @@
 		margin-top: 2mm;
 		width: calc(100% - 12mm);
 		margin-left: 5mm;
+		font-size: 20px;
 		text-align: center;
 		color: #424a4e;
 	}

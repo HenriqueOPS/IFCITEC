@@ -75,7 +75,7 @@ class CrachaController extends Controller {
 					$pessoa->nome = $primeiroNome." ".$ultimoNome;
 			}
 		$funcao = 'Autor';
-		return Response::view('impressao.cracha_verde_resumo', compact('pessoas', 'funcao', 'edicao'));
+		return Response::view('impressao.cracha_preto_resumo', compact('pessoas', 'funcao', 'edicao'));
 	}
 
 	public function generateCrachasComissaoAvaliadora($edicao){
@@ -110,7 +110,7 @@ class CrachaController extends Controller {
 					$pessoa->nome = $primeiroNome." ".$ultimoNome;
 			}
 		$funcao = 'Comissão Avaliadora';
-		return view('impressao.cracha_vermelho_resumo', compact('pessoas', 'funcao', 'edicao'));
+		return view('impressao.cracha_azul_resumo', compact('pessoas', 'funcao', 'edicao'));
 	}
 
 	public function generateCrachasComissaoOrganizadora($edicao){
@@ -158,7 +158,7 @@ class CrachaController extends Controller {
 					$pessoa->nome = $primeiroNome." ".$ultimoNome;
 			}
 		$funcao = 'Comissão Organizadora';
-		return view('impressao.cracha_vermelho_resumo', compact('pessoas', 'funcao', 'edicao'));
+		return view('impressao.cracha_verde_resumo', compact('pessoas', 'funcao', 'edicao'));
 	}
 
 	public function generateCrachasOrientadores($edicao){
@@ -208,7 +208,7 @@ class CrachaController extends Controller {
 					$pessoa->nome = $primeiroNome." ".$ultimoNome;
 			}
 		$funcao = 'Orientador';
-		return view('impressao.cracha_verde_resumo', compact('pessoas','funcao', 'edicao'));
+		return view('impressao.cracha_cinza_resumo', compact('pessoas','funcao', 'edicao'));
 	}
 
 	public function generateCrachasCoorientadores($edicao) {
@@ -263,7 +263,7 @@ class CrachaController extends Controller {
 				
 			}
 		$funcao = 'Coorientador';
-		return view('impressao.cracha_verde_resumo', compact('pessoas', 'funcao', 'edicao'));
+		return view('impressao.cracha_cinza_claro_resumo', compact('pessoas', 'funcao', 'edicao'));
 	}
 
 	public function generateCrachasVoluntarios($edicao){
@@ -299,7 +299,8 @@ class CrachaController extends Controller {
 				$ultimoNome = array_pop($partes);
 					$pessoa->nome = $primeiroNome." ".$ultimoNome;
 			}
-		return view('impressao.cracha_azul_resumo', compact('pessoas', 'edicao'));
+			$funcao = 'Voluntario';
+		return view('impressao.cracha_vermelho_resumo', compact('pessoas', 'edicao', 'funcao'));
 	}
 
 
