@@ -113,14 +113,14 @@ class AdminController extends Controller
     }
 
     public function dashboardNaoAvaliados() {
-        $projetos = Projeto::select('titulo')
+        $response = [];
+        $response['projetosNaoAvaliados'] = Projeto::select('titulo')
             ->orderBy('titulo')
             ->where('edicao_id', Edicao::getEdicaoId())
             ->where('situacao_id', EnumSituacaoProjeto::getValue('NaoAvaliado'))
             ->get();
         
-        dd(Edicao::getEdicaoId());
-        return response()->json($projetos);
+        return response()->json($response);
     }
 
     public function projetos()

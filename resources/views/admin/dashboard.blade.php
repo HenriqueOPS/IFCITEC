@@ -143,8 +143,8 @@
 	</div>
 
 	<div class="row">
-    <h5>Projeto Não Avaliados</h5>
-    {{ route('dashboardProjetos') }}
+    <h5>Falta Avaliar</h5>
+    <div id='root-projetos'></div>
   </div>
 
 </div>
@@ -193,6 +193,12 @@
 .grafico li .barra .preenchido.vermelho {background: #f04732;}
 .grafico li .barra .preenchido.verde {background: #458e33;}
 
+.projeto {
+	font-size: 1.5vw;
+	margin: 2% 5%;
+	font-weight: 500;
+}
+
 </style>
 @endsection
 
@@ -202,6 +208,7 @@ var tempo;
 var intervalo = 180; // em segundos
 
 atualizaDados();
+mostrarProjetosNaoAvaliados();
 $('#cronometro .ultima-atualizacao').html(currentTime());
 
 setInterval(function () {
@@ -260,8 +267,11 @@ function atualizaDados() {
 }
 
 function mostrarProjetosNaoAvaliados() {
-    $.get("/dashboard/projetos", function(data) {
-      console.log(data);
+    $.get("/administrador/dashboard/projetos", function(data) {
+	   data.projetosNaoAvaliados.forEach(element => {
+			$('#root-projetos').append(`<hr/>`);
+			$('#root-projetos').append(`<div class="row projeto">${element.titulo}</div>`);
+	   });
     });
 }
 
