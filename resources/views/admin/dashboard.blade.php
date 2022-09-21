@@ -142,6 +142,11 @@
 
 	</div>
 
+	<div class="row">
+    <h5>Projeto Não Avaliados</h5>
+    {{ route('dashboardProjetos') }}
+  </div>
+
 </div>
 @endsection
 
@@ -251,6 +256,12 @@ function atualizaDados() {
         console.log(data);
 
         tempo = intervalo;
+    });
+}
+
+function mostrarProjetosNaoAvaliados() {
+    $.get("/dashboard/projetos", function(data) {
+      console.log(data);
     });
 }
 
