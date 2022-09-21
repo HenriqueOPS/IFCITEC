@@ -6,6 +6,7 @@ use App\AreaConhecimento;
 use App\Edicao;
 use App\Endereco;
 use App\Enums\EnumFuncaoPessoa;
+use App\Enums\EnumSituacaoProjeto;
 use App\Escola;
 use App\Funcao;
 use App\Http\Requests\AreaRequest;
@@ -108,6 +109,17 @@ class AdminController extends Controller
 
         $response['avaliadores']['naoPresentes'] = $response['avaliadores']['numAvaliadores'] - $response['avaliadores']['presentes'];
 
+        return response()->json($response);
+    }
+
+    public function dashboardNaoAvaliados() {
+        $response = [];
+        $response['projetosNaoAvaliados'] = Projeto::select('titulo')
+            ->orderBy('titulo')
+            ->where('edicao_id', Edicao::getEdicaoId())
+            ->where('situacao_id', EnumSituacaoProjeto::getValue('NaoAvaliado'))
+            ->get();
+        
         return response()->json($response);
     }
 

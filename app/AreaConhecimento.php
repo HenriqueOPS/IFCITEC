@@ -163,5 +163,18 @@ class AreaConhecimento extends Model {
         return $projetos;
     }
 
+    public function getProjetosHomologadosConfirmados($id, $edicao){
+        $projetos = Projeto::select('projeto.id', 'projeto.titulo', 'escola.nome_curto')
+            ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+            ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+            ->where('projeto.edicao_id','=',$edicao)
+            ->where('projeto.area_id','=',$id)
+            ->where('projeto.presenca','=',TRUE)
+            ->where('projeto.situacao_id', '=', EnumSituacaoProjeto::getValue('Homologado'))
+            ->orderBy('titulo','asc')
+            ->distinct('projeto.id')
+            ->get();
 
+        return $projetos;
+    }
 }
