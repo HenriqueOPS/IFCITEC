@@ -20,7 +20,7 @@
             </tr>
           </thead>
         <tbody>
-	  @php($projetos = $area->getProjetos($area->id, $edicao))
+	  @php($projetos = $area->getProjetosHomologadosConfirmados($area->id, $edicao))
           @foreach($projetos as $projeto)
             <tr>
               <td><a style="color: #000;">{{$projeto->titulo}}</a></td>

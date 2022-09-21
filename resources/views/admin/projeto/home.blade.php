@@ -82,7 +82,7 @@
         <div class="col-md-12 main main-raised">
 
 			@if($periodoAvaliacao)
-				<a href="{{ route('dashboard') }}" class="btn btn-sm btn-primary">Dashboard de Avaliação</a>
+				<a href="{{ route('dashboard') }}" target="_blank" class="btn btn-sm btn-primary">Dashboard de Avaliação</a>
 			@endif
 
             <div class="list-projects">
