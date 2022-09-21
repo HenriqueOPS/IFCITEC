@@ -216,6 +216,7 @@ setInterval(function () {
         $('#cronometro .tempo').html('atualizando...');
 
         atualizaDados();
+		mostrarProjetosNaoAvaliados();
         return;
 	}
 
