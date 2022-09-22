@@ -216,6 +216,7 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/administrador/dashboard', 'AdminController@dashboardPage')->name('dashboard');
 	Route::get('/administrador/dashboard/data', 'AdminController@dashboard'); // Ajax
 	Route::get('/administrador/dashboard/projetos', 'AdminController@dashboardNaoAvaliados'); // Ajax
+	Route::get('/administrador/dashboard/avaliadores', 'AdminController@dashboardAvaliadoresNaoPresentes'); // Ajax
 
 	// TODO: refatorar
 	Route::get('/administrador/nota-revisao/projeto/{projeto}', 'AdminController@notaRevisao')->name('notaRevisao');
