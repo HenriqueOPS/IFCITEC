@@ -123,6 +123,27 @@ class AdminController extends Controller
         return response()->json($response);
     }
 
+    public function dashboardAvaliadoresNaoPresentes() {
+        $response = [];
+
+        $presentes = DB::table('presenca')->select('presenca.id_pessoa')->get();
+        $presentesArr = [];
+    
+        foreach($presentes as $pessoa) {
+            array_push($presentesArr, $pessoa->id_pessoa);
+        }
+
+        $response['avaliadoresNaoPresentes'] = DB::table('pessoa')
+            ->select('pessoa.id', 'pessoa.nome')
+            ->join('funcao_pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+            ->whereNotIn('pessoa.id', $presentesArr)
+            ->where('funcao_pessoa.edicao_id', '=', Edicao::getEdicaoId())
+            ->where('funcao_pessoa.funcao_id', '=', 3)
+            ->get();
+        
+        return response()->json($response);
+    }
+
     public function projetos()
     {
 

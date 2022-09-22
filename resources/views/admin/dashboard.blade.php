@@ -148,6 +148,11 @@
             <div id='root-projetos'></div>
         </div>
 
+        <hr/>
+        <div class="row">
+            <h5 style="font-size: 2vw; font-weight: 500;">AVALIADORES NÂO PRESENTES</h5>
+            <div id='root-avaliadores'></div>
+        </div>
     </div>
 @endsection
 
@@ -200,7 +205,7 @@
             background: #458e33;
         }
 
-        .projeto {
+        .dashrow {
             font-size: 1.5vw;
             margin: 2% 5%;
             font-weight: 500;
@@ -215,6 +220,7 @@
 
         atualizaDados();
         mostrarProjetosNaoAvaliados();
+        mostrarAvaliadoresNaoPresentes();
         $('#cronometro .ultima-atualizacao').html(currentTime());
 
         setInterval(function() {
@@ -223,6 +229,7 @@
 
                 atualizaDados();
                 mostrarProjetosNaoAvaliados();
+                mostrarAvaliadoresNaoPresentes();
                 return;
             }
 
@@ -282,8 +289,17 @@
             $.get("/administrador/dashboard/projetos", function(data) {
                 data.projetosNaoAvaliados.forEach(element => {
                     $('#root-projetos').append(`<hr/>`);
-                    $('#root-projetos').append(`<div class="row projeto">${element.titulo}</div>`);
+                    $('#root-projetos').append(`<div class="row dashrow">${element.titulo}</div>`);
                 });
+            });
+        }
+
+        function mostrarAvaliadoresNaoPresentes() {
+            $.get("/administrador/dashboard/avaliadores", function(data) {
+                data.avaliadoresNaoPresentes.forEach(element => {
+                    $('#root-avaliadores').append('<hr/>');
+                    $('#root-avaliadores').append(`<div class="row dashrow">${element.nome}</div>`);
+                })
             });
         }
 
