@@ -1694,27 +1694,38 @@ class RelatorioController extends Controller
     {
         $areas = Edicao::find($edicao)->areas;
 
+        /*
         return PDF::loadView('relatorios.premiacao.classificacaoProjetos', ['areas' => $areas, 'edicao' => $edicao])
             ->setPaper('A4', 'landscape')
             ->download('classificacao_projetos.pdf');
+        */
+    
+        return view('relatorios.premiacao.classificacaoProjetos', ['areas' => $areas, 'edicao' => $edicao]);
     }
 
     public function premiacaoProjetos($edicao)
     {
         $areas = Edicao::find($edicao)->areas;
 
+        /*
         return PDF::loadView('relatorios.premiacao.premiacaoProjetos', ['areas' => $areas, 'edicao' => $edicao])
             ->setPaper('A4', 'landscape')
             ->download('premiacao_projetos.pdf');
+        */
+
+        return view('relatorios.premiacao.premiacaoProjetos', ['areas' => $areas, 'edicao' => $edicao]);
     }
 
     public function classificacaoGeral($edicao)
     {
         $niveis = Edicao::find($edicao)->niveis;
 
+        /*
         return PDF::loadView('relatorios.premiacao.classificacaoGeral', ['niveis' => $niveis, 'edicao' => $edicao])
             ->setPaper('A4', 'landscape')
             ->download('classificacao_geral.pdf');
+        */
+        return view('relatorios.premiacao.classificacaoGeral', ['niveis' => $niveis, 'edicao' => $edicao]);
     }
 
     public function statusProjetos($edicao)
