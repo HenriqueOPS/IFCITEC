@@ -1617,7 +1617,7 @@ class RelatorioController extends Controller
             ->orderBy('nivel.nivel')
             ->get()
             ->toArray();
-
+ 
         foreach ($areas as $key => $area) {
 
             $areas[$key]->avaliadores = DB::table('pessoa')
@@ -1635,6 +1635,7 @@ class RelatorioController extends Controller
                 ->toArray();
         }
 
+        //dd($areas);
         //return PDF::loadView('relatorios.avaliacao.avaliadoresArea', ['areas' => $areas])->download('avaliadores_area.pdf');
         return view('relatorios.avaliacao.avaliadoresArea', ['areas' => $areas]);
     }
@@ -2012,6 +2013,8 @@ class RelatorioController extends Controller
                 'projeto.situacao_id',
                 [
                     EnumSituacaoProjeto::getValue('Homologado'),
+                    EnumSituacaoProjeto::getValue('NaoAvaliado'),
+                    EnumSituacaoProjeto::getValue('Avaliado'),
                 ]
             )
             ->where('projeto.presenca', true)
@@ -2050,6 +2053,8 @@ class RelatorioController extends Controller
                 'projeto.situacao_id',
                 [
                     EnumSituacaoProjeto::getValue('Homologado'),
+                    EnumSituacaoProjeto::getValue('NaoAvaliado'),
+                    EnumSituacaoProjeto::getValue('Avaliado'),
                 ]
             )
             ->where('projeto.presenca', true)
