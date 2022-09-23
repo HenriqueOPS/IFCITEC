@@ -107,7 +107,7 @@
 
     Instascan.Camera.getCameras().then(function (cameras) {
         if (cameras.length > 0) {
-            if(cmaeras.length > 1)
+            if(cameras.length > 1)
                 scanner.start(cameras[1]);
             else
                 scanner.start(cameras[0]);
