@@ -47,6 +47,14 @@ class Escola extends Model {
         //return $this->belongsToMany('App\Pessoa', 'escola_funcao_pessoa_projeto')->withPivot('projeto_id', 'funcao_id');
     }
 
+    public static function getAllByTipo() {
+        return DB::table('escola')
+            ->join('endereco', 'endereco.id', '=', 'escola.endereco_id')
+            ->orderBy('publica')
+            ->orderBy('nome_completo')
+            ->get();
+    }
+
     public function getProjetos() {
          //REFACT
         //NOTE: Infelizmente o laravel não possui suporte para a cláusula DISTINCT ON.

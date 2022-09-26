@@ -2144,11 +2144,41 @@ class RelatorioController extends Controller
     }
     
     public function csvEscolaPorTipo() {
+        $escolas = Escola::getAllByTipo();
 
+        $filename = "csvEscolaPorTipo.csv";
+        $fileheaders = [
+            "Nome Completo",
+            "Tipo"
+        ];
+
+        $filerows = [];
+        foreach ($escolas as $escola) {
+            $rowdata = [
+                utf8_decode($escola->nome_completo),
+                $escola->publica == true ? "Publica" : "Privada",
+            ];
+
+            array_push($filerows, $rowdata);
+        }
+
+        return $this->returnsCSVStream($filename, $fileheaders, $filerows);
     }
 
     public function escolaPorTipo() {
+        $escolas = Escola::getAllByTipo();
 
+        $escolasPublicas = [];
+        $escolasPrivadas = [];
+        foreach($escolas as $escola) {
+            if ($escola->publica) {
+                array_push($escolasPublicas, $escola);
+            } else {
+                array_push($escolasPrivadas, $escola);
+            }
+        }
+
+        return view('relatorios.gerais.escolasPorTipo', ['escolasPublicas' => $escolasPublicas, 'escolasPrivadas' => $escolasPrivadas]);
     }
 
     public function projetosHomologadosPorEscola() {

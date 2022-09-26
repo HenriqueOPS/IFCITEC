@@ -336,6 +336,14 @@
                                 <a href="{{route('csvEmailNomeEscolas')}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
                             </td>
                         </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>Escolas por Tipo</td>
+                            <td class="text-right">
+                                <a href="{{route('relatorioEscolaPorTipo')}}" target="_blank"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('csvEscolaPorTipo')}}" target="_blank"><i class="material-icons">arrow_downward</i></a>
+                            </td>
+                        </tr>
                     </tbody>
 
                     <tbody id="3">
