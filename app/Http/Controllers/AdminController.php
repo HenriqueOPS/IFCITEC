@@ -499,6 +499,7 @@ class AdminController extends Controller
 
         $id_escola = $data['id_escola'];
         $id_endereco = $data['id_endereco'];
+        $data['publica'] = $req->has('publica') ?? true;
 
         if ($id_endereco != 0) {
 
@@ -531,6 +532,7 @@ class AdminController extends Controller
                 'email' => $data['email'],
                 'telefone' => $data['telefone'],
                 'endereco_id' => $id_endereco,
+                'publica' => $data['publica']
             ]);
 
         return redirect()->route('administrador.escolas');
@@ -544,6 +546,7 @@ class AdminController extends Controller
     public function cadastraEscola(Request $req)
     {
         $data = $req->all();
+        $data['publica'] = $req->has('publica') ?? true;
 
         $idEndereco = Endereco::create([
             'cep' => $data['cep'],
@@ -560,10 +563,10 @@ class AdminController extends Controller
             'email' => $data['email'],
             'telefone' => $data['telefone'],
             'endereco_id' => $idEndereco['original']['id'],
+            'publica' => $data['publica'],
         ]);
 
         return redirect()->route('administrador.escolas');
-
     }
 
     public function excluiEscola($id, $s)

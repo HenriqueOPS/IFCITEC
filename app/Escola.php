@@ -24,7 +24,7 @@ class Escola extends Model {
      */
     protected $fillable = [
         'nome_completo', 'nome_curto', 'email', 'telefone', 'endereco_id',
-        'endereco', 'municipio', 'cep', 'uf', 'bairro', 'numero'
+        'endereco', 'municipio', 'cep', 'uf', 'bairro', 'numero', 'publica'
     ];
 
     public function getPessoas() {
