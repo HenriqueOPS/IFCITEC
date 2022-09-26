@@ -2142,5 +2142,16 @@ class RelatorioController extends Controller
 
         return $this->returnsCSVStream($filename, $fileheaders, $fileRows);
     }
+    
+    public function csvEscolaPorTipo() {
 
+    }
+
+    public function escolaPorTipo() {
+
+    }
+
+    public function projetosHomologadosPorEscola() {
+
+    }
 }

@@ -71,6 +71,8 @@ Route::get('/relatorio/edicoes', 'RelatorioController@edicoes')->name('relatorio
 Route::get('/relatorio/escolas', 'RelatorioController@escolas')->name('relatorioEscola');
 Route::get('/relatorio/niveis/{edicao}', 'RelatorioController@niveis')->name('relatorioNivel');
 Route::get('escolasContato', 'RelatorioController@csvEmailNomeEscolas')->name('csvEmailNomeEscolas');
+Route::get('/relatorio/escolas/tipo-escola', 'RelatorioController@escolaPorTipo')->name('relatorioEscolaPorTipo');
+Route::get('/escolas/tipo-escola-csv', 'RelatorioController@csvEscolaPorTipo')->name('csvEscolaPorTipo');
 
 // Relatórios - Lanche
 Route::get('/relatorio/vale-lanche/gerar/{edicao}', 'RelatorioController@gerarValeLanche')->name('geraValeLanche');
@@ -105,6 +107,7 @@ Route::get('/csv/presenca/comissao/organizadora', 'RelatorioController@csvPresen
 // Relatórios - Projetos
 Route::get('/relatorio/gerar/localizacao/projetos/{edicao}', 'RelatorioController@gerarLocalizacaoProjetos')->name('gerarLocalizacaoProjetos');
 Route::post('/relatorio/gera/localizacao/projetos/{edicao}', 'RelatorioController@geraLocalizacaoProjetos')->name('geraLocalizacaoProjetos');
+Route::get('/relatorio/projetos/homologados-escola/{edicao}', 'RelatorioController@projetosHomologadosPorEscola')->name('projetosHomologadosPorEscola');
 
 // Relatórios - Voluntários
 Route::get('/relatorio/voluntario/tarefa/{edicao}', 'RelatorioController@voluntarioTarefa')->name('relatorioVoluntarioTarefa');
