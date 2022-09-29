@@ -5,7 +5,7 @@
 <header>
 	<img src="{{ asset('img/ifcitecheader.png')  }}"/>
 	<h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE ASSINATURAS PARTCIPANTES</h2>
-	<h4 style="text-align: center; font-size: 25px;">{{\App\Edicao::numeroEdicao($edicao)}}</h4>
+	<h4 style="text-align: center; font-size: 25px;">{{\App\Edicao::numeroEdicao($edicao)}} Edição</h4>
 </header>
 
 <div class="container">

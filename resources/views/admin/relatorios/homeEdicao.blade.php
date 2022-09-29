@@ -410,7 +410,6 @@
                                             class="material-icons">visibility</i></a>
                                     <a href="{{ route('csv', ['id' => 2, 'edicao' => $edicao]) }}"><i
                                             class="material-icons">arrow_downward</i></a>
-                            </tr>
                                 </td>
                             </tr>
                             <tr>
@@ -710,15 +709,6 @@
                             </tr>
                             <tr>
                                 <td>4</td>
-                                <td>Relatório de Autores (Tamanho Camisa - Assinatura)
-                                </td>
-                                <td class="text-right">
-                                    <a href="{{ route('camisaTamanhoAssinatura', $edicao) }}" target="_blank"><i
-                                            class="material-icons">visibility</i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
                                 <td>Relatório de Autores Que Comparecerão na IFCITEC
                                 </td>
                                 <td class="text-right">
@@ -727,7 +717,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>6</td>
+                                <td>5</td>
                                 <td>Relatório de Coorientadores
                                 </td>
                                 <td class="text-right">
@@ -736,7 +726,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>7</td>
+                                <td>6</td>
                                 <td>Relatório de Coorientadores (Pós Homologação)
                                 </td>
                                 <td class="text-right">
@@ -747,7 +737,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>8</td>
+                                <td>7</td>
                                 <td>Relatório de Orientadores
                                 </td>
                                 <td class="text-right">
@@ -756,7 +746,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>9</td>
+                                <td>8</td>
                                 <td>Relatório de Orientadores (Pós Homologação)
                                 </td>
                                 <td class="text-right">
@@ -767,7 +757,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>14</td>
+                                <td>9</td>
                                 <td>Relatório de Participantes de Projetos</td>
                                 <td class="text-right">
                                     <a href="{{ route('csv', ['id' => 3, 'edicao' => $edicao]) }}"><i
@@ -775,15 +765,15 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>15</td>
+                                <td>10</td>
                                 <td>Relatório de Participantes (Assinatura)</td>
                                 <td class="text-right">
-                                    <a href="{{ route('participantesAssinatura', $edicao) }}"><i
+                                    <a href="{{ route('participantesAssinatura', $edicao) }}" target="_blank"><i
                                             class="material-icons">visibility</i></a>
                                 </td>
                             </tr>
                             <tr>
-                                <td>16</td>
+                                <td>11</td>
                                 <td>CSV Mailing Usuários</td>
                                 <td class="text-right">
                                     <a href="{{ route('csvMailing') }}"><i class="material-icons">arrow_downward</i></a>
