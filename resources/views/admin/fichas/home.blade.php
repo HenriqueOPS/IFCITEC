@@ -85,10 +85,6 @@
 					<a href="{{ route('adminstrador.cadastrarFicha') }}" class="btn btn-primary btn-round">
 						<i class="material-icons">add</i> Adicionar Ficha
 					</a>
-
-					<a href="{{ route('adminstrador.copiarFicha') }}" class="btn btn-primary btn-round">
-						<i class="material-icons">file_copy</i> Copiar Ficha
-					</a>
 				</div>
 
 			@foreach($formularios as $formulario)

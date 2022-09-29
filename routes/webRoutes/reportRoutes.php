@@ -25,7 +25,6 @@ Route::get('/relatorio/orientadores/{edicao}', 'RelatorioController@orientadores
 Route::get('/relatorio/coorientadores/{edicao}', 'RelatorioController@coorientadores')->name('relatorioCoorientadores');
 Route::get('/relatorio/voluntarios/{edicao}', 'RelatorioController@voluntarios')->name('relatorioVoluntarios');
 Route::get('/relatorio/avaliadores/{edicao}', 'RelatorioController@avaliadores')->name('relatorioAvaliadores');
-Route::get('/relatorio/autores/lanche/{edicao}', 'RelatorioController@autoresLanche')->name('relatorioAutoresLanche');
 Route::get('/relatorio/autores/pos/homologacao/{edicao}', 'RelatorioController@autoresPosHomologacao')->name('relatorioAutoresPos');
 Route::get('/relatorio/orientadores/pos/homologacao/{edicao}', 'RelatorioController@orientadoresPosHomologacao')->name('relatorioOrientadoresPos');
 Route::get('/relatorio/orientadores/pos/homologacaocsv/{edicao}', 'RelatorioController@csvMailingOrientadoresPosHomologacao')->name('csvMailingOrientadoresPos');

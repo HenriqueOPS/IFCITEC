@@ -1,12 +1,16 @@
-@extends('relatorios.relatorioPaisagem')
+@extends('relatorios.relatorio')
 
 @section('content')
+
+<header>
+	<img src="{{ asset('img/ifcitecheader.png')  }}"/>
+	<h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE ASSINATURAS PARTCIPANTES</h2>
+	<h4 style="text-align: center; font-size: 25px;">{{\App\Edicao::numeroEdicao($edicao)}}</h4>
+</header>
+
 <div class="container">
     <div class="row">
-        <h5 style="text-align: center; font-size: 25px;">RELATÓRIO DE ASSINATURAS
-        </h5>
-        <br>
-        <table class="bordered striped centered" style="width:100%;">
+        <table class="bordered striped" style="width:100%;">
         	<thead>
         		<tr>
     				<th>Autores</th>
@@ -17,7 +21,7 @@
             @foreach($autores as $autor)
             <tr>
             <td>
-    		<a style="color: #000;">{{$autor->nome}}</a>
+    		<a style="color: #000; text-align: left;">{{$autor->nome}}</a>
             </td> 
             <td>
             
@@ -26,7 +30,7 @@
   			</tbody>	
 		  </table>
         <br>
-        <table class="bordered striped centered" style="width:100%;">
+        <table class="bordered striped" style="width:100%;">
             <thead>
                 <tr>
                     <th>Orientadores</th>
@@ -37,7 +41,7 @@
             @foreach($orientadores as $orientador)
             <tr>
             <td>
-            <a style="color: #000;">{{$orientador->nome}}</a>
+            <a style="color: #000; text-align: left;">{{$orientador->nome}}</a>
             </td> 
             <td>
             
@@ -46,7 +50,7 @@
             </tbody>    
           </table>
           <br>
-          <table class="bordered striped centered" style="width:100%;">
+          <table class="bordered striped" style="width:100%;">
             <thead>
                 <tr>
                     <th>Coorientadores</th>
@@ -57,7 +61,7 @@
             @foreach($coorientadores as $coorientador)
             <tr>
             <td>
-            <a style="color: #000;">{{$coorientador->nome}}</a>
+            <a style="color: #000; text-align: left;">{{$coorientador->nome}}</a>
             </td> 
             <td>
             
