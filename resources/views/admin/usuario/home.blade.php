@@ -101,7 +101,7 @@
                                 <a href="{{route('editarUsuario',$usuario->id)}}"><i class="material-icons">edit</i></a>
                                 <a href="{{route('editarFuncaoUsuario',$usuario->id)}}"><i class="material-icons">star</i></a>
                                 <a href="javascript:void(0);" class="exclusaoUsuario" id-usuario="{{ $usuario['id'] }}"><i class="material-icons blue-icon">delete</i></a>
-                                <a href="{{route('ocultarUsuario',$usuario->id)}}"><i class="material-icons">remove_red_eye</i></a>
+                                <a href="{{route('ocultarUsuario',$usuario->id)}}"><i class="material-icons">block</i></a>
                               </td>
                             </tr>
                         @endforeach

@@ -1423,15 +1423,60 @@ class RelatorioController extends Controller
 
     public function projetos($edicao)
     {
-        $projetos = Projeto::select('projeto.titulo', 'projeto.id', 'escola_funcao_pessoa_projeto.escola_id')
+        $projetos = Projeto::select('projeto.titulo', 'projeto.id', 'escola_funcao_pessoa_projeto.escola_id', 'situacao_id')
             ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
             ->where('projeto.edicao_id', '=', $edicao)
             ->distinct('projeto.id')
             ->orderBy('titulo')
             ->get();
+        
+        $projetosCadastrados = ['projetos' => array(), 'total' => 0, 'name' => 'Cadastrados'];
+        $projetosNaoHomologados = ['projetos' => array(), 'total' => 0, 'name' => 'Não Homologados'];
+        $projetosHomologados = ["projetos" => array(), "total" => 0, "name" => "Homologados"];
+        $projetosNaoAvaliados = ["projetos" => array(), "total" => 0, "name" => "Não Avaliados"];
+        $projetosAvaliados = ["projetos" => array(), "total" => 0, "name" => "Avaliados"];
+        $projetosNaoCompareceu = ["projetos" => array(), "total" => 0, "name" => "Não Compareceu"];
+        foreach($projetos as $projeto) {
+            switch ($projeto->situacao_id) {
+                case EnumSituacaoProjeto::getValue("Cadastrado"):
+                    array_push($projetosCadastrados["projetos"], $projeto);
+                    $projetosCadastrados["total"] += 1;
+                    break;
+                case EnumSituacaoProjeto::getValue("NaoHomologado"):
+                    array_push($projetosNaoHomologados["projetos"], $projeto);
+                    $projetosNaoHomologados["total"] += 1;
+                    break;
+                case EnumSituacaoProjeto::getValue("Homologado"):
+                    array_push($projetosHomologados["projetos"], $projeto);
+                    $projetosHomologados["total"] += 1;
+                    break;
+                case EnumSituacaoProjeto::getValue("NaoAvaliado"):
+                    array_push($projetosNaoAvaliados["projetos"], $projeto);
+                    $projetosNaoAvaliados["total"] += 1;
+                    break;
+                case EnumSituacaoProjeto::getValue("Avaliado"):
+                    array_push($projetosAvaliados["projetos"], $projeto);
+                    $projetosAvaliados["total"] += 1;
+                    break;
+                case EnumSituacaoProjeto::getValue("NaoCompareceu"):
+                    array_push($projetosNaoCompareceu["projetos"], $projeto);
+                    $projetosNaoCompareceu["total"] += 1;
+                    break;
+            }
+        }
+
+        $situacoes = [];
+        $situacoes["cadastrados"] = $projetosCadastrados;
+        $situacoes["naoHomologados"] = $projetosNaoHomologados;
+        $situacoes["homologados"] = $projetosHomologados;
+        $situacoes["naoAvaliadados"] = $projetosNaoAvaliados;
+        $situacoes["avaliados"] = $projetosAvaliados;
+        $situacoes["naoCompareceu"] = $projetosNaoCompareceu;
 
         //return PDF::loadView('relatorios.projetos', ['projetos' => $projetos])->download('projetos.pdf');
-        return view('relatorios.projetos', ['projetos' => $projetos]);
+        return view('relatorios.projetos',
+            ["situacoes" => $situacoes]
+        );
     }
 
     public function areas($edicao)
