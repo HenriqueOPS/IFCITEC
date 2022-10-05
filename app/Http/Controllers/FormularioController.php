@@ -8,15 +8,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class FormularioController extends Controller {
+class FormularioController extends Controller
+{
 
-	public function __construct() {
+	public function __construct()
+	{
 		$this->middleware('auth');
 	}
 
-	public function index ($tipo, $id) {
+	public function index($tipo, $id)
+	{
 
-		if($tipo == 'avaliacao' || $tipo == 'homologacao') {
+		if ($tipo == 'avaliacao' || $tipo == 'homologacao') {
 
 			// valida se é o homologador/avaliador do projeto
 			if ($tipo == 'homologacao') {
@@ -60,7 +63,6 @@ class FormularioController extends Controller {
 
 				$categorias[$key]->campos = $campos_avaliacao;
 				$countCampos += count($campos_avaliacao);
-
 			}
 
 			return view('comissao.formulario', compact('projeto', 'categorias', 'countCampos', 'tipo'));
@@ -69,7 +71,8 @@ class FormularioController extends Controller {
 		return redirect()->route('home');
 	}
 
-	public function store(Request $req) {
+	public function store(Request $req)
+	{
 
 		$data = $req->all();
 
@@ -120,7 +123,6 @@ class FormularioController extends Controller {
 			}
 
 			$notaFinal += ($sumCampos * $pesoCampo) * $pesoCategoria;
-
 		}
 
 		// salva a nota de homologação ou avaliação
@@ -138,13 +140,12 @@ class FormularioController extends Controller {
 			//altera a média da nota de homologação na tabela de projeto
 			$subQuery = DB::table('revisao')
 				->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
-				->where('revisao.projeto_id','=',DB::raw('projeto.id'))
+				->where('revisao.projeto_id', '=', DB::raw('projeto.id'))
 				->toSql();
 
 			Projeto::select('projeto.id')
 				->where('projeto.id', '=', $data['idProjeto'])
-				->update(['nota_revisao' =>  DB::raw('('.$subQuery.')')]);
-
+				->update(['nota_revisao' =>  DB::raw('(' . $subQuery . ')')]);
 		} else { // avaliacao
 
 			DB::table('avaliacao')
@@ -159,12 +160,12 @@ class FormularioController extends Controller {
 			//altera a média da nota de avaliação na tabela de projeto
 			$subQuery = DB::table('avaliacao')
 				->select(DB::raw('COALESCE(AVG(avaliacao.nota_final),0)'))
-				->where('avaliacao.projeto_id','=',DB::raw('projeto.id'))
+				->where('avaliacao.projeto_id', '=', DB::raw('projeto.id'))
 				->toSql();
 
 			Projeto::select('projeto.id')
 				->where('projeto.id', '=', $data['idProjeto'])
-				->update(['nota_avaliacao' =>  DB::raw('('.$subQuery.')')]);
+				->update(['nota_avaliacao' =>  DB::raw('(' . $subQuery . ')')]);
 
 
 			//verifica se o projeto já foi avaliado por todos avaliadores
@@ -174,15 +175,15 @@ class FormularioController extends Controller {
 				->where('avaliado', '=', false)
 				->get();
 
-			if($cont->count() == 0)
+			if ($cont->count() == 0)
 				Projeto::find($data['idProjeto'])->update(['situacao_id' => 5]);
 
+			// Marca como nao compareceu quando a nota for 0
+			if ($notaFinal <= 0) {
+				Projeto::find($data['idProjeto'])->update(['situacao_id' => 6]);
+			}
 		}
 
-		return response()->json([ 'notaFinal' => $notaFinal], 200);
-
+		return response()->json(['notaFinal' => $notaFinal], 200);
 	}
-
-
-
 }
