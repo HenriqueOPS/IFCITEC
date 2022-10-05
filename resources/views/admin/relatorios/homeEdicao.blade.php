@@ -503,22 +503,14 @@
                         <tbody id="6">
                             <tr>
                                 <td>1</td>
-                                <td>CSV Autores</td>
+                                <td>CSV Participantes</td>
                                 <td class="text-right">
-                                    <a href="{{ route('csvPresencaAutores', $edicao) }}"><i
+                                    <a href="{{ route('csvPresencaParticipantes', $edicao) }}"><i
                                             class="material-icons">arrow_downward</i></a>
                                 </td>
                             </tr>
                             <tr>
                                 <td>2</td>
-                                <td>CSV Avaliadores</td>
-                                <td class="text-right">
-                                    <a href="{{ route('csvPresencaAvaliadores', $edicao) }}"><i
-                                            class="material-icons">arrow_downward</i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
                                 <td>CSV Comissão Organizadora</td>
                                 <td class="text-right">
                                     <a href="{{ route('csvPresencaComissao') }}"><i
@@ -526,31 +518,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>4</td>
-                                <td>CSV Coorientadores</td>
-                                <td class="text-right">
-                                    <a href="{{ route('csvPresencaCoorientadores', $edicao) }}"><i
-                                            class="material-icons">arrow_downward</i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>CSV Homologadores</td>
-                                <td class="text-right">
-                                    <a href="{{ route('csvPresencaHomologadores', $edicao) }}"><i
-                                            class="material-icons">arrow_downward</i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td>CSV Orientadores</td>
-                                <td class="text-right">
-                                    <a href="{{ route('csvPresencaOrientadores', $edicao) }}"><i
-                                            class="material-icons">arrow_downward</i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>7</td>
+                                <td>3</td>
                                 <td>CSV Voluntários</td>
                                 <td class="text-right">
                                     <a href="{{ route('csvPresencaVoluntarios', $edicao) }}"><i
@@ -558,7 +526,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>8</td>
+                                <td>4</td>
                                 <td>Autores, Coorientadores, Orientadores e Voluntários que Compareceram na IFCITEC</td>
                                 <td class="text-right">
                                     <a href="{{ route('participantesCompareceram', $edicao) }}" target="_blank"><i

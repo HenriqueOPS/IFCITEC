@@ -2183,7 +2183,38 @@ class RelatorioController extends Controller
         return view('relatorios.gerais.escolasPorTipo', ['escolasPublicas' => $escolasPublicas, 'escolasPrivadas' => $escolasPrivadas]);
     }
 
-    public function projetosHomologadosPorEscola() {
+    public function csvPresencaParticipantes($edicaoId) {
+        $participantes = DB::table('funcao_pessoa')
+            ->select('pessoa.nome', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo', 'escola_funcao_pessoa_projeto.funcao_id')
+            ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+            ->join('escola_funcao_pessoa_projeto', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+            ->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+            ->where('projeto.nota_avaliacao', '<>', 0) // presença dada pela nota de avaliação diferente de zero
+            ->where('funcao_pessoa.edicao_id', '=', $edicaoId)
+            ->where('projeto.edicao_id', '=', $edicaoId)
+            ->orderBy('pessoa.nome')
+            ->get();
 
+        $filename = "csvPresencaParticipantes.csv";
+        $headerFields = [
+            'NOME_PARTICIPANTE',
+            'EMAIL_PARTICIPANTE',
+            'CPF_PARTICIPANTE',
+            'PROJETO_PARTICIPANTE',
+            'FUNCAO_PARTICIPANTE'
+        ];
+
+        $rows = [];
+        foreach ($participantes as $participante) {
+            array_push($rows, [
+                utf8_decode($participante->nome),
+                utf8_decode($participante->email),
+                $participante->cpf,
+                utf8_decode($participante->titulo),
+                utf8_decode(EnumFuncaoPessoa::getKey($participante->funcao_id))
+            ]);
+        }
+
+        return $this->returnsCSVStream($filename, $headerFields, $rows);
     }
 }

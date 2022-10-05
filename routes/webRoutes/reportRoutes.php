@@ -94,7 +94,7 @@ Route::get('/csv/projetos/premiacao/{edicao}', 'RelatorioController@csvPremiados
 Route::get('/relatorio/premiacao/certificados/{edicao}', 'RelatorioController@premiacaoCertificados')->name('premiacaoCertificados');
 
 // Relatórios - Presença/Certficados
-Route::get('/csv/presenca/autores/{edicao}', 'RelatorioController@csvPresencaAutores')->name('csvPresencaAutores');
+Route::get('/csv/presenca/partcipantes/{edicao}', 'RelatorioController@csvPresencaParticipantes')->name('csvPresencaParticipantes');
 Route::get('/csv/presenca/avaliadores/{edicao}', 'RelatorioController@csvPresencaAvaliadores')->name('csvPresencaAvaliadores');
 Route::get('/csv/presenca/coorientadores/{edicao}', 'RelatorioController@csvPresencaCoorientadores')->name('csvPresencaCoorientadores');
 Route::get('/csv/presenca/orientadores/{edicao}', 'RelatorioController@csvPresencaOrientadores')->name('csvPresencaOrientadores');
