@@ -11,6 +11,8 @@
   |
  */
 use App\Http\Middleware;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/version', function (){
 	$strData = explode(':', file_get_contents('version.txt'));
