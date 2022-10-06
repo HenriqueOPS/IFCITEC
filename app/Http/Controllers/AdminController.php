@@ -499,7 +499,6 @@ class AdminController extends Controller
 
         $id_escola = $data['id_escola'];
         $id_endereco = $data['id_endereco'];
-        $data['publica'] = $req->has('publica') ?? true;
 
         if ($id_endereco != 0) {
 
