@@ -69,7 +69,12 @@
                             Relatórios
                         </a>
                     </li>
-
+                    <li>
+                        <a href="{{ route('gerenciadorMensagens') }}">
+                            <i class="material-icons">email</i>
+                            Gerenciador de Mensagens
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

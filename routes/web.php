@@ -218,6 +218,13 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/administrador/dashboard/projetos', 'AdminController@dashboardNaoAvaliados'); // Ajax
 	Route::get('/administrador/dashboard/avaliadores', 'AdminController@dashboardAvaliadoresNaoPresentes'); // Ajax
 
+	// Cadastro de mensagens
+	Route::get('/administrador/gerenciador-mensagens', 'GerenMsgController@index')->name('gerenciadorMensagens');
+	Route::get('/administrador/gerenciador-mensagens/email/get')->name('gerenMsgGetEmails');
+	Route::get('/administrador/gerenciador-mensagens/aviso/get')->name('gerenMsgGetAvisos');
+	Route::post('/administrador/gerenciador-mensages/email/salvar')->name('gerenMsgSalvarEmail');
+	Route::post('/administrador/gerenciador-mensages/aviso/salvar')->name('gerenMsgSalvarAviso');
+
 	// TODO: refatorar
 	Route::get('/administrador/nota-revisao/projeto/{projeto}', 'AdminController@notaRevisao')->name('notaRevisao');
 	Route::get('/administrador/nota-avaliacao/projeto/{projeto}', 'AdminController@notaAvaliacao')->name('notaAvaliacao');
