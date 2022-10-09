@@ -2195,6 +2195,40 @@ class RelatorioController extends Controller
             ->orderBy('pessoa.nome')
             ->get();
 
+        $subQueryHomolog = DB::raw('SELECT count(*)
+			FROM revisao
+			WHERE revisao.pessoa_id = pessoa.id AND
+				revisao.projeto_id = projeto.id');
+
+        $homologadores = DB::table('funcao_pessoa')
+            ->select('pessoa.nome', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo', 'funcao_pessoa.funcao_id')
+            ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+            ->join('revisao', 'pessoa.id', '=', 'revisao.pessoa_id')
+            ->join('projeto', 'revisao.projeto_id', '=', 'projeto.id')
+            ->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Homologador'))
+            ->where('funcao_pessoa.edicao_id', $edicaoId)
+            ->where('projeto.edicao_id', '=', $edicaoId)
+            ->where(DB::raw('(' . $subQueryHomolog . ')'), '>', 0)
+            ->orderBy('pessoa.nome')
+            ->get();
+
+        $subQueryAval = DB::raw('SELECT count(*)
+			FROM presenca
+			WHERE presenca.id_pessoa = pessoa.id AND
+				projeto.edicao_id = presenca.edicao_id');
+
+        $avaliadores = DB::table('funcao_pessoa')
+            ->select('pessoa.nome', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo', 'funcao_pessoa.funcao_id')
+            ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+            ->join('avaliacao', 'pessoa.id', '=', 'avaliacao.pessoa_id')
+            ->join('projeto', 'avaliacao.projeto_id', '=', 'projeto.id')
+            ->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Avaliador'))
+            ->where('funcao_pessoa.edicao_id', '=', $edicaoId)
+            ->where('projeto.edicao_id', '=', $edicaoId)
+            ->where(DB::raw('(' . $subQueryAval . ')'), '>', 0)
+            ->orderBy('pessoa.nome')
+            ->get();
+
         $filename = "csvPresencaParticipantes.csv";
         $headerFields = [
             'NOME_PARTICIPANTE',
@@ -2212,6 +2246,24 @@ class RelatorioController extends Controller
                 $participante->cpf,
                 utf8_decode($participante->titulo),
                 utf8_decode(EnumFuncaoPessoa::getKey($participante->funcao_id))
+            ]);
+        }
+        foreach ($avaliadores as $avaliador) {
+            array_push($rows, [
+                utf8_decode($avaliador->nome),
+                utf8_decode($avaliador->email),
+                $avaliador->cpf,
+                utf8_decode($avaliador->titulo),
+                utf8_decode(EnumFuncaoPessoa::getKey($avaliador->funcao_id))
+            ]);
+        }
+        foreach ($homologadores as $homologador) {
+            array_push($rows, [
+                utf8_decode($homologador->nome),
+                utf8_decode($homologador->email),
+                $homologador->cpf,
+                utf8_decode($homologador->titulo),
+                utf8_decode(EnumFuncaoPessoa::getKey($homologador->funcao_id))
             ]);
         }
 
