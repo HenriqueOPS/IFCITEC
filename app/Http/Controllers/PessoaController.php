@@ -7,6 +7,7 @@ use App\Pessoa;
 
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 
 class PessoaController extends Controller {

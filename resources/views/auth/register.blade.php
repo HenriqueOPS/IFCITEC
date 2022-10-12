@@ -50,42 +50,13 @@
                         </div>
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
 
-                            <div class="input-group{{ $errors->has('rg') ? ' has-error' : '' }}">
-                                <span class="input-group-addon">
-                                    <img class="gray-icon" src="{{ asset('img/account-card-details.svg') }}"  />
-                                </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">RG</label>
-                                    <input type="text" pattern="\d*" class="form-control" name="rg" value="{{ old('rg') }}" maxlength="10" required>
-                                </div>
-                                @if ($errors->has('rg'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('rg') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-
-                            <div class="col-md-offset-2">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="confirmacaoRg" value="true" checked>
-                                    Estou ciente que o RG informado é de total veracidade e servirá para emissão de certificados
-                                </label>
-                            </div>
-                            @if ($errors->has('confirmacaoRg'))
-                                <span class="help-block">
-                                    <strong>É necessário estar ciente que o RG informado é de total veracidade e servirá para emissão de certificados</strong>
-                                </span>
-                                @endif
-                            </div>
-
                             <div class="input-group{{ $errors->has('nome') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">face</i>
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Nome</label>
-                                    <input type="text" class="form-control" name="nome" value="{{ old('nome') }}" required>
+                                    <input style="text-transform: capitalize" type="text" class="form-control" name="nome" value="{{ old('nome') }}" required>
                                 </div>
                                 @if ($errors->has('nome'))
                                 <span class="help-block">
@@ -130,7 +101,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Email</label>
-                                    <input type="text" class="form-control" name="email" value="{{ old('email') }}" required>
+                                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" required>
                                 </div>
                                 @if ($errors->has('email'))
                                 <span class="help-block">
@@ -145,8 +116,23 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Confirme o Email</label>
-                                    <input type="text" class="form-control" name="email_confirmation" required>
+                                    <input type="email" class="form-control" name="email_confirmation" required>
                                 </div>
+                            </div>
+
+                            <div class="input-group{{ $errors->has('telefone') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">perm_phone_msg</i>
+                                </span>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Whatssap</label>
+                                    <input type="tel" OnKeyPress="formatar('## #####-####', this)" class="form-control" name="telefone" maxlength="13" value="{{ old('telefone') }}" required>
+                                </div>
+                                @if ($errors->has('telefone'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('telefone') }}</strong>
+                                </span>
+                                @endif
                             </div>
 
                             <div class="input-group{{ $errors->has('camisa') ? ' has-error' : '' }}">
@@ -205,7 +191,7 @@
                                       <span style="margin-right: 5pt;">
                                         Deseja receber informações sobre as novas edições da IFCITEC?
                                       </span>
-                                      <input type="checkbox" name="newsletter" value=true>
+                                      <input type="checkbox" name="newsletter" value=true checked>
                                     </label>
                                 </div>
                             </div>
