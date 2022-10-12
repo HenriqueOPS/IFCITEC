@@ -5,6 +5,9 @@
     <link href="{{ asset('css/datepicker/bootstrap-datepicker.standdalone.css') }}" rel="stylesheet">
 @endsection
 @section('content')
+    @php
+        var_dump($errors)
+    @endphp
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2 col-sm-12">
@@ -84,7 +87,7 @@
                                     </span>
                                     <div class="form-group label-floating">
                                         <label class="control-label">Email</label>
-                                        <input type="text" class="form-control" name="email"
+                                        <input type="email" class="form-control" name="email"
                                             value="{{ isset($dados->email) ? $dados->email : '' }}" required>
                                     </div>
                                     @if ($errors->has('email'))
@@ -102,7 +105,7 @@
                                         <label class="control-label">Whatssap</label>
                                         <input type="tel" OnKeyPress="formatar('## #####-####', this)"
                                             class="form-control" name="telefone" maxlength="13"
-                                            value="{{ old('telefone') }}" required>
+                                            value="{{ $dados->telefone ?? '' }}" required>
                                     </div>
                                     @if ($errors->has('telefone'))
                                         <span class="help-block">

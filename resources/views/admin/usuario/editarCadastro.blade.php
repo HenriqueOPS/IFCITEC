@@ -101,7 +101,7 @@
                                         <label class="control-label">Whatssap</label>
                                         <input type="tel" OnKeyPress="formatar('## #####-####', this)"
                                             class="form-control" name="telefone" maxlength="13"
-                                            value="{{ old('telefone') }}" required>
+                                            value="{{ $dados->telefone ?? '' }}" required>
                                     </div>
                                     @if ($errors->has('telefone'))
                                         <span class="help-block">

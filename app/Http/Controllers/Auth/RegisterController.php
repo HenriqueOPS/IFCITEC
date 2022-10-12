@@ -110,10 +110,8 @@ class RegisterController extends Controller
 				'email' => 'required|string|email|max:255|unique:pgsql.pessoa|confirmed',
 				'senha' => 'required|string|confirmed',
 				'dt_nascimento' => 'required|date_format:d/m/Y|before:today|after:01/01/1900',
-				'rg' => 'required|max:10|string|unique:pgsql.pessoa',
 				'telefone' => 'required|string|min:13|max:13',
 				'cpf' => 'string|unique:pgsql.pessoa|min:11|max:14|validateCpf',
-				'confirmacaoRg' => 'required',
 				'newletter' => 'boolean',
 
 				//COMECO do código que necessitará um refact issue #40
@@ -133,8 +131,6 @@ class RegisterController extends Controller
 	 */
 	protected function create(array $data)
 	{
-		dd($data);
-
 		if (session()->has('email')) {
 			$data = $this->setSessionValues($data);
 			session()->flush();
@@ -146,7 +142,7 @@ class RegisterController extends Controller
 			'senha' => bcrypt($data['senha']),
 			'dt_nascimento' => Carbon::createFromFormat('d/m/Y', $data['dt_nascimento']),
 			'cpf' => isset($data['cpf']) ? $data['cpf'] : null,
-			'rg' => isset($data['rg']) ? $data['rg'] : null,
+			'telefone' => $data['telefone'],
 			'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
 			'newsletter' => isset($data['newsletter']) ? $data['newsletter'] : false,
 			'oculto' => false
