@@ -1,5 +1,17 @@
 @extends('layouts.app')
 
+@section('css')
+<style>
+    .menu-mensagens {
+        background-color: gainsboro;
+        width: 30%;
+    }
+    .controles {
+
+    }
+</style>
+@endsection
+
 @section('content')
     <div class="container">
         <div class="row">
@@ -10,14 +22,21 @@
             @include('partials.admin.navbar')
         </div>
     </div>
-    <div class="container">
-        <div class="card-body">
-            <form method=”POST” action="">
-                <div class="form-group">
-                    <textarea class="form-control" name="summernote" id="summernote"></textarea>
-                </div>
-                <button type=”submit” class="btn btn-danger btn-block">Save</button>
-            </form>
+    <div style="display: flex; flex-direction: row;">
+        <div class="container menu-mensagens">
+            <div class="controles">
+
+            </div>
+        </div>
+        <div class="container">
+            <div class="card-body">
+                <form method=”POST” action="">
+                    <div class="form-group">
+                        <textarea class="form-control" name="summernote" id="summernote"></textarea>
+                    </div>
+                    <button type=”submit” class="btn btn-danger btn-block">Save</button>
+                </form>
+            </div>
         </div>
     </div>
 @endsection
