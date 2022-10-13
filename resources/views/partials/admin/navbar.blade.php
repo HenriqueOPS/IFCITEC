@@ -36,10 +36,16 @@
                 Tarefas
             </a>
         </li>
+        <li id="nav-mensagens">
+            <a href="{{ route('gerenciadorMensagens') }}">
+                <i class="material-icons">email</i>
+                Mensagens
+            </a>
+        </li>
         <li id="nav-usuarios">
             <a href="{{ route('administrador.usuarios') }}">
                 <i class="material-icons">person</i>
-                Usuários
+                Participantes
             </a>
         </li>
         <li id="nav-projetos">
@@ -58,12 +64,6 @@
             <a href="{{ route('administrador.relatoriosEdicao') }}">
                 <i class="material-icons">description</i>
                 Relatórios
-            </a>
-        </li>
-        <li id="nav-mensagens">
-            <a href="{{ route('gerenciadorMensagens') }}">
-                <i class="material-icons">email</i>
-                Mensagens
             </a>
         </li>
     </ul>

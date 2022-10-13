@@ -10,15 +10,25 @@ class GerenMsgController extends Controller
         return view('admin.gerenMsg.email');
     }
 
-    public function save() {
+    public function fetch(string $dataType) {
+        switch($dataType) {
+            case 'email':
+                return response('email');
+                break;
+            case 'aviso': 
+                return response('avisos');
+        }
+    }
+
+    public function save(string $dataType) {
 
     }
 
-    public function delete() {
+    public function delete(string $dataType) {
 
     }
 
-    public function update() {
+    public function update(string $dataType) {
 
     }
 }
