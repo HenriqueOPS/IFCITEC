@@ -1,8 +1,11 @@
 <?php
 
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers;
 
-class GerenMsgController extends Controller {
+use Illuminate\Http\Request;
+
+class GerenMsgController extends Controller
+{
     public function index() {
         return view('admin.gerenMsg.email');
     }
