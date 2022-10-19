@@ -220,8 +220,9 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 
 	// Cadastro de mensagens
 	Route::get('/administrador/mensagens', 'GerenMsgController@index')->name('gerenciadorMensagens');
-	Route::get('/administrador/mensagens/get/{dataType}', 'GerenMsgController@fetch')->name('mensagens.fetch'); // Ajax
-	Route::post('/administrador/mensages/salvar/{dataType}', 'GerenMsgController@save')->name('mensagens.save'); // Ajax
+	Route::get('/administrador/mensagens/get/{tipo}', 'GerenMsgController@fetch')->name('mensagens.fetch'); // Ajax
+	Route::post('/administrador/mensages/salvar/{conteudo}/{tipo}', 'GerenMsgController@save')->name('mensagens.save'); // Ajax
+	Route::post('/administrador/mensages/deletar/{id}', 'GerenMsgController@delete')->name('mensagens.delete'); // Ajax
 
 	// TODO: refatorar
 	Route::get('/administrador/nota-revisao/projeto/{projeto}', 'AdminController@notaRevisao')->name('notaRevisao');

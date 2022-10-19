@@ -29,23 +29,40 @@
             filter: drop-shadow(10pt 4pt 4pt rgba(0, 0, 0, 0.39));
         }
 
+        .mensagem-box {
+            transition: all 0.1s;
+            display: flex;
+            flex-direction: row;
+            width: 98%;
+            margin: 1%;
+            padding: 2%;
+            height: 5%;
+            background-color: white;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mensagem-box:hover {
+            filter: drop-shadow(1pt 1pt 4pt rgba(0, 0, 0, 0.39));
+        }
+
         #mensagens {
             background-color: whitesmoke;
             width: 95%;
             height: 96%;
+            overflow: scroll;
         }
 
         #add-btn {
-          transition: 0.1s all;
-          background-color: white;
-          width: 95%;
-          text-align: center;
+            transition: 0.1s all;
+            background-color: white;
+            width: 95%;
+            text-align: center;
         }
 
         #add-btn:hover {
             filter: drop-shadow(1pt 2pt 5pt rgba(0, 0, 0, 0.39));
         }
-
     </style>
 @endsection
 
@@ -68,12 +85,8 @@
         </div>
         <div class="container">
             <div class="card-body">
-                <form method=”POST” action="">
-                    <div class="form-group">
-                        <textarea class="form-control" name="summernote" id="summernote"></textarea>
-                    </div>
-                    <button type=”submit” class="btn btn-danger btn-block">Save</button>
-                </form>
+                <div id="summernote"></div>
+                <button onclick="onSave" class="btn btn-danger btn-block">Save</button>
             </div>
         </div>
     </div>
@@ -87,12 +100,61 @@
     <script type="text/javascript">
         document.getElementById('nav-mensagens').classList.add('active');
 
+        let mensagensCarregadas = [];
+
+        const mensagemOnClick = (e) => {
+            e.preventDefault();
+            const mensagemNome = e.target.firstChild.textContent;
+            const mensagem = mensagensCarregadas.find(e => {
+                return e.nome === mensagemNome
+            });
+
+            $('#summernote').summernote('reset');
+            $('#summernote').summernote('pasteHTML', mensagem.conteudo);
+        }
+
+        const onDelete = (e) => {
+            e.preventDefault();
+            const mensagemNome = e.parentNode.firstChild.textContent;
+            const mensagem = mensagensCarregadas.find(e => {
+                return e.nome === mensagemNome
+            });
+        }
+
+        const onSave = (e) => {
+            e.preventDefault();
+            console.log(e)
+        }
+
         $(document).ready(function() {
             $('#summernote').summernote({
                 height: 450,
             });
 
-            $.get('{{ route('mensagens.fetch', 'aviso') }}', data => console.log(data))
+            $.get('{{ route('mensagens.fetch', 'email') }}', data => {
+                data.forEach(e => {
+
+                    const mensagemBox = document.createElement('div');
+                    const mensagemNome = document.createElement('div');
+                    const deleteIcon = document.createElement('i');
+
+                    mensagemNome.innerHTML = e.nome;
+
+                    deleteIcon.classList.add('material-icons');
+                    deleteIcon.innerHTML = 'delete';
+                    deleteIcon.onclick = onDelete;
+
+                    mensagemBox.appendChild(mensagemNome);
+                    mensagemBox.appendChild(deleteIcon);
+                    mensagemBox.onclick = mensagemOnClick;
+
+                    mensagemBox.classList.add('mensagem-box');
+
+                    document.getElementById('mensagens').appendChild(mensagemBox);
+                });
+
+                mensagensCarregadas = data;
+            })
         });
     </script>
 @endsection
