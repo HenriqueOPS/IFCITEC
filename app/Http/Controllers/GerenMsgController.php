@@ -17,15 +17,16 @@ class GerenMsgController extends Controller
         return response($mensagens);
     }
 
-    public function save(string $conteudo, string $tipo) {
-
+    public function save(string $nome, string $conteudo, string $tipo) {
+        $mensagem = Mensagem::where([
+            'nome', '=', $nome,
+            'tipo', '=', $nome
+        ])->first();
+            
+        return response($mensagem);
     }
 
     public function delete(int $id) {
         Mensagem::where('id', '=', $id)->delete();
-    }
-
-    public function update(string $conteudo, string $tipo) {
-
     }
 }

@@ -103,6 +103,7 @@
         }
 
         ul>li>button {
+            transition: all 0.2s;
             background-color: transparent;
             color: #555555;
             border: none;
@@ -149,7 +150,6 @@
                     </li>
                 </ul>
             </div>
-
         </div>
     </div>
 
@@ -170,7 +170,7 @@
             <div class="container">
                 <div class="card-body">
                     <div id="summernote"></div>
-                    <button onclick="onSave" class="btn btn-danger btn-block">Save</button>
+                    <button id="summernote-save" class="btn btn-danger btn-block">Save</button>
                 </div>
             </div>
         </div>
@@ -186,7 +186,11 @@
         document.getElementById('nav-mensagens').classList.add('active');
 
         let mensagensCarregadas = [];
+
         let mensagemAtual = null;
+        let tipoAtual = 'email';
+        document.getElementById('tipo-email').classList.add('tipo-selected');
+        fetchMensagens(tipoAtual);
 
         const mensagemOnClick = (e) => {
             e.preventDefault();
@@ -214,11 +218,6 @@
             });
         }
 
-        const onSave = (e) => {
-            e.preventDefault();
-            console.log(e)
-        }
-
         $(document).ready(function() {
             $('#add-btn').click(() => {
                 document.getElementById('nova-mensagem').style.display = 'flex';
@@ -232,11 +231,28 @@
                 document.getElementById('nova-mensagem').style.display = 'none';
             });
 
+            $('#summernote-save').click((e) => {
+                if(mensagemAtual === null)
+                    return;
+
+                let url = "{{ route('mensagens.save', ['nome' => ':nome', 'conteudo' => ':conteudo', 'tipo' => ':tipo']) }}";
+                url = url.replace(':nome', mensagemAtual.nome)
+                    .replace(':conteudo', $('#summernote').summernote('code'))
+                    .replace(':tipo', tipoAtual);
+                
+                console.log(url);
+                $.post(url, response => console.log(response));
+            });
+
             $('#summernote').summernote({
                 height: 450,
             });
+        });
 
-            $.get('{{ route('mensagens.fetch', 'email') }}', data => {
+        function fetchMensagens(tipo) {
+            let url = "{{ route('mensagens.fetch', ':tipo') }}";
+            url = url.replace(':tipo', tipo);
+            $.get(url, data => {
                 data.forEach(e => {
 
                     const mensagemBox = document.createElement('div');
@@ -262,6 +278,6 @@
                     document.getElementById('mensagens').appendChild(mensagemBox);
                 });
             })
-        });
+        }
     </script>
 @endsection
