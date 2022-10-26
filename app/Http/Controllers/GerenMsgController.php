@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mensagem;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class GerenMsgController extends Controller
@@ -17,13 +18,20 @@ class GerenMsgController extends Controller
         return response($mensagens);
     }
 
-    public function save(string $nome, string $conteudo, string $tipo) {
-        $mensagem = Mensagem::where([
-            'nome', '=', $nome,
-            'tipo', '=', $nome
-        ])->first();
-            
-        return response($mensagem);
+    public function create(string $nome, string $tipo) {
+        DB::table('mensagem')->insert([
+            'nome' => $nome,
+            'tipo' => $tipo
+        ]);
+    }
+
+    public function save(Request $req) {
+        DB::table('mensagem')
+            ->where('id', '=', $req->query('id'))
+            ->limit(1)
+            ->update(['conteudo' => $req->query('conteudo')]);
+
+        return response($req);
     }
 
     public function delete(int $id) {

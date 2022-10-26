@@ -121,10 +121,16 @@
             color: white;
             box-shadow: 0 16px 26px -10px rgba(26, 35, 126, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(26, 35, 126, 0.2);
         }
+
+        .tipo-selected > button {
+            color: white;
+        }
+
     </style>
 @endsection
 
 @section('content')
+    <meta name="csrf-token" content="{{ Session::token() }}">
     <div class="container">
         <div class="row">
             <div class="col-md-12 text-center">
@@ -137,13 +143,13 @@
                 <ul class="nav nav-pills nav-pills-primary" role="tablist"
                     style="display: flex; align-content: center; justify-content: center;">
                     <li id="tipo-email">
-                        <button id="goto-emails">
+                        <button id="goto-emails" data-nome="email" class="tipo-btn">
                             <i class="material-icons">email</i>
                             EMAILS
                         </button>
                     </li>
                     <li id="tipo-aviso">
-                        <button id="goto-avisos">
+                        <button id="goto-avisos" data-nome="aviso" class="tipo-btn">
                             <i class="material-icons">warning</i>
                             AVISOS
                         </button>
@@ -185,12 +191,36 @@
     <script type="text/javascript">
         document.getElementById('nav-mensagens').classList.add('active');
 
-        let mensagensCarregadas = [];
+        const postHeaders = {
+            _token: $('meta[name=csrf-token]').attr('content'),
+            contentType: "text/html; charset=utf-8"
+        };
 
+        let mensagensCarregadas = [];
         let mensagemAtual = null;
-        let tipoAtual = 'email';
-        document.getElementById('tipo-email').classList.add('tipo-selected');
-        fetchMensagens(tipoAtual);
+
+        let tipoAtual = '';
+
+        fetchMensagens();
+
+        function tipoOnClick(e) {
+            e.preventDefault();
+            tipoAtual = e.target.dataset.nome;
+
+            const tipos = document.getElementsByClassName('tipo-btn');
+            for(let i = 0; i < tipos.length; i++) {
+                tipos[i].parentNode.classList.remove('tipo-selected');
+            }
+
+            e.target.parentNode.classList.add('tipo-selected');
+
+            fetchMensagens();
+        }
+
+        const tipos = document.getElementsByClassName('tipo-btn');
+        for(let i = 0; i < tipos.length; i++) {
+            tipos[i].addEventListener('click', tipoOnClick);
+        }
 
         const mensagemOnClick = (e) => {
             e.preventDefault();
@@ -207,15 +237,20 @@
             mensagem.element.classList.add('mensagem-selected');
 
             $('#summernote').summernote('reset');
-            $('#summernote').summernote('pasteHTML', mensagem.conteudo);
+            if (mensagem.conteudo != null)
+                $('#summernote').summernote('pasteHTML', mensagem.conteudo);
         }
 
         const onDelete = (e) => {
             e.preventDefault();
-            const mensagemNome = e.parentNode.firstChild.textContent;
+            const mensagemNome = e.target.parentNode.firstChild.textContent;
             const mensagem = mensagensCarregadas.find(e => {
                 return e.nome === mensagemNome
             });
+
+            let url = "{{ route('mensagens.delete', ':id') }}";
+            url = url.replace(':id', mensagem.id);
+            $.post(url, postHeaders).then(() => fetchMensagens());
         }
 
         $(document).ready(function() {
@@ -224,7 +259,19 @@
             });
 
             $('#confirm-add-btn').click(() => {
+                const input = document.getElementById('mensagem-input');
+
+                if (input.value == null)
+                    return;
+
+                let url = "{{ route('mensagens.create', ['nome' => ':nome', 'tipo' => ':tipo']) }}";
+                url = url.replace(':nome', input.value);
+                url = url.replace(':tipo', tipoAtual);
+
+                $.post(url, postHeaders).then(() => fetchMensagens());
+
                 document.getElementById('nova-mensagem').style.display = 'none';
+                input.value = '';
             });
 
             $('#cancel-add-btn').click(() => {
@@ -232,16 +279,15 @@
             });
 
             $('#summernote-save').click((e) => {
-                if(mensagemAtual === null)
+                if (mensagemAtual === null)
                     return;
 
-                let url = "{{ route('mensagens.save', ['nome' => ':nome', 'conteudo' => ':conteudo', 'tipo' => ':tipo']) }}";
-                url = url.replace(':nome', mensagemAtual.nome)
-                    .replace(':conteudo', $('#summernote').summernote('code'))
-                    .replace(':tipo', tipoAtual);
-                
+                let url = "{{ route('mensagens.save') }}" +
+                    `?id=${mensagemAtual.id}` +
+                    `&conteudo=${$('#summernote').summernote('code')}`;
+
                 console.log(url);
-                $.post(url, response => console.log(response));
+                $.post(url, postHeaders, r => console.log(r)).then(() => fetchMensagens());
             });
 
             $('#summernote').summernote({
@@ -249,9 +295,10 @@
             });
         });
 
-        function fetchMensagens(tipo) {
+        function fetchMensagens() {
+            document.getElementById('mensagens').innerHTML = '';
             let url = "{{ route('mensagens.fetch', ':tipo') }}";
-            url = url.replace(':tipo', tipo);
+            url = url.replace(':tipo', tipoAtual);
             $.get(url, data => {
                 data.forEach(e => {
 
