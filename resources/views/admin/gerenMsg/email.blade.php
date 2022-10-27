@@ -201,7 +201,6 @@
 
         const postHeaders = {
             _token: $('meta[name=csrf-token]').attr('content'),
-            contentType: "text/html; charset=utf-8"
         };
 
         let mensagensCarregadas = [];
@@ -277,12 +276,25 @@
                 if (mensagemAtual === null)
                     return;
 
-                let url = "{{ route('mensagens.save') }}" +
-                    `?id=${mensagemAtual.id}` +
-                    `&conteudo=${$('#summernote').summernote('code')}`;
+                let url = "{{ route('mensagens.save') }}";
+
 
                 console.log(url);
-                $.post(url, postHeaders, r => console.log(r)).then(() => fetchMensagens());
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: {
+                        _token: $('meta[name=csrf-token]').attr('content'),
+                        id: mensagemAtual.id,
+                        conteudo: utf8_to_b64($('#summernote').summernote('code'))
+                    },
+                    dataType: 'json',
+                    error: data => {
+                        const dd = document.createElement('div');
+                        document.getElementById('app').appendChild(dd);
+                        dd.innerHTML = data.responseText;
+                    }
+                });
             });
 
             $('#summernote').summernote({
@@ -362,6 +374,14 @@
                     mostrarMensagemSelecionada();
                 }
             });
+        }
+
+        function b64_to_utf8(str) {
+            return decodeURIComponent(escape(window.atob(str)));
+        }
+
+        function utf8_to_b64(str) {
+            return window.btoa(unescape(encodeURIComponent(str)));
         }
     </script>
 @endsection

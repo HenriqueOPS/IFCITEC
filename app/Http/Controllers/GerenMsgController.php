@@ -30,10 +30,17 @@ class GerenMsgController extends Controller
 
     public function save(Request $req)
     {
+        // Usei base64 pro laravel n remover as tags html do request
+        $conteudo = base64_decode($req->all()['conteudo']);
+
         DB::table('mensagem')
-            ->where('id', '=', $req->query('id'))
+            ->where('id', '=', $req->all()['id'])
             ->limit(1)
-            ->update(['conteudo' => $req->query('conteudo')]);
+            ->update(['conteudo' => $conteudo]);
+
+        return response()->json([
+            $conteudo
+        ]);
     }
 
     public function delete(int $id)
