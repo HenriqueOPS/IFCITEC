@@ -10,22 +10,23 @@
   | contains the "web" middleware group. Now create something great!
   |
  */
+
 use App\Http\Middleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/version', function (){
+Route::get('/version', function () {
 	$strData = explode(':', file_get_contents('version.txt'));
 
-	echo "Commit SHA: ".$strData[0]."<br />";
-	echo "Pipeline ID: ".$strData[1];
+	echo "Commit SHA: " . $strData[0] . "<br />";
+	echo "Pipeline ID: " . $strData[1];
 });
 
 Route::get('/', function () {
-  if(Auth::check())
-    return redirect()->route('home');
+	if (Auth::check())
+		return redirect()->route('home');
 
-  return redirect()->route('login');
+	return redirect()->route('login');
 });
 
 // API Routes
@@ -57,8 +58,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/debug', function (){
-	if(Auth::check())
+Route::get('/debug', function () {
+	if (Auth::check())
 		return view('admin.debug');
 
 	return redirect()->route('login');
@@ -115,7 +116,7 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/gerenciar', 'AdminController@administrarUsuarios');
 	Route::post('/gerenciar-usuario/{id}', 'AdminController@editaFuncaoUsuario')->name('editaFuncaoUsuario');
 	Route::get('/gerenciar/usuario/{id}', 'AdminController@editarFuncaoUsuario')->name('editarFuncaoUsuario');
-	Route::get('/pesquisa','AdminController@pesquisa');
+	Route::get('/pesquisa', 'AdminController@pesquisa');
 
 	// Comissão Avaliadora
 	Route::get('/comissao/homologar/{id}', 'ComissaoAvaliadoraController@homologarComissao')->name('homologarComissao');
@@ -170,9 +171,9 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/usuario/exclui-usuario/{id}/{s}', 'AdminController@excluiUsuario');
 	Route::get('/usuario/oculta-usuario/{id}', 'AdminController@ocultarUsuario')->name('ocultarUsuario');
 
-    // Edição dos dados de usuario
-    Route::get('/usuario/{id}/editar/', 'PessoaController@editarUsuario')->name('editarUsuario');
-    Route::post('/usuario/{id}/editar-cadastro/', 'PessoaController@editaUsuario')->name('editaUsuario');
+	// Edição dos dados de usuario
+	Route::get('/usuario/{id}/editar/', 'PessoaController@editarUsuario')->name('editarUsuario');
+	Route::post('/usuario/{id}/editar-cadastro/', 'PessoaController@editaUsuario')->name('editaUsuario');
 
 	// Vincula Homologador
 	Route::get('/projeto/{id}/vinculaHomologador/', 'ProjetoController@showFormVinculaHomologador')->name('vinculaRevisor');
@@ -181,24 +182,24 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/projeto/{id}/vinculaAvaliador/', 'ProjetoController@showFormVinculaAvaliador')->name('vinculaAvaliador');
 	Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')->name('vinculaAvaliadorPost');
 
-    // Fichas de Avaliação/Homologação
-	Route::get('/administrador/fichas','FichaController@index')->name('administrador.ficha');
-	Route::get('/administrador/fichas/cadastrar','FichaController@create')->name('adminstrador.cadastrarFicha');
-	Route::post('/administrador/fichas/cadastrar','FichaController@store')->name('adminstrador.salvarFicha');
-	Route::get('/administrador/fichas/copiar','FichaController@copiarFicha')->name('adminstrador.copiarFicha');
-	Route::post('/administrador/fichas/copiar','FichaController@copiaFicha')->name('adminstrador.copiaFicha');
+	// Fichas de Avaliação/Homologação
+	Route::get('/administrador/fichas', 'FichaController@index')->name('administrador.ficha');
+	Route::get('/administrador/fichas/cadastrar', 'FichaController@create')->name('adminstrador.cadastrarFicha');
+	Route::post('/administrador/fichas/cadastrar', 'FichaController@store')->name('adminstrador.salvarFicha');
+	Route::get('/administrador/fichas/copiar', 'FichaController@copiarFicha')->name('adminstrador.copiarFicha');
+	Route::post('/administrador/fichas/copiar', 'FichaController@copiaFicha')->name('adminstrador.copiaFicha');
 
-	Route::get('/administrador/fichas/{id}','FichaController@show')->name('administrador.showFicha');
-	Route::get('/administrador/fichas/{id}/editar','FichaController@edit')->name('administrador.edit');
-	Route::post('/administrador/fichas/editar','FichaController@update')->name('administrador.alteraFicha');
+	Route::get('/administrador/fichas/{id}', 'FichaController@show')->name('administrador.showFicha');
+	Route::get('/administrador/fichas/{id}/editar', 'FichaController@edit')->name('administrador.edit');
+	Route::post('/administrador/fichas/editar', 'FichaController@update')->name('administrador.alteraFicha');
 
 
-    // Administrador
-    Route::get('/projetos/homologar-projetos', 'ProjetoController@homologarProjetos')->name('homologar-projetos');
-    Route::post('/projetos/homologa-projetos', 'ProjetoController@homologaProjetos')->name('homologa-projetos');
-    Route::get('/projeto/nao-compareceu/{id}/{s}', 'ProjetoController@projetoNaoCompareceu'); //
-    Route::get('/projeto/compareceu/avaliado/{id}/{s}', 'ProjetoController@projetoCompareceuAvaliado');
-    Route::get('/projeto/compareceu/nao-avaliado/{id}/{s}', 'ProjetoController@projetoCompareceuNaoAvaliado');
+	// Administrador
+	Route::get('/projetos/homologar-projetos', 'ProjetoController@homologarProjetos')->name('homologar-projetos');
+	Route::post('/projetos/homologa-projetos', 'ProjetoController@homologaProjetos')->name('homologa-projetos');
+	Route::get('/projeto/nao-compareceu/{id}/{s}', 'ProjetoController@projetoNaoCompareceu'); //
+	Route::get('/projeto/compareceu/avaliado/{id}/{s}', 'ProjetoController@projetoCompareceuAvaliado');
+	Route::get('/projeto/compareceu/nao-avaliado/{id}/{s}', 'ProjetoController@projetoCompareceuNaoAvaliado');
 
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
 	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');
@@ -220,6 +221,13 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::get('/administrador/dashboard/projetos', 'AdminController@dashboardNaoAvaliados'); // Ajax
 	Route::get('/administrador/dashboard/avaliadores', 'AdminController@dashboardAvaliadoresNaoPresentes'); // Ajax
 
+	// Cadastro de mensagens
+	Route::get('/administrador/mensagens', 'GerenMsgController@index')->name('gerenciadorMensagens');
+	Route::get('/administrador/mensagens/get/{tipo}', 'GerenMsgController@fetch')->name('mensagens.fetch'); // Ajax
+	Route::post('/mensagens/salvar', 'GerenMsgController@save')->name('mensagens.save'); // Ajax
+	Route::post('/administrador/mensagens/create/{nome}/{tipo}', 'GerenMsgController@create')->name('mensagens.create'); // Ajax
+	Route::post('/administrador/mensagens/deletar/{id}', 'GerenMsgController@delete')->name('mensagens.delete'); // Ajax
+
 	// TODO: refatorar
 	Route::get('/administrador/nota-revisao/projeto/{projeto}', 'AdminController@notaRevisao')->name('notaRevisao');
 	Route::get('/administrador/nota-avaliacao/projeto/{projeto}', 'AdminController@notaAvaliacao')->name('notaAvaliacao');
@@ -232,10 +240,9 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 
 
 	// mostra os erros do arquivo laravel.log
-	Route::get('/errors', function (){
+	Route::get('/errors', function () {
 		return view('admin.errors');
 	});
-
 });
 
 
@@ -249,24 +256,21 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
 
 	// Projeto
 	Route::get('/organizador/projetos', 'OrganizadorController@projetos')->name('organizacao.projetos');
-    Route::get('/projeto/{id}/status/', 'ProjetoController@statusProjeto')->name('statusProjeto'); //Ajax
+	Route::get('/projeto/{id}/status/', 'ProjetoController@statusProjeto')->name('statusProjeto'); //Ajax
 
 	// Presença
-    Route::get('/organizador/presenca', 'OrganizadorController@presenca')->name('organizacao.presenca');
+	Route::get('/organizador/presenca', 'OrganizadorController@presenca')->name('organizacao.presenca');
 
 	// Usuarios
 	Route::get('/organizador/usuarios', 'OrganizadorController@usuarios')->name('organizacao.usuarios');
-
 });
 
 
 //Emails
-Route::get('mail/voluntario', function(){
+Route::get('mail/voluntario', function () {
 
-    Mail::later(5, 'mail.voluntario', [ Auth::user()->nome ], function($message) {
+	Mail::later(5, 'mail.voluntario', [Auth::user()->nome], function ($message) {
 		$message->to(Auth::user()->email);
 		$message->subject('IFCITEC');
-    });
-
+	});
 });
-
