@@ -210,14 +210,22 @@
 
         function tipoOnClick(e) {
             e.preventDefault();
-            tipoAtual = e.target.dataset.nome;
 
             const tipos = document.getElementsByClassName('tipo-btn');
             for (let i = 0; i < tipos.length; i++) {
                 tipos[i].parentNode.classList.remove('tipo-selected');
             }
 
-            e.target.parentNode.classList.add('tipo-selected');
+            console.log(e.target.parentNode.parentNode)
+
+            if (e.target.localName === 'i') {
+                tipoAtual = e.target.parentNode.dataset.nome;
+                e.target.parentNode.parentNode.classList.add('tipo-selected');
+            } else {
+                tipoAtual = e.target.dataset.nome;
+                e.target.parentNode.classList.add('tipo-selected');
+            }
+
 
             fetchMensagens();
         }
@@ -240,6 +248,9 @@
             const mensagem = mensagensCarregadas.find(e => {
                 return e.nome === mensagemNome
             });
+
+            if (mensagem === mensagemAtual)
+                $('#summernote').summernote('reset');
 
             let url = "{{ route('mensagens.delete', ':id') }}";
             url = url.replace(':id', mensagem.id);
@@ -278,8 +289,6 @@
 
                 let url = "{{ route('mensagens.save') }}";
 
-
-                console.log(url);
                 $.ajax({
                     type: 'POST',
                     url: url,

@@ -37,10 +37,6 @@ class GerenMsgController extends Controller
             ->where('id', '=', $req->all()['id'])
             ->limit(1)
             ->update(['conteudo' => $conteudo]);
-
-        return response()->json([
-            $conteudo
-        ]);
     }
 
     public function delete(int $id)
