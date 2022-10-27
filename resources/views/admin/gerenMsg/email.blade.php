@@ -77,6 +77,21 @@
             color: white;
         }
 
+        .mensagem-body {
+            width: 93%;
+        }
+
+        .delete-btn {
+            width: 5%;
+            margin-right: 2%;
+        }
+
+        .delete-btn:hover {
+            color: rgb(241, 47, 47);
+            cursor: pointer;
+            filter: drop-shadow(1pt 2pt 5pt rgba(0, 0, 0, 0.39));
+        }
+
         #mensagens {
             background-color: whitesmoke;
             width: 95%;
@@ -93,12 +108,6 @@
         }
 
         #add-btn:hover {
-            filter: drop-shadow(1pt 2pt 5pt rgba(0, 0, 0, 0.39));
-        }
-
-        .delete-btn:hover {
-            color: rgb(241, 47, 47);
-            cursor: pointer;
             filter: drop-shadow(1pt 2pt 5pt rgba(0, 0, 0, 0.39));
         }
 
@@ -122,10 +131,9 @@
             box-shadow: 0 16px 26px -10px rgba(26, 35, 126, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(26, 35, 126, 0.2);
         }
 
-        .tipo-selected > button {
+        .tipo-selected>button {
             color: white;
         }
-
     </style>
 @endsection
 
@@ -201,14 +209,12 @@
 
         let tipoAtual = '';
 
-        fetchMensagens();
-
         function tipoOnClick(e) {
             e.preventDefault();
             tipoAtual = e.target.dataset.nome;
 
             const tipos = document.getElementsByClassName('tipo-btn');
-            for(let i = 0; i < tipos.length; i++) {
+            for (let i = 0; i < tipos.length; i++) {
                 tipos[i].parentNode.classList.remove('tipo-selected');
             }
 
@@ -218,27 +224,15 @@
         }
 
         const tipos = document.getElementsByClassName('tipo-btn');
-        for(let i = 0; i < tipos.length; i++) {
+        for (let i = 0; i < tipos.length; i++) {
             tipos[i].addEventListener('click', tipoOnClick);
         }
 
         const mensagemOnClick = (e) => {
             e.preventDefault();
 
-            if (mensagemAtual != null)
-                mensagemAtual.element.classList.remove('mensagem-selected');
-
-            const mensagemNome = e.target.firstChild.textContent;
-            const mensagem = mensagensCarregadas.find(e => {
-                return e.nome === mensagemNome
-            });
-
-            mensagemAtual = mensagem;
-            mensagem.element.classList.add('mensagem-selected');
-
-            $('#summernote').summernote('reset');
-            if (mensagem.conteudo != null)
-                $('#summernote').summernote('pasteHTML', mensagem.conteudo);
+            trocarMensagemSelecionada(e);
+            mostrarMensagemSelecionada();
         }
 
         const onDelete = (e) => {
@@ -254,6 +248,7 @@
         }
 
         $(document).ready(function() {
+
             $('#add-btn').click(() => {
                 document.getElementById('nova-mensagem').style.display = 'flex';
             });
@@ -293,16 +288,44 @@
             $('#summernote').summernote({
                 height: 450,
             });
+
+            fetchMensagens();
         });
+
+        function trocarMensagemSelecionada(mensagemClicada) {
+            if (mensagemAtual != null)
+                mensagemAtual.element.classList.remove('mensagem-selected');
+
+            const mensagemNome = mensagemClicada.target.firstChild.textContent;
+            const mensagem = mensagensCarregadas.find(e => {
+                return e.nome === mensagemNome
+            });
+
+            mensagemAtual = mensagem;
+            mensagem.element.classList.add('mensagem-selected');
+        }
+
+        function mostrarMensagemSelecionada() {
+            if (mensagemAtual == null)
+                return;
+
+            $('#summernote').summernote('reset');
+            if (mensagemAtual.conteudo != null)
+                $('#summernote').summernote('pasteHTML', mensagemAtual.conteudo);
+        }
 
         function fetchMensagens() {
             document.getElementById('mensagens').innerHTML = '';
+            mensagensCarregadas = [];
+
             let url = "{{ route('mensagens.fetch', ':tipo') }}";
             url = url.replace(':tipo', tipoAtual);
+
             $.get(url, data => {
                 data.forEach(e => {
 
                     const mensagemBox = document.createElement('div');
+                    const mensagemBody = document.createElement('div');
                     const mensagemNome = document.createElement('div');
                     const deleteIcon = document.createElement('i');
 
@@ -313,9 +336,12 @@
                     deleteIcon.innerHTML = 'delete';
                     deleteIcon.onclick = onDelete;
 
-                    mensagemBox.appendChild(mensagemNome);
+                    mensagemBox.appendChild(mensagemBody);
                     mensagemBox.appendChild(deleteIcon);
-                    mensagemBox.onclick = mensagemOnClick;
+
+                    mensagemBody.onclick = mensagemOnClick;
+                    mensagemBody.appendChild(mensagemNome);
+                    mensagemBody.classList.add('mensagem-body');
 
                     mensagemBox.classList.add('mensagem-box');
 
@@ -324,7 +350,18 @@
                     mensagensCarregadas.push(e);
                     document.getElementById('mensagens').appendChild(mensagemBox);
                 });
-            })
+            }).then(() => {
+                const mensagemAtualRecarregada = mensagensCarregadas.find(e =>
+                    e.nome === mensagemAtual.nome && e.tipo === mensagemAtual.tipo
+                );
+
+                mensagemAtual = mensagemAtualRecarregada;
+
+                if (mensagemAtual != undefined) {
+                    mensagemAtual.element.classList.add('mensagem-selected');
+                    mostrarMensagemSelecionada();
+                }
+            });
         }
     </script>
 @endsection
