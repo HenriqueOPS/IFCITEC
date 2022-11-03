@@ -87,7 +87,9 @@ class ProjetoController extends Controller
 		$funcoes = Funcao::getByCategory('integrante');
 
 		$escolas = Escola::all(['id', 'nome_curto']);
-		$pessoas = Pessoa::all(['id', 'nome', 'email']);
+		$pessoas = Pessoa::all(['id', 'nome', 'email', 'oculto'])->filter(function ($item) {
+			return $item->oculto == false;
+		});
 
 		return view('projeto.create')
 			->withNiveis($niveis)

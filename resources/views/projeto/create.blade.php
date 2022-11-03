@@ -553,7 +553,7 @@
                 persist: false,
                 create: function(input) {
                     return {
-                        value: input,
+                        value: input.replace(/[^\w\-]+/g, ''),
                         text: input.replace(/[^\w\-]+/g, '')
                     }
                 },
