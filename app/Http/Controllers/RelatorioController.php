@@ -85,6 +85,7 @@ class RelatorioController extends Controller
                 ->select('pessoa.email', 'pessoa.nome')
                 ->where('funcao_pessoa.edicao_id', $edicao)
                 ->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Avaliador'))
+                ->where('funcao_pessoa.homologado', '=', true)
                 ->get();
 
             $filename = "Avaliadores.csv";
@@ -94,6 +95,7 @@ class RelatorioController extends Controller
                 ->select('pessoa.email', 'pessoa.nome')
                 ->where('funcao_pessoa.edicao_id', $edicao)
                 ->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Homologador'))
+                ->where('funcao_pessoa.homologado', '=', true)
                 ->get();
 
             $filename = "Homologadores.csv";
@@ -185,7 +187,6 @@ class RelatorioController extends Controller
             if ($numAutores == 3) {
                 $projetosComTresAutores++;
             }
-
         }
 
         $niveis = Nivel::all();
@@ -460,8 +461,14 @@ class RelatorioController extends Controller
             ->where('revisao.projeto_id', '=', DB::raw('projeto.id'))
             ->toSql();
 
-        $resultados = Projeto::select('projeto.id', 'titulo', 'situacao_id',
-            'nivel.nivel', 'area_conhecimento.area_conhecimento', DB::raw('(' . $subQuery . ') as nota'))
+        $resultados = Projeto::select(
+            'projeto.id',
+            'titulo',
+            'situacao_id',
+            'nivel.nivel',
+            'area_conhecimento.area_conhecimento',
+            DB::raw('(' . $subQuery . ') as nota')
+        )
             ->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
             ->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
             ->where('projeto.edicao_id', '=', Edicao::getEdicaoId())
@@ -925,8 +932,14 @@ class RelatorioController extends Controller
             ->where('revisao.projeto_id', '=', DB::raw('projeto.id'))
             ->toSql();
 
-        $projetos = Projeto::select('projeto.id', 'titulo', 'situacao_id',
-            'nivel.nivel', 'area_conhecimento.area_conhecimento', DB::raw('(' . $subQuery . ') as nota'))
+        $projetos = Projeto::select(
+            'projeto.id',
+            'titulo',
+            'situacao_id',
+            'nivel.nivel',
+            'area_conhecimento.area_conhecimento',
+            DB::raw('(' . $subQuery . ') as nota')
+        )
             ->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
             ->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
             ->where('projeto.edicao_id', '=', Edicao::getEdicaoId())
@@ -1093,6 +1106,7 @@ class RelatorioController extends Controller
             ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
             ->where('funcao_id', EnumFuncaoPessoa::getValue('Homologador'))
             ->where('funcao_pessoa.edicao_id', '=', $edicao)
+            ->where('funcao_pessoa.homologado', '=', true)
             ->orderBy('pessoa.nome')
             ->get();
 
@@ -1106,7 +1120,8 @@ class RelatorioController extends Controller
         )->download('homologadores.pdf');
          */
 
-        return view('relatorios.homologacao.homologadores',
+        return view(
+            'relatorios.homologacao.homologadores',
             [
                 'homologadores' => $homologadores,
                 'edicao' => $edicao,
@@ -1121,6 +1136,7 @@ class RelatorioController extends Controller
             ->select('funcao_pessoa.edicao_id', 'pessoa.nome', 'pessoa.rg', 'pessoa.cpf', 'pessoa.telefone')
             ->where('funcao_id', EnumFuncaoPessoa::getValue('Avaliador'))
             ->where('funcao_pessoa.edicao_id', $edicao)
+            ->where('funcao_pessoa.homologado', '=', true)
             ->orderBy('pessoa.nome')
             ->get();
 
@@ -1137,7 +1153,8 @@ class RelatorioController extends Controller
         )->download('avaliadores.pdf');
          */
 
-        return view('relatorios.avaliadores',
+        return view(
+            'relatorios.avaliadores',
             [
                 'avaliadores' => $avaliadores,
                 'cont' => $cont,
@@ -1165,7 +1182,8 @@ class RelatorioController extends Controller
         ]
         )->download('projetos_avaliador.pdf');
          */
-        return view('relatorios.avaliacao.projetosAvaliador',
+        return view(
+            'relatorios.avaliacao.projetosAvaliador',
             [
                 'avaliadores' => $avaliadores,
                 'edicao' => $edicao,
@@ -1207,7 +1225,8 @@ class RelatorioController extends Controller
             ]
         )->download('autores_pos_homologacao.pdf');
         */
-        return view('relatorios.autoresPosHomologacao',
+        return view(
+            'relatorios.autoresPosHomologacao',
             [
                 'autores' => $autores,
                 'cont' => $cont,
@@ -1429,14 +1448,14 @@ class RelatorioController extends Controller
             ->distinct('projeto.id')
             ->orderBy('titulo')
             ->get();
-        
+
         $projetosCadastrados = ['projetos' => array(), 'total' => 0, 'name' => 'Cadastrados'];
         $projetosNaoHomologados = ['projetos' => array(), 'total' => 0, 'name' => 'Não Homologados'];
         $projetosHomologados = ["projetos" => array(), "total" => 0, "name" => "Homologados"];
         $projetosNaoAvaliados = ["projetos" => array(), "total" => 0, "name" => "Não Avaliados"];
         $projetosAvaliados = ["projetos" => array(), "total" => 0, "name" => "Avaliados"];
         $projetosNaoCompareceu = ["projetos" => array(), "total" => 0, "name" => "Não Compareceu"];
-        foreach($projetos as $projeto) {
+        foreach ($projetos as $projeto) {
             switch ($projeto->situacao_id) {
                 case EnumSituacaoProjeto::getValue("Cadastrado"):
                     array_push($projetosCadastrados["projetos"], $projeto);
@@ -1474,7 +1493,8 @@ class RelatorioController extends Controller
         $situacoes["naoCompareceu"] = $projetosNaoCompareceu;
 
         //return PDF::loadView('relatorios.projetos', ['projetos' => $projetos])->download('projetos.pdf');
-        return view('relatorios.projetos',
+        return view(
+            'relatorios.projetos',
             ["situacoes" => $situacoes]
         );
     }
@@ -1619,7 +1639,7 @@ class RelatorioController extends Controller
             ->orderBy('nivel.nivel')
             ->get()
             ->toArray();
- 
+
         foreach ($areas as $key => $area) {
 
             $areas[$key]->avaliadores = DB::table('pessoa')
@@ -1701,7 +1721,7 @@ class RelatorioController extends Controller
             ->setPaper('A4', 'landscape')
             ->download('classificacao_projetos.pdf');
         */
-    
+
         return view('relatorios.premiacao.classificacaoProjetos', ['areas' => $areas, 'edicao' => $edicao]);
     }
 
@@ -1792,7 +1812,8 @@ class RelatorioController extends Controller
         ]
         )->download('projetos_compareceram_autor.pdf');
          */
-        return view('relatorios.projetosCompareceramPorAutor',
+        return view(
+            'relatorios.projetosCompareceramPorAutor',
             [
                 'autores' => $autores,
                 'edicao' => $edicao,
@@ -1860,7 +1881,6 @@ class RelatorioController extends Controller
                     ->toArray();
 
                 $ids = array_merge($ids, array_column($projetos[$bloco][$i], 'id'));
-
             }
         }
 
@@ -1924,7 +1944,8 @@ class RelatorioController extends Controller
         ]
         )->download('projetos_presenca_nivel.pdf');
          */
-        return view('relatorios.projetosConfirmaramPresencaArea',
+        return view(
+            'relatorios.projetosConfirmaramPresencaArea',
             [
                 'areas' => $areas,
                 'edicao' => $edicao,
@@ -2144,8 +2165,9 @@ class RelatorioController extends Controller
 
         return $this->returnsCSVStream($filename, $fileheaders, $fileRows);
     }
-    
-    public function csvEscolaPorTipo() {
+
+    public function csvEscolaPorTipo()
+    {
         $escolas = Escola::getAllByTipo();
 
         $filename = "csvEscolaPorTipo.csv";
@@ -2167,12 +2189,13 @@ class RelatorioController extends Controller
         return $this->returnsCSVStream($filename, $fileheaders, $filerows);
     }
 
-    public function escolaPorTipo() {
+    public function escolaPorTipo()
+    {
         $escolas = Escola::getAllByTipo();
 
         $escolasPublicas = [];
         $escolasPrivadas = [];
-        foreach($escolas as $escola) {
+        foreach ($escolas as $escola) {
             if ($escola->publica) {
                 array_push($escolasPublicas, $escola);
             } else {
@@ -2183,7 +2206,8 @@ class RelatorioController extends Controller
         return view('relatorios.gerais.escolasPorTipo', ['escolasPublicas' => $escolasPublicas, 'escolasPrivadas' => $escolasPrivadas]);
     }
 
-    public function csvPresencaParticipantes($edicaoId) {
+    public function csvPresencaParticipantes($edicaoId)
+    {
         $participantes = DB::table('funcao_pessoa')
             ->select('pessoa.nome', 'pessoa.cpf', 'pessoa.email', 'projeto.titulo', 'escola_funcao_pessoa_projeto.funcao_id')
             ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
