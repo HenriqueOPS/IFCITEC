@@ -307,7 +307,7 @@ class ProjetoController extends Controller
 			->get();
 
 		$autor = DB::table('escola_funcao_pessoa_projeto')
-			->select('pessoa_id')
+			->select('pessoa_id', 'concluinte')
 			->where('projeto_id', $id)
 			->where('funcao_id', EnumFuncaoPessoa::getValue('Autor'))
 			->get()
@@ -395,7 +395,7 @@ class ProjetoController extends Controller
 				->delete();
 
 			// Cria os vinculos de Autores ao projeto
-			foreach ($req->all()['autor'] as $idAutor) {
+			foreach ($req->all()['autor'] as $key => $idAutor) {
 
 				if ($idAutor) {
 					$dataAutor = Pessoa::select(['id', 'nome', 'email'])->find($idAutor);
@@ -416,7 +416,8 @@ class ProjetoController extends Controller
 							'funcao_id' => EnumFuncaoPessoa::getValue('Autor'),
 							'pessoa_id' => $idAutor,
 							'projeto_id' => $id,
-							'edicao_id' => Edicao::getEdicaoId()
+							'edicao_id' => Edicao::getEdicaoId(),
+							'concluinte' => $req->autorConcluinte[$key]
 						]);
 
 					dispatch(
