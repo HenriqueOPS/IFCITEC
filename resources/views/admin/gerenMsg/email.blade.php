@@ -184,7 +184,7 @@
             <div class="container">
                 <div class="card-body">
                     <div id="summernote"></div>
-                    <button id="summernote-save" class="btn btn-danger btn-block">Save</button>
+                    <button id="summernote-save" class="btn btn-danger btn-block">Salvar</button>
                 </div>
             </div>
         </div>
