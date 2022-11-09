@@ -2293,4 +2293,37 @@ class RelatorioController extends Controller
 
         return $this->returnsCSVStream($filename, $headerFields, $rows);
     }
+
+    public function alunosConcluintesPorProjeto($edicao)
+    {
+        $concluintes = DB::table('escola_funcao_pessoa_projeto')
+            ->join('pessoa', 'pessoa.id', '=', 'escola_funcao_pessoa_projeto.pessoa_id')
+            ->join('projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+            ->where('escola_funcao_pessoa_projeto.concluinte', '=', true)
+            ->where('escola_funcao_pessoa_projeto.edicao_id', '=', $edicao)
+            ->select('projeto.id', 'pessoa.nome', 'pessoa.email')
+            ->get();
+
+        $projetos = DB::table('escola_funcao_pessoa_projeto')
+            ->join('projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+            ->where('escola_funcao_pessoa_projeto.concluinte', '=', true)
+            ->where('escola_funcao_pessoa_projeto.edicao_id', '=', $edicao)
+            ->distinct()
+            ->select('projeto.id', 'projeto.titulo')
+            ->get();
+
+        $dados = [];
+
+        foreach ($projetos as $key => $projeto) {
+            $concluintesFiltrados = [];
+            foreach ($concluintes as $key => $concluinte) {
+                if ($projeto->id == $concluinte->id) {
+                    array_push($concluintesFiltrados, $concluinte);
+                }
+            }
+            array_push($dados, ['projeto' => $projeto->titulo, 'concluintes' => $concluintesFiltrados]);
+        }
+
+        return view('relatorios.projetos.concluintesProjeto', ['dados' => $dados]);
+    }
 }
