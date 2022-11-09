@@ -246,6 +246,15 @@
                                                     @endif
                                                 @endforeach
                                             </select>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <span style="margin-right: 5pt;">
+                                                        Aluno concluinte?
+                                                    </span>
+                                                    <input type="hidden" name="autorConcluinte[0]" value=false>
+                                                    <input type="checkbox" name="autorConcluinte[0]" value=true>
+                                                </label>
+                                            </div>
                                         </div>
                                         @if ($errors->has('autor[]'))
                                             <span class="help-block">
@@ -283,6 +292,15 @@
                                                     @endif
                                                 @endforeach
                                             </select>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <span style="margin-right: 5pt;">
+                                                        Aluno concluinte?
+                                                    </span>
+                                                    <input type="hidden" name="autorConcluinte[1]" value=false>
+                                                    <input type="checkbox" name="autorConcluinte[1]" value=true>
+                                                </label>
+                                            </div>
                                         </div>
                                         @if ($errors->has('autor[]'))
                                             <span class="help-block">
@@ -318,6 +336,15 @@
                                                     @endif
                                                 @endforeach
                                             </select>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <span style="margin-right: 5pt;">
+                                                        Aluno concluinte?
+                                                    </span>
+                                                    <input type="hidden" name="autorConcluinte[2]" value=false>
+                                                    <input type="checkbox" name="autorConcluinte[2]" value=true>
+                                                </label>
+                                            </div>
                                         </div>
                                         @if ($errors->has('autor[]'))
                                             <span class="help-block">

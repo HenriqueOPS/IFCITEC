@@ -133,7 +133,7 @@ class ProjetoController extends Controller
 		//Insert via DB pois o Laravel não está preparado para um tabela de 4 relacionamentos
 
 		//Autores
-		foreach ($request['autor'] as $idAutor) {
+		foreach ($request['autor'] as $key => $idAutor) {
 
 			if ($idAutor) {
 
@@ -154,7 +154,8 @@ class ProjetoController extends Controller
 						'funcao_id' => EnumFuncaoPessoa::getValue('Autor'),
 						'pessoa_id' => $idAutor,
 						'projeto_id' => $projeto->id,
-						'edicao_id' => Edicao::getEdicaoId()
+						'edicao_id' => Edicao::getEdicaoId(),
+						'concluinte' => $request->autorConcluinte[$key]
 					]);
 
 				dispatch(
