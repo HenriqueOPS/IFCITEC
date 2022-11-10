@@ -232,22 +232,13 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 		dispatch(
 			new MailBaseJob(
 				'guilhermevianagui23@gmail.com',
-				'Autor',
+				'Projeto Nao Homologado',
 				[
 					'nome' => 'Guilherme',
 					'titulo' => 'Bolas'
 				]
 			)
 		);
-
-		/*
-		return view('mail.base')
-			->withNome('Cavalo')
-			->withTitulo('Bolas')
-			->withToken('sdkjakldjkldaskldklasj')
-			->withIdProj(2)
-			->withConteudo(\App\Mensagem::fetchMessageContent('Autor', 'email'));
-		*/
 	});
 
 	// TODO: refatorar

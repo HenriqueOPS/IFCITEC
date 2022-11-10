@@ -35,7 +35,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: "ifcitec@canoas.ifrs.edu.br"
       PGADMIN_DEFAULT_PASSWORD: "123"
     ports:
-      - "16543:80"
+      - "8080:80"
     depends_on:
       - postgres
     networks:

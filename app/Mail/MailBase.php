@@ -32,7 +32,7 @@ class MailBase extends Mailable
      */
     public function build()
     {
-        return $this->subject('IFCITEC - Mail base')
+        return $this->subject('IFCITEC')
             ->view('mail.base');
     }
 }
