@@ -13,7 +13,7 @@ class GerenMsgController extends Controller
         return view('admin.gerenMsg.email');
     }
 
-    public function fetch(string $tipo)
+    public function fetchByType(string $tipo)
     {
         $mensagens = Mensagem::where('tipo', '=', $tipo)->get();
 

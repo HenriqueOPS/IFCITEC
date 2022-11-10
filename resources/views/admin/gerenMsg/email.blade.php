@@ -339,7 +339,7 @@
             document.getElementById('mensagens').innerHTML = '';
             mensagensCarregadas = [];
 
-            let url = "{{ route('mensagens.fetch', ':tipo') }}";
+            let url = "{{ route('mensagens.fetchByType', ':tipo') }}";
             url = url.replace(':tipo', tipoAtual);
 
             $.get(url, data => {
