@@ -1032,7 +1032,7 @@ class ProjetoController extends Controller
 							dispatch(
 								new \App\Jobs\MailBaseJob(
 									$pessoa->email,
-									'Projeto Nao Homologador',
+									'Projeto Nao Homologado',
 									[
 										'nome' => $pessoa->nome,
 										'titulo' => $projeto[0]->titulo
