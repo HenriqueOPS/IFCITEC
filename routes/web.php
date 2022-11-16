@@ -228,6 +228,10 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::post('/mensagens/salvar', 'GerenMsgController@save')->name('mensagens.save'); // Ajax
 	Route::post('/administrador/mensagens/create/{nome}/{tipo}', 'GerenMsgController@create')->name('mensagens.create'); // Ajax
 	Route::post('/administrador/mensagens/deletar/{id}', 'GerenMsgController@delete')->name('mensagens.delete'); // Ajax
+	Route::get('/administrador/mensagens/tester', function () {
+
+		return route('password.reset', 'sdjakldjalkdjakljk');
+	});
 
 	// TODO: refatorar
 	Route::get('/administrador/nota-revisao/projeto/{projeto}', 'AdminController@notaRevisao')->name('notaRevisao');
