@@ -229,8 +229,16 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 	Route::post('/administrador/mensagens/create/{nome}/{tipo}', 'GerenMsgController@create')->name('mensagens.create'); // Ajax
 	Route::post('/administrador/mensagens/deletar/{id}', 'GerenMsgController@delete')->name('mensagens.delete'); // Ajax
 	Route::get('/administrador/mensagens/tester', function () {
-
-		return route('password.reset', 'sdjakldjalkdjakljk');
+		dispatch(
+			new MailBaseJob(
+				'guilhermevianagui23@gmail.com',
+				'Projeto Homologado',
+				[
+					'nome' => 'Guilherme',
+					'titulo' => 'Bolas'
+				]
+			)
+		);
 	});
 
 	// TODO: refatorar
