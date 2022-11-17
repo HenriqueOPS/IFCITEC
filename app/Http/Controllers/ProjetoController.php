@@ -1008,6 +1008,7 @@ class ProjetoController extends Controller
 								$pessoa->email,
 								'Projeto Homologado',
 								[
+									'nome' => $pessoa->nome,
 									'titulo' => $projeto[0]->titulo,
 									'idProj' => $projeto[0]->id
 								]

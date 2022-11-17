@@ -216,7 +216,7 @@
                                             <div class="checkbox">
                                                 <label>
                                                     <span style="margin-right: 5pt;">
-                                                        Aluno concluinte?
+                                                        Este autor é concluinte do ensino fundamental, médio ou tecnico?
                                                     </span>
                                                     <input type="hidden" name="autorConcluinte[0]" value=false>
                                                     @if ($autor[0]->concluinte == true)
@@ -259,7 +259,7 @@
                                             <div class="checkbox">
                                                 <label>
                                                     <span style="margin-right: 5pt;">
-                                                        Aluno concluinte?
+                                                        Este autor é concluinte do ensino fundamental, médio ou tecnico?
                                                     </span>
                                                     <input type="hidden" name="autorConcluinte[1]" value=false>
                                                     @if ($autor[1]->concluinte == true)
@@ -302,7 +302,7 @@
                                             <div class="checkbox">
                                                 <label>
                                                     <span style="margin-right: 5pt;">
-                                                        Aluno concluinte?
+                                                        Este autor é concluinte do ensino fundamental, médio ou tecnico?
                                                     </span>
                                                     <input type="hidden" name="autorConcluinte[2]" value=false>
                                                     @if ($autor[2]->concluinte == true)
