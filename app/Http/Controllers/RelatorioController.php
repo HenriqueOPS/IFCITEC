@@ -1527,9 +1527,11 @@ class RelatorioController extends Controller
     {
         $escola = Escola::find($id);
 
+        $situacoes = DB::table('situacao')->get();
         $projetos = DB::table('escola_funcao_pessoa_projeto')
             ->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-            ->select('escola_funcao_pessoa_projeto.escola_id', 'projeto.id', 'projeto.titulo')
+            ->join('situacao', 'projeto.situacao_id', '=', 'situacao.id')
+            ->select('escola_funcao_pessoa_projeto.escola_id', 'projeto.id', 'projeto.titulo', 'situacao.situacao')
             ->where('escola_id', $id)
             ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
             ->distinct('projeto.id')
@@ -1538,7 +1540,8 @@ class RelatorioController extends Controller
 
         $numeroProjetos = count($projetos);
 
-        return PDF::loadView('relatorios.escolaProjetos', array('escola' => $escola, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->download('escola_projetos.pdf');
+        //return PDF::loadView('relatorios.escolaProjetos', array('escola' => $escola, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos))->download('escola_projetos.pdf');
+        return view('relatorios.escolaProjetos', array('situacoes' => $situacoes, 'escola' => $escola, 'projetos' => $projetos, 'numeroProjetos' => $numeroProjetos));
     }
 
     public function nivelProjetos($id)
