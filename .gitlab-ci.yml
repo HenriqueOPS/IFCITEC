@@ -15,7 +15,7 @@ job-composer:
   stage: build
   image: php:7.1.7-apache
   script:
-    - for K in $(apt-key list | grep expired | cut -d'/' -f2 | cut -d' ' -f1); do sudo apt-key adv --recv-keys --keyserver keys.gnupg.net $K; done
+    - for K in $(apt-key list | grep expired | cut -d'/' -f2 | cut -d' ' -f1); do  apt-key adv --recv-keys --keyserver keys.gnupg.net $K; done
     - apt update && apt install git zlib1g-dev libtool-bin libpq-dev unzip libpng-dev postgresql-dev -yqq --no-install-recommends
     - docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
     - docker-php-ext-install zip gd pdo_pgsql pgsql
