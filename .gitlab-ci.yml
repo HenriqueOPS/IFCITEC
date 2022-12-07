@@ -17,7 +17,7 @@ job-composer:
   script:
     - apt-get update && apt install -y --force-yes software-properties-common
     - add-apt-repository ppa:linuxuprising/libpng12
-    - apt-get update && apt-get install git zlib1g-dev libtool-bin libpq-dev unzip libpng-dev -yqq --no-install-recommends
+    - apt-get update && apt-get install git zlib1g-dev libtool-bin libpq-dev unzip libpng-dev postgresql postgresql-contrib -yqq --no-install-recommends
     - docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
     - docker-php-ext-install zip gd pdo_pgsql pgsql
     - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
