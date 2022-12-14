@@ -13,9 +13,9 @@ cache:
 # Compila o projeto e baixa dependências
 job-composer:
   stage: build
-  image: php:7.1.7-apache
+  image: php:7.4.33-apache
   script:
-    - apt update && apt install git zlib1g-dev libtool-bin libpq-dev unzip libpng-dev postgresql-dev -yqq --no-install-recommends
+    - apt-get update && apt-get install git zlib1g-dev libtool-bin libpq-dev unzip libpng-dev libzip-dev libssl-dev libbz2-dev libxml2-dev libjpeg-dev -yqq --no-install-recommends
     - docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
     - docker-php-ext-install zip gd pdo_pgsql pgsql
     - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
