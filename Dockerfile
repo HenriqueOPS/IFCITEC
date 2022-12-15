@@ -1,8 +1,46 @@
-FROM php:7.1.7-apache
+FROM php:7.4.33-apache as COMPOSE-BUILDER
 
-RUN apt-get update -yqq && \
-    apt-get install supervisor nano zlib1g-dev libpq-dev libpng-dev -yqq --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/*
+ARG COMPOSER_VERSION=1.10.26
+
+WORKDIR /app
+
+COPY ./ ./
+
+RUN apt-get update \
+    && apt-get install -yqq --no-install-recommends \
+    libzip-dev
+
+RUN docker-php-ext-install zip
+
+COPY ./ ./
+
+RUN curl -sS https://getcomposer.org/installer | \
+    php -- --install-dir=/usr/local/bin --filename=composer --version=$COMPOSER_VERSION && \
+    composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader
+
+FROM php:7.4.33-apache
+
+WORKDIR /var/www/html/
+
+RUN apt-get update && \ 
+    apt-get install -yqq --no-install-recommends \
+    supervisor \
+    nano \
+    git \
+    zlib1g-dev \
+    libtool-bin \
+    libpq-dev \
+    unzip \
+    libpng-dev \
+    libzip-dev \
+    libssl-dev \
+    libbz2-dev \
+    libxml2-dev \
+    libjpeg-dev && \
+    apt-get clean autoclean && \
+    apt-get autoremove --yes && \
+    rm -rf /var/lib/{apt,dpkg,cache,log}/ && \
+    rm -rf /tmp/*
 
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
 RUN docker-php-ext-install zip pdo_pgsql pgsql gd
@@ -17,6 +55,8 @@ COPY ./build/customphp.ini /usr/local/etc/php/conf.d/
 COPY ./build/supervisord.conf /etc/supervisor/
 
 COPY ./ /var/www/html/
+
+COPY --from=COMPOSE-BUILDER /app/vendor/ /var/www/html/vendor
 
 RUN chmod 777 -R storage/ bootstrap/cache/ && chown -R www-data:www-data /var/www/ && \
     find /var/www/ -type d -exec chmod -R 755 {} \; && find /var/www/ -type f -exec chmod -R 644 {} \; && \

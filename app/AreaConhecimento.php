@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 use App\Enums\EnumSituacaoProjeto;
 
-class AreaConhecimento extends Model {
+class AreaConhecimento extends Model
+{
 
     /**
      * The table associated with the model.
@@ -25,32 +26,36 @@ class AreaConhecimento extends Model {
         'area_conhecimento', 'descricao', 'nivel_id'
     ];
 
-    public function projetos() {
+    public function projetos()
+    {
         return $this->hasMany('App\Projeto', 'area_id');
     }
 
 
-    public function niveis(){
-        return $this->belongsTo('App\Nivel','nivel_id');
+    public function niveis()
+    {
+        return $this->belongsTo('App\Nivel', 'nivel_id');
     }
 
-    public function edicoes(){
-        return $this->belongsToMany('App\Edicao','area_edicao','area_id','edicao_id');
+    public function edicoes()
+    {
+        return $this->belongsToMany('App\Edicao', 'area_edicao', 'area_id', 'edicao_id');
     }
 
-    public function getClassificacaoProjetos($id, $edicao){
+    public function getClassificacaoProjetos($id, $edicao)
+    {
         $subQuery = DB::table('revisao')
             ->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
-            ->where('revisao.projeto_id','=',DB::raw('projeto.id'))
+            ->where('revisao.projeto_id', '=', DB::raw('projeto.id'))
             ->toSql();
 
-        $projetos = Projeto::select(DB::raw('('.$subQuery.') as nota'),'projeto.nota_avaliacao', 'projeto.titulo', 'projeto.situacao_id', 'escola.nome_curto', 'projeto.id')
+        $projetos = Projeto::select(DB::raw('(' . $subQuery . ') as nota'), 'projeto.nota_avaliacao', 'projeto.titulo', 'projeto.situacao_id', 'escola.nome_curto', 'projeto.id')
             ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
             ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
-            ->where('projeto.edicao_id','=',$edicao)
-            ->where('projeto.area_id','=',$id)
-            ->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('Avaliado'))
-            ->where('projeto.nota_avaliacao','<>',NULL)
+            ->where('projeto.edicao_id', '=', $edicao)
+            ->where('projeto.area_id', '=', $id)
+            ->where('projeto.situacao_id', '=', EnumSituacaoProjeto::getValue('Avaliado'))
+            ->where('projeto.nota_avaliacao', '<>', NULL)
             ->groupBy('projeto.id')
             ->groupBy('escola.nome_curto')
             ->orderBy('projeto.nota_avaliacao', 'desc')
@@ -60,20 +65,21 @@ class AreaConhecimento extends Model {
         return $projetos;
     }
 
-    public function getClassificacaoProjetosIFRSCanoas($id, $edicao){
+    public function getClassificacaoProjetosIFRSCanoas($id, $edicao)
+    {
         $subQuery = DB::table('revisao')
             ->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
-            ->where('revisao.projeto_id','=',DB::raw('projeto.id'))
+            ->where('revisao.projeto_id', '=', DB::raw('projeto.id'))
             ->toSql();
 
-        $projetos = Projeto::select(DB::raw('('.$subQuery.') as nota'),'projeto.nota_avaliacao', 'projeto.titulo', 'projeto.situacao_id', 'escola.nome_curto', 'projeto.id')
+        $projetos = Projeto::select(DB::raw('(' . $subQuery . ') as nota'), 'projeto.nota_avaliacao', 'projeto.titulo', 'projeto.situacao_id', 'escola.nome_curto', 'projeto.id')
             ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
             ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
-            ->where('projeto.edicao_id','=',$edicao)
-            ->where('projeto.area_id','=',$id)
-            ->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('Avaliado'))
-            ->where('escola.id','=', Escola::where('nome_curto', 'IFRS Canoas')->get()->first()->id)
-            ->where('projeto.nota_avaliacao','<>',NULL)
+            ->where('projeto.edicao_id', '=', $edicao)
+            ->where('projeto.area_id', '=', $id)
+            ->where('projeto.situacao_id', '=', EnumSituacaoProjeto::getValue('Avaliado'))
+            ->where('escola.id', '=', Escola::where('nome_curto', 'IFRS Canoas')->get()->first()->id)
+            ->where('projeto.nota_avaliacao', '<>', NULL)
             ->groupBy('projeto.id')
             ->groupBy('escola.nome_curto')
             ->orderBy('projeto.nota_avaliacao', 'desc')
@@ -84,19 +90,45 @@ class AreaConhecimento extends Model {
         return $projetos;
     }
 
-    public function getClassificacaoProjetosCertificados($id, $edicao){
+    public function getClassificacaoProjetosCertificados($id, $edicao)
+    {
         $subQuery = DB::table('revisao')
             ->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
-            ->where('revisao.projeto_id','=',DB::raw('projeto.id'))
+            ->where('revisao.projeto_id', '=', DB::raw('projeto.id'))
             ->toSql();
 
-        $projetos = Projeto::select(DB::raw('('.$subQuery.') as nota'),'projeto.nota_avaliacao', 'projeto.titulo', 'projeto.situacao_id', 'escola.nome_curto', 'projeto.id')
+        $projetos = Projeto::select(DB::raw('(' . $subQuery . ') as nota'), 'projeto.nota_avaliacao', 'projeto.titulo', 'projeto.situacao_id', 'escola.nome_curto', 'projeto.id')
             ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
             ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
-            ->where('projeto.edicao_id','=',$edicao)
-            ->where('projeto.area_id','=',$id)
-            ->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('Avaliado'))
-            ->where('projeto.nota_avaliacao','<>',NULL)
+            ->where('projeto.edicao_id', '=', $edicao)
+            ->where('projeto.area_id', '=', $id)
+            ->where('projeto.situacao_id', '=', EnumSituacaoProjeto::getValue('Avaliado'))
+            ->where('projeto.nota_avaliacao', '<>', NULL)
+            ->groupBy('projeto.id')
+            ->groupBy('escola.nome_curto')
+            ->orderBy('projeto.nota_avaliacao', 'desc')
+            ->orderBy('nota', 'desc')
+            ->orderBy('projeto.created_at', 'asc')
+            ->limit(5)
+            ->get();
+
+        return $projetos->reverse();
+    }
+
+    public function getClassificacaoCertificados($id, $edicao)
+    {
+        $subQuery = DB::table('revisao')
+            ->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
+            ->where('revisao.projeto_id', '=', DB::raw('projeto.id'))
+            ->toSql();
+
+        $projetos = Projeto::select(DB::raw('(' . $subQuery . ') as nota'), 'projeto.nota_avaliacao', 'projeto.titulo', 'projeto.situacao_id', 'escola.nome_curto', 'projeto.id')
+            ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+            ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+            ->where('projeto.edicao_id', '=', $edicao)
+            ->where('projeto.area_id', '=', $id)
+            ->where('projeto.situacao_id', '=', EnumSituacaoProjeto::getValue('Avaliado'))
+            ->where('projeto.nota_avaliacao', '<>', NULL)
             ->groupBy('projeto.id')
             ->groupBy('escola.nome_curto')
             ->orderBy('projeto.nota_avaliacao', 'desc')
@@ -108,40 +140,17 @@ class AreaConhecimento extends Model {
         return $projetos->reverse();
     }
 
-    public function getClassificacaoCertificados($id, $edicao){
+    public function getProjetosClassificados($id, $edicao)
+    {
         $subQuery = DB::table('revisao')
             ->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
-            ->where('revisao.projeto_id','=',DB::raw('projeto.id'))
+            ->where('revisao.projeto_id', '=', DB::raw('projeto.id'))
             ->toSql();
 
-        $projetos = Projeto::select(DB::raw('('.$subQuery.') as nota'),'projeto.nota_avaliacao', 'projeto.titulo', 'projeto.situacao_id', 'escola.nome_curto', 'projeto.id')
-            ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
-            ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
-            ->where('projeto.edicao_id','=',$edicao)
-            ->where('projeto.area_id','=',$id)
-            ->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('Avaliado'))
-            ->where('projeto.nota_avaliacao','<>',NULL)
-            ->groupBy('projeto.id')
-            ->groupBy('escola.nome_curto')
-            ->orderBy('projeto.nota_avaliacao', 'desc')
-            ->orderBy('nota', 'desc')
-            ->orderBy('projeto.created_at', 'asc')
-            ->limit(3)
-            ->get();
-
-        return $projetos->reverse();
-    }
-
-    public function getProjetosClassificados($id, $edicao){
-        $subQuery = DB::table('revisao')
-            ->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
-            ->where('revisao.projeto_id','=',DB::raw('projeto.id'))
-            ->toSql();
-
-        $projetos = Projeto::select(DB::raw('('.$subQuery.') as nota'),'projeto.titulo', 'projeto.situacao_id')
-            ->where('projeto.edicao_id','=',$edicao)
-            ->where('projeto.area_id','=',$id)
-            ->where('projeto.situacao_id','=', EnumSituacaoProjeto::getValue('Homologado'))
+        $projetos = Projeto::select(DB::raw('(' . $subQuery . ') as nota'), 'projeto.titulo', 'projeto.situacao_id')
+            ->where('projeto.edicao_id', '=', $edicao)
+            ->where('projeto.area_id', '=', $id)
+            ->where('projeto.situacao_id', '=', EnumSituacaoProjeto::getValue('Homologado'))
             ->orderBy('nota', 'desc')
             ->orderBy('projeto.created_at', 'asc')
             ->get();
@@ -149,29 +158,31 @@ class AreaConhecimento extends Model {
         return $projetos;
     }
 
-    public function getProjetos($id, $edicao){
+    public function getProjetos($id, $edicao)
+    {
         $projetos = Projeto::select('projeto.id', 'projeto.titulo', 'escola.nome_curto')
             ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
             ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
-            ->where('projeto.edicao_id','=',$edicao)
-            ->where('projeto.area_id','=',$id)
-            ->where('projeto.presenca','=',TRUE)
-            ->orderBy('titulo','asc')
+            ->where('projeto.edicao_id', '=', $edicao)
+            ->where('projeto.area_id', '=', $id)
+            ->where('projeto.presenca', '=', TRUE)
+            ->orderBy('titulo', 'asc')
             ->distinct('projeto.id')
             ->get();
 
         return $projetos;
     }
 
-    public function getProjetosHomologadosConfirmados($id, $edicao){
+    public function getProjetosHomologadosConfirmados($id, $edicao)
+    {
         $projetos = Projeto::select('projeto.id', 'projeto.titulo', 'escola.nome_curto')
             ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
             ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
-            ->where('projeto.edicao_id','=',$edicao)
-            ->where('projeto.area_id','=',$id)
-            ->where('projeto.presenca','=',TRUE)
+            ->where('projeto.edicao_id', '=', $edicao)
+            ->where('projeto.area_id', '=', $id)
+            ->where('projeto.presenca', '=', TRUE)
             ->where('projeto.situacao_id', '=', EnumSituacaoProjeto::getValue('Homologado'))
-            ->orderBy('titulo','asc')
+            ->orderBy('titulo', 'asc')
             ->distinct('projeto.id')
             ->get();
 

@@ -12,6 +12,7 @@
  */
 
 use App\Http\Middleware;
+use App\Jobs\MailBaseJob;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -223,7 +224,7 @@ Route::group(['middleware' => ['IsAdministrador']], function () {
 
 	// Cadastro de mensagens
 	Route::get('/administrador/mensagens', 'GerenMsgController@index')->name('gerenciadorMensagens');
-	Route::get('/administrador/mensagens/get/{tipo}', 'GerenMsgController@fetch')->name('mensagens.fetch'); // Ajax
+	Route::get('/administrador/mensagens/get/{tipo}', 'GerenMsgController@fetchByType')->name('mensagens.fetchByType'); // Ajax
 	Route::post('/mensagens/salvar', 'GerenMsgController@save')->name('mensagens.save'); // Ajax
 	Route::post('/administrador/mensagens/create/{nome}/{tipo}', 'GerenMsgController@create')->name('mensagens.create'); // Ajax
 	Route::post('/administrador/mensagens/deletar/{id}', 'GerenMsgController@delete')->name('mensagens.delete'); // Ajax

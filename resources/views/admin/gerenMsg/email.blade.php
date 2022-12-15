@@ -184,7 +184,7 @@
             <div class="container">
                 <div class="card-body">
                     <div id="summernote"></div>
-                    <button id="summernote-save" class="btn btn-danger btn-block">Save</button>
+                    <button id="summernote-save" class="btn btn-danger btn-block">Salvar</button>
                 </div>
             </div>
         </div>
@@ -339,7 +339,7 @@
             document.getElementById('mensagens').innerHTML = '';
             mensagensCarregadas = [];
 
-            let url = "{{ route('mensagens.fetch', ':tipo') }}";
+            let url = "{{ route('mensagens.fetchByType', ':tipo') }}";
             url = url.replace(':tipo', tipoAtual);
 
             $.get(url, data => {

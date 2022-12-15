@@ -6,75 +6,81 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Nivel;
 use App\Pessoa;
 use App\Projeto;
-class ProjetoRequest extends FormRequest {
 
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize() {
-        return true;
-    }
+class ProjetoRequest extends FormRequest
+{
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules() {
-        return [
-            'titulo' => 'required',
-            'resumo' => 'required',
-            'palavras_chaves' => 'required',
-            'nivel' => 'required',
-            'area_conhecimento' => 'required',
-            'escola' => 'required',
-            'orientador' => 'required',
-        ];
-    }
+	/**
+	 * Determine if the user is authorized to make this request.
+	 *
+	 * @return bool
+	 */
+	public function authorize()
+	{
+		return true;
+	}
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages() {
-        return [
-            'titulo.required' => 'O título é obrigatório',
-            'resumo.required' => 'O resumo é obrigatório',
-            'resumo.between' => 'O resumo deve conter de :min a :max caracteres',
-            'nivel.required' => 'É necessário definir um nível',
-            'area_conhecimento.required' => 'É necessário definir uma área do conhecimento',
-            'escola.required' => 'É necessário informar a escola pela qual você está vínculado neste projeto',
-            'orientador.required' => 'É necessário informar o orientador deste projeto',
-            'palavras_chaves.required' => 'É necessário informar palavras-chave',
-            'palavras_chaves.min' => 'As palavras-chave devem conter pelo menos :min palavras',
+	/**
+	 * Get the validation rules that apply to the request.
+	 *
+	 * @return array
+	 */
+	public function rules()
+	{
+		return [
+			'titulo' => 'required',
+			'resumo' => 'required',
+			'palavras_chaves' => 'required',
+			'nivel' => 'required',
+			'area_conhecimento' => 'required',
+			'escola' => 'required',
+			'orientador' => 'required',
+		];
+	}
 
-        ];
-    }
+	/**
+	 * Get the error messages for the defined validation rules.
+	 *
+	 * @return array
+	 */
+	public function messages()
+	{
+		return [
+			'titulo.required' => 'O título é obrigatório',
+			'resumo.required' => 'O resumo é obrigatório',
+			'resumo.between' => 'O resumo deve conter de :min a :max caracteres',
+			'nivel.required' => 'É necessário definir um nível',
+			'area_conhecimento.required' => 'É necessário definir uma área do conhecimento',
+			'escola.required' => 'É necessário informar a escola pela qual você está vínculado neste projeto',
+			'orientador.required' => 'É necessário informar o orientador deste projeto',
+			'palavras_chaves.required' => 'É necessário informar palavras-chave',
+			'palavras_chaves.min' => 'As palavras-chave devem conter pelo menos :min palavras',
 
-    /**
-     * Configure the validator instance.
-     *
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return void
-     */
-    public function withValidator($validator) {
+		];
+	}
 
-    	// Valida o numero de caracteres do resumo de acordo com o nível
+	/**
+	 * Configure the validator instance.
+	 *
+	 * @param  \Illuminate\Validation\Validator  $validator
+	 * @return void
+	 */
+	public function withValidator($validator)
+	{
+
+		// Valida o numero de caracteres do resumo de acordo com o nível
 		$dadosNivel = Nivel::find($validator->getData()['nivel']);
 		$validator->addRules(['resumo' => ('required|between: ' . $dadosNivel->min_ch . ',' . $dadosNivel->max_ch)]);
 
 		$autores = $validator->getData()['autor'];
 		$cont = 0;
 		foreach ($autores as $autor) {
-			if($autor != null)
+			if ($autor != null)
 				$cont++;
 		}
 
 		if ($cont == 0) {
-			$validator->sometimes('autor[]', 'required', function($input) use ($cont){
+			$validator->sometimes('autor[]', 'required', function ($input) use ($cont) {
 				return $input->$cont == 0;
 			});
 
@@ -97,14 +103,14 @@ class ProjetoRequest extends FormRequest {
 			foreach ($coorientadores as $coorientador) {
 				if ($coorientador != null) {
 					if (Pessoa::find($coorientador)->comissaoArea($validator->getData()['area_conhecimento'], $coorientador) == false)
-						$validator->errors()->add('coorientador[]', 'Não é possível adicionar esse coorientador');
+						$validator->errors()->add('coorientador[]', 'Este coorientador está cadastrado na comissão avaliadora');
 				}
 			}
 
 			// Valida se o orientador já faz parte da comissão avaliadora na mesma área
 			$orientador = $validator->getData()['orientador'];
 			if (Pessoa::find($orientador)->comissaoArea($validator->getData()['area_conhecimento'], $orientador) == false)
-				$validator->errors()->add('orientador', 'Não é possível adicionar esse orientador');
+				$validator->errors()->add('orientador', 'Este orientador está cadastrado na comissão avaliadora');
 
 			// Valida se não tem integrantes repetidos
 			$autores = $validator->getData()['autor'];
@@ -128,6 +134,5 @@ class ProjetoRequest extends FormRequest {
 				}
 			}
 		});
-    }
-
+	}
 }

@@ -1,194 +1,209 @@
 <!DOCTYPE html>
 <html lang="{{ config('app.locale') }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- CSRF Token -->
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ config('app.name', 'IFCITEC') }}</title>
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-		<link rel="manifest" href="{{ asset('manifest.json') }}">
+    <title>{{ config('app.name', 'IFCITEC') }}</title>
 
-        <!-- Fonts and icons -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
 
-		<!-- Icons -->
-		<link rel="icon" href="{{ asset('img/icons/32x32.png') }}" sizes="32x32" />
-		<link rel="icon" href="{{ asset('img/icons/192x192.png') }}" sizes="192x192" />
-		<link rel="apple-touch-icon-precomposed" href="{{ asset('img/icons/180x180.png') }}" />
+    <!-- Fonts and icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
 
-        <!-- Styles -->
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/material-kit.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
-        @yield('css')
+    <!-- Icons -->
+    <link rel="icon" href="{{ asset('img/icons/32x32.png') }}" sizes="32x32" />
+    <link rel="icon" href="{{ asset('img/icons/192x192.png') }}" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="{{ asset('img/icons/180x180.png') }}" />
 
-		@if (!env('APP_DEBUG'))
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/material-kit.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
+    @yield('css')
 
-		<!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id={{ env('GOOGLE_ANALYTICS_ID') }}"></script>
-		<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
-		gtag('config', '{{ env('GOOGLE_ANALYTICS_ID') }}');
+    @if (!env('APP_DEBUG'))
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ env('GOOGLE_ANALYTICS_ID') }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
 
-		@if (Auth::user())
-		gtag('set', {'user_id': '{{ Auth::user()->id }} - {{ Auth::user()->nome }}'}); // Defina o ID de usuário usando o user_id conectado.
-		@endif
-		</script>
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            gtag('config', '{{ env('GOOGLE_ANALYTICS_ID') }}');
 
-		<!-- Google Tag Manager -->
-		<script>
-		(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-					new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-				j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-				'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-		})(window,document,'script','dataLayer','{{env('TAG_MANAGER_ID')}}');
-		</script>
-		<!-- End Google Tag Manager -->
+            @if (Auth::user())
+                gtag('set', {
+                    'user_id': '{{ Auth::user()->id }} - {{ Auth::user()->nome }}'
+                }); // Defina o ID de usuário usando o user_id conectado.
+            @endif
+        </script>
 
-		@endif
+        <!-- Google Tag Manager -->
+        <script>
+            (function(w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({
+                    'gtm.start': new Date().getTime(),
+                    event: 'gtm.js'
+                });
+                var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s),
+                    dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', '{{ env('TAG_MANAGER_ID') }}');
+        </script>
+        <!-- End Google Tag Manager -->
+    @endif
 
-		<!-- Import JQuery -->
-		<script src="{{ asset('js/app.js') }}"></script>
-    </head>
-    <body>
+    <!-- Import JQuery -->
+    <script src="{{ asset('js/app.js') }}"></script>
+</head>
 
-	@if (!env('APP_DEBUG'))
+<body>
+    @if (Auth::check())
+        @php(Redirect::to('/login'))
+    @endif
 
-	<!-- Google Tag Manager (noscript) -->
-	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{env('TAG_MANAGER_ID')}}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-	<!-- End Google Tag Manager (noscript) -->
+    @if (!env('APP_DEBUG'))
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ env('TAG_MANAGER_ID') }}" height="0"
+                width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+    @endif
 
-	@endif
-
-        <div id="app">
-			@if (Auth::guest())
-			@else
-
-				<nav class="navbar navbar-default navbar-static-top" role="navigation">
-					<div class="container">
-
-
-						<div class="navbar-header">
-							<a class="navbar-brand" href="{{ route('home') }}">
-								<img src="{{ asset('img/logo.png') }}" width="100" alt="IFCITEC">
-							</a>
-
-							<button type="button" class="navbar-toggle" data-toggle="collapse" >
-								<span class="sr-only">Toggle navigation</span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-							</button>
-						</div>
+    <div id="app">
+        @if (Auth::guest())
+        @else
+            <nav class="navbar navbar-default navbar-static-top" role="navigation">
+                <div class="container">
 
 
-						<div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="{{ route('home') }}">
+                            <img src="{{ asset('img/logo.png') }}" width="100" alt="IFCITEC">
+                        </a>
 
-							<!-- Left Side Of Navbar -->
-							<ul class="nav navbar-nav navbar-left">
-								<li><a href="{{ route('autor') }}">Projeto</a></li>
+                        <button type="button" class="navbar-toggle" data-toggle="collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
 
-								@if(\App\Edicao::consultaPeriodo('Comissão') ||
-									\App\Edicao::consultaPeriodo('Homologação') ||
-									\App\Edicao::consultaPeriodo('Avaliação') ||
-									Auth::user()->temFuncao('Administrador') ||
-                  					Auth::user()->temFuncao('Homologador')
-                				)
-									<li><a href="{{ route('comissao') }}">Comissão Avaliadora</a></li>
-								@endif
 
-								@if(\App\Edicao::consultaPeriodo('Voluntário'))
-									@if(!Auth::user()->temTrabalho() || Auth::user()->temFuncao('Administrador'))
-									<li><a href="{{ route('voluntario') }}">Voluntário</a></li>
-									@endif
-								@endif
+                    <div class="collapse navbar-collapse" id="navbarNav">
 
-								@if(Auth::user()->temFuncao('Organizador') || Auth::user()->temFuncao('Administrador'))
-									<li><a href="{{ route('organizador') }}">Organizador</a></li>
-								@endif
+                        <!-- Left Side Of Navbar -->
+                        <ul class="nav navbar-nav navbar-left">
+                            <li><a href="{{ route('autor') }}">Projeto</a></li>
 
-								@if(Auth::user()->temFuncao('Administrador'))
-									<li><a href="{{ route('administrador') }}">Administrador</a></li>
-								@endif
+                            @if (\App\Edicao::consultaPeriodo('Comissão') ||
+                                \App\Edicao::consultaPeriodo('Homologação') ||
+                                \App\Edicao::consultaPeriodo('Avaliação') ||
+                                Auth::user()->temFuncao('Administrador') ||
+                                Auth::user()->temFuncao('Homologador'))
+                                <li><a href="{{ route('comissao') }}">Comissão Avaliadora</a></li>
+                            @endif
 
-							</ul>
+                            @if (\App\Edicao::consultaPeriodo('Voluntário'))
+                                @if (!Auth::user()->temTrabalho() || Auth::user()->temFuncao('Administrador'))
+                                    <li><a href="{{ route('voluntario') }}">Voluntário</a></li>
+                                @endif
+                            @endif
 
-							<ul class="nav navbar-nav navbar-right">
+                            @if (Auth::user()->temFuncao('Organizador') || Auth::user()->temFuncao('Administrador'))
+                                <li><a href="{{ route('organizador') }}">Organizador</a></li>
+                            @endif
 
-								<li class="dropdown">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-										{{ Auth::user()->nome }} <span class="caret"></span>
-									</a>
-									<ul class="dropdown-menu">
-										<li>
-											<a href="{{ route('editarCadastro') }}">
-												Editar Cadastro
-											</a>
-										</li>
-										<li>
-											<a href="#"
-											   onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-											>
-												Logout
-											</a>
+                            @if (Auth::user()->temFuncao('Administrador'))
+                                <li><a href="{{ route('administrador') }}">Administrador</a></li>
+                            @endif
 
-											<form id="logout-form" action="{{ route('logout') }}" method="post" style="display: none;">
-												{{ csrf_field() }}
-											</form>
-										</li>
-									</ul>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</nav>
-			@endif
+                        </ul>
 
-			<div id="gtm" class="container"></div>
+                        <ul class="nav navbar-nav navbar-right">
 
-            @yield('content')
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    {{ Auth::user()->nome }} <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="{{ route('editarCadastro') }}">
+                                            Editar Cadastro
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            Logout
+                                        </a>
 
-        </div>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="post"
+                                            style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        @endif
 
-        <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}"></script>
-        <script src="{{ asset('js/material.min.js') }}"></script>
-        <script src="{{ asset('js/bootbox.min.js') }}"></script>
+        <div id="gtm" class="container"></div>
 
-		<script src="{{ asset('js/jquery.min.js') }}" type="text/javascript"></script>
-		<script src="{{ asset('js/bootstrap.min.js') }}" type="text/javascript"></script>
-		<script src="{{ asset('js/material.min.js') }}"></script>
+        @yield('content')
 
-		<!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
-		<script src="{{ asset('js/material-kit.js') }}" type="text/javascript"></script>
+    </div>
 
-		<script>
-			//XGH: por motivos de Descubra! o bootstrap não fecha o menu  mobile
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/material.min.js') }}"></script>
+    <script src="{{ asset('js/bootbox.min.js') }}"></script>
 
-			var mobileNavFlag = true;
-			$(document).on('click','button.navbar-toggle',function(e) {
-				if(mobileNavFlag){
-					$('#navbarNav').collapse('show');
-				}else{
-					$('#navbarNav').collapse('hide');
-				}
+    <script src="{{ asset('js/jquery.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/material.min.js') }}"></script>
 
-				mobileNavFlag = !mobileNavFlag;
-			});
-		</script>
+    <!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
+    <script src="{{ asset('js/material-kit.js') }}" type="text/javascript"></script>
 
-		@yield('partials')
+    <script>
+        //XGH: por motivos de Descubra! o bootstrap não fecha o menu  mobile
 
-        @yield('js')
+        var mobileNavFlag = true;
+        $(document).on('click', 'button.navbar-toggle', function(e) {
+            if (mobileNavFlag) {
+                $('#navbarNav').collapse('show');
+            } else {
+                $('#navbarNav').collapse('hide');
+            }
 
-    </body>
+            mobileNavFlag = !mobileNavFlag;
+        });
+    </script>
+
+    @yield('partials')
+
+    @yield('js')
+
+</body>
+
 </html>
