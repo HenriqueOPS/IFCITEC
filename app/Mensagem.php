@@ -12,4 +12,11 @@ class Mensagem extends Model
     protected $fillable = [
         'conteudo', 'tipo'
     ];
+
+    static public function fetchMessageContent(string $nome, string $tipo)
+    {
+        $mensagem = Mensagem::where('tipo', '=', $tipo)->where('nome', '=', $nome)->first();
+
+        return $mensagem->conteudo;
+    }
 }

@@ -107,8 +107,7 @@ Route::get('/csv/presenca/comissao/organizadora', 'RelatorioController@csvPresen
 Route::get('/relatorio/gerar/localizacao/projetos/{edicao}', 'RelatorioController@gerarLocalizacaoProjetos')->name('gerarLocalizacaoProjetos');
 Route::post('/relatorio/gera/localizacao/projetos/{edicao}', 'RelatorioController@geraLocalizacaoProjetos')->name('geraLocalizacaoProjetos');
 Route::get('/relatorio/projetos/homologados-escola/{edicao}', 'RelatorioController@projetosHomologadosPorEscola')->name('projetosHomologadosPorEscola');
+Route::get('/relatorio/projetos/concluintes-projeto/{edicao}', 'RelatorioController@alunosConcluintesPorProjeto')->name('concluintesPorProjeto');
 
 // Relatórios - Voluntários
 Route::get('/relatorio/voluntario/tarefa/{edicao}', 'RelatorioController@voluntarioTarefa')->name('relatorioVoluntarioTarefa');
-
-

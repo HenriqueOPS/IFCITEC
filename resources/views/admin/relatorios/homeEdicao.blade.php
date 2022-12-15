@@ -156,8 +156,8 @@
                                 <td>3</td>
                                 <td>Crachás Comissão Avaliadora</td>
                                 <td class="text-right">
-                                    <a href="{{ route('generateCrachasComissaoAvaliadora', $edicao) }}"
-                                        target="_blank"><i class="material-icons">visibility</i></a>
+                                    <a href="{{ route('generateCrachasComissaoAvaliadora', $edicao) }}" target="_blank"><i
+                                            class="material-icons">visibility</i></a>
                                 </td>
                             </tr>
                             <tr>
@@ -558,6 +558,14 @@
                                 <td class="text-right">
                                     <a href="{{ route('csvIdentificacaoMontagem', $edicao) }}"><i
                                             class="material-icons">arrow_downward</i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>Concluintes por Projeto</td>
+                                <td class="text-right">
+                                    <a href="{{ route('concluintesPorProjeto', $edicao) }}" target="_blank"><i
+                                            class="material-icons">visibility</i></a>
                                 </td>
                             </tr>
                         </tbody>

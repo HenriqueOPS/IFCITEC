@@ -87,7 +87,9 @@ class ProjetoController extends Controller
 		$funcoes = Funcao::getByCategory('integrante');
 
 		$escolas = Escola::all(['id', 'nome_curto']);
-		$pessoas = Pessoa::all(['id', 'nome', 'email']);
+		$pessoas = Pessoa::all(['id', 'nome', 'email', 'oculto'])->filter(function ($item) {
+			return $item->oculto == false;
+		});
 
 		return view('projeto.create')
 			->withNiveis($niveis)
@@ -131,7 +133,7 @@ class ProjetoController extends Controller
 		//Insert via DB pois o Laravel não está preparado para um tabela de 4 relacionamentos
 
 		//Autores
-		foreach ($request['autor'] as $idAutor) {
+		foreach ($request['autor'] as $key => $idAutor) {
 
 			if ($idAutor) {
 
@@ -152,14 +154,18 @@ class ProjetoController extends Controller
 						'funcao_id' => EnumFuncaoPessoa::getValue('Autor'),
 						'pessoa_id' => $idAutor,
 						'projeto_id' => $projeto->id,
-						'edicao_id' => Edicao::getEdicaoId()
+						'edicao_id' => Edicao::getEdicaoId(),
+						'concluinte' => $request->autorConcluinte[$key]
 					]);
 
 				dispatch(
-					new MailAutorJob(
+					new \App\Jobs\MailBaseJob(
 						$dataAutor->email,
-						$dataAutor->nome,
-						$projeto->titulo
+						'Projeto Criado Autor',
+						[
+							'nome' => $dataAutor->nome,
+							'titulo' => $projeto->titulo
+						]
 					)
 				);
 			}
@@ -187,10 +193,13 @@ class ProjetoController extends Controller
 			]);
 
 		dispatch(
-			new MailOrientadorJob(
+			new \App\Jobs\MailBaseJob(
 				$dataOrientador->email,
-				$dataOrientador->nome,
-				$projeto->titulo
+				'Projeto Criado Orientador',
+				[
+					'nome' => $dataOrientador->nome,
+					'titulo' => $projeto->titulo
+				]
 			)
 		);
 
@@ -220,10 +229,13 @@ class ProjetoController extends Controller
 					]);
 
 				dispatch(
-					new MailCoorientadorJob(
+					new \App\Jobs\MailBaseJob(
 						$dataCoorientador->email,
-						$dataCoorientador->nome,
-						$projeto->titulo
+						'Projeto Criado Coorientador',
+						[
+							'nome' => $dataCoorientador->nome,
+							'titulo' => $projeto->titulo
+						]
 					)
 				);
 			}
@@ -304,7 +316,7 @@ class ProjetoController extends Controller
 			->get();
 
 		$autor = DB::table('escola_funcao_pessoa_projeto')
-			->select('pessoa_id')
+			->select('pessoa_id', 'concluinte')
 			->where('projeto_id', $id)
 			->where('funcao_id', EnumFuncaoPessoa::getValue('Autor'))
 			->get()
@@ -392,7 +404,7 @@ class ProjetoController extends Controller
 				->delete();
 
 			// Cria os vinculos de Autores ao projeto
-			foreach ($req->all()['autor'] as $idAutor) {
+			foreach ($req->all()['autor'] as $key => $idAutor) {
 
 				if ($idAutor) {
 					$dataAutor = Pessoa::select(['id', 'nome', 'email'])->find($idAutor);
@@ -413,14 +425,18 @@ class ProjetoController extends Controller
 							'funcao_id' => EnumFuncaoPessoa::getValue('Autor'),
 							'pessoa_id' => $idAutor,
 							'projeto_id' => $id,
-							'edicao_id' => Edicao::getEdicaoId()
+							'edicao_id' => Edicao::getEdicaoId(),
+							'concluinte' => $req->autorConcluinte[$key]
 						]);
 
 					dispatch(
-						new MailAutorJob(
+						new \App\Jobs\MailBaseJob(
 							$dataAutor->email,
-							$dataAutor->nome,
-							$projeto->titulo
+							'Projeto Criado Autor',
+							[
+								'nome' => $dataAutor->nome,
+								'titulo' => $projeto->titulo
+							]
 						)
 					);
 				}
@@ -449,10 +465,13 @@ class ProjetoController extends Controller
 				]);
 
 			dispatch(
-				new MailOrientadorJob(
+				new \App\Jobs\MailBaseJob(
 					$dataOrientador->email,
-					$dataOrientador->nome,
-					$projeto->titulo
+					'Projeto Criado Orientador',
+					[
+						'nome' => $dataOrientador->nome,
+						'titulo' => $projeto->titulo
+					]
 				)
 			);
 
@@ -480,10 +499,13 @@ class ProjetoController extends Controller
 						]);
 
 					dispatch(
-						new MailCoorientadorJob(
+						new \App\Jobs\MailBaseJob(
 							$dataCoorientador->email,
-							$dataCoorientador->nome,
-							$projeto->titulo
+							'Projeto Criado Coorientador',
+							[
+								'nome' => $dataCoorientador->nome,
+								'titulo' => $projeto->titulo
+							]
 						)
 					);
 				}
@@ -682,10 +704,13 @@ class ProjetoController extends Controller
 					$pessoa = Pessoa::find($revisao->pessoa_id);
 
 					dispatch(
-						new MailVinculaProjetoJob(
+						new \App\Jobs\MailBaseJob(
 							$pessoa->email,
-							$pessoa->nome,
-							$projeto->titulo
+							'Projeto Vincula Homologador',
+							[
+								'nome' => $pessoa->nome,
+								'titulo' => $projeto->titulo
+							]
 						)
 					);
 				}
@@ -794,10 +819,13 @@ class ProjetoController extends Controller
 					$pessoa = Pessoa::find($avaliacao->pessoa_id);
 
 					dispatch(
-						new MailVinculaAvaliadorJob(
+						new \App\Jobs\MailBaseJob(
 							$pessoa->email,
-							$pessoa->nome,
-							$projeto->titulo
+							'Projeto Vincula Avaliador',
+							[
+								'nome' => $pessoa->nome,
+								'titulo' => $projeto->titulo
+							]
 						)
 					);
 				}
@@ -976,11 +1004,14 @@ class ProjetoController extends Controller
 
 					foreach ($projeto[0]->pessoas as $pessoa) {
 						dispatch(
-							new MailProjetoHomologadoJob(
+							new \App\Jobs\MailBaseJob(
 								$pessoa->email,
-								$pessoa->nome,
-								$projeto[0]->titulo,
-								$projeto[0]->id
+								'Projeto Homologado',
+								[
+									'nome' => $pessoa->nome,
+									'titulo' => $projeto[0]->titulo,
+									'idProj' => $projeto[0]->id
+								]
 							)
 						);
 					}
@@ -1000,10 +1031,13 @@ class ProjetoController extends Controller
 
 						foreach ($projeto[0]->pessoas as $pessoa) {
 							dispatch(
-								new MailProjetoNaoHomologadoJob(
+								new \App\Jobs\MailBaseJob(
 									$pessoa->email,
-									$pessoa->nome,
-									$projeto[0]->titulo
+									'Projeto Nao Homologado',
+									[
+										'nome' => $pessoa->nome,
+										'titulo' => $projeto[0]->titulo
+									]
 								)
 							);
 						}

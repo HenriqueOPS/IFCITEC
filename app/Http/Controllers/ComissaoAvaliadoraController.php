@@ -18,100 +18,110 @@ use App\Jobs\MailComissaoAvaliadoraJob;
 use App\Enums\EnumSituacaoProjeto;
 use App\Enums\EnumFuncaoPessoa;
 
-class ComissaoAvaliadoraController extends Controller {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct() {
-        $this->middleware('auth');
-    }
+class ComissaoAvaliadoraController extends Controller
+{
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		$this->middleware('auth');
+	}
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index() {
+	/**
+	 * Show the application dashboard.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index()
+	{
 
-        if (Edicao::consultaPeriodo('Homologação') &&
-            Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Homologador')) {
+		if (
+			Edicao::consultaPeriodo('Homologação') &&
+			Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Homologador')
+		) {
 
-            $idOk = DB::table('revisao')
-                ->select('revisao.projeto_id')
-                ->where('pessoa_id', '=', Auth::user()->id)
-                ->where('revisado','=',true)
-                ->get()
-                ->toArray();
+			$idOk = DB::table('revisao')
+				->select('revisao.projeto_id')
+				->where('pessoa_id', '=', Auth::user()->id)
+				->where('revisado', '=', true)
+				->get()
+				->toArray();
 
-            $idOk = array_column($idOk, 'projeto_id');
+			$idOk = array_column($idOk, 'projeto_id');
 
-            $projetos = Projeto::select('projeto.id', 'projeto.titulo', 'projeto.situacao_id')
-                ->join('revisao', function($query){
-                    $query->on('projeto.id','=','revisao.projeto_id');
-                    $query->where('revisao.pessoa_id','=',Auth::user()->id);
-                })
+			$projetos = Projeto::select('projeto.id', 'projeto.titulo', 'projeto.situacao_id')
+				->join('revisao', function ($query) {
+					$query->on('projeto.id', '=', 'revisao.projeto_id');
+					$query->where('revisao.pessoa_id', '=', Auth::user()->id);
+				})
 				->where('edicao_id', '=', Edicao::getEdicaoId())
-                ->orderBy('revisao.revisado','asc')
-                ->get();
+				->orderBy('revisao.revisado', 'asc')
+				->get();
 
-            return view('comissao.home', compact('idOk'))->withProjetos($projetos);
-        } elseif (Edicao::consultaPeriodo('Avaliação') &&
-				  Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador')) {
+			return view('comissao.home', compact('idOk'))->withProjetos($projetos);
+		} elseif (
+			Edicao::consultaPeriodo('Avaliação') &&
+			Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador')
+		) {
 
-            $idOk = DB::table('avaliacao')
-                ->select('avaliacao.projeto_id')
-                ->where('pessoa_id', '=', Auth::user()->id)
-                ->where('avaliado', '=', true)
-                ->get()
-                ->toArray();
+			$idOk = DB::table('avaliacao')
+				->select('avaliacao.projeto_id')
+				->where('pessoa_id', '=', Auth::user()->id)
+				->where('avaliado', '=', true)
+				->get()
+				->toArray();
 
-            $idOk = array_column($idOk, 'projeto_id');
+			$idOk = array_column($idOk, 'projeto_id');
 
-            $projetos = Projeto::select('projeto.id', 'projeto.titulo', 'projeto.situacao_id')
-                ->join('avaliacao', function($query){
-                    $query->on('projeto.id', '=', 'avaliacao.projeto_id');
-                    $query->where('avaliacao.pessoa_id', '=', Auth::user()->id);
-                })
+			$projetos = Projeto::select('projeto.id', 'projeto.titulo', 'projeto.situacao_id')
+				->join('avaliacao', function ($query) {
+					$query->on('projeto.id', '=', 'avaliacao.projeto_id');
+					$query->where('avaliacao.pessoa_id', '=', Auth::user()->id);
+				})
 				->where('edicao_id', '=', Edicao::getEdicaoId())
-                ->orderBy('avaliacao.avaliado','asc')
-                ->get();
+				->orderBy('avaliacao.avaliado', 'asc')
+				->get();
 
-            return view('comissao.home', compact('idOk'))->withProjetos($projetos);
-        } elseif (Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador') ||
-				  Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Homologador')) {
-            return view('inscricaoEnviada');
-        } else {
-            //@TODO: redirecionar de acordo com a função e o período
-            return redirect()->route('comissaoAvaliadora');
-        }
-    }
+			return view('comissao.home', compact('idOk'))->withProjetos($projetos);
+		} elseif (
+			Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Avaliador') ||
+			Pessoa::find(Auth::id())->temFuncaoComissaoAvaliadora('Homologador')
+		) {
+			return view('inscricaoEnviada');
+		} else {
+			//@TODO: redirecionar de acordo com a função e o período
+			return redirect()->route('comissaoAvaliadora');
+		}
+	}
 
-    public function cadastrarComissao() {
+	public function cadastrarComissao()
+	{
 
-    	$temCadastro = DB::table('comissao_edicao')
+		$temCadastro = DB::table('comissao_edicao')
 			->where('edicao_id', Edicao::getEdicaoId())
 			->where('pessoa_id', Auth::id())
 			->count();
 
-        $areas = DB::table('area_conhecimento')
+		$areas = DB::table('area_conhecimento')
 			->join('area_edicao', 'area_conhecimento.id', '=', 'area_edicao.area_id')
-			->select('area_conhecimento.id','area_conhecimento.area_conhecimento', 'area_conhecimento.nivel_id')
+			->select('area_conhecimento.id', 'area_conhecimento.area_conhecimento', 'area_conhecimento.nivel_id')
 			->where('area_edicao.edicao_id', Edicao::getEdicaoId())
 			->orderBy('area_conhecimento.id', 'asc')
 			->get()
 			->toArray();
 
-        $niveis = DB::table('nivel')
+		$niveis = DB::table('nivel')
 			->join('nivel_edicao', 'nivel.id', '=', 'nivel_edicao.nivel_id')
-			->select('nivel.nivel', 'nivel.id','nivel_edicao.edicao_id')
+			->select('nivel.nivel', 'nivel.id', 'nivel_edicao.edicao_id')
 			->where('nivel_edicao.edicao_id', Edicao::getEdicaoId())
 			->orderBy('nivel.id', 'asc')
 			->get()
 			->toArray();
 
-        $projetosAreas = DB::table('area_conhecimento')
+		$projetosAreas = DB::table('area_conhecimento')
 			->join('projeto', 'area_conhecimento.id', '=', 'projeto.area_id')
 			->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
 			->select('area_conhecimento.area_conhecimento', 'area_conhecimento.id')
@@ -130,10 +140,10 @@ class ComissaoAvaliadoraController extends Controller {
 			->keyBy('id')
 			->toArray();
 
-        $projetosAreas = array_keys($projetosAreas);
+		$projetosAreas = array_keys($projetosAreas);
 
-        foreach ($areas as $a) {
-            if (!in_array($a->id, $projetosAreas)) {
+		foreach ($areas as $a) {
+			if (!in_array($a->id, $projetosAreas)) {
 				if (!isset($areasConhecimento)) {
 					$areasConhecimento[] = $a;
 				} else {
@@ -142,30 +152,31 @@ class ComissaoAvaliadoraController extends Controller {
 					if (!in_array($a->id, $array))
 						$areasConhecimento[] = $a;
 				}
-            }
-        }
+			}
+		}
 
-        if ($projetosAreas == null)
-            $areasConhecimento = $areas;
+		if ($projetosAreas == null)
+			$areasConhecimento = $areas;
 
-        $dados = Pessoa::find(Auth::id());
+		$dados = Pessoa::find(Auth::id());
 
 		$data = null;
 
-        if ($dados->endereco_id != null)
-            $data = Endereco::find($dados->endereco_id);
+		if ($dados->endereco_id != null)
+			$data = Endereco::find($dados->endereco_id);
 
-        return view('comissao.cadastro', [
-        	'areas' => $areas,
+		return view('comissao.cadastro', [
+			'areas' => $areas,
 			'niveis' => $niveis,
 			'dados' => $dados,
 			'data' => $data,
 			'areasConhecimento' => $areasConhecimento,
 			'temCadastro' => $temCadastro
 		]);
-    }
+	}
 
-    public function cadastraComissao(Request $req) {
+	public function cadastraComissao(Request $req)
+	{
 		$data = $req->all();
 
 		if (Pessoa::find(Auth::id())->endereco_id != null) { // altera o endereço do caboclo
@@ -191,7 +202,6 @@ class ComissaoAvaliadoraController extends Controller {
 			]);
 
 			$idEndereco = $idEndereco['original']['id'];
-
 		}
 
 		DB::table('pessoa')
@@ -225,20 +235,20 @@ class ComissaoAvaliadoraController extends Controller {
 			->delete();
 
 		$areas = $data['area_id'];
-        foreach ($areas as $areaId) {
-            DB::table('areas_comissao')
+		foreach ($areas as $areaId) {
+			DB::table('areas_comissao')
 				->insert([
-            		'area_id' => $areaId,
-                    'comissao_edicao_id' => $comissaoEdicaoId,
-                    'homologado' => false
-                ]);
-        }
+					'area_id' => $areaId,
+					'comissao_edicao_id' => $comissaoEdicaoId,
+					'homologado' => false
+				]);
+		}
 
 		// Avaliador
-        if(in_array("1", $data['funcao'])){
-        	$idFuncaoAvaliador = DB::table('funcao')
-					->where('funcao', 'Avaliador')
-					->get();
+		if (in_array("1", $data['funcao'])) {
+			$idFuncaoAvaliador = DB::table('funcao')
+				->where('funcao', 'Avaliador')
+				->get();
 
 			$idFuncaoAvaliador = $idFuncaoAvaliador->first()->id;
 
@@ -257,14 +267,14 @@ class ComissaoAvaliadoraController extends Controller {
 						'homologado' => false
 					]);
 			}
-        }
+		}
 
 		// Homologador
-        if(in_array("2", $data['funcao'])){
+		if (in_array("2", $data['funcao'])) {
 
-        	$idFuncaoHomologador = DB::table('funcao')
-					->where('funcao', 'Homologador')
-					->get();
+			$idFuncaoHomologador = DB::table('funcao')
+				->where('funcao', 'Homologador')
+				->get();
 
 			$idFuncaoHomologador = $idFuncaoHomologador->first()->id;
 
@@ -283,25 +293,25 @@ class ComissaoAvaliadoraController extends Controller {
 						'homologado' => false
 					]);
 			}
-      	}
+		}
 
-        $emailJob = (
-			new MailComissaoAvaliadoraJob(Auth::user()->nome, Auth::user()->email)
+		$emailJob = (new \App\Jobs\MailBaseJob(Auth::user()->email, 'Comissao Avaliadora', ['nome' => Auth::user()->nome])
 		)->delay(\Carbon\Carbon::now()->addSeconds(3));
 
 		dispatch($emailJob);
 
-        return redirect()->route('autor');
-    }
+		return redirect()->route('autor');
+	}
 
-	public function homologarComissao($id){
+	public function homologarComissao($id)
+	{
 
 		$comissaoEdicao = DB::table('comissao_edicao')->find($id);
 		$pessoa = Pessoa::find($comissaoEdicao->pessoa_id);
 
 		$areasComissao = DB::table('areas_comissao')
 			->select('area_id')
-			->where('comissao_edicao_id','=',$id)
+			->where('comissao_edicao_id', '=', $id)
 			->get()
 			->toArray();
 
@@ -312,25 +322,25 @@ class ComissaoAvaliadoraController extends Controller {
 
 		$areas = DB::table('area_conhecimento')
 			->join('area_edicao', 'area_conhecimento.id', '=', 'area_edicao.area_id')
-			->select('area_conhecimento.id','area_conhecimento.area_conhecimento', 'area_conhecimento.nivel_id')
+			->select('area_conhecimento.id', 'area_conhecimento.area_conhecimento', 'area_conhecimento.nivel_id')
 			->where('area_edicao.edicao_id', Edicao::getEdicaoId())
 			->orderBy('area_conhecimento.id', 'asc')
 			->get()
 			->toArray();
 
 		$nivel = DB::table('nivel')->join('nivel_edicao', 'nivel.id', '=', 'nivel_edicao.nivel_id')
-			->select('nivel.nivel', 'nivel.id','nivel_edicao.edicao_id')
+			->select('nivel.nivel', 'nivel.id', 'nivel_edicao.edicao_id')
 			->where('nivel_edicao.edicao_id', Edicao::getEdicaoId())
 			->orderBy('nivel.id', 'asc')
 			->get()
 			->toArray();
 
-        $projetosAreas = DB::table('area_conhecimento')
+		$projetosAreas = DB::table('area_conhecimento')
 			->join('projeto', 'area_conhecimento.id', '=', 'projeto.area_id')
-            ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
-            ->select('area_conhecimento.area_conhecimento', 'area_conhecimento.id')
-            ->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
-            ->where('pessoa_id', $comissaoEdicao->pessoa_id)
+			->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+			->select('area_conhecimento.area_conhecimento', 'area_conhecimento.id')
+			->where('escola_funcao_pessoa_projeto.edicao_id', Edicao::getEdicaoId())
+			->where('pessoa_id', $comissaoEdicao->pessoa_id)
 			->whereIn(
 				'escola_funcao_pessoa_projeto.funcao_id',
 				[
@@ -338,60 +348,61 @@ class ComissaoAvaliadoraController extends Controller {
 					EnumFuncaoPessoa::getValue('Coorientador'),
 				]
 			)
-            ->where('projeto.situacao_id', '!=', EnumSituacaoProjeto::getValue('NaoHomologado'))
-            ->orderBy('area_conhecimento.id', 'asc')
-            ->get()
-            ->keyBy('id')
-            ->toArray();
+			->where('projeto.situacao_id', '!=', EnumSituacaoProjeto::getValue('NaoHomologado'))
+			->orderBy('area_conhecimento.id', 'asc')
+			->get()
+			->keyBy('id')
+			->toArray();
 
-        $projetosAreas = array_keys($projetosAreas);
+		$projetosAreas = array_keys($projetosAreas);
 
-        foreach ($areas as $a) {
-            if (!in_array($a->id, $projetosAreas)) {
-                if(!isset($areasConhecimento)){
-                    $areasConhecimento[] = $a;
-                }else{
-                    $array = array_pluck($areasConhecimento, 'id');
-                    if(!in_array($a->id, $array)){
-                        $areasConhecimento[] = $a;
-                    }
-                }
-            }
-        }
+		foreach ($areas as $a) {
+			if (!in_array($a->id, $projetosAreas)) {
+				if (!isset($areasConhecimento)) {
+					$areasConhecimento[] = $a;
+				} else {
+					$array = array_pluck($areasConhecimento, 'id');
+					if (!in_array($a->id, $array)) {
+						$areasConhecimento[] = $a;
+					}
+				}
+			}
+		}
 
-        if ($projetosAreas == null)
-            $areasConhecimento = $areas;
+		if ($projetosAreas == null)
+			$areasConhecimento = $areas;
 
 		return view('admin.comissao.homologar', compact('id', 'pessoa', 'idsAreas', 'areas', 'nivel', 'areasConhecimento'));
 	}
 
-	public function homologaComissao(Request $req){
+	public function homologaComissao(Request $req)
+	{
 
 		$data = $req->all();
 
-        $pessoa = Pessoa::find($data['pessoa_id']);
+		$pessoa = Pessoa::find($data['pessoa_id']);
 
 		// homologa o avaliador
-        if (isset($data['avaliador']) && !$pessoa->temFuncao('Avaliador',true)) {
-            DB::table('funcao_pessoa')
+		if (isset($data['avaliador']) && !$pessoa->temFuncao('Avaliador', true)) {
+			DB::table('funcao_pessoa')
 				->insert([
 					'pessoa_id' => $data['pessoa_id'],
 					'funcao_id' => EnumFuncaoPessoa::getValue('Avaliador'),
 					'edicao_id' => Edicao::getEdicaoId(),
 					'homologado' => true
 				]);
-        }
+		}
 
-        // homologa o homologador
-        if (isset($data['homologador']) && !$pessoa->temFuncao('Homologador',true)) {
-            DB::table('funcao_pessoa')
+		// homologa o homologador
+		if (isset($data['homologador']) && !$pessoa->temFuncao('Homologador', true)) {
+			DB::table('funcao_pessoa')
 				->insert([
 					'pessoa_id' => $data['pessoa_id'],
 					'funcao_id' => EnumFuncaoPessoa::getValue('Homologador'),
 					'edicao_id' => Edicao::getEdicaoId(),
 					'homologado' => true
 				]);
-        }
+		}
 
 		// seta homologado como false para função de avaliador/homologador
 		DB::table('funcao_pessoa')
@@ -410,7 +421,7 @@ class ComissaoAvaliadoraController extends Controller {
 
 		$areasComissao = DB::table('areas_comissao')
 			->select('area_id')
-			->where('comissao_edicao_id','=',$data['comissao_edicao_id'])
+			->where('comissao_edicao_id', '=', $data['comissao_edicao_id'])
 			->get()
 			->toArray();
 
@@ -418,40 +429,40 @@ class ComissaoAvaliadoraController extends Controller {
 		foreach ($areasComissao as $a)
 			array_push($idsAreas, $a->area_id);
 
-        // Existem áreas então HOMOLOGA
+		// Existem áreas então HOMOLOGA
 		if (isset($data['area_id'])) {
 
-            // Cria novas areas
-            $newAreas = array_diff($data['area_id'], $idsAreas);
+			// Cria novas areas
+			$newAreas = array_diff($data['area_id'], $idsAreas);
 
-            foreach ($newAreas as $area => $id) {
-                DB::table('areas_comissao')
-                    ->insert([
-                        'area_id' => $id,
-                        'comissao_edicao_id' => $data['comissao_edicao_id'],
-                        'homologado' => true
-                    ]);
-            }
+			foreach ($newAreas as $area => $id) {
+				DB::table('areas_comissao')
+					->insert([
+						'area_id' => $id,
+						'comissao_edicao_id' => $data['comissao_edicao_id'],
+						'homologado' => true
+					]);
+			}
 
-            // Deleta campos que tinham agr não tem mais
-            $oldAreas = array_diff($idsAreas, $data['area_id']);
-            foreach ($oldAreas as $area => $id) {
-                DB::table('areas_comissao')->where([
-                    'area_id' => $id,
-                    'comissao_edicao_id' => $data['comissao_edicao_id']
-                ])->delete();
-            }
+			// Deleta campos que tinham agr não tem mais
+			$oldAreas = array_diff($idsAreas, $data['area_id']);
+			foreach ($oldAreas as $area => $id) {
+				DB::table('areas_comissao')->where([
+					'area_id' => $id,
+					'comissao_edicao_id' => $data['comissao_edicao_id']
+				])->delete();
+			}
 
-            // Homologa os campos já existentes
-            DB::table('areas_comissao')
-                ->select('area_id')
-                ->where('comissao_edicao_id', '=', $data['comissao_edicao_id'])
-                ->whereIn('area_id', array_intersect($idsAreas, $data['area_id']))
-                ->update([
+			// Homologa os campos já existentes
+			DB::table('areas_comissao')
+				->select('area_id')
+				->where('comissao_edicao_id', '=', $data['comissao_edicao_id'])
+				->whereIn('area_id', array_intersect($idsAreas, $data['area_id']))
+				->update([
 					'homologado' => true
 				]);
 
-            // Avaliador
+			// Avaliador
 			if (isset($data['avaliador'])) {
 				DB::table('funcao_pessoa')
 					->where([
@@ -464,7 +475,7 @@ class ComissaoAvaliadoraController extends Controller {
 					]);
 			}
 
-            // Homologador
+			// Homologador
 			if (isset($data['homologador'])) {
 				DB::table('funcao_pessoa')
 					->where([
@@ -476,100 +487,100 @@ class ComissaoAvaliadoraController extends Controller {
 						'homologado' => true
 					]);
 			}
-        } else { // Não existem áreas então NÃO HOMOLOGA
+		} else { // Não existem áreas então NÃO HOMOLOGA
 
-		    // Deleta os campos das areas
-            DB::table('areas_comissao')
-                ->where(['comissao_edicao_id' => $data['comissao_edicao_id']])
-                ->delete();
+			// Deleta os campos das areas
+			DB::table('areas_comissao')
+				->where(['comissao_edicao_id' => $data['comissao_edicao_id']])
+				->delete();
 
-            // Avaliador
-            DB::table('funcao_pessoa')
-                ->where([
-                    'pessoa_id' => $data['pessoa_id'],
-                    'edicao_id' => Edicao::getEdicaoId(),
-                    'funcao_id' => EnumFuncaoPessoa::getValue('Avaliador')
-                ])
+			// Avaliador
+			DB::table('funcao_pessoa')
+				->where([
+					'pessoa_id' => $data['pessoa_id'],
+					'edicao_id' => Edicao::getEdicaoId(),
+					'funcao_id' => EnumFuncaoPessoa::getValue('Avaliador')
+				])
 				->update([
 					'homologado' => false
 				]);
 
-            // Homologador
-            DB::table('funcao_pessoa')
-                ->where([
-                    'pessoa_id' => $data['pessoa_id'],
-                    'edicao_id' => Edicao::getEdicaoId(),
-                    'funcao_id' => EnumFuncaoPessoa::getValue('Homologador')
-                ])
+			// Homologador
+			DB::table('funcao_pessoa')
+				->where([
+					'pessoa_id' => $data['pessoa_id'],
+					'edicao_id' => Edicao::getEdicaoId(),
+					'funcao_id' => EnumFuncaoPessoa::getValue('Homologador')
+				])
 				->update([
 					'homologado' => false
 				]);
-        }
+		}
 
 		return redirect()->route('administrador.comissao');
 	}
 
-    public function excluiComissao($idC, $idF, $s) {
-        if (password_verify($s, Auth::user()['attributes']['senha'])) {
-            $pessoa = DB::table('comissao_edicao')
-                ->join('pessoa', 'comissao_edicao.pessoa_id', '=', 'pessoa.id')
-                ->select('pessoa.id')
-                ->where('comissao_edicao.id', $idC)
-                ->get();
+	public function excluiComissao($idC, $idF, $s)
+	{
+		if (password_verify($s, Auth::user()['attributes']['senha'])) {
+			$pessoa = DB::table('comissao_edicao')
+				->join('pessoa', 'comissao_edicao.pessoa_id', '=', 'pessoa.id')
+				->select('pessoa.id')
+				->where('comissao_edicao.id', $idC)
+				->get();
 
-            $revisoes = Revisao::select('id')
-                ->where('pessoa_id', $pessoa->first()->id)
-                ->get();
+			$revisoes = Revisao::select('id')
+				->where('pessoa_id', $pessoa->first()->id)
+				->get();
 
-            $avaliacoes = Avaliacao::select('id')
-                ->where('pessoa_id', $pessoa->first()->id)
-                ->get();
+			$avaliacoes = Avaliacao::select('id')
+				->where('pessoa_id', $pessoa->first()->id)
+				->get();
 
-            if ($revisoes->count() == 0 && $avaliacoes->count() == 0) {
-                DB::table('areas_comissao')
+			if ($revisoes->count() == 0 && $avaliacoes->count() == 0) {
+				DB::table('areas_comissao')
 					->where('comissao_edicao_id', $idC)
 					->delete();
 
-                DB::table('comissao_edicao')
+				DB::table('comissao_edicao')
 					->where('id', $idC)
 					->where('edicao_id', Edicao::getEdicaoId())
 					->delete();
 
-                $usuario = Pessoa::find($pessoa->first()->id);
+				$usuario = Pessoa::find($pessoa->first()->id);
 
-				if($usuario->temFuncao('Homologador', TRUE)){
-                    DB::table('funcao_pessoa')
+				if ($usuario->temFuncao('Homologador', TRUE)) {
+					DB::table('funcao_pessoa')
 						->where('pessoa_id', $pessoa->first()->id)
 						->where('funcao_id', EnumFuncaoPessoa::getValue('Homologador'))
 						->where('edicao_id', Edicao::getEdicaoId())
 						->delete();
-                }
+				}
 
 				if ($usuario->temFuncao('Avaliador', TRUE)) {
-                    DB::table('funcao_pessoa')
+					DB::table('funcao_pessoa')
 						->where('pessoa_id', $pessoa->first()->id)
 						->where('funcao_id', EnumFuncaoPessoa::getValue('Avaliador'))
 						->where('edicao_id', Edicao::getEdicaoId())
 						->delete();
-                }
+				}
 
 				return 'true';
-            } else if ($idF == EnumFuncaoPessoa::getValue('Avaliador')) {
-                if ($revisoes->count() != 0 && $avaliacoes->count() == 0) {
-                    DB::table('funcao_pessoa')
+			} else if ($idF == EnumFuncaoPessoa::getValue('Avaliador')) {
+				if ($revisoes->count() != 0 && $avaliacoes->count() == 0) {
+					DB::table('funcao_pessoa')
 						->where('pessoa_id', $pessoa->first()->id)
 						->where('funcao_id', $idF)
 						->where('edicao_id', Edicao::getEdicaoId())
 						->delete();
 
-                    return 'true';
-                }
-            } else {
-               return 'Não foi possível excluir usuário da comissão';
-            }
-        }
+					return 'true';
+				}
+			} else {
+				return 'Não foi possível excluir usuário da comissão';
+			}
+		}
 
-        return 'false';
-    }
+		return 'false';
+	}
 }
-

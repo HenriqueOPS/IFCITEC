@@ -213,6 +213,20 @@
                                                     </option>
                                                 @endforeach
                                             </select>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <span style="margin-right: 5pt;">
+                                                        Este autor é concluinte do ensino fundamental, médio ou tecnico?
+                                                    </span>
+                                                    <input type="hidden" name="autorConcluinte[0]" value=false>
+                                                    @if ($autor[0]->concluinte == true)
+                                                        <input type="checkbox" name="autorConcluinte[0]" value=true
+                                                            checked>
+                                                    @else
+                                                        <input type="checkbox" name="autorConcluinte[0]" value=true>
+                                                    @endif
+                                                </label>
+                                            </div>
                                             @if ($errors->has('autor[]'))
                                                 <span class="help-block">
                                                     <strong>{{ $errors->first('autor[]') }}</strong>
@@ -242,6 +256,20 @@
                                                     </option>
                                                 @endforeach
                                             </select>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <span style="margin-right: 5pt;">
+                                                        Este autor é concluinte do ensino fundamental, médio ou tecnico?
+                                                    </span>
+                                                    <input type="hidden" name="autorConcluinte[1]" value=false>
+                                                    @if ($autor[1]->concluinte == true)
+                                                        <input type="checkbox" name="autorConcluinte[1]" value=true
+                                                            checked>
+                                                    @else
+                                                        <input type="checkbox" name="autorConcluinte[1]" value=true>
+                                                    @endif
+                                                </label>
+                                            </div>
                                             @if ($errors->has('autor[]'))
                                                 <span class="help-block">
                                                     <strong>{{ $errors->first('autor[]') }}</strong>
@@ -271,6 +299,20 @@
                                                     </option>
                                                 @endforeach
                                             </select>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <span style="margin-right: 5pt;">
+                                                        Este autor é concluinte do ensino fundamental, médio ou tecnico?
+                                                    </span>
+                                                    <input type="hidden" name="autorConcluinte[2]" value=false>
+                                                    @if ($autor[2]->concluinte == true)
+                                                        <input type="checkbox" name="autorConcluinte[2]" value=true
+                                                            checked>
+                                                    @else
+                                                        <input type="checkbox" name="autorConcluinte[2]" value=true>
+                                                    @endif
+                                                </label>
+                                            </div>
                                             @if ($errors->has('autor[]'))
                                                 <span class="help-block">
                                                     <strong>{{ $errors->first('autor[]') }}</strong>
