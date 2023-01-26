@@ -74,10 +74,6 @@
 </head>
 
 <body>
-    @if (Auth::check())
-        @php(Redirect::to('/login'))
-    @endif
-
     @if (!env('APP_DEBUG'))
         <!-- Google Tag Manager (noscript) -->
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ env('TAG_MANAGER_ID') }}" height="0"
@@ -86,7 +82,7 @@
     @endif
 
     <div id="app">
-        @if (Auth::guest())
+        @if (Auth::guest() || !Auth::user()->verificado)
         @else
             <nav class="navbar navbar-default navbar-static-top" role="navigation">
                 <div class="container">

@@ -13,8 +13,10 @@
 
 use App\Http\Middleware;
 use App\Jobs\MailBaseJob;
+use App\Pessoa;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 Route::get('/version', function () {
 	$strData = explode(':', file_get_contents('version.txt'));
@@ -28,7 +30,11 @@ Route::get('/', function () {
 		return redirect()->route('home');
 
 	return redirect()->route('login');
-});
+})->name('ifcitec.home');
+
+Route::post('/auth/verificacao', 'Auth\\LoginController@authenticate')->name('login.verification');
+Route::get('/auth/confirmar/{idPessoa}', 'Auth\\LoginController@validarUsuario')->name('auth.validar.usuario');
+Route::get('/auth/enviar/email/{idPessoa}', 'Auth\\LoginController@enviarEmailValidacao')->name('auth.enviar.email');
 
 // API Routes
 Route::any('/api/registra-presenca', 'ApiController@registraPresenca');
@@ -50,69 +56,71 @@ Route::post('cadastro', [
 	'uses' => 'Auth\RegisterController@register'
 ]);
 
-// Dashboard
-Route::get('/dashboard', 'DashboardController@dashboardPage');
-Route::get('/dashboard/data', 'DashboardController@dashboard'); // Ajax
-
 // Authenticated Routes
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('/debug', function () {
-	if (Auth::check())
-		return view('admin.debug');
-
-	return redirect()->route('login');
-});
-
 Route::get('/email/presenca/confirmada/{id}', 'ProjetoController@confirmaPresenca')->name('confirmaPresenca');
 
-// Editar dados pessoais
-Route::get('/editar-cadastro/', 'PessoaController@editarCadastro')->name('editarCadastro');
-Route::post('/editar-cadastro/', 'PessoaController@editaCadastro')->name('editaCadastro');
+Route::group(['middleware' => ['IsVerificado']], function () {
+	// Dashboard
+	Route::get('/dashboard', 'DashboardController@dashboardPage');
+	Route::get('/dashboard/data', 'DashboardController@dashboard'); // Ajax
 
-// Autor
-Route::get('/autor', 'AutorController@index')->name('autor');
+	Route::get('/home', 'HomeController@index')->name('home');
 
-//Comissao Avaliadora
-Route::get('/comissao-avaliadora', 'ComissaoAvaliadoraController@index')->name('comissao');
+	Route::get('/debug', function () {
+		if (Auth::check())
+			return view('admin.debug');
 
-//Inscrição Comissão Avaliadora
-Route::get('/inscricao-comissao-avaliadora', 'ComissaoAvaliadoraController@cadastrarComissao')->name('comissaoAvaliadora');
-Route::post('/comissao/cadastrar', 'ComissaoAvaliadoraController@cadastraComissao')->name('cadastroAvaliador');
+		return redirect()->route('login');
+	});
 
-//Voluntario
-Route::get('/voluntario', 'VoluntarioController@index')->name('voluntario');
-Route::get('/voluntario/cadastrar/{s}', 'VoluntarioController@cadastrarVoluntario')->name('cadastrarVoluntario'); //Ajax
-Route::post('/voluntario/cadastra', 'VoluntarioController@cadastraVoluntario')->name('cadastraVoluntario');
+	// Editar dados pessoais
+	Route::get('/editar-cadastro/', 'PessoaController@editarCadastro')->name('editarCadastro');
+	Route::post('/editar-cadastro/', 'PessoaController@editaCadastro')->name('editaCadastro');
 
-Route::resource('projeto', 'ProjetoController');
+	// Autor
+	Route::get('/autor', 'AutorController@index')->name('autor');
 
-Route::get('projeto/nivel/dados-nivel/{id}', 'ProjetoController@dadosNivel'); //Ajax
+	//Comissao Avaliadora
+	Route::get('/comissao-avaliadora', 'ComissaoAvaliadoraController@index')->name('comissao');
 
-Route::prefix('projeto')->group(function () {
-	Route::post('vincula-integrante', 'ProjetoController@vinculaIntegrante')->name('projeto.vinculaIntegrante');
-	//AJAX
-	Route::get('vincula-integrante/{email}', 'ProjetoController@searchPessoaByEmail');
+	//Inscrição Comissão Avaliadora
+	Route::get('/inscricao-comissao-avaliadora', 'ComissaoAvaliadoraController@cadastrarComissao')->name('comissaoAvaliadora');
+	Route::post('/comissao/cadastrar', 'ComissaoAvaliadoraController@cadastraComissao')->name('cadastroAvaliador');
+
+	//Voluntario
+	Route::get('/voluntario', 'VoluntarioController@index')->name('voluntario');
+	Route::get('/voluntario/cadastrar/{s}', 'VoluntarioController@cadastrarVoluntario')->name('cadastrarVoluntario'); //Ajax
+	Route::post('/voluntario/cadastra', 'VoluntarioController@cadastraVoluntario')->name('cadastraVoluntario');
+
+	Route::resource('projeto', 'ProjetoController');
+
+	Route::get('projeto/nivel/dados-nivel/{id}', 'ProjetoController@dadosNivel'); //Ajax
+
+	Route::prefix('projeto')->group(function () {
+		Route::post('vincula-integrante', 'ProjetoController@vinculaIntegrante')->name('projeto.vinculaIntegrante');
+		//AJAX
+		Route::get('vincula-integrante/{email}', 'ProjetoController@searchPessoaByEmail');
+	});
+
+	Route::prefix('projeto/editar')->group(function () {
+		//AJAX
+		Route::get('vincula-integrante/{email}', 'ProjetoController@searchPessoaByEmail');
+		Route::get('nivel/areasConhecimento/{id}', 'NivelController@areasConhecimento'); //Ajax
+	});
+	Route::get('/projeto/editar/{id}', 'ProjetoController@editarProjeto')->name('editarProjeto');
+	Route::post('/projeto/edita-projeto', 'ProjetoController@editaProjeto')->name('editaProjeto');
+
+	Route::get('projeto/nivel/areasConhecimento/{id}', 'NivelController@areasConhecimento'); //Ajax
+
+	// Formulário de Avaliação/Homologação
+	Route::get('/formulario/{tipo}/{id}', 'FormularioController@index')->name('formularioAvaliacao');
+	Route::post('/formulario', 'FormularioController@store')->name('enviarFormulario');
 });
-
-Route::prefix('projeto/editar')->group(function () {
-	//AJAX
-	Route::get('vincula-integrante/{email}', 'ProjetoController@searchPessoaByEmail');
-	Route::get('nivel/areasConhecimento/{id}', 'NivelController@areasConhecimento'); //Ajax
-});
-Route::get('/projeto/editar/{id}', 'ProjetoController@editarProjeto')->name('editarProjeto');
-Route::post('/projeto/edita-projeto', 'ProjetoController@editaProjeto')->name('editaProjeto');
-
-Route::get('projeto/nivel/areasConhecimento/{id}', 'NivelController@areasConhecimento'); //Ajax
-
-// Formulário de Avaliação/Homologação
-Route::get('/formulario/{tipo}/{id}', 'FormularioController@index')->name('formularioAvaliacao');
-Route::post('/formulario', 'FormularioController@store')->name('enviarFormulario');
 
 /* Rotas Administrador */
-Route::group(['middleware' => ['IsAdministrador']], function () {
+Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () {
 
 	Route::get('/gerenciar', 'AdminController@administrarUsuarios');
 	Route::post('/gerenciar-usuario/{id}', 'AdminController@editaFuncaoUsuario')->name('editaFuncaoUsuario');
