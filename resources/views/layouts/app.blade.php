@@ -84,6 +84,7 @@
     <div id="app">
         @if (Auth::guest() || !Auth::user()->verificado)
         @else
+        
             <nav class="navbar navbar-default navbar-static-top" role="navigation">
                 <div class="container">
 
@@ -141,7 +142,7 @@
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a href="{{ route('editarCadastro') }}">
-                                            Editar Cadastro
+                                            Editar Cadastro 
                                         </a>
                                     </li>
                                     <li>
@@ -161,14 +162,55 @@
                     </div>
                 </div>
             </nav>
+           
         @endif
+        
 
         <div id="gtm" class="container"></div>
 
         @yield('content')
-
+     
+            
     </div>
+    @if (Auth::guest() || !Auth::user()->verificado)
+            @elseif(!Auth::user()->lgpd && Auth::user()->lgpddata==null )
+                <div id='myModal'class="modal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Nos valorizamos a sua privacidade</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Nos usamos cookies pra melhorar a sua experiencia. caso click em "concordar", você consente com o uso dos seus dados
 
+                            </p>
+                        </div>
+                            @php
+                            $id=Auth::user()->id;
+                            @endphp
+                            <div class="modal-footer"  >
+                                <form method="POST" action="{{ route('lgpdaceito',$id) }}">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" name="id" value="{{ $id }}">
+                                    <button type="submit" class="btn btn-primary" >Concordar</button>
+                                </form>
+                                <form method="POST" action="{{ route('lgpdrecusado',$id) }}">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" name="id" value="{{ $id }}">
+                                    <button type="submit" class="btn btn-secondary"  >Recusar</button>
+                                </form>
+                                
+                            </div>
+                            </div>
+                 
+                    </div>
+                @endelseif
+        @endif
+            
+            
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/material.min.js') }}"></script>
@@ -183,7 +225,7 @@
 
     <script>
         //XGH: por motivos de Descubra! o bootstrap não fecha o menu  mobile
-
+ 
         var mobileNavFlag = true;
         $(document).on('click', 'button.navbar-toggle', function(e) {
             if (mobileNavFlag) {
@@ -191,14 +233,19 @@
             } else {
                 $('#navbarNav').collapse('hide');
             }
-
+            
             mobileNavFlag = !mobileNavFlag;
         });
+        $(document).ready(function(){
+        $("#myModal").modal('show');
+    });
+        
     </script>
 
     @yield('partials')
 
     @yield('js')
+
 
 </body>
 

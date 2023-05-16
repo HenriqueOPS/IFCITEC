@@ -78,7 +78,8 @@ Route::group(['middleware' => ['IsVerificado']], function () {
 	// Editar dados pessoais
 	Route::get('/editar-cadastro/', 'PessoaController@editarCadastro')->name('editarCadastro');
 	Route::post('/editar-cadastro/', 'PessoaController@editaCadastro')->name('editaCadastro');
-
+	Route::post('/lgpdaceito/{id}','PessoaController@lgpdaceito')->name('lgpdaceito');
+	Route::post('/lgpdrecusado/{id}','PessoaController@lgpdrecusado')->name('lgpdrecusado');
 	// Autor
 	Route::get('/autor', 'AutorController@index')->name('autor');
 
