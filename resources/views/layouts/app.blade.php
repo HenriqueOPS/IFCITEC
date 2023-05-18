@@ -74,10 +74,6 @@
 </head>
 
 <body>
-    @if (Auth::check())
-        @php(Redirect::to('/login'))
-    @endif
-
     @if (!env('APP_DEBUG'))
         <!-- Google Tag Manager (noscript) -->
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ env('TAG_MANAGER_ID') }}" height="0"
@@ -86,8 +82,9 @@
     @endif
 
     <div id="app">
-        @if (Auth::guest())
+        @if (Auth::guest() || !Auth::user()->verificado)
         @else
+        
             <nav class="navbar navbar-default navbar-static-top" role="navigation">
                 <div class="container">
 
@@ -145,7 +142,7 @@
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a href="{{ route('editarCadastro') }}">
-                                            Editar Cadastro
+                                            Editar Cadastro 
                                         </a>
                                     </li>
                                     <li>
@@ -165,14 +162,52 @@
                     </div>
                 </div>
             </nav>
+           
         @endif
+        
 
         <div id="gtm" class="container"></div>
 
         @yield('content')
-
+     
+            
     </div>
-
+    @if (Auth::guest() || !Auth::user()->verificado)
+            @elseif(Auth::user()->lgpddata==null )
+                <div id='myModal'class="modal" tabindex="-1" role="dialog" class="modal hide fade in" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                    <style>
+                        .modal-body{
+                        display:block;
+                        text-align:justify;
+                        }
+                    </style>
+                        <div class="modal-body">
+                            <p>Em cumprimento ao nosso compromisso de transparência, conforme estabelecido na Lei de Política de Privacidade e Proteção de Dados Pessoais - LGPT, disponível no link de nossa plataforma. Solicitamos sua autorização para que a feira de ciências e inovação tecnológica - IFCITEC, possa realizar o tratamento de seus dados pessoais.
+                            </p>
+                            <p>Ao clicar em concordar, você  aceita os termos e autoriza o uso acima descrito, sem que haja qualquer imposição a fazer quanto aos direitos conexos à sua imagem ou a qualquer outro. 
+</p>
+                        </div>
+                            @php
+                            $id=Auth::user()->id;
+                            @endphp
+                            <div class="modal-footer"  >
+                                <form method="POST" action="{{ route('lgpdaceito',$id) }}">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" name="id" value="{{ $id }}">
+                                    <button type="submit" class="btn btn-primary" >Concordar</button>
+                                </form>
+                                
+                                
+                            </div>
+                            </div>
+                 
+                    </div>
+               
+        @endif
+            
+            
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/material.min.js') }}"></script>
@@ -187,7 +222,7 @@
 
     <script>
         //XGH: por motivos de Descubra! o bootstrap não fecha o menu  mobile
-
+ 
         var mobileNavFlag = true;
         $(document).on('click', 'button.navbar-toggle', function(e) {
             if (mobileNavFlag) {
@@ -195,14 +230,19 @@
             } else {
                 $('#navbarNav').collapse('hide');
             }
-
+            
             mobileNavFlag = !mobileNavFlag;
         });
+        $(document).ready(function(){
+        $("#myModal").modal('show');
+    });
+        
     </script>
 
     @yield('partials')
 
     @yield('js')
+
 
 </body>
 

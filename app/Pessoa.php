@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\DB;
 
 use App\Enums\EnumSituacaoProjeto;
 
-class Pessoa extends Authenticatable {
+class Pessoa extends Authenticatable
+{
 
     use Notifiable;
 
@@ -34,7 +35,7 @@ class Pessoa extends Authenticatable {
      */
     protected $fillable = [
         'nome', 'email', 'senha', 'cpf', 'rg', 'dt_nascimento',
-        'camisa', 'lattes', 'telefone', 'newsletter', 'oculto',
+        'camisa', 'lattes', 'telefone', 'newsletter', 'oculto', 'verificado',
 
         //Referentes a comição Avaliadora, necessário um estudo mais aprofundado
         //desta característica no sistema issue #40
@@ -50,115 +51,118 @@ class Pessoa extends Authenticatable {
         'senha', 'remember_token',
     ];
 
-    public function getAuthPassword() { //Para sistema poder fazer login via atributo "password"
+    public function getAuthPassword()
+    { //Para sistema poder fazer login via atributo "password"
         return $this->senha;
     }
 
-    public function getTable() {
+    public function getTable()
+    {
         $schema = isset($this->schema) ? $this->schema : env('DB_SCHEMA');
         return $schema . '.' . $this->table;
     }
 
-    public function edicoes() {
-        return $this->belongsToMany('App\Edicao', 'comissao_edicao','pessoa_id','edicao_id');
+    public function edicoes()
+    {
+        return $this->belongsToMany('App\Edicao', 'comissao_edicao', 'pessoa_id', 'edicao_id');
     }
 
-    public function tarefas() {
+    public function tarefas()
+    {
         return $this->belongsToMany('App\Tarefa', 'pessoa_tarefa', 'pessoa_id', 'tarefa_id');
     }
 
-	/**
-	 * Verifica se pessoa possui a função passada por parâmetro
-	 * na edição corrente
-	 * @access public
-	 * @param String $check Uma string contento o nome da Role
-	 * @return boolean
-	 */
-	public function temFuncao($funcao, $flag = false) {
+    /**
+     * Verifica se pessoa possui a função passada por parâmetro
+     * na edição corrente
+     * @access public
+     * @param String $check Uma string contento o nome da Role
+     * @return boolean
+     */
+    public function temFuncao($funcao, $flag = false)
+    {
 
-    	//pega o id da edição
-		$edicaoId = Edicao::getEdicaoId();
+        //pega o id da edição
+        $edicaoId = Edicao::getEdicaoId();
 
-		if ($edicaoId || $funcao == 'Administrador') {
+        if ($edicaoId || $funcao == 'Administrador') {
 
-			//Busca pela edição
-			if ($edicaoId) {
-				//Permissão apenas para a edição corrente ou para todas as edições
-				//quando a pessoa possuir permissão para a edição de id 1, tbm terá para todas as demais
+            //Busca pela edição
+            if ($edicaoId) {
+                //Permissão apenas para a edição corrente ou para todas as edições
+                //quando a pessoa possuir permissão para a edição de id 1, tbm terá para todas as demais
 
-				//Faz a consulta na mão para a edição atual
-				$query = DB::table('funcao_pessoa')
-					->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
-					//Busca pela Função
-					->where('funcao.funcao','=',$funcao)
-					//Busca pela Pessoa
-					->where('funcao_pessoa.pessoa_id', '=', $this->id)
-					->where('funcao_pessoa.edicao_id', '=', $edicaoId);
+                //Faz a consulta na mão para a edição atual
+                $query = DB::table('funcao_pessoa')
+                    ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
+                    //Busca pela Função
+                    ->where('funcao.funcao', '=', $funcao)
+                    //Busca pela Pessoa
+                    ->where('funcao_pessoa.pessoa_id', '=', $this->id)
+                    ->where('funcao_pessoa.edicao_id', '=', $edicaoId);
 
-				if (!$query->count()) { //Todas edições
-					$query = DB::table('funcao_pessoa')
-						->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
-						//Busca pela Função
-						->where('funcao.funcao','=',$funcao)
-						//Busca pela Pessoa
-						->where('funcao_pessoa.pessoa_id', '=', $this->id)
-						->where('funcao_pessoa.edicao_id', '=', 1);
-
-
+                if (!$query->count()) { //Todas edições
+                    $query = DB::table('funcao_pessoa')
+                        ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
+                        //Busca pela Função
+                        ->where('funcao.funcao', '=', $funcao)
+                        //Busca pela Pessoa
+                        ->where('funcao_pessoa.pessoa_id', '=', $this->id)
+                        ->where('funcao_pessoa.edicao_id', '=', 1);
                 }
+            } else {
+                //Permissão para todas as edições
+                $query = DB::table('funcao_pessoa')
+                    ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
+                    //Busca pela Função
+                    ->where('funcao.funcao', '=', $funcao)
+                    //Busca pela Pessoa
+                    ->where('funcao_pessoa.pessoa_id', '=', $this->id)
+                    ->where('funcao_pessoa.edicao_id', '=', 1);
+            }
 
-			} else {
-				//Permissão para todas as edições
-				$query = DB::table('funcao_pessoa')
-					->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
-					//Busca pela Função
-					->where('funcao.funcao','=',$funcao)
-					//Busca pela Pessoa
-					->where('funcao_pessoa.pessoa_id', '=', $this->id)
-					->where('funcao_pessoa.edicao_id', '=', 1);
-			}
-
-			if ($query->count()) {
-				// Verifica se não foi homologado como Homologador ou Avaliador
-				if ($funcao == 'Homologador' || $funcao == 'Avaliador') {
+            if ($query->count()) {
+                // Verifica se não foi homologado como Homologador ou Avaliador
+                if ($funcao == 'Homologador' || $funcao == 'Avaliador') {
                     if (!$query->get()[0]->homologado && !$flag) {
                         return false;
                     }
                 }
 
-				return true;
-			}
-		}
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-    public function temFuncaoComissaoAvaliadora($funcao) {
+    public function temFuncaoComissaoAvaliadora($funcao)
+    {
 
         //pega o id da edição
         $EdicaoId = Edicao::getEdicaoId();
 
-        if($EdicaoId){
+        if ($EdicaoId) {
 
             $query = DB::table('funcao_pessoa')
-						->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
-						//Busca pela Função
-						->where('funcao.funcao','=',$funcao)
-						//Busca pela Pessoa
-						->where('funcao_pessoa.pessoa_id','=',$this->id)
-            			->where('funcao_pessoa.homologado', '=', true);
+                ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
+                //Busca pela Função
+                ->where('funcao.funcao', '=', $funcao)
+                //Busca pela Pessoa
+                ->where('funcao_pessoa.pessoa_id', '=', $this->id)
+                ->where('funcao_pessoa.homologado', '=', true);
 
             //Busca pela edição
-            if($EdicaoId) {
+            if ($EdicaoId) {
                 //Permissão apenas para a edição corrente ou para todas as edições
                 $query->where('edicao_id', $EdicaoId)
-                      ->orWhere('edicao_id', null);
-            }else{
+                    ->orWhere('edicao_id', null);
+            } else {
                 //Permissão apenas para todas as edições
                 $query->where('edicao_id', null);
             }
 
-            if($query->count()) {
+            if ($query->count()) {
                 return true;
             }
         }
@@ -166,26 +170,27 @@ class Pessoa extends Authenticatable {
         return false;
     }
 
-    public function naoTemFuncao($funcao, $projeto, $pessoa) {
+    public function naoTemFuncao($funcao, $projeto, $pessoa)
+    {
 
         //pega o id da edição
         $EdicaoId = Edicao::getEdicaoId();
 
-        if($EdicaoId){
+        if ($EdicaoId) {
 
             $query = DB::table('escola_funcao_pessoa_projeto')
-				//Busca pela Função
-				->where('funcao_id','=',$funcao)
-				//Busca pela Pessoa
-				->where('pessoa_id','=',$pessoa)
-				//Busca pelo Projeto
-				->where('projeto_id','!=',$projeto)
-				//Busca pela Edição
-				->where('edicao_id', $EdicaoId)
-				->orWhere('edicao_id',null)
-				->get();
+                //Busca pela Função
+                ->where('funcao_id', '=', $funcao)
+                //Busca pela Pessoa
+                ->where('pessoa_id', '=', $pessoa)
+                //Busca pelo Projeto
+                ->where('projeto_id', '!=', $projeto)
+                //Busca pela Edição
+                ->where('edicao_id', $EdicaoId)
+                ->orWhere('edicao_id', null)
+                ->get();
 
-            if(!$query->count()) {
+            if (!$query->count()) {
                 return true;
             }
         }
@@ -193,139 +198,151 @@ class Pessoa extends Authenticatable {
         return false;
     }
 
-    public function temFuncaoProjeto($funcao, $projeto, $pessoa, $edicao) {
+    public function temFuncaoProjeto($funcao, $projeto, $pessoa, $edicao)
+    {
         if ($edicao) {
             $query = DB::table('escola_funcao_pessoa_projeto')
-				// Busca pela Função
-				->where('funcao_id', '=', Funcao::where('funcao', $funcao)->get()->first()->id)
-				// Busca pela Pessoa
-				->where('pessoa_id', $pessoa)
-				// Busca pelo Projeto
-				->where('projeto_id', $projeto)
-				// Busca pela Edição
-				->where('edicao_id', $edicao)
-				->get();
+                // Busca pela Função
+                ->where('funcao_id', '=', Funcao::where('funcao', $funcao)->get()->first()->id)
+                // Busca pela Pessoa
+                ->where('pessoa_id', $pessoa)
+                // Busca pelo Projeto
+                ->where('projeto_id', $projeto)
+                // Busca pela Edição
+                ->where('edicao_id', $edicao)
+                ->get();
 
-            if($query->count())
+            if ($query->count())
                 return true;
         }
 
         return false;
     }
 
-    public function comissaoArea($area, $pessoa) {
+    public function comissaoArea($area, $pessoa)
+    {
 
         //pega o id da edição
         $EdicaoId = Edicao::getEdicaoId();
 
-        if($EdicaoId){
+        if ($EdicaoId) {
 
             $query = DB::table('areas_comissao')
-				->join('area_conhecimento', 'areas_comissao.area_id', '=', 'area_conhecimento.id')
-				->join('comissao_edicao', 'areas_comissao.comissao_edicao_id', '=', 'comissao_edicao.id')
-				//Busca pela Pessoa
-				->where('comissao_edicao.pessoa_id', '=', $pessoa)
-				//Busca pelo Nível
-				->where('area_conhecimento.id', '=', $area)
-				//Busca pela Edição
-				->where('comissao_edicao.edicao_id', $EdicaoId)
-				->orWhere('edicao_id', null)
-				->get();
+                ->join('area_conhecimento', 'areas_comissao.area_id', '=', 'area_conhecimento.id')
+                ->join('comissao_edicao', 'areas_comissao.comissao_edicao_id', '=', 'comissao_edicao.id')
+                //Busca pela Pessoa
+                ->where('comissao_edicao.pessoa_id', '=', $pessoa)
+                //Busca pelo Nível
+                ->where('area_conhecimento.id', '=', $area)
+                //Busca pela Edição
+                ->where('comissao_edicao.edicao_id', $EdicaoId)
+                ->orWhere('edicao_id', null)
+                ->get();
 
-            if(!$query->count())
+            if (!$query->count())
                 return true;
         }
 
         return false;
     }
 
-    public function funcoes() {
+    public function funcoes()
+    {
         return $this->belongsToMany('App\Funcao', 'funcao_pessoa', 'pessoa_id', 'funcao_id');
     }
 
-    public function projetos() {
+    public function projetos()
+    {
         return $this->belongsToMany('App\Projeto', 'escola_funcao_pessoa_projeto')->withPivot('escola_id', 'funcao_id');
     }
 
-    public function avaliacoes() {
+    public function avaliacoes()
+    {
         return $this->hasMany('App\Avaliacao', 'pessoa_id', 'id');
     }
 
-    public function revisoes() {
+    public function revisoes()
+    {
         return $this->hasMany('App\Revisao', 'pessoa_id', 'id');
     }
 
-    static function findByEmail($email) {
+    static function findByEmail($email)
+    {
         return Pessoa::where('email', $email)->first();
     }
 
-    public function scopeWhereFuncao($query, $funcao){
+    public function scopeWhereFuncao($query, $funcao)
+    {
         return $query
-            ->join('funcao_pessoa','funcao_pessoa.pessoa_id','=','public.pessoa.id')
-            ->join('funcao','funcao.id','=','funcao_pessoa.funcao_id')
+            ->join('funcao_pessoa', 'funcao_pessoa.pessoa_id', '=', 'public.pessoa.id')
+            ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
             //busca pela Função
-            ->where('funcao.funcao','=',$funcao)
+            ->where('funcao.funcao', '=', $funcao)
             //busca pela Edição
-            ->where('funcao_pessoa.edicao_id','=',Edicao::getEdicaoId());
+            ->where('funcao_pessoa.edicao_id', '=', Edicao::getEdicaoId());
     }
 
-    public function getTotalRevisoes(){
+    public function getTotalRevisoes()
+    {
         $total = DB::table('revisao')
             ->select(DB::raw('count(*) as total'))
-            ->join('public.pessoa','revisao.pessoa_id','=','public.pessoa.id')
-            ->where('public.pessoa.id','=',$this->id)
+            ->join('public.pessoa', 'revisao.pessoa_id', '=', 'public.pessoa.id')
+            ->where('public.pessoa.id', '=', $this->id)
             ->first();
 
         return $total->total;
     }
 
-    public function getTotalAvaliacoes(){
+    public function getTotalAvaliacoes()
+    {
         $total = DB::table('avaliacao')
             ->select(DB::raw('count(*) as total'))
-            ->join('public.pessoa','avaliacao.pessoa_id','=','public.pessoa.id')
-            ->where('public.pessoa.id','=',$this->id)
+            ->join('public.pessoa', 'avaliacao.pessoa_id', '=', 'public.pessoa.id')
+            ->where('public.pessoa.id', '=', $this->id)
             ->first();
 
         return $total->total;
     }
 
-    public function temTrabalho() {
+    public function temTrabalho()
+    {
         $total = DB::table('escola_funcao_pessoa_projeto')
             ->select('escola_funcao_pessoa_projeto.projeto_id', 'projeto.situacao_id')
-            ->join('projeto','escola_funcao_pessoa_projeto.projeto_id','=','projeto.id')
-            ->where('escola_funcao_pessoa_projeto.pessoa_id','=',$this->id)
+            ->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+            ->where('escola_funcao_pessoa_projeto.pessoa_id', '=', $this->id)
             ->where('projeto.situacao_id', '<>', EnumSituacaoProjeto::getValue('NaoHomologado'))
-			->where('projeto.edicao_id', '=', Edicao::getEdicaoId())
+            ->where('projeto.edicao_id', '=', Edicao::getEdicaoId())
             ->get();
 
-        if($total->count())
+        if ($total->count())
             return true;
 
         return false;
     }
 
-    public function temTarefa(){
+    public function temTarefa()
+    {
         $total = DB::table('pessoa_tarefa')
             ->select('tarefa.tarefa')
-            ->join('tarefa','pessoa_tarefa.tarefa_id','=','tarefa.id')
-            ->where('pessoa_tarefa.pessoa_id','=',$this->id)
+            ->join('tarefa', 'pessoa_tarefa.tarefa_id', '=', 'tarefa.id')
+            ->where('pessoa_tarefa.pessoa_id', '=', $this->id)
             ->get();
 
-        if($total->count())
+        if ($total->count())
             return true;
 
-		return false;
+        return false;
     }
 
-	public function getProjetosAvaliador($id, $edicao){
-		$projetos = Projeto::select('projeto.id', 'titulo')
-			->join('avaliacao', 'projeto.id', '=', 'avaliacao.projeto_id')
-			->where('projeto.edicao_id','=',$edicao)
-			->where('avaliacao.pessoa_id','=',$id)
-			->orderBy('projeto.titulo','asc')
-			->get();
+    public function getProjetosAvaliador($id, $edicao)
+    {
+        $projetos = Projeto::select('projeto.id', 'titulo')
+            ->join('avaliacao', 'projeto.id', '=', 'avaliacao.projeto_id')
+            ->where('projeto.edicao_id', '=', $edicao)
+            ->where('avaliacao.pessoa_id', '=', $id)
+            ->orderBy('projeto.titulo', 'asc')
+            ->get();
 
-		return $projetos;
-	}
-
+        return $projetos;
+    }
 }

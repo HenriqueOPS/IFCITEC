@@ -262,8 +262,8 @@
                                 <td>2</td>
                                 <td>Dados MOSTRATEC (Edição Corrente)</td>
                                 <td class="text-right">
-                                    <a href="{{ route('csvMOSTRATEC', $edicao) }}" target="_blank"><i
-                                            class="material-icons">arrow_downward</i></a>
+                                    <a href="{{ route('relatorioMOSTRATEC', $edicao) }}" target="_blank"><i
+                                            class="material-icons">visibility</i></a>
                                 </td>
                             </tr>
                             <tr>
@@ -442,7 +442,7 @@
                                 <td>CSV Participantes</td>
                                 <td class="text-right">
                                     <a href="{{ route('csvPresencaParticipantes', $edicao) }}"><i
-                                            class="material-icons">arrow_downward</i></a>
+                                             class="material-icons">arrow_downward</i></a>
                                 </td>
                             </tr>
                             <tr>
@@ -568,6 +568,14 @@
                                             class="material-icons">visibility</i></a>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>Projeto por Escola</td>
+                                <td class="text-right">
+                                    <a href="{{ route('RelatorioPorEscola', $edicao) }}" target="_blank"><i
+                                    class="material-icons">arrow_downward</i></a>
+                                </td>
+                            </tr>
                         </tbody>
                         <tbody id="8">
                             <tr>
@@ -577,7 +585,7 @@
                                     <a href="{{ route('relatorioVoluntarios', $edicao) }}" target="_blank"><i
                                             class="material-icons">visibility</i></a>
                                     <a href="{{ route('csv', ['id' => 4, 'edicao' => $edicao]) }}"><i
-                                            class="material-icons">arrow_downward</i></a>
+                                           class="material-icons">arrow_downward</i></a>
                                 </td>
                             </tr>
                             <tr>

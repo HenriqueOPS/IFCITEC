@@ -39,7 +39,7 @@
                             @foreach ($edicoes as $id => $edicao)
                                 <div class="col-md-12 col-xs-6">
                                     <tr>
-                                        <td class="text-center">{{ $id + 1 }}</td>
+                                        <td class="text-center">{{ $edicao['ano'] }}</td>
                                         <td>{{ \App\Edicao::numeroEdicao($edicao['ano']) }}</td>
                                         <td>
 					    {{ date('d/m/Y H:i:s', strtotime($edicao['feira_abertura'])) }} -

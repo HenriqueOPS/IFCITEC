@@ -153,6 +153,62 @@ class RelatorioController extends Controller
         return $this->returnsCSVStream($filename, $fileHeaders, $fileRows);
     }
 
+    public function relatorioMOSTRATEC($edicao)
+    {
+        $projetos = Projeto::select('projeto.id', 'projeto.titulo', 'escola.nome_completo', 'escola.publica', 'area_conhecimento.area_conhecimento', 'projeto.resumo')
+            ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+            ->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
+            ->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
+            ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+            ->where('escola_funcao_pessoa_projeto.edicao_id', $edicao)
+            ->where('projeto.situacao_id', '=', EnumSituacaoProjeto::getValue('Avaliado'))
+            ->where('projeto.nota_avaliacao', '<>', 0)
+            ->orderBy('nivel.nivel')
+            ->orderBy('area_conhecimento.area_conhecimento')
+            ->orderBy('projeto.titulo')
+            ->distinct('projeto.id')
+            ->get();
+
+        $projetosComUmAutorPublica = 0;
+        $projetosComDoisAutoresPublica = 0;
+        $projetosComTresAutoresPublica = 0;
+
+        $projetosComUmAutorPrivada = 0;
+        $projetosComDoisAutoresPrivada = 0;
+        $projetosComTresAutoresPrivada = 0;
+
+        foreach ($projetos as $projeto) {
+            $numAutores = count($projeto->getAutores());
+
+            if ($projeto->publica) {
+                if ($numAutores == 1) {
+                    $projetosComUmAutorPublica++;
+                }
+
+                if ($numAutores == 2) {
+                    $projetosComDoisAutoresPublica++;
+                }
+
+                if ($numAutores == 3) {
+                    $projetosComTresAutoresPublica++;
+                }
+            } else {
+                if ($numAutores == 1) {
+                    $projetosComUmAutorPrivada++;
+                }
+
+                if ($numAutores == 2) {
+                    $projetosComDoisAutoresPrivada++;
+                }
+
+                if ($numAutores == 3) {
+                    $projetosComTresAutoresPrivada++;
+                }
+            }
+        }
+        return view('relatorios.gerais.mostratec');
+    }
+
     public function csvMOSTRATEC($edicao)
     {
         $projetos = Projeto::select('projeto.id', 'projeto.titulo', 'escola.nome_completo', 'nivel.nivel', 'area_conhecimento.area_conhecimento', 'projeto.resumo')
@@ -2328,5 +2384,29 @@ class RelatorioController extends Controller
         }
 
         return view('relatorios.projetos.concluintesProjeto', ['dados' => $dados]);
+    }
+    public function RelatorioPorEscola($edicao){
+        $Escola = DB::table('escola_funcao_pessoa_projeto')
+        ->join('projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+        ->join('escola', 'escola.id', '=', 'escola_funcao_pessoa_projeto.escola_id')
+        ->select(['projeto.titulo', 'escola.nome_curto', 'escola.id'])
+        ->where('escola_funcao_pessoa_projeto.edicao_id', '=', $edicao)
+        ->distinct()
+        ->orderBy('escola.id', 'desc')
+        ->get();
+        $rows = [];
+        foreach ($Escola as $Escolas) {
+            array_push($rows, [
+                utf8_decode($Escolas->nome_curto),
+                utf8_decode($Escolas->titulo)        
+            ]);
+        }
+        
+        $headerFields = [
+            'Escola',
+            'Projeto',
+        ];
+        $filename = "csvRelatorioPorEscola.csv";
+        return $this->returnsCSVStream($filename, $headerFields, $rows);
     }
 }

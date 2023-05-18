@@ -31,7 +31,7 @@ class RegisterController extends Controller
 	 *
 	 * @var string
 	 */
-	protected $redirectTo = '/home';
+	protected $redirectTo = '/';
 
 	/**
 	 * Create a new controller instance.
@@ -145,7 +145,8 @@ class RegisterController extends Controller
 			'telefone' => $data['telefone'],
 			'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
 			'newsletter' => isset($data['newsletter']) ? $data['newsletter'] : false,
-			'oculto' => false
+			'oculto' => false,
+			'verificado' => false,
 		]);
 	}
 

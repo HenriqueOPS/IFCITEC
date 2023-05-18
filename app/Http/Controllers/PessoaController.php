@@ -182,6 +182,13 @@ class PessoaController extends Controller {
         Pessoa::find($id)->update($data);
         return redirect()->route('administrador.usuarios');
     }
+    public function lgpdaceito($id){
+        $dados = Pessoa::find($id);
+        $dados->lgpddata=\Carbon\Carbon::now();
+        $dados->save();
+        return redirect('home');
 
+    }
+  
 
 }

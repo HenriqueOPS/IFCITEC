@@ -60,5 +60,6 @@ class Kernel extends HttpKernel
         'checkAuthorship' => \App\Http\Middleware\CheckAuthorship::class,
         'IsOrganizacao' => \App\Http\Middleware\IsOrganizacao::class,
         'IsAdministrador' => \App\Http\Middleware\IsAdministrador::class,
+        'IsVerificado' => \App\Http\Middleware\IsVerificado::class,
     ];
 }

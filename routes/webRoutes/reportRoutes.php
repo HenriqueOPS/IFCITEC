@@ -1,6 +1,7 @@
 <?php
 
 // Relatórios
+Route::get('/relatorio/EscolaProjeto/{edicao}','RelatorioController@RelatorioPorEscola')->name('RelatorioPorEscola');
 Route::get('/csv/{id}/{edicao?}', 'RelatorioController@csv')->name('csv');
 Route::get('/projetos/csv', 'RelatorioController@csvCertificados')->name('csvCertificados');
 Route::get('/pessoas/csv', 'RelatorioController@csvProjetos')->name('csvProjetos');
@@ -72,6 +73,7 @@ Route::get('/relatorio/niveis/{edicao}', 'RelatorioController@niveis')->name('re
 Route::get('escolasContato', 'RelatorioController@csvEmailNomeEscolas')->name('csvEmailNomeEscolas');
 Route::get('/relatorio/escolas/tipo-escola', 'RelatorioController@escolaPorTipo')->name('relatorioEscolaPorTipo');
 Route::get('/escolas/tipo-escola-csv', 'RelatorioController@csvEscolaPorTipo')->name('csvEscolaPorTipo');
+Route::get('/relatorio/mostratec', 'RelatorioController@relatorioMOSTRATEC')->name('relatorioMOSTRATEC');
 
 // Relatórios - Lanche
 Route::get('/relatorio/vale-lanche/gerar/{edicao}', 'RelatorioController@gerarValeLanche')->name('geraValeLanche');
