@@ -173,20 +173,21 @@
             
     </div>
     @if (Auth::guest() || !Auth::user()->verificado)
-            @elseif(!Auth::user()->lgpd && Auth::user()->lgpddata==null )
-                <div id='myModal'class="modal" tabindex="-1" role="dialog">
+            @elseif(Auth::user()->lgpddata==null )
+                <div id='myModal'class="modal" tabindex="-1" role="dialog" class="modal hide fade in" data-keyboard="false" data-backdrop="static">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Nos valorizamos a sua privacidade</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+                    <style>
+                        .modal-body{
+                        display:block;
+                        text-align:justify;
+                        }
+                    </style>
                         <div class="modal-body">
-                            <p>Nos usamos cookies pra melhorar a sua experiencia. caso click em "concordar", você consente com o uso dos seus dados
-
+                            <p>Em cumprimento ao nosso compromisso de transparência, conforme estabelecido na Lei de Política de Privacidade e Proteção de Dados Pessoais - LGPT, disponível no link de nossa plataforma. Solicitamos sua autorização para que a feira de ciências e inovação tecnológica - IFCITEC, possa realizar o tratamento de seus dados pessoais.
                             </p>
+                            <p>Ao clicar em concordar, você  aceita os termos e autoriza o uso acima descrito, sem que haja qualquer imposição a fazer quanto aos direitos conexos à sua imagem ou a qualquer outro. 
+</p>
                         </div>
                             @php
                             $id=Auth::user()->id;
@@ -197,17 +198,13 @@
                                     <input type="hidden" name="id" value="{{ $id }}">
                                     <button type="submit" class="btn btn-primary" >Concordar</button>
                                 </form>
-                                <form method="POST" action="{{ route('lgpdrecusado',$id) }}">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" name="id" value="{{ $id }}">
-                                    <button type="submit" class="btn btn-secondary"  >Recusar</button>
-                                </form>
+                                
                                 
                             </div>
                             </div>
                  
                     </div>
-                @endelseif
+               
         @endif
             
             

@@ -1,6 +1,7 @@
 <?php
 
 // Relatórios
+Route::get('/relatorio/EscolaProjeto/{edicao}','RelatorioController@RelatorioPorEscola')->name('RelatorioPorEscola');
 Route::get('/csv/{id}/{edicao?}', 'RelatorioController@csv')->name('csv');
 Route::get('/projetos/csv', 'RelatorioController@csvCertificados')->name('csvCertificados');
 Route::get('/pessoas/csv', 'RelatorioController@csvProjetos')->name('csvProjetos');

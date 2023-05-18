@@ -2385,4 +2385,28 @@ class RelatorioController extends Controller
 
         return view('relatorios.projetos.concluintesProjeto', ['dados' => $dados]);
     }
+    public function RelatorioPorEscola($edicao){
+        $Escola = DB::table('escola_funcao_pessoa_projeto')
+        ->join('projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+        ->join('escola', 'escola.id', '=', 'escola_funcao_pessoa_projeto.escola_id')
+        ->select(['projeto.titulo', 'escola.nome_curto', 'escola.id'])
+        ->where('escola_funcao_pessoa_projeto.edicao_id', '=', $edicao)
+        ->distinct()
+        ->orderBy('escola.id', 'desc')
+        ->get();
+        $rows = [];
+        foreach ($Escola as $Escolas) {
+            array_push($rows, [
+                utf8_decode($Escolas->nome_curto),
+                utf8_decode($Escolas->titulo)        
+            ]);
+        }
+        
+        $headerFields = [
+            'Escola',
+            'Projeto',
+        ];
+        $filename = "csvRelatorioPorEscola.csv";
+        return $this->returnsCSVStream($filename, $headerFields, $rows);
+    }
 }

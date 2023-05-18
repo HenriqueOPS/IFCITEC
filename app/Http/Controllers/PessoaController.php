@@ -184,17 +184,11 @@ class PessoaController extends Controller {
     }
     public function lgpdaceito($id){
         $dados = Pessoa::find($id);
-        $dados->lgpd=true;
         $dados->lgpddata=\Carbon\Carbon::now();
         $dados->save();
         return redirect('home');
 
     }
-    public function lgpdrecusado($id){
-        $dados = Pessoa::find($id);
-        $dados->lgpddata=\Carbon\Carbon::now();
-        $dados->save();
-        return redirect('home');
-    }
+  
 
 }
