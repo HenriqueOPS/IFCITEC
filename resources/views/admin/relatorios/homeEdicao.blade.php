@@ -570,7 +570,7 @@
                             </tr>
                             <tr>
                                 <td>12</td>
-                                <td>Projeto por Escola</td>
+                                <td>Projetos Homologados por escola</td>
                                 <td class="text-right">
                                     <a href="{{ route('RelatorioPorEscola', $edicao) }}" target="_blank"><i
                                     class="material-icons">arrow_downward</i></a>

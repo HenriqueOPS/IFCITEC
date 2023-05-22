@@ -2389,8 +2389,10 @@ class RelatorioController extends Controller
         $Escola = DB::table('escola_funcao_pessoa_projeto')
         ->join('projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
         ->join('escola', 'escola.id', '=', 'escola_funcao_pessoa_projeto.escola_id')
-        ->select(['projeto.titulo', 'escola.nome_curto', 'escola.id'])
+        ->select(['projeto.titulo','projeto.situacao_id', 'escola.nome_curto', 'escola.id'])
         ->where('escola_funcao_pessoa_projeto.edicao_id', '=', $edicao)
+        ->where('projeto.situacao_id','>=',3)
+        ->where('projeto.situacao_id','<',6)
         ->distinct()
         ->orderBy('escola.id', 'desc')
         ->get();

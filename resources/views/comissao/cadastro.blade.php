@@ -35,8 +35,7 @@
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true"><i class="material-icons">clear</i></span>
                                         </button>
-                                        <b>ATENÇÃO: </b>Você não poderá avaliar uma área do conhecimento da qual é
-                                        orientador ou coorientador
+                                        {!! $aviso !!}
                                     </div>
                                 </div>
                             </div>

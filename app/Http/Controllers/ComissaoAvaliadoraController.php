@@ -14,7 +14,7 @@ use App\Projeto;
 use App\Avaliacao;
 use App\Revisao;
 use App\Jobs\MailComissaoAvaliadoraJob;
-
+use App\Mensagem;
 use App\Enums\EnumSituacaoProjeto;
 use App\Enums\EnumFuncaoPessoa;
 
@@ -154,7 +154,7 @@ class ComissaoAvaliadoraController extends Controller
 				}
 			}
 		}
-
+		$mensagens = Mensagem::where('nome', '=', 'Aviso(Comissão Avaliadora)')->get();
 		if ($projetosAreas == null)
 			$areasConhecimento = $areas;
 
@@ -171,7 +171,8 @@ class ComissaoAvaliadoraController extends Controller
 			'dados' => $dados,
 			'data' => $data,
 			'areasConhecimento' => $areasConhecimento,
-			'temCadastro' => $temCadastro
+			'temCadastro' => $temCadastro,
+			'aviso'=>$mensagens[0]->conteudo
 		]);
 	}
 

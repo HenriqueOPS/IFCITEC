@@ -182,6 +182,9 @@
                         display:block;
                         text-align:justify;
                         }
+                        .modal-body > p {
+                            text-indent:2em ;
+                        }
                     </style>
                         <div class="modal-body">
                             <p>Em cumprimento ao nosso compromisso de transparência, conforme estabelecido na Lei de Política de Privacidade e Proteção de Dados Pessoais - LGPT, disponível no link de nossa plataforma. Solicitamos sua autorização para que a feira de ciências e inovação tecnológica - IFCITEC, possa realizar o tratamento de seus dados pessoais.
