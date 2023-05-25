@@ -361,9 +361,7 @@
                     mensagemNome.innerHTML = e.nome;
 
                     deleteIcon.classList.add('material-icons');
-                    deleteIcon.classList.add('delete-btn');
-                    deleteIcon.innerHTML = 'delete';
-                    deleteIcon.onclick = onDelete;
+                   
 
                     mensagemBox.appendChild(mensagemBody);
                     mensagemBox.appendChild(deleteIcon);
