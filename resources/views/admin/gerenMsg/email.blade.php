@@ -2,6 +2,8 @@
 
 @section('css')
     <style>
+        @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
+
         .menu-mensagens {
             width: 30%;
             display: flex;
@@ -160,6 +162,12 @@
                         <button id="goto-avisos" data-nome="aviso" class="tipo-btn">
                             <i class="material-icons">warning</i>
                             AVISOS
+                        </button>
+                    </li>
+                    <li id="tipo-instagram">
+                        <button id="goto-instagram" data-nome="instagram" class="tipo-btn">
+                        <i class="bi bi-instagram"></i>
+                            INSTAGRAM
                         </button>
                     </li>
                 </ul>

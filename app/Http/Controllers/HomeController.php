@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Mensagem;
 class HomeController extends Controller
 {
     /**
@@ -21,6 +21,13 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view('home');
+        $instagram1 = Mensagem::where('nome', '=', 'PrimeiraColuna' )->get();
+        $instagram2 = Mensagem::where('nome', '=', 'SegundaColuna' )->get();
+        $instagram3 = Mensagem::where('nome', '=', 'TerceiraColuna' )->get();
+        return view('home',[
+            'instagram1'=>$instagram1[0]->conteudo,
+            'instagram2'=>$instagram2[0]->conteudo,
+            'instagram3'=>$instagram3[0]->conteudo,
+        ]);
     }
 }
