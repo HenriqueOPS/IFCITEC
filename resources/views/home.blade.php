@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container" >
 
 	@if(!(\App\Edicao::getEdicaoId()))
 
@@ -25,8 +25,8 @@
 			@endif
 
 		</div>
-					
-		<div class="row" style="height:800px;" >
+					<style></style>
+		<div class="row" style="height:1000px;" >
 		
 			<div class="col-md-4 main main-raised" style="padding-top: 20px;height:100%;">
 						{!! $instagram1 !!}
