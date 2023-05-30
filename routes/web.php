@@ -54,7 +54,7 @@ Route::get('cadastro', [
 Route::post('cadastro', [
 	'as' => '',
 	'uses' => 'Auth\RegisterController@register'
-]);
+])->name('register');
 
 // Authenticated Routes
 Auth::routes();
