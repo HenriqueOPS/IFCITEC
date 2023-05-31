@@ -85,7 +85,7 @@
         @if (Auth::guest() || !Auth::user()->verificado)
         @else
         
-            <nav class="navbar navbar-default navbar-static-top" role="navigation" data-toggle="collapse" data-target="#navbarNav">
+            <nav class="navbar navbar-default navbar-static-top" role="navigation" >
                 <div class="container">
 
 

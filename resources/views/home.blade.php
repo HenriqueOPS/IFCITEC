@@ -25,7 +25,7 @@
 			@endif
 
 		</div>
-					<style></style>
+					
 		<div class="row" style="height:1000px;" >
 		
 			<div class="col-md-4 main main-raised" style="padding-top: 20px;height:100%;">
@@ -43,7 +43,7 @@
 
 						
 			</div>
-			
+			</div>
 					
 	@endif
 
