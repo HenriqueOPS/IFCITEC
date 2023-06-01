@@ -93,7 +93,7 @@
         @if (Auth::guest() || !Auth::user()->verificado)
         @else
         
-            <nav class="navbar navbar-default navbar-static-top" role="navigation" >
+            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="background-color:{{$cor}};">
                 <div class="container">
 
 

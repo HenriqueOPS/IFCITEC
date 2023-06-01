@@ -789,8 +789,15 @@ class AdminController extends Controller
         $imageName = 'background.' . $extension;
         $request->image->move(public_path('img'),$imageName);
       
-        return redirect()->route('administrador.usuarios');
+        return redirect()->route('admin.configuracoes');
         
+    }
+    public function navbar(Request $request){
+        $cor = Mensagem::where('nome','=','cor_navbar')->get();
+        $cor[0]->conteudo = $request->cor;
+        $cor[0]->timestamps = false;
+        $cor[0]->save();
+        return redirect()->route('admin.configuracoes');
     }
     
 }
