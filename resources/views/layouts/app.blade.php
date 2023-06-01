@@ -73,7 +73,15 @@
     <script src="{{ asset('js/app.js') }}"></script>
 </head>
 
-<body>
+<style>
+    .masthead{
+        background-size:cover;
+        min-height:100vh;
+        
+    }
+</style>
+<body class="masthead" style="background-image: url({{ asset('img/background.jpeg') }});">
+    
     @if (!env('APP_DEBUG'))
         <!-- Google Tag Manager (noscript) -->
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ env('TAG_MANAGER_ID') }}" height="0"

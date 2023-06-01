@@ -1,5 +1,5 @@
 <div id="page" class="col-md-12">
-    <ul class="nav nav-pills nav-pills-primary" role="tablist" style="display: flex; align-content: center">
+    <ul class="nav nav-pills nav-pills-primary" role="tablist" style="display: flex; align-content: flex-start">
         <li id="nav-edicoes">
             <a href="{{ route('administrador') }}">
                 <i class="material-icons">adjust</i>
@@ -64,6 +64,13 @@
             <a href="{{ route('administrador.relatoriosEdicao') }}">
                 <i class="material-icons">description</i>
                 Relatórios
+            </a>
+        </li>
+        <li id="nav-configuracoes">
+            <a href="{{ route('administrador.relatoriosEdicao') }}">
+            <a href="{{ route('admin.configuracoes') }}">
+                <i class="material-icons">settings</i>
+                Configurações
             </a>
         </li>
     </ul>

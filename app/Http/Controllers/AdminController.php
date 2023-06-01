@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Mensagem;
 use App\AreaConhecimento;
 use App\Edicao;
 use App\Endereco;
@@ -779,4 +779,18 @@ class AdminController extends Controller
 
         return redirect()->route('administrador.usuarios');
     }
+    public function configuracoes(){
+        return view('admin.configuracoes.configuracoes');
+    }
+    public function background(Request $request){
+       
+        $requestImage = $request->image;
+        $extension = $requestImage->extension();
+        $imageName = 'background.' . $extension;
+        $request->image->move(public_path('img'),$imageName);
+      
+        return redirect()->route('administrador.usuarios');
+        
+    }
+    
 }

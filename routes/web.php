@@ -204,6 +204,8 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 
 
 	// Administrador
+	Route::post('/administrador/upload','AdminController@background')->name('admin.background');
+	Route::get('/administrador/configuracoes','AdminController@configuracoes')->name('admin.configuracoes');
 	Route::get('/projetos/homologar-projetos', 'ProjetoController@homologarProjetos')->name('homologar-projetos');
 	Route::post('/projetos/homologa-projetos', 'ProjetoController@homologaProjetos')->name('homologa-projetos');
 	Route::get('/projeto/nao-compareceu/{id}/{s}', 'ProjetoController@projetoNaoCompareceu'); //
