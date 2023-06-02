@@ -286,3 +286,8 @@ Route::get('mail/voluntario', function () {
 		$message->subject('IFCITEC');
 	});
 });
+
+use App\Mensagem;
+
+$cor = Mensagem::where('nome', '=', 'cor_navbar' )->get();
+view()->share('cor', $cor[0]->conteudo);
