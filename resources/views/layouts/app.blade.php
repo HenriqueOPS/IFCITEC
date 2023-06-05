@@ -78,6 +78,7 @@
         background-size:cover;
         min-height:100vh;
         background-position:center;
+        background-attachment: fixed;   
     }
 </style>
 <body class="masthead" style="background-image: url({{ asset('img/background.jpeg') }});">
