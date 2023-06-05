@@ -14,8 +14,10 @@ class AppServiceProvider extends ServiceProvider {
      * @return void
      */
     public function boot() {
-        $cor = DB::table('mensagem')->where('nome','=','cor_navbar')->get();
-        view()->share('cor', $cor[0]->conteudo);
+        if (!app()->runningInConsole() || app()->runningUnitTests()) {
+            $cor = DB::table('mensagem')->where('nome','=','cor_navbar')->get();
+            view()->share('cor', $cor[0]->conteudo);
+        } 
 
         Schema::defaultStringLength(191);
         if (env('APP_ENV') !== 'local') {
