@@ -783,10 +783,10 @@ class AdminController extends Controller
         return view('admin.configuracoes.configuracoes');
     }
     public function background(Request $request){
-       
+        $nome = $request->imagem;
         $requestImage = $request->image;
         $extension = $requestImage->extension();
-        $imageName = 'background.' . $extension;
+        $imageName = $nome . "." . $extension;
         $request->image->move(public_path('img'),$imageName);
       
         return redirect()->route('admin.configuracoes');

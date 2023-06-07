@@ -15,6 +15,7 @@ class AppServiceProvider extends ServiceProvider {
      */
     public function boot() {
         if (!app()->runningInConsole() || app()->runningUnitTests()) {
+            //seta variaveis globais
             $cor = DB::table('mensagem')->where('nome','=','cor_navbar')->get();
             view()->share('cor', $cor[0]->conteudo);
         } 

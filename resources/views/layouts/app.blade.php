@@ -81,7 +81,7 @@
         background-attachment: fixed;   
     }
 </style>
-<body class="masthead" style="background-image: url({{ asset('img/background.jpeg') }});">
+<body class="masthead" style="background-image: url({{ asset('img/background.png') }});">
     
     @if (!env('APP_DEBUG'))
         <!-- Google Tag Manager (noscript) -->
