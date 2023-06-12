@@ -37,7 +37,7 @@
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true"><i class="material-icons">clear</i></span>
                                     </button>
-                                   {!! $aviso !!}
+                              
                                 </div>
                             </div>
                         </div>
