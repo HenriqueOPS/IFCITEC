@@ -37,7 +37,7 @@
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true"><i class="material-icons">clear</i></span>
                                     </button>
-                                    <b>ATENÇÃO: </b>É de total responsabilidade do usuário a veracidade dos dados informados, pois será utilizado para a emissão de certificados
+                                   {!! $aviso !!}
                                 </div>
                             </div>
                         </div>
@@ -64,7 +64,17 @@
                                 </span>
                                 @endif
                             </div>
-
+                            
+                            <div class="input-group ">
+                           
+                            <span class="input-group-addon">
+                                    <i class="material-icons">wc</i>
+                                </span>
+                                <label style="margin-top:20px;">Masculino</label>
+                                 <input type="radio" id="masculino" name="genero" value="M">
+                                 <label style="margin-left:12px;">Feminino</label>
+                                 <input type="radio" id="feminino" name="genero" value="F">
+                            </div>
                             <div class="input-group{{ $errors->has('cpf') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">call_to_action</i>

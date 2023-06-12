@@ -155,19 +155,19 @@ class RelatorioController extends Controller
 
     public function relatorioMOSTRATEC($edicao)
     {
-        $projetos = Projeto::select('projeto.id', 'projeto.titulo', 'escola.nome_completo', 'escola.publica', 'area_conhecimento.area_conhecimento', 'projeto.resumo')
-            ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
-            ->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
-            ->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
-            ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
-            ->where('escola_funcao_pessoa_projeto.edicao_id', $edicao)
-            ->where('projeto.situacao_id', '=', EnumSituacaoProjeto::getValue('Avaliado'))
-            ->where('projeto.nota_avaliacao', '<>', 0)
-            ->orderBy('nivel.nivel')
-            ->orderBy('area_conhecimento.area_conhecimento')
-            ->orderBy('projeto.titulo')
-            ->distinct('projeto.id')
-            ->get();
+        $projetos = Projeto::select('projeto.id', 'projeto.titulo', 'escola.nome_completo', 'escola.publica', 'area_conhecimento.area_conhecimento', 'projeto.resumo', 'nivel.nivel')
+    ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+    ->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
+    ->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
+    ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+    ->where('escola_funcao_pessoa_projeto.edicao_id', 10)
+    ->where('projeto.situacao_id', '=', EnumSituacaoProjeto::getValue('Avaliado'))
+    ->where('projeto.nota_avaliacao', '<>', 0)
+    ->orderBy('nivel.nivel')
+    ->orderBy('area_conhecimento.area_conhecimento')
+    ->orderBy('projeto.titulo')
+    ->distinct('projeto.id')
+    ->get();
 
         $projetosComUmAutorPublica = 0;
         $projetosComDoisAutoresPublica = 0;
@@ -206,7 +206,9 @@ class RelatorioController extends Controller
                 }
             }
         }
-        return view('relatorios.gerais.mostratec');
+        return view('relatorios.gerais.mostratec',[
+            'projetos'=>$projetos,
+        ]);
     }
 
     public function csvMOSTRATEC($edicao)
@@ -360,9 +362,9 @@ class RelatorioController extends Controller
         );
 
         $filename = "RelatorioMOSTRATEC.csv";
-        $fileHeaders = null;
+        $headerFields = [];
 
-        return $this->returnsCSVStream($filename, $fileHeaders, $fileRows);
+        return $this->returnsCSVStream($filename, $headerFields, $fileRows);
     }
 
     public function csvAnais($edicao)

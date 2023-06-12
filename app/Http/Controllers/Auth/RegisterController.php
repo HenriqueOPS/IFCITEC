@@ -147,6 +147,7 @@ class RegisterController extends Controller
 			'newsletter' => isset($data['newsletter']) ? $data['newsletter'] : false,
 			'oculto' => false,
 			'verificado' => false,
+			'genero' => $data['genero'],
 		]);
 	}
 

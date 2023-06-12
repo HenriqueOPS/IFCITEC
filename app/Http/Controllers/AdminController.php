@@ -799,5 +799,7 @@ class AdminController extends Controller
         $cor[0]->save();
         return redirect()->route('admin.configuracoes');
     }
-    
+    public function empresas(){
+        return view('admin.empresas.home');
+    }
 }

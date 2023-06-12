@@ -207,6 +207,7 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::post('/administrador/navbar',"AdminController@navbar")->name('admin.navbar');
 	Route::post('/administrador/upload','AdminController@background')->name('admin.background');
 	Route::get('/administrador/configuracoes','AdminController@configuracoes')->name('admin.configuracoes');
+	Route::get('/administrador/empresas','AdminController@empresas')->name('admin.empresas');
 	Route::get('/projetos/homologar-projetos', 'ProjetoController@homologarProjetos')->name('homologar-projetos');
 	Route::post('/projetos/homologa-projetos', 'ProjetoController@homologaProjetos')->name('homologa-projetos');
 	Route::get('/projeto/nao-compareceu/{id}/{s}', 'ProjetoController@projetoNaoCompareceu'); //

@@ -27,7 +27,7 @@
                 </thead>
                 <tbody>
 
-                    @foreach ($escolasPublicas as $escola)
+                    @foreach ($projetos as $escola)
                         <tr>
                             <td>
                                 <a style="color: #000;">{{ $escola->nome_completo }}</a>
@@ -60,7 +60,7 @@
             </table>
 
             <p>
-                <b>Total de escola publicas: {{ count($escolasPublicas) }}</b>
+                <b>Total de escola publicas: {{ count($projetos) }}</b>
             </p>
             <br>
             <p style="text-align: center;">
@@ -82,7 +82,7 @@
                 </thead>
                 <tbody>
 
-                    @foreach ($escolasPrivadas as $escola)
+                    @foreach ($projetos as $escola)
                         <tr>
                             <td>
                                 <a style="color: #000;">{{ $escola->nome_completo }}</a>
@@ -115,7 +115,7 @@
             </table>
 
             <p>
-                <b>Total de escola privadas: {{ count($escolasPrivadas) }}</b>
+                <b>Total de escola privadas: {{ count($projetos) }}</b>
             </p>
             <br>
         </div>

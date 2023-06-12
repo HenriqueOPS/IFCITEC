@@ -6,7 +6,7 @@
 	@if(!(\App\Edicao::getEdicaoId()))
 
 		<div class="page-header">
-			<h4>Olá {{ Auth::user()->nome }}</h1>
+			<h3>Olá {{ Auth::user()->nome }}</h3>
 
 			<div class="alert alert-warning" style="background: #bd8c0e">
 				<strong>Ainda não abriram as inscrições!</strong> acompanhe a gente por nosso <a href="http://ifcitec.canoas.ifrs.edu.br">site</a> e por nossa <a href="https://www.instagram.com/ifcitec/">página no Instagram</a> para quaisquer novidades.
@@ -16,7 +16,7 @@
 	@else
 
 		<div class="page-header">
-			<h4>Olá, {{ Auth::user()->nome }}</h1>
+			<h3>Olá, {{ Auth::user()->nome }}</h3>
 
 			@if((\App\Edicao::consultaPeriodo('Inscrição')))
 			<div class="alert alert-info">

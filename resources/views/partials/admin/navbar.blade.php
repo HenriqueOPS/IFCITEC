@@ -1,5 +1,5 @@
 <div id="page" class="col-md-12">
-    <ul class="nav nav-pills nav-pills-primary" role="tablist" style="display: flex; align-content: flex-start">
+    <ul class="nav nav-pills nav-pills-primary" role="tablist" style="display: flex; align-content: flex-start;overflow: scroll;">
         <li id="nav-edicoes">
             <a href="{{ route('administrador') }}">
                 <i class="material-icons">adjust</i>
@@ -67,10 +67,15 @@
             </a>
         </li>
         <li id="nav-configuracoes">
-            <a href="{{ route('administrador.relatoriosEdicao') }}">
             <a href="{{ route('admin.configuracoes') }}">
                 <i class="material-icons">settings</i>
                 Configurações
+            </a>
+        </li>
+        <li id="nav-empresas">
+            <a href="{{ route('admin.empresas') }}">
+                <i class="material-icons">factory</i>
+                Empresas
             </a>
         </li>
     </ul>

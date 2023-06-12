@@ -35,7 +35,7 @@ class Pessoa extends Authenticatable
      */
     protected $fillable = [
         'nome', 'email', 'senha', 'cpf', 'rg', 'dt_nascimento',
-        'camisa', 'lattes', 'telefone', 'newsletter', 'oculto', 'verificado',
+        'camisa', 'lattes', 'telefone', 'newsletter', 'oculto', 'verificado','genero',
 
         //Referentes a comição Avaliadora, necessário um estudo mais aprofundado
         //desta característica no sistema issue #40

@@ -262,8 +262,9 @@
                                 <td>2</td>
                                 <td>Dados MOSTRATEC (Edição Corrente)</td>
                                 <td class="text-right">
-                                    <a href="{{ route('relatorioMOSTRATEC', $edicao) }}" target="_blank"><i
-                                            class="material-icons">visibility</i></a>
+                                   
+                                            <a href="{{ route('csvMOSTRATEC', $edicao) }}" target="_blank"><i
+                                    class="material-icons">arrow_downward</i></a>
                                 </td>
                             </tr>
                             <tr>
