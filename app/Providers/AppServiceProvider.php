@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+use App\Mensagem;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
@@ -18,6 +19,8 @@ class AppServiceProvider extends ServiceProvider {
             //seta variaveis globais
             $cor = DB::table('mensagem')->where('nome','=','cor_navbar')->get();
             view()->share('cor', $cor[0]->conteudo);
+            $mensagem = Mensagem::where('nome', '=', 'Aviso(CadastroDeParticipante)')->get();
+            view()->share('aviso1', $mensagem[0]->conteudo);
         } 
 
         Schema::defaultStringLength(191);
