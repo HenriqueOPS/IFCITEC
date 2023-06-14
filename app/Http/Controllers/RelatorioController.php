@@ -253,6 +253,7 @@ class RelatorioController extends Controller
             ['Projetos 01 Aluno', $projetosComUmAutor],
             ['Projetos 02 Alunos', $projetosComDoisAutores],
             ['Projetos 03 Alunos', $projetosComTresAutores],
+            ['',],
         ];
 
         // numero de orientadores e coorientadores por nivel
@@ -269,7 +270,8 @@ class RelatorioController extends Controller
 
             array_push(
                 $fileRows,
-                ['Quantidade de Orientadores do nivel ' . $nivel->nivel, $orientadores]
+                ['Quantidade de Orientadores do nivel ' . $nivel->nivel, $orientadores,],
+               
             );
 
             $coorientadores = Pessoa::select('pessoa.id')
@@ -284,7 +286,8 @@ class RelatorioController extends Controller
 
             array_push(
                 $fileRows,
-                ['Quantidade de Coorientadores do nivel ' . $nivel->nivel, $coorientadores]
+                ['Quantidade de Coorientadores do nivel ' . $nivel->nivel, $coorientadores],
+              
             );
         }
 
@@ -297,7 +300,54 @@ class RelatorioController extends Controller
 
         array_push(
             $fileRows,
-            ['Quantidade de escolas participantes', $countEscolas[0]->num]
+            ['',],
+            ['Quantidade de escolas participantes', $countEscolas[0]->num],
+        );
+        $countescolaspublicas = DB::table('escola_funcao_pessoa_projeto')
+        ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+        ->where('escola.publica','=','true')
+        ->selectRaw('count(distinct escola_id) as num')
+        ->where('edicao_id', '=', $edicao)
+        ->distinct('escola_id')
+        ->get();
+
+    array_push(
+        $fileRows,
+        ['Quantidade de escolas publicas', $countescolaspublicas[0]->num],
+    );
+        $countescolasprivadas = DB::table('escola_funcao_pessoa_projeto')
+        ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+        ->where('escola.publica','!=','true')
+        ->selectRaw('count(distinct escola_id) as num')
+        ->where('edicao_id', '=', $edicao)
+        ->distinct('escola_id')
+        ->get();
+
+        array_push(
+        $fileRows,
+        ['Quantidade de escolas privadas', $countescolasprivadas[0]->num],
+        );
+        $countmunicipios = DB::table('escola_funcao_pessoa_projeto')
+        ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+        ->join('endereco','escola.endereco_id','=','endereco.id')
+        ->where('edicao_id', '=', $edicao)
+        ->selectRaw('count(distinct endereco.municipio) as num')
+        ->get();
+
+        array_push(
+        $fileRows,
+        ['Quantidade de municipios participantes', $countmunicipios[0]->num],
+        );
+        $countestados = DB::table('escola_funcao_pessoa_projeto')
+        ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+        ->join('endereco','escola.endereco_id','=','endereco.id')
+        ->where('edicao_id', '=', $edicao)
+        ->selectRaw('count(distinct endereco.uf) as num')
+        ->get();
+
+        array_push(
+        $fileRows,
+        ['Quantidade de estados participantes', $countestados[0]->num],
         );
 
         // numero de escolas por nivel
@@ -310,7 +360,8 @@ class RelatorioController extends Controller
 
             array_push(
                 $fileRows,
-                ['Quantidade de Escolas no nivel ' . $nivel->nivel, $countEscolasNivel[0]->num]
+                ['Quantidade de Escolas no nivel ' . $nivel->nivel, $countEscolasNivel[0]->num],
+              
             );
         }
 
@@ -321,7 +372,9 @@ class RelatorioController extends Controller
 
         array_push(
             $fileRows,
-            ['Projetos cadastrados', $countProjetos]
+            ['',],
+            ['Projetos cadastrados', $countProjetos],
+           
         );
 
         // numero de projetos por niveis
@@ -333,7 +386,8 @@ class RelatorioController extends Controller
 
             array_push(
                 $fileRows,
-                ['Projetos cadastrados no nivel ' . $nivel->nivel, $countProjetosNivel]
+                ['Projetos cadastrados no nivel ' . $nivel->nivel, $countProjetosNivel],
+               
             );
         }
 
@@ -346,7 +400,9 @@ class RelatorioController extends Controller
 
         array_push(
             $fileRows,
-            ['Numero de avaliadores', $countAvaliadores]
+            ['',],
+            ['Numero de avaliadores', $countAvaliadores],
+           
         );
 
         // numero de homologadores
@@ -358,7 +414,7 @@ class RelatorioController extends Controller
 
         array_push(
             $fileRows,
-            ['Numero de homologadores', $countHomologadores]
+            ['Numero de homologadores', $countHomologadores],
         );
 
         $filename = "RelatorioMOSTRATEC.csv";

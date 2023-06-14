@@ -50,7 +50,6 @@
         background-size:cover;
         background-position:center;
         background-attachment: fixed;   
-        backdrop-filter: blur(10px);
         height:100vh;
     }
     </style>
