@@ -160,7 +160,7 @@ class RelatorioController extends Controller
     ->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
     ->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
     ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
-    ->where('escola_funcao_pessoa_projeto.edicao_id', 10)
+    ->where('escola_funcao_pessoa_projeto.edicao_id', $edicao)
     ->where('projeto.situacao_id', '=', EnumSituacaoProjeto::getValue('Avaliado'))
     ->where('projeto.nota_avaliacao', '<>', 0)
     ->orderBy('nivel.nivel')
@@ -213,7 +213,7 @@ class RelatorioController extends Controller
 
     public function csvMOSTRATEC($edicao)
     {
-        $projetos = Projeto::select('projeto.id', 'projeto.titulo', 'escola.nome_completo', 'nivel.nivel', 'area_conhecimento.area_conhecimento', 'projeto.resumo')
+        $projetos = Projeto::select('projeto.id', 'projeto.titulo', 'escola.nome_completo', 'nivel.nivel', 'area_conhecimento.area_conhecimento', 'projeto.resumo','projeto.nivel_id')
             ->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
             ->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
             ->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
@@ -230,6 +230,14 @@ class RelatorioController extends Controller
         $projetosComUmAutor = 0;
         $projetosComDoisAutores = 0;
         $projetosComTresAutores = 0;
+        //considere publica como Fundamental e Privada como Medio, desculpe a preguiça desse bolsista
+        $projetosComUmAutorPublica = 0;
+        $projetosComDoisAutoresPublica = 0;
+        $projetosComTresAutoresPublica = 0;
+
+        $projetosComUmAutorPrivada = 0;
+        $projetosComDoisAutoresPrivada = 0;
+        $projetosComTresAutoresPrivada = 0;
 
         foreach ($projetos as $projeto) {
             $numAutores = count($projeto->getAutores());
@@ -246,6 +254,35 @@ class RelatorioController extends Controller
                 $projetosComTresAutores++;
             }
         }
+        foreach ($projetos as $projeto) {
+            $numAutores = count($projeto->getAutores());
+
+            if ($projeto->nivel_id == 2) {
+                if ($numAutores == 1) {
+                    $projetosComUmAutorPublica++;
+                }
+
+                if ($numAutores == 2) {
+                    $projetosComDoisAutoresPublica++;
+                }
+
+                if ($numAutores == 3) {
+                    $projetosComTresAutoresPublica++;
+                }
+            } else {
+                if ($numAutores == 1) {
+                    $projetosComUmAutorPrivada++;
+                }
+
+                if ($numAutores == 2) {
+                    $projetosComDoisAutoresPrivada++;
+                }
+
+                if ($numAutores == 3) {
+                    $projetosComTresAutoresPrivada++;
+                }
+            }
+        }
 
         $niveis = Nivel::all();
 
@@ -253,8 +290,17 @@ class RelatorioController extends Controller
             ['Projetos 01 Aluno', $projetosComUmAutor],
             ['Projetos 02 Alunos', $projetosComDoisAutores],
             ['Projetos 03 Alunos', $projetosComTresAutores],
-            ['',],
+            [''],
+            ['Projetos com um Autor - Ensino Fundamental',  $projetosComUmAutorPublica],
+            ['Projetos com um Dois - Ensino Fundamental ',  $projetosComDoisAutoresPublica],
+            ['Projetos com um Três - Ensino Fundamental',  $projetosComTresAutoresPublica],
+            [''],
+            ['Projetos com um Autor - Ensino Médio',  $projetosComUmAutorPrivada],
+            ['Projetos com Dois Autores - Ensino Médio ',  $projetosComDoisAutoresPrivada],
+            ['Projetos com Três Autores - Ensino Médio ',  $projetosComTresAutoresPrivada],
+            [''],
         ];
+        
 
         // numero de orientadores e coorientadores por nivel
         foreach ($niveis as $nivel) {
