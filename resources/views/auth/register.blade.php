@@ -65,15 +65,20 @@
                                 @endif
                             </div>
                             
-                            <div class="input-group ">
+                            <div class="input-group {{ $errors->has('genero') ? ' has-error' : '' }}">
                            
-                            <span class="input-group-addon">
+                            <span class="input-group-addon ">
                                     <i class="material-icons">wc</i>
                                 </span>
                                 <label style="margin-top:20px;">Masculino</label>
-                                 <input type="radio" id="masculino" name="genero" value="M">
+                                 <input type="radio" id="masculino" name="genero" value="M" required>
                                  <label style="margin-left:12px;">Feminino</label>
                                  <input type="radio" id="feminino" name="genero" value="F">
+                                 @if($errors->has('genero'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('genero') }}</strong>
+                                </span>
+                                @endif
                             </div>
                             <div class="input-group{{ $errors->has('cpf') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
@@ -81,7 +86,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">CPF</label>
-                                    <input type="text" OnKeyPress="formatar('###.###.###-##', this)" maxlength="14" class="form-control" pattern="^([0-9][0-9][0-9].)+([0-9][0-9])" name="cpf" value="{{old('cpf')}}">
+                                    <input type="text" OnKeyPress="formatar('###.###.###-##', this)" maxlength="14" class="form-control" pattern="^([0-9][0-9][0-9].)+([0-9][0-9])" name="cpf" value="{{old('cpf')}}" required>
                                 </div>
                                 @if ($errors->has('cpf'))
                                 <span class="help-block">

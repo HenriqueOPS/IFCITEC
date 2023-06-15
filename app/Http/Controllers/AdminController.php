@@ -802,4 +802,7 @@ class AdminController extends Controller
     public function empresas(){
         return view('admin.empresas.home');
     }
+    public function cadastroEmpresa(){
+        return view('admin.empresas.create');
+    }
 }

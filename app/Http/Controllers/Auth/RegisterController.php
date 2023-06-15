@@ -113,7 +113,7 @@ class RegisterController extends Controller
 				'telefone' => 'required|string|min:13|max:13',
 				'cpf' => 'string|unique:pgsql.pessoa|min:11|max:14|validateCpf',
 				'newletter' => 'boolean',
-
+				'genero' => 'required|in:M,F',
 				//COMECO do código que necessitará um refact issue #40
 				//'lattes' => 'required_if:inscricao,avaliacao|string',
 				//'cpf' => 'required_if:inscricao,avaliacao|cpf|unique:pgsql.pessoa',
@@ -147,7 +147,7 @@ class RegisterController extends Controller
 			'newsletter' => isset($data['newsletter']) ? $data['newsletter'] : false,
 			'oculto' => false,
 			'verificado' => false,
-			'genero' => $data['genero'],
+			'genero' => isset($data['genero']) ? $data['genero'] : null,
 		]);
 	}
 

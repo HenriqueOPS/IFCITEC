@@ -163,7 +163,7 @@ class PessoaController extends Controller {
 
         Pessoa::find(Auth::user()->id)->update($data);
 
-        return redirect()->route('editarCadastro');
+        return redirect()->route('home');
     }
 
     // Edita os dados do usuário (SOMENTE PARA ADMINISTRADOR)
@@ -186,7 +186,7 @@ class PessoaController extends Controller {
         $dados = Pessoa::find($id);
         $dados->lgpddata=\Carbon\Carbon::now();
         $dados->save();
-        return redirect('home');
+        return redirect()->route('editarCadastro');
 
     }
   

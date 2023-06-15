@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.appsemnavbar')
 
 @section('css')
     <link href="{{ asset('css/selectize/selectize.css') }}" rel="stylesheet">
@@ -11,7 +11,7 @@
                 <div class="main main-raised">
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
-                            <h2>Editar Cadastro</h2>
+                            <h2>Atualizar Cadastro</h2>
                         </div>
 
                     </div>
@@ -41,6 +41,22 @@
                                         </span>
                                     @endif
                                 </div>
+                                       
+                            <div class="input-group {{ $errors->has('genero') ? ' has-error' : '' }}">
+                           
+                           <span class="input-group-addon ">
+                                   <i class="material-icons">wc</i>
+                               </span>
+                               <label style="margin-top:20px;">Masculino</label>
+                                <input type="radio" id="masculino" name="genero" value="M" required>
+                                <label style="margin-left:12px;">Feminino</label>
+                                <input type="radio" id="feminino" name="genero" value="F">
+                                @if($errors->has('genero'))
+                               <span class="help-block">
+                                   <strong>{{ $errors->first('genero') }}</strong>
+                               </span>
+                               @endif
+                           </div>
 
                                 <div class="input-group{{ $errors->has('cpf') ? ' has-error' : '' }}">
                                     <span class="input-group-addon">

@@ -12,6 +12,12 @@
                 Escolas
             </a>
         </li>
+        <li id="nav-empresas">
+            <a href="{{ route('admin.empresas') }}">
+                <i class="material-icons">factory</i>
+                Empresas
+            </a>
+        </li>
         <li id="nav-niveis">
             <a href="{{ route('administrador.niveis') }}">
                 <i class="material-icons">school</i>
@@ -72,11 +78,6 @@
                 Configurações
             </a>
         </li>
-        <li id="nav-empresas">
-            <a href="{{ route('admin.empresas') }}">
-                <i class="material-icons">factory</i>
-                Empresas
-            </a>
-        </li>
+       
     </ul>
 </div>

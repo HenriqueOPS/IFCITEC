@@ -138,7 +138,8 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::get('/escola/editar/{id}', 'AdminController@editarEscola')->name('escola');
 	Route::post('/escola/edita-escola', 'AdminController@editaEscola')->name('editaEscola');
 	Route::get('/escola/exclui-escola/{id}/{s}', 'AdminController@excluiEscola'); //Ajax
-
+	// Empresa
+	Route::get('/empresa/cadastrar','AdminController@cadastroEmpresa')->name('cadastroempresa');
 	// Nivel
 	Route::get('/nivel/cadastrar', 'AdminController@cadastroNivel')->name('cadastroNivel');
 	Route::post('/nivel/cadastrar', 'AdminController@cadastraNivel')->name('cadastroNivel');
