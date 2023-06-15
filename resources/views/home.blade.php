@@ -18,11 +18,7 @@
 		<div class="page-header">
 			<h3>Olá, {{ Auth::user()->nome }}</h3>
 
-			@if((\App\Edicao::consultaPeriodo('Inscrição')))
-			<div class="alert alert-info">
-				<strong>Estão abertas as Inscrições!</strong> aproveite e inscreva-se agora para a {{ \App\Edicao::getAnoEdicao() }} IFCITEC
-			</div>
-			@endif
+					{!! $aviso !!}
 
 		</div>
 					

@@ -24,10 +24,12 @@ class HomeController extends Controller
         $instagram1 = Mensagem::where('nome', '=', 'PrimeiraColuna' )->get();
         $instagram2 = Mensagem::where('nome', '=', 'SegundaColuna' )->get();
         $instagram3 = Mensagem::where('nome', '=', 'TerceiraColuna' )->get();
+        $aviso = Mensagem::where('nome', '=', 'Aviso(InscricoesAbertas)' )->get();
         return view('home',[
             'instagram1'=>$instagram1[0]->conteudo,
             'instagram2'=>$instagram2[0]->conteudo,
             'instagram3'=>$instagram3[0]->conteudo,
+            'aviso'=>$aviso[0]->conteudo,
         ]);
     }
 }
