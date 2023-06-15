@@ -58,7 +58,7 @@ Route::post('cadastro', [
 
 // Authenticated Routes
 Auth::routes();
-
+Route::get('projeto/create','ProjetoController@create')->name('projeto.create');
 Route::get('/email/presenca/confirmada/{id}', 'ProjetoController@confirmaPresenca')->name('confirmaPresenca');
 
 Route::group(['middleware' => ['IsVerificado']], function () {
