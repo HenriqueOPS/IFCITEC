@@ -25,7 +25,7 @@
                         @if (!Auth::user()->temFuncao("Avaliador") && !Auth::user()->temFuncao("Revisor"))
                         <span class="function">Você não possui nenhum projeto</span><br>
                         @if(false)
-                        <a href="{{route('projeto.create')}}" class="btn btn-success">
+                        <a href="{{route('projeto.novo')}}" class="btn btn-success">
                             Novo Projeto
                         </a>
                         @endif
