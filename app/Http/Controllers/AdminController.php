@@ -437,7 +437,7 @@ class AdminController extends Controller
     public function editarArea($id)
     {
         $niveis = DB::table('nivel')->select('id', 'nivel')->get();
-        $dados = AreaConhecimento::find(3);
+        $dados = AreaConhecimento::find($id);
 
         return view('admin.area.edit', array('niveis' => $niveis), compact('dados'));
     }
