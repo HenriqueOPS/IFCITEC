@@ -262,12 +262,13 @@
                                                         Este autor é concluinte do ensino fundamental, médio ou tecnico?
                                                     </span>
                                                     <input type="hidden" name="autorConcluinte[1]" value=false>
-                                                    @if ($autor[1]->concluinte == true)
-                                                        <input type="checkbox" name="autorConcluinte[1]" value=true
-                                                            checked>
-                                                    @else
-                                                        <input type="checkbox" name="autorConcluinte[1]" value=true>
-                                                    @endif
+                                                    @if (isset($autor[1]))
+    @if ($autor[1]->concluinte == true)
+        <input type="checkbox" name="autorConcluinte[1]" value="true" checked>
+    @else
+        <input type="checkbox" name="autorConcluinte[1]" value="true">
+    @endif
+@endif
                                                 </label>
                                             </div>
                                             @if ($errors->has('autor[]'))
@@ -305,12 +306,13 @@
                                                         Este autor é concluinte do ensino fundamental, médio ou tecnico?
                                                     </span>
                                                     <input type="hidden" name="autorConcluinte[2]" value=false>
-                                                    @if ($autor[2]->concluinte == true)
-                                                        <input type="checkbox" name="autorConcluinte[2]" value=true
-                                                            checked>
-                                                    @else
-                                                        <input type="checkbox" name="autorConcluinte[2]" value=true>
-                                                    @endif
+                                                    @if (isset($autor[2]))
+    @if ($autor[2]->concluinte == true)
+        <input type="checkbox" name="autorConcluinte[2]" value="true" checked>
+    @else
+        <input type="checkbox" name="autorConcluinte[2]" value="true">
+    @endif
+@endif
                                                 </label>
                                             </div>
                                             @if ($errors->has('autor[]'))
