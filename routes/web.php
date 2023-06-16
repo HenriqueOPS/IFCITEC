@@ -220,6 +220,7 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::get('/administrador/escolas', 'AdminController@escolas')->name('administrador.escolas');
 	Route::get('/administrador/niveis', 'AdminController@niveis')->name('administrador.niveis');
 	Route::get('/administrador/areas', 'AdminController@areas')->name('administrador.areas');
+	Route::get('/administrador/areas/excluir/{id}', 'AdminController@excluiArea')->name('administrador.areas.excluir');
 	Route::get('/administrador/tarefas', 'AdminController@tarefas')->name('administrador.tarefas');
 	Route::get('/administrador/usuario', 'AdminController@usuarios')->name('administrador.usuarios');
 	Route::get('/administrador/comissao', 'AdminController@comissao')->name('administrador.comissao');

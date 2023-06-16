@@ -174,9 +174,12 @@ class AdminController extends Controller
 
     public function areas()
     {
-        $areas = AreaConhecimento::all(['id', 'area_conhecimento', 'descricao', 'nivel_id']);
+        $areas = AreaConhecimento::all(['id', 'area_conhecimento', 'descricao', 'nivel_id'])
+        ->groupBy('nivel_id');
+        $medio = $areas[2];
+        $fundamental = $areas[3];
 
-        return view('admin.area.home')->withAreas($areas);
+        return view('admin.area.home')->withMedio($medio)->withFundamental($fundamental);
     }
 
     public function tarefas()

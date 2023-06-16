@@ -33,7 +33,29 @@
                         </thead>
 
                         <tbody id="3">
-                            @foreach ($areas as $id => $area)
+                            @foreach ($medio as $id => $area)
+                                <tr>
+                                    <td class="text-center">{{ $id + 1 }}</td>
+                                    <td>{{ $area['area_conhecimento'] }}</td>
+
+                                    <td>{{ $area->niveis()->first()->nivel }}</td>
+
+                                    <td class="td-actions text-right">
+                                        <a href="{{ route('areaProjetos', $area['id']) }}" target="_blank"><i
+                                                class="material-icons">description</i></a>
+
+                                        <a href="javascript:void(0);" class="modalArea" data-toggle="modal"
+                                            data-target="#modal2" id-area="{{ $area['id'] }}"><i
+                                                class="material-icons blue-icon">remove_red_eye</i></a>
+
+                                        <a href="{{ route('area', $area['id']) }}"><i class="material-icons">edit</i></a>
+
+                                        <a href="{{ route('administrador.areas.excluir', $area['id']) }}" class="exclusaoArea" id-area="{{ $area['id'] }}"><i
+                                                class="material-icons blue-icon">delete</i></a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            @foreach ($fundamental as $id => $area)
                                 <tr>
                                     <td class="text-center">{{ $id + 1 }}</td>
                                     <td>{{ $area['area_conhecimento'] }}</td>
