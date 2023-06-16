@@ -581,27 +581,23 @@
             //var oldPalavra = $('#palavra-select').attr("value");
             $('#palavra-select').selectize({
                 delimiter: ',',
-                persist: false,
-                create: function(input) {
-                    return {
-                        value: input,
-                        text: input.replace(/[^\w\-]+/g, '')
-                    }
-                },
-                onInitialize: function() {
-                    //$('.selectize-control').addClass('form-group');
-                    //for(var chave=0, valor; valor=input[chave], chave<matriz.length; chave++) {
-                    // chave é o índice, valor é o valor
-                    //}
-
-                    $('.selectize-input').addClass('form-control');
-                },
-                render: {
-                    option_create: function(data, escape) {
-                        return '<div class="create option">Inserir <strong>' + escape(data.input) +
-                            '</strong>&hellip;</div>';
-                    }
-                },
+    persist: false,
+    create: function(input) {
+        return {
+            value: input,
+            text: input
+        };
+    },
+    onInitialize: function() {
+        //$('.selectize-control').addClass('form-group');
+        $('.selectize-input').addClass('form-control');
+    },
+    render: {
+        option_create: function(data, escape) {
+            return '<div class="create option">Inserir <strong>' + escape(data.input) +
+                '</strong>&hellip;</div>';
+        }
+    }
             });
 
 
