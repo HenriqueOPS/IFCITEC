@@ -122,11 +122,11 @@ class ProjetoController extends Controller
 		//
 		$projeto->save();
 		//--Inicio Attachment de Palavras Chaves. Tabela: palavra_projeto
-		$palavrasChaves = preg_replace("/[^\w\-,]+/", '', $request->palavras_chaves);
-		$palavrasChaves = explode(",", $palavrasChaves);
-		foreach ($palavrasChaves as $palavra) {
-			$projeto->palavrasChaves()->attach(PalavraChave::create(['palavra' => $palavra]));
-		}
+		$palavrasChaves = $request->palavras_chaves;
+$palavrasChaves = explode(",", $palavrasChaves);
+foreach ($palavrasChaves as $palavra) {
+    $projeto->palavrasChaves()->attach(PalavraChave::create(['palavra' => $palavra]));
+}
 
 		//--Inicio Attachment de Participante.
 		//Tabela: escola_funcao_pessoa_projeto

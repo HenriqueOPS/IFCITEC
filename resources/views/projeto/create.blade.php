@@ -554,27 +554,26 @@
             $('#resumo').keyup(function() {
                 $('#total-char').html($('#resumo').val().length);
             });
-
-            $('#palavras-chaves').selectize({
-                delimiter: ',',
-                persist: false,
-                create: function(input) {
-                    return {
-                        value: input.replace(/[^\w\-]+/g, ''),
-                        text: input.replace(/[^\w\-]+/g, '')
-                    }
-                },
-                onInitialize: function() {
-                    //$('.selectize-control').addClass('form-group');
-                    $('.selectize-input').addClass('form-control');
-                },
-                render: {
-                    option_create: function(data, escape) {
-                        return '<div class="create option">Inserir <strong>' + escape(data.input) +
-                            '</strong>&hellip;</div>';
-                    }
-                },
-            });
+$('#palavras-chaves').selectize({
+    delimiter: ',',
+    persist: false,
+    create: function(input) {
+        return {
+            value: input,
+            text: input
+        };
+    },
+    onInitialize: function() {
+        //$('.selectize-control').addClass('form-group');
+        $('.selectize-input').addClass('form-control');
+    },
+    render: {
+        option_create: function(data, escape) {
+            return '<div class="create option">Inserir <strong>' + escape(data.input) +
+                '</strong>&hellip;</div>';
+        }
+    }
+});
 
             var oldFuncao = $('#funcao-select').attr("value");
             $('#funcao-select').selectize({
