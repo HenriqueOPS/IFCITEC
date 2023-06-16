@@ -231,21 +231,17 @@
                                         </span>
                                         <div class="form-group">
                                             <label class="control-label">Autor 1</label>
-                                            <select id="pessoa-1-select" name="autor[]"
-                                                value="{{ old('autor')[0] ? old('autor')[0] : '' }}" required>
-                                                <option></option>
-                                                @foreach ($pessoas as $pessoa)
-                                                    @if (old('autor')[0] == $pessoa->id)
-                                                        <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }}
-                                                            < {{ $pessoa->email }}>
-                                                        </option>
-                                                    @else
-                                                        <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} <
-                                                                {{ $pessoa->email }}>
-                                                        </option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
+                                            <select id="pessoa-1-select" name="autor[]" value="{{ old('autor.0', '') }}" required>
+    <option></option>
+    @foreach ($pessoas as $pessoa)
+        @if (old('autor.0') == $pessoa->id)
+            <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+        @else
+            <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+        @endif
+    @endforeach
+</select>
+
                                             <div class="checkbox">
                                                 <label>
                                                     <span style="margin-right: 5pt;">
@@ -277,21 +273,17 @@
 
                                         <div class="form-group">
                                             <label class="control-label">Autor 2</label>
-                                            <select id="pessoa-2-select" name="autor[]"
-                                                value="{{ old('autor')[1] ? old('autor')[1] : '' }}">
-                                                <option></option>
-                                                @foreach ($pessoas as $pessoa)
-                                                    @if (old('autor')[1] == $pessoa->id)
-                                                        <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }}
-                                                            < {{ $pessoa->email }}>
-                                                        </option>
-                                                    @else
-                                                        <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} <
-                                                                {{ $pessoa->email }}>
-                                                        </option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
+                                            <select id="pessoa-2-select" name="autor[]" value="{{ old('autor.1', '') }}">
+    <option></option>
+    @foreach ($pessoas as $pessoa)
+        @if (old('autor.1') == $pessoa->id)
+            <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+        @else
+            <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+        @endif
+    @endforeach
+</select>
+
                                             <div class="checkbox">
                                                 <label>
                                                     <span style="margin-right: 5pt;">
@@ -321,21 +313,17 @@
                                         </span>
                                         <div class="form-group">
                                             <label class="control-label">Autor 3</label>
-                                            <select id="pessoa-3-select" name="autor[]"
-                                                value="{{ old('autor]')[2] ? old('autor')[0] : '' }}">
-                                                <option></option>
-                                                @foreach ($pessoas as $pessoa)
-                                                    @if (old('autor')[0] == $pessoa->id)
-                                                        <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }}
-                                                            < {{ $pessoa->email }}>
-                                                        </option>
-                                                    @else
-                                                        <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} <
-                                                                {{ $pessoa->email }}>
-                                                        </option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
+                                            <select id="pessoa-3-select" name="autor[]" value="{{ old('autor.2', '') }}">
+    <option></option>
+    @foreach ($pessoas as $pessoa)
+        @if (old('autor.2') == $pessoa->id)
+            <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+        @else
+            <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+        @endif
+    @endforeach
+</select>
+
                                             <div class="checkbox">
                                                 <label>
                                                     <span style="margin-right: 5pt;">
@@ -414,21 +402,17 @@
                                         </span>
                                         <div class="form-group">
                                             <label class="control-label">Coorientador 1</label>
-                                            <select id="pessoa-5-select" name="coorientador[]"
-                                                value="{{ old('coorientador')[0] ? old('coorientador')[0] : '' }}">
-                                                <option></option>
-                                                @foreach ($pessoas as $pessoa)
-                                                    @if (old('coorientador')[0] == $pessoa->id)
-                                                        <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }}
-                                                            < {{ $pessoa->email }}>
-                                                        </option>
-                                                    @else
-                                                        <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} <
-                                                                {{ $pessoa->email }}>
-                                                        </option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
+                                            <select id="pessoa-5-select" name="coorientador[]" value="{{ old('coorientador.0', '') }}">
+    <option></option>
+    @foreach ($pessoas as $pessoa)
+        @if (old('coorientador.0') == $pessoa->id)
+            <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+        @else
+            <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+        @endif
+    @endforeach
+</select>
+
                                         </div>
                                         @if ($errors->has('coorientador[]'))
                                             <span class="help-block">
@@ -450,21 +434,17 @@
                                         </span>
                                         <div class="form-group">
                                             <label class="control-label">Coorientador 2</label>
-                                            <select id="pessoa-6-select" name="coorientador[]"
-                                                value="{{ old('coorientador')[1] ? old('coorientador')[1] : '' }}">
-                                                <option></option>
-                                                @foreach ($pessoas as $pessoa)
-                                                    @if (old('coorientador')[1] == $pessoa->id)
-                                                        <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }}
-                                                            < {{ $pessoa->email }}>
-                                                        </option>
-                                                    @else
-                                                        <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} <
-                                                                {{ $pessoa->email }}>
-                                                        </option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
+                                            <select id="pessoa-6-select" name="coorientador[]" value="{{ old('coorientador.1', '') }}">
+    <option></option>
+    @foreach ($pessoas as $pessoa)
+        @if (old('coorientador.1') == $pessoa->id)
+            <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+        @else
+            <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+        @endif
+    @endforeach
+</select>
+
                                         </div>
                                         @if ($errors->has('coorientador[]'))
                                             <span class="help-block">
