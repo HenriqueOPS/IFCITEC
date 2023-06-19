@@ -42,6 +42,7 @@
            
         </div>
     </div>
+</div>
 @endsection
 
 @section('css')
@@ -52,7 +53,7 @@
 
 
 @section('js')
-  <script>
-   
-    </script>
+<script>
+	document.getElementById('nav-configuracoes').classList.add('active');
+</script>
 @endsection

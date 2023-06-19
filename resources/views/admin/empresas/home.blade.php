@@ -17,7 +17,7 @@
             <thead id="1">
                     <div id="1">
                         <div class="col-md-3">
-                            <a href="{{ route('cadastroempresa') }}" class="btn btn-primary btn-round">
+                            <a href="{{ route('admin.empresas.nova') }}" class="btn btn-primary btn-round">
                                 <i class="material-icons">add</i> Adicionar Empresa
                             </a>
                         </div>
@@ -32,6 +32,18 @@
                     </thead>
 
                     <tbody id="1">
+                    @foreach($empresas as $i => $empresa)
+                    <tr>
+                        <td class="text-center">{{ $i+1 }}</td>
+                        <td>{{ $empresa['nome_fantasia'] }}</td>
+                        <td>{{ $empresa['email'] }}</td>
+                        <td>{{ $empresa['telefone'] }}</td>
+
+                        <td class="td-actions text-right">
+                      
+
+                    </tr>
+                @endforeach
 
                    
                     </tbody>
@@ -50,8 +62,9 @@
 @endsection
 
 
+
 @section('js')
-  <script>
-   
-    </script>
+<script>
+	document.getElementById('nav-empresas').classList.add('active');
+</script>
 @endsection

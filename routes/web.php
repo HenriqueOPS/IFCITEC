@@ -139,7 +139,7 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::post('/escola/edita-escola', 'AdminController@editaEscola')->name('editaEscola');
 	Route::get('/escola/exclui-escola/{id}/{s}', 'AdminController@excluiEscola'); //Ajax
 	// Empresa
-	Route::get('/empresa/cadastrar','AdminController@cadastroEmpresa')->name('cadastroempresa');
+
 	// Nivel
 	Route::get('/nivel/cadastrar', 'AdminController@cadastroNivel')->name('cadastroNivel');
 	Route::post('/nivel/cadastrar', 'AdminController@cadastraNivel')->name('cadastroNivel');
@@ -209,12 +209,14 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::post('/administrador/upload','AdminController@background')->name('admin.background');
 	Route::get('/administrador/configuracoes','AdminController@configuracoes')->name('admin.configuracoes');
 	Route::get('/administrador/empresas','AdminController@empresas')->name('admin.empresas');
+	Route::get('/administrador/empresas/nova','AdminController@NovaEmpresa')->name('admin.empresas.nova');
+	Route::post('/administrador/empresas/cadastrar','AdminController@cadastroEmpresa')->name('admin.empresas.cadastrar');
 	Route::get('/projetos/homologar-projetos', 'ProjetoController@homologarProjetos')->name('homologar-projetos');
 	Route::post('/projetos/homologa-projetos', 'ProjetoController@homologaProjetos')->name('homologa-projetos');
 	Route::get('/projeto/nao-compareceu/{id}/{s}', 'ProjetoController@projetoNaoCompareceu'); //
 	Route::get('/projeto/compareceu/avaliado/{id}/{s}', 'ProjetoController@projetoCompareceuAvaliado');
 	Route::get('/projeto/compareceu/nao-avaliado/{id}/{s}', 'ProjetoController@projetoCompareceuNaoAvaliado');
-
+	Route::get('/empresa/dados-empresa/{id}', 'AdminController@dadosEmpresa'); 
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
 	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');
 	Route::get('/administrador/escolas', 'AdminController@escolas')->name('administrador.escolas');

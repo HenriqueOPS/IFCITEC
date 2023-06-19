@@ -10,7 +10,7 @@
                             <h2>Cadastro de Empresa</h2>
                         </div>
                     </div>
-                    <form method="post" action="{{ route('cadastroEscola') }}">
+                    <form method="post" action="{{ route('admin.empresas.cadastrar') }}">
 
                         {{ csrf_field() }}
 
@@ -31,8 +31,8 @@
                                         <i class="material-icons">account_balance</i>
                                     </span>
                                     <div class="form-group label-floating">
-                                        <label class="control-label">Nome Curto</label>
-                                        <input type="text" class="form-control" name="nome_curto" required>
+                                        <label class="control-label">Nome Fantasia</label>
+                                        <input type="text" class="form-control" name="nome_fantasia" required>
                                     </div>
                                 </div>
 
@@ -108,20 +108,7 @@
                                         <input type="text" class="form-control" name="numero" required>
                                     </div>
                                 </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">account_balance</i>
-                                    </span>
-                                    <label class="school-type-label">Publica</label>
-                                    <input type="checkbox" class="school-type" name="publica" value=true checked>
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">account_balance</i>
-                                    </span>
-                                    <label class="school-type-label">Privada</label>
-                                    <input type="checkbox" class="school-type" name="publica" value=false>
-                                </div>
+                              
                             </div>
                         </div>
 

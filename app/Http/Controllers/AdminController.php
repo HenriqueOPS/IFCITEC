@@ -8,6 +8,7 @@ use App\Endereco;
 use App\Enums\EnumFuncaoPessoa;
 use App\Enums\EnumSituacaoProjeto;
 use App\Escola;
+use App\Empresa;
 use App\Funcao;
 use App\Http\Requests\AreaRequest;
 use App\Http\Requests\NivelRequest;
@@ -803,9 +804,45 @@ class AdminController extends Controller
         return redirect()->route('admin.configuracoes');
     }
     public function empresas(){
-        return view('admin.empresas.home');
+        $empresas = Empresa::orderBy('nome_fantasia')->get();
+
+        return view('admin.empresas.home', ['empresas' => $empresas]);
     }
-    public function cadastroEmpresa(){
+    public function cadastroEmpresa(Request $req){
+        $data = $req->all();
+        $idEndereco = Endereco::create([
+            'cep' => $data['cep'],
+            'endereco' => $data['endereco'],
+            'bairro' => $data['bairro'],
+            'municipio' => $data['municipio'],
+            'uf' => $data['uf'],
+            'numero' => $data['numero'],
+        ]);
+
+        Empresa::create([
+            'nome_completo' => $data['nome_completo'],
+            'nome_fantasia' => $data['nome_fantasia'],
+            'email' => $data['email'],
+            'telefone' => $data['telefone'],
+            'endereco_id' => $idEndereco['original']['id'],
+        ]);
+
+        return redirect()->route('admin.empresas');
+      
+    }
+    public function NovaEmpresa(){
         return view('admin.empresas.create');
     }
+
+    public function dadosEmpresa($id)
+    { //Ajax
+        $dados = Empresa::find(5);
+
+        if ($dados['endereco_id']) {
+            $data = Endereco::find($dados['endereco_id']);
+        }
+
+        return compact('dados', 'data');
+    }
+
 }

@@ -22,62 +22,13 @@ class Empresa extends Model {
      *
      * @var array
      */
+    public $timestamps = false;
     protected $fillable = [
-        'nome_completo', 'nome_curto', 'email', 'telefone', 'endereco_id',
+        'nome_completo', 'nome_fantasia', 'email', 'telefone', 'endereco_id',
         'endereco', 'municipio', 'cep', 'uf', 'bairro', 'numero', 
     ];
 
-    public function getPessoas() {
-        //REFACT
-        //NOTE: Infelizmente o laravel não possui suporte para a cláusula DISTINCT ON.
-        //Futuramente uma issue será aberta na tentativa de solução do problema
-        $query = DB::table('pessoa')->select('pessoa.*')
-                ->join('escola_funcao_pessoa_projeto', 'escola_funcao_pessoa_projeto.pessoa_id', '=', 'pessoa.id')
-                ->leftJoin('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
-                ->where('escola.id', $this->id)
-                ->distinct()
-                ->orderBy('pessoa.id');
 
-        $eloquent = new Builder($query);
-
-        $eloquent->setModel(new Pessoa);
-
-        return $eloquent->get();
-
-        //return $this->belongsToMany('App\Pessoa', 'escola_funcao_pessoa_projeto')->withPivot('projeto_id', 'funcao_id');
-    }
-
-    public static function getAllByTipo() {
-        return DB::table('escola')
-            ->join('endereco', 'endereco.id', '=', 'escola.endereco_id')
-            ->orderBy('publica')
-            ->orderBy('nome_completo')
-            ->get();
-    }
-
-    public function getProjetos() {
-         //REFACT
-        //NOTE: Infelizmente o laravel não possui suporte para a cláusula DISTINCT ON.
-        //Futuramente uma issue será aberta na tentativa de solução do problema
-        $query = DB::table('projeto')->select('projeto.*')
-                ->join('escola_funcao_pessoa_projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-                ->leftJoin('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
-                ->where('escola.id', $this->id)
-                ->distinct()
-                ->orderBy('projeto.id');
-
-        $eloquent = new Builder($query);
-        $eloquent->setModel(new Projeto);
-
-        return $eloquent->get();
-    }
-
-    public function projetos(){
-         return $this->belongsToMany('App\Projeto', 'escola_funcao_pessoa_projeto');
-    }
-
-    public function enderecos() {
-        return $this->hasOne('App\Endereco', 'id', 'endereco_id');
-    }
+ 
 
 }
