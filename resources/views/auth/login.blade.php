@@ -27,7 +27,7 @@
     <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
 </head>
-<body class="masthead" style="background-image: url({{ asset('img/teladelogin.png') }});">
+<body class="masthead" style="background-image: url(https://inscricao-ifcitec.canoas.ifrs.edu.br/img/teladelogin.png);">
     <style>
         .card-signup {
             margin-top:100px;   
@@ -63,7 +63,7 @@
 
                     <div class="content box-logo text-center">
                         <a class="btn btn-simple btn-just-icon">
-                            <img src="{{ asset('img/logonormal.png') }}" title="IFCITEC" height="90" />
+                            <img src="https://inscricao-ifcitec.canoas.ifrs.edu.br/img/logonormal.png" title="IFCITEC" height="90" />
                         </a>
                     </div>
 
