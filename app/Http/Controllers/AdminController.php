@@ -21,6 +21,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\JsonResponse;
+
 
 class AdminController extends Controller
 {
@@ -804,7 +806,7 @@ class AdminController extends Controller
         return redirect()->route('admin.configuracoes');
     }
     public function empresas(){
-        $empresas = Empresa::orderBy('nome_fantasia')->get();
+        $empresas = Empresa::orderBy('nome_curto')->get();
 
         return view('admin.empresas.home', ['empresas' => $empresas]);
     }
@@ -821,7 +823,7 @@ class AdminController extends Controller
 
         Empresa::create([
             'nome_completo' => $data['nome_completo'],
-            'nome_fantasia' => $data['nome_fantasia'],
+            'nome_curto' => $data['nome_curto'],
             'email' => $data['email'],
             'telefone' => $data['telefone'],
             'endereco_id' => $idEndereco['original']['id'],
@@ -834,15 +836,17 @@ class AdminController extends Controller
         return view('admin.empresas.create');
     }
 
-    public function dadosEmpresa($id)
-    { //Ajax
-        $dados = Empresa::find(5);
-
-        if ($dados['endereco_id']) {
-            $data = Endereco::find($dados['endereco_id']);
+    public function dadosEmpresa(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $dados = Empresa::find($id);
+            $data = Endereco::find($dados->endereco_id);
+    
+            return response()->json(['dados' => $dados, 'data' => $data]);
         }
-
-        return compact('dados', 'data');
+    
+        return abort(404);
     }
+
 
 }

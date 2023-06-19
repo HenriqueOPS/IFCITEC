@@ -32,7 +32,7 @@
                                     </span>
                                     <div class="form-group label-floating">
                                         <label class="control-label">Nome Fantasia</label>
-                                        <input type="text" class="form-control" name="nome_fantasia" required>
+                                        <input type="text" class="form-control" name="nome_curto" required>
                                     </div>
                                 </div>
 
