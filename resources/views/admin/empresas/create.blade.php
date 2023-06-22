@@ -41,7 +41,7 @@
                                         <i class="material-icons">mail</i>
                                     </span>
                                     <div class="form-group label-floating">
-                                        <label class="control-label">E-mail da Escola</label>
+                                        <label class="control-label">E-mail da Empresa</label>
                                         <input type="text" class="form-control" name="email" required>
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@
                                         <i class="material-icons">local_phone</i>
                                     </span>
                                     <div class="form-group label-floating">
-                                        <label class="control-label">Telefone da Escola</label>
+                                        <label class="control-label">Telefone da Empresa</label>
                                         <input type="text" class="form-control" name="telefone" required>
                                     </div>
                                 </div>

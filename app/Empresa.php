@@ -24,7 +24,7 @@ class Empresa extends Model {
      */
     public $timestamps = false;
     protected $fillable = [
-        'nome_completo', 'nome_fantasia', 'email', 'telefone', 'endereco_id',
+        'nome_completo', 'nome_curto', 'email', 'telefone', 'endereco_id',
         'endereco', 'municipio', 'cep', 'uf', 'bairro', 'numero', 
     ];
 
