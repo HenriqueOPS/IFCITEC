@@ -69,6 +69,7 @@ Route::get('/relatorio/areas/{edicao}', 'RelatorioController@areas')->name('rela
 Route::get('/relatorio/csv/escolas', 'RelatorioController@csvEtiquetas')->name('csvEtiquetas');
 Route::get('/relatorio/edicoes', 'RelatorioController@edicoes')->name('relatorioEdicao');
 Route::get('/relatorio/escolas', 'RelatorioController@escolas')->name('relatorioEscola');
+Route::get('/relatorio/empresa', 'RelatorioController@empresa')->name('relatorioEmpresa');
 Route::get('/relatorio/niveis/{edicao}', 'RelatorioController@niveis')->name('relatorioNivel');
 Route::get('escolasContato', 'RelatorioController@csvEmailNomeEscolas')->name('csvEmailNomeEscolas');
 Route::get('/relatorio/escolas/tipo-escola', 'RelatorioController@escolaPorTipo')->name('relatorioEscolaPorTipo');

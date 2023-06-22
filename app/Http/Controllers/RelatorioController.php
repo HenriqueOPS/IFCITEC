@@ -7,6 +7,7 @@ use App\Edicao;
 use App\Enums\EnumFuncaoPessoa;
 use App\Enums\EnumSituacaoProjeto;
 use App\Escola;
+use App\Empresa;
 use App\Nivel;
 use App\Pessoa;
 use App\Projeto;
@@ -1182,9 +1183,60 @@ class RelatorioController extends Controller
             ->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
             ->orderBy('escola.nome_curto')
             ->get();
+            $filename = "csvEscola.csv";
+            $fileHeaders = [];
+    
+            $fileRows = [];
+            foreach ($escolas as $row) {
+                $rowData = [
+                    utf8_decode($row->nome_completo),
+                    utf8_decode($row->nome_curto),
+                    utf8_decode($row->email),
+                    utf8_decode($row->telefone),
+                    utf8_decode($row->endereco),
+                    utf8_decode($row->bairro),
+                    utf8_decode($row->municipio),
+                    utf8_decode($row->uf),
+                    utf8_decode($row->numero), 
+                ];
+                if($row->publica){
+                   array_push($rowData,utf8_decode("publica"));
+                }else(
+                    array_push($rowData,utf8_decode("privada"))
+                );
+                array_push($fileRows, $rowData);
+            }
+    
+            return $this->returnsCSVStream($filename, $fileHeaders, $fileRows);
 
-        return PDF::loadView('relatorios.gerais.escolas', ['escolas' => $escolas])
-            ->download('escolas.pdf');
+    }
+    public function empresa()
+    {
+        $escolas = Empresa::select('*')
+            ->join('endereco', 'empresa.endereco_id', '=', 'endereco.id')
+            ->orderBy('empresa.nome_curto')
+            ->get();
+            $filename = "csvEmpresa.csv";
+            $fileHeaders = [];
+    
+            $fileRows = [];
+            foreach ($escolas as $row) {
+                $rowData = [
+                    utf8_decode($row->nome_completo),
+                    utf8_decode($row->nome_curto),
+                    utf8_decode($row->email),
+                    utf8_decode($row->telefone),
+                    utf8_decode($row->endereco),
+                    utf8_decode($row->bairro),
+                    utf8_decode($row->municipio),
+                    utf8_decode($row->uf),
+                    utf8_decode($row->numero), 
+                ];
+                array_push($fileRows, $rowData);
+            }
+    
+            return $this->returnsCSVStream($filename, $fileHeaders, $fileRows);
+
     }
 
     public function autores($edicao)

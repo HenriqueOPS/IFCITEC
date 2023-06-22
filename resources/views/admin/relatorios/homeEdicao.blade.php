@@ -304,7 +304,7 @@
                                 <td>Relatório de Escolas</td>
                                 <td class="text-right">
                                     <a href="{{ route('relatorioEscola') }}" target="_blank"><i
-                                            class="material-icons">visibility</i></a>
+                                            class="material-icons">arrow_downward</i></a>
                                 </td>
                             </tr>
                             <tr>
@@ -322,6 +322,14 @@
                                 <td>Relatorio em CSV com nome e email das escolas</td>
                                 <td class="text-right">
                                     <a href="{{ route('csvEmailNomeEscolas') }}" target="_blank"><i
+                                            class="material-icons">arrow_downward</i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>Relatório de Empresas</td>
+                                <td class="text-right">
+                                    <a href="{{ route('relatorioEmpresa') }}" target="_blank"><i
                                             class="material-icons">arrow_downward</i></a>
                                 </td>
                             </tr>
