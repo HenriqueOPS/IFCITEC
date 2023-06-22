@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Mensagem;
+use App\Edicao;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Mail\MailBase;
+use Illuminate\Support\Facades\Mail;
 
 class GerenMsgController extends Controller
 {
@@ -43,4 +46,21 @@ class GerenMsgController extends Controller
     {
         Mensagem::where('id', '=', $id)->delete();
     }
+    public function enviar(Request $req)
+{
+    $conteudo = base64_decode($req->input('conteudo'));
+    $funcoesEscolhidas = $req->input('funcoes'); // Obter as funções escolhidas do request
+
+    $teste = DB::table('funcao_pessoa')
+    ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
+    ->whereIn('funcao.funcao',   $funcoesEscolhidas)
+    ->join('pessoa','funcao_pessoa.pessoa_id','=','pessoa.id')
+    ->get();
+
+    foreach ($teste as $item) {
+        $email = new MailBase($conteudo);
+        Mail::to($item->email)
+            ->send($email);
+    }
+}
 }

@@ -242,6 +242,7 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::get('/administrador/mensagens', 'GerenMsgController@index')->name('gerenciadorMensagens');
 	Route::get('/administrador/mensagens/get/{tipo}', 'GerenMsgController@fetchByType')->name('mensagens.fetchByType'); // Ajax
 	Route::post('/mensagens/salvar', 'GerenMsgController@save')->name('mensagens.save'); // Ajax
+	Route::post('/mensagens/enviar','GerenMsgController@enviar')->name('mensagens.enviar');
 	Route::post('/administrador/mensagens/create/{nome}/{tipo}', 'GerenMsgController@create')->name('mensagens.create'); // Ajax
 	Route::post('/administrador/mensagens/deletar/{id}', 'GerenMsgController@delete')->name('mensagens.delete'); // Ajax
 

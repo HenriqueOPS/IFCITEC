@@ -177,7 +177,7 @@
 
     <section>
         <div class="main-box">
-            <div class="menu-mensagens container">
+            <div class="menu-mensagens container"  >
                 <div class="controles">
                     <div id="add-btn" class="material-icons" style="cursor: pointer;">add</div>
                     <div class="nova-mensagem" id="nova-mensagem" style="display: none;">
@@ -193,6 +193,50 @@
                 <div class="card-body">
                     <div id="summernote"></div>
                     <button id="summernote-save" class="btn btn-danger btn-block">Salvar</button>
+                </div>
+            </div>
+            <div class="container"  id="botao-envio" style="display: none;">
+                <div class="card-body">
+                
+                </div>
+                <div>
+                    <input type="checkbox" id="usuario" name="funcoes[]" value="Usuário">
+                    <label for="usuario">Usuário</label>
+                    </div>
+                    <div>
+                    <input type="checkbox" id="organizador" name="funcoes[]" value="Organizador">
+                    <label for="organizador">Organizador</label>
+                    </div>
+                    <div>
+                    <input type="checkbox" id="avaliador" name="funcoes[]" value="Avaliador">
+                    <label for="avaliador">Avaliador</label>
+                    </div>
+                    <div>
+                    <input type="checkbox" id="homologador" name="funcoes[]" value="Homologador">
+                    <label for="homologador">Homologador</label>
+                    </div>
+                    <div>
+                    <input type="checkbox" id="autor" name="funcoes[]" value="Autor">
+                    <label for="autor">Autor</label>
+                    </div>
+                    <div>
+                    <input type="checkbox" id="coorientador" name="funcoes[]" value="Coorientador">
+                    <label for="coorientador">Coorientador</label>
+                    </div>
+                    <div>
+                    <input type="checkbox" id="orientador" name="funcoes[]" value="Orientador">
+                    <label for="orientador">Orientador</label>
+                    </div>
+                    <div>
+                    <input type="checkbox" id="administrador" name="funcoes[]" value="Administrador">
+                    <label for="administrador">Administrador</label>
+                    </div>
+                    <div>
+                    <input type="checkbox" id="voluntario" name="funcoes[]" value="Voluntário">
+                    <label for="voluntario">Voluntário</label>
+                    </div>
+                <div>
+                    <button class="btn btn-danger btn-block" >Enviar</button>
                 </div>
             </div>
         </div>
@@ -232,6 +276,11 @@
             } else {
                 tipoAtual = e.target.dataset.nome;
                 e.target.parentNode.classList.add('tipo-selected');
+            }
+            if (tipoAtual === 'email') {
+                document.getElementById('botao-envio').style.display = 'block';
+            } else {
+                document.getElementById('botao-envio').style.display = 'none';
             }
 
 
@@ -290,6 +339,7 @@
             $('#cancel-add-btn').click(() => {
                 document.getElementById('nova-mensagem').style.display = 'none';
             });
+      
 
             $('#summernote-save').click((e) => {
                 if (mensagemAtual === null)
@@ -316,8 +366,37 @@
 
             $('#summernote').summernote({
                 height: 450,
+                dialogsInBody: true,
             });
+            $('#botao-envio').click((e) => {
+    if (mensagemAtual === null)
+        return;
 
+    let url = "{{ route('mensagens.enviar')}}";
+
+    // Obter os valores selecionados dos checkboxes
+    let funcoesSelecionadas = $('input[name="funcoes[]"]:checked').map(function () {
+        return $(this).val();
+    }).get();
+
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: {
+            _token: $('meta[name=csrf-token]').attr('content'),
+            id: mensagemAtual.id,
+            conteudo: utf8_to_b64($('#summernote').summernote('code')),
+            funcoes: funcoesSelecionadas // Enviar os valores selecionados dos checkboxes
+        },
+        dataType: 'json',
+        error: data => {
+            const dd = document.createElement('div');
+            document.getElementById('app').appendChild(dd);
+            dd.innerHTML = data.responseText;
+        }
+    });
+});
+            
             fetchMensagens();
         });
 
