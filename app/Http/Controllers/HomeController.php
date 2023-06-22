@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Mensagem;
 class HomeController extends Controller
@@ -21,6 +21,7 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        if(Auth::user()->lgpddata==null ||Auth::user()->genero!=null ){
         $instagram1 = Mensagem::where('nome', '=', 'PrimeiraColuna' )->get();
         $instagram2 = Mensagem::where('nome', '=', 'SegundaColuna' )->get();
         $instagram3 = Mensagem::where('nome', '=', 'TerceiraColuna' )->get();
@@ -31,5 +32,8 @@ class HomeController extends Controller
             'instagram3'=>$instagram3[0]->conteudo,
             'aviso'=>$aviso[0]->conteudo,
         ]);
+    }else if (Auth::user()->genero==null){
+        return redirect()->route('editarCadastro');
+    }
     }
 }
