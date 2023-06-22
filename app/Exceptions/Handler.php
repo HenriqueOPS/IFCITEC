@@ -48,49 +48,13 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception) {
-		try {
-			return parent::render($request, $exception);
-
-			if ($exception instanceof AuthenticationException) {
-				return parent::render($request, $exception);
-			}
-
-			//Log::error("Excessão gerada. Informações detalhadas: " . $exception->getTraceAsString());
-			$erro = Erro::where('fingerprint', '=', $request->fingerprint())->first();
-
-			if ($erro === null) {
-				$erroEloquent = new Erro();
-				$erroEloquent->fill([
-					'descricao_erro' => $exception->getMessage(),
-					'fingerprint' => $request->fingerprint()
-				]);
-				$erroEloquent->save();
-
-				return view(
-					'errors.custom',
-					[
-						'error' => $exception->getMessage(),
-						'erro_id' => $erroEloquent->getId(),
-						'fingerprint' => $request->fingerprint()
-					]
-				);
-			}
-
-			$erro->incrementarDescricaoErro("\n" . $exception->getMessage());
-			$erro->save();
-
-        	return view(
-				'errors.custom',
-				[
-					"error" => $exception->getMessage(),
-					"erro_id" => $erro->getId(),
-					"fingerprint" => $erro->getFingerprint()
-				]
-			);
-		} catch(Exception $e){
-			return parent::render($request, $exception);
-		}
+    public function render($request, Exception $exception)
+    {
+        if ($exception instanceof TokenMismatchException) {
+            return redirect()->route('login');
+        }
+    
+        return redirect()->route('login');
     }
 
     /**
