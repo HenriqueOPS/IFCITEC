@@ -9,6 +9,8 @@
 
 		@include('partials.admin.navbar')
 	</div>
+    <br>
+    <br>
     <div class="container">
         <div class="row">
             <div class="col-md-12 main main-raised" >
