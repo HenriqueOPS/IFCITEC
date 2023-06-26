@@ -22,11 +22,10 @@
 		-webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
 		color-adjust: exact !important;                 /*Firefox*/
 	}
-
 	body{font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 		margin-left: 4.7mm;
 		margin-right: 4.7mm;
- 
+		margin-top: 4.7mm;
 	}
     
 	.cracha{

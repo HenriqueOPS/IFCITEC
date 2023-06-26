@@ -23,8 +23,11 @@
 		color-adjust: exact !important;                 /*Firefox*/
 	}
 
-	body{font-family: "Roboto", "Helvetica", "Arial", sans-serif;}
-
+	body{font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+		margin-left: 4.7mm;
+		margin-right: 4.7mm;
+		margin-top: 4.7mm;
+	}
 	.cracha{
 		width: calc(99mm - 2pt);
 		height: 140mm;

@@ -26,7 +26,7 @@
 	body{font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 		margin-left: 4.7mm;
 		margin-right: 4.7mm;
- 
+
 	}
     
 	.cracha{

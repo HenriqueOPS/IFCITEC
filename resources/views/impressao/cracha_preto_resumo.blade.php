@@ -24,14 +24,14 @@
 	}
 
 	body{font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-		margin-left: 4.7mm;
-		margin-right: 4.7mm;
- 
+		margin-left: 0.47cm;
+		margin-right: 0.47cm;
+		margin-top: 0.9cm;
 	}
     
 	.cracha{
-		width: calc(99mm);
-		height: 55mm;
+		width: calc(9.90cm);
+		height: 5.58cm;
 		display: inline-block;
 		padding:0;
 		margin: 0;
@@ -40,7 +40,7 @@
 		
 	}
 
-	.cracha:nth-child(10n){page-break-before: always; }
+	.cracha:nth-child(10n){page-break-before: always;margin-top: 0.9cm; }
 
 	.cracha .content{
 		width: 100%;
