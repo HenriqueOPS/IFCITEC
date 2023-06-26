@@ -5,6 +5,8 @@
     <link href="{{ asset('css/datepicker/bootstrap-datepicker.standdalone.css') }}" rel="stylesheet">
 @endsection
 @section('content')
+<br>
+<br>
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2 col-sm-12">
