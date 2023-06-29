@@ -195,7 +195,7 @@
                     <button id="summernote-save" class="btn btn-danger btn-block">Salvar</button>
                 </div>
             </div>
-            <div class="container"  id="botao-envio" style="display: none;">
+            <div class="container"  id="container-envio" style="display: none;">
                 <div class="card-body">
                 
                 </div>
@@ -236,7 +236,7 @@
                     <label for="voluntario">Voluntário</label>
                     </div>
                 <div>
-                    <button class="btn btn-danger btn-block" id="botao-envio">Enviar</button>
+                    <button class="btn btn-danger btn-block" id="botao-envio" >Enviar</button>
                 </div>
             </div>
         </div>
@@ -278,9 +278,9 @@
                 e.target.parentNode.classList.add('tipo-selected');
             }
             if (tipoAtual === 'email') {
-                document.getElementById('botao-envio').style.display = 'block';
+                document.getElementById('container-envio').style.display = 'block';
             } else {
-                document.getElementById('botao-envio').style.display = 'none';
+                document.getElementById('container-envio').style.display = 'none';
             }
 
 
