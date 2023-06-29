@@ -45,12 +45,6 @@
                                 </a>
                             </li>
                             <li>
-                                <a id="3" role="tab" class="tab" data-toggle="tab">
-                                    <i class="material-icons">fastfood</i>
-                                    Lanche
-                                </a>
-                            </li>
-                            <li>
                                 <a id="4" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">description</i>
                                     Homologação
@@ -193,15 +187,10 @@
                                 </td>
 
                             </tr>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <h4><strong> Crachá: 14mmX4,5mm </strong></h4>
-                                </td>
-                            </tr>
+                            
                             <tr>
                                 <td>8</td>
-                                <td>Crachás Autores Resumo</td>
+                                <td>Crachás Autores <b>Resumo</b></td>
                                 <td class="text-right">
                                     <a href="{{ route('generateCrachasAutoresResumo', $edicao) }}" target="_blank"><i
                                             class="material-icons">visibility</i></a>
@@ -209,7 +198,7 @@
                             </tr>
                             <tr>
                                 <td>9</td>
-                                <td>Crachás Coorientadores Resumo</td>
+                                <td>Crachás Coorientadores <b>Resumo</b></td>
                                 <td class="text-right">
                                     <a href="{{ route('generateCrachasCoorientadoresResumo', $edicao) }}"
                                         target="_blank"><i class="material-icons">visibility</i></a>
@@ -217,7 +206,7 @@
                             </tr>
                             <tr>
                                 <td>10</td>
-                                <td>Crachás Comissão Avaliadora Resumo</td>
+                                <td>Crachás Comissão Avaliadora <b>Resumo</b></td>
                                 <td class="text-right">
                                     <a href="{{ route('generateCrachasComissaoAvaliadoraResumo', $edicao) }}"
                                         target="_blank"><i class="material-icons">visibility</i></a>
@@ -225,7 +214,7 @@
                             </tr>
                             <tr>
                                 <td>11</td>
-                                <td>Crachás Comissão Organizadora Resumo</td>
+                                <td>Crachás Comissão Organizadora <b>Resumo</b></td>
                                 <td class="text-right">
                                     <a href="{{ route('generateCrachasComissaoOrganizadoraResumo', $edicao) }}"
                                         target="_blank"><i class="material-icons">visibility</i></a>
@@ -233,7 +222,7 @@
                             </tr>
                             <tr>
                                 <td>12</td>
-                                <td>Crachás Orientadores Resumo</td>
+                                <td>Crachás Orientadores <b>Resumo</b></td>
                                 <td class="text-right">
                                     <a href="{{ route('generateCrachasOrientadoresResumo', $edicao) }}"
                                         target="_blank"><i class="material-icons">visibility</i></a>
@@ -241,7 +230,7 @@
                             </tr>
                             <tr>
                                 <td>13</td>
-                                <td>Crachás Voluntários Resumo</td>
+                                <td>Crachás Voluntários <b>Resumo</b></td>
                                 <td class="text-right">
                                     <a href="{{ route('generateCrachasVoluntariosResumo', $edicao) }}" target="_blank"><i
                                             class="material-icons">visibility</i></a>
@@ -333,11 +322,8 @@
                                             class="material-icons">arrow_downward</i></a>
                                 </td>
                             </tr>
-                        </tbody>
-
-                        <tbody id="3">
                             <tr>
-                                <td>1</td>
+                                <td>11</td>
                                 <td>Vale Lanche</td>
                                 <td class="text-right">
                                     <a href="{{ route('geraValeLanche', $edicao) }}" target="_blank"><i
@@ -346,7 +332,8 @@
                             </tr>
                         </tbody>
 
-                        <tbody id="4">
+
+                        <tbody id="3">
                             <tr>
                                 <td>1</td>
                                 <td>Relatório de Homologadores</td>
@@ -408,7 +395,7 @@
                             </tr>
                         </tbody>
 
-                        <tbody id="5">
+                        <tbody id="4">
                             <tr>
                                 <td>1</td>
                                 <td>Relatório de Classificação Geral dos Projetos</td>
@@ -445,7 +432,7 @@
                             </tr>
                         </tbody>
 
-                        <tbody id="6">
+                        <tbody id="5">
                             <tr>
                                 <td>1</td>
                                 <td>CSV Participantes</td>
@@ -480,7 +467,7 @@
                             </tr>
                         </tbody>
 
-                        <tbody id="7">
+                        <tbody id="6">
                             <tr>
                                 <td>1</td>
                                 <td>Gerar Localização dos Projetos</td>
@@ -586,7 +573,7 @@
                                 </td>
                             </tr>
                         </tbody>
-                        <tbody id="8">
+                        <tbody id="7">
                             <tr>
                                 <td>1</td>
                                 <td>Relatório de Voluntários</td>
@@ -606,7 +593,7 @@
                                 </td>
                             </tr>
                         </tbody>
-                        <tbody id="9">
+                        <tbody id="8">
                             <tr>
                                 <td>1</td>
                                 <td>Relatório de Autores

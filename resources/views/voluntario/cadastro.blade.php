@@ -59,7 +59,7 @@
 											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 												<span aria-hidden="true"><i class="material-icons">clear</i></span>
 											</button>
-											<b>ATENÇÃO: </b>Você receberá mais informações em breve!
+											{!! $aviso !!}
 										</div>
 									</div>
 								</div>

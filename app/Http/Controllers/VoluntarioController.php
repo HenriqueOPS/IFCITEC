@@ -12,6 +12,7 @@ use App\Edicao;
 use App\Pessoa;
 use App\Funcao;
 use App\Tarefa;
+use App\Mensagem;
 
 use App\Enums\EnumFuncaoPessoa;
 
@@ -43,15 +44,17 @@ class VoluntarioController extends Controller
 					->join('tarefa', 'pessoa_tarefa.tarefa_id', '=', 'tarefa.id')
 					->where('pessoa_tarefa.pessoa_id', '=', Auth::id())
 					->get();
+				
 
-				return view('voluntario.tarefa', ['tarefa' => $tarefa]);
+				return view('voluntario.tarefa', 
+				['tarefa' => $tarefa]);
 			} else {
 				return view('voluntario.inscricaoEnviada');
 			}
 		} else {
 			$tarefas = Tarefa::orderBy('tarefa')->get();
-
-			return view('voluntario.cadastro')->withTarefas($tarefas);
+			$aviso = Mensagem::where('nome','=','Aviso(CadastroDeVoluntarios)')->get();
+			return view('voluntario.cadastro')->withTarefas($tarefas)->withAviso($aviso[0]->conteudo);
 		}
 	}
 

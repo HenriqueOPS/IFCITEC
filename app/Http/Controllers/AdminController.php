@@ -847,6 +847,64 @@ class AdminController extends Controller
     
         return abort(404);
     }
+    public function editarempresa($id)
+    {
+
+        $data = '';
+        $dados = Empresa::find($id);
+
+        if ($dados['endereco_id']) {
+            $data = Endereco::find($dados['endereco_id']);
+        }
+
+        return view('admin.empresas.edit', compact('dados', 'data'));
+
+    }
+    public function editaEmpresa(Request $req)
+    {
+
+        $data = $req->all();
+
+        $id_empresa = $data['id_empresa'];
+        $id_endereco = $data['id_endereco'];
+
+        if ($id_endereco != 0) {
+
+            Endereco::where('id', $id_endereco)
+                ->update(['cep' => $data['cep'],
+                    'endereco' => $data['endereco'],
+                    'bairro' => $data['bairro'],
+                    'municipio' => $data['municipio'],
+                    'uf' => $data['uf'],
+                    'numero' => $data['numero'],
+                ]);
+
+        } else {
+
+            $id_endereco = Endereco::create(['cep' => $data['cep'],
+                'endereco' => $data['endereco'],
+                'bairro' => $data['bairro'],
+                'municipio' => $data['municipio'],
+                'uf' => $data['uf'],
+                'numero' => $data['numero'],
+            ]);
+
+            $id_endereco = $id_endereco['id'];
+
+        }
+
+        Empresa::where('id', $id_empresa)
+            ->update(['nome_completo' => $data['nome_completo'],
+                'nome_curto' => $data['nome_curto'],
+                'email' => $data['email'],
+                'telefone' => $data['telefone'],
+                'endereco_id' => $id_endereco,
+            ]);
+
+        return redirect()->route('admin.empresas');
+    }
+
+
 
 
 }

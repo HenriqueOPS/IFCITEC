@@ -37,7 +37,9 @@
                             <td>{{ $empresa['telefone'] }}</td>
                             <td class="td-actions text-right">
                                 <a href="javascript:void(0);" class="modalEmpresa" data-toggle="modal" data-target="#modal-escola" data-empresa="{{ $empresa['id'] }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
+                                <a href="{{ route('admin.empresas.editar', $empresa['id']) }}"><i class="material-icons">edit</i></a>
                                    </td>
+                                   
                         </tr>
                         @endforeach
                     </tbody>

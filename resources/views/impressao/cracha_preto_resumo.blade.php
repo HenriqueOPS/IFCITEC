@@ -26,21 +26,20 @@
 	body{font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 		margin-left: 0.47cm;
 		margin-right: 0.47cm;
-		margin-top: 0.9cm;
 	}
     
 	.cracha{
-		width: calc(9.90cm);
+		width: 9.90cm;
 		height: 5.58cm;
 		display: inline-block;
 		padding:0;
-		margin: 0;
+		margin-top: 0.9cm;
 		overflow: hidden;
-		margin-top: -1.5px;
+		
 		
 	}
 
-	.cracha:nth-child(10n){page-break-before: always;margin-top: 0.9cm; }
+
 
 	.cracha .content{
 		width: 100%;
