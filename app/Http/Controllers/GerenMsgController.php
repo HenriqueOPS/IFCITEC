@@ -49,18 +49,26 @@ class GerenMsgController extends Controller
     public function enviar(Request $req)
 {
     $conteudo = base64_decode($req->input('conteudo'));
-    $funcoesEscolhidas = $req->input('funcoes'); // Obter as funções escolhidas do request
+    $funcoesEscolhidas = $req->input('funcoes');
 
     $teste = DB::table('funcao_pessoa')
-    ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
-    ->whereIn('funcao.funcao',   $funcoesEscolhidas)
-    ->join('pessoa','funcao_pessoa.pessoa_id','=','pessoa.id')
-    ->get();
+        ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
+        ->whereIn('funcao.funcao', $funcoesEscolhidas)
+        ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+        ->get()
+        ->toArray();
 
-    foreach ($teste as $item) {
-        $email = new MailBase($conteudo);
-        Mail::to($item->email)
-            ->send($email);
+    $destinatariosPorLote = 100; // Defina o número máximo de destinatários por lote
+
+    $batches = array_chunk($teste, $destinatariosPorLote); // Divide os destinatários em lotes
+
+    if (is_array($batches)) {
+        foreach ($batches as $batch) {
+            foreach ($batch as $item) {
+                $email = new MailBase($conteudo);
+                Mail::to($item->email)->queue($email);
+            }
+        }
     }
 }
 }
