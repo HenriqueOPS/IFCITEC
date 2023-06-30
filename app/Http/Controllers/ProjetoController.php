@@ -31,6 +31,7 @@ use App\Projeto;
 use App\PalavraChave;
 use App\Revisao;
 use App\Avaliacao;
+use App\Mensagem;
 
 use App\Enums\EnumSituacaoProjeto;
 use App\Enums\EnumFuncaoPessoa;
@@ -76,6 +77,9 @@ class ProjetoController extends Controller
 		$areas = Edicao::find(Edicao::getEdicaoId())->areas()->get();
 		*/
 
+		$aviso = Mensagem::where('nome', '=', 'Aviso(NovoProjetoPrimeiro)')->get();
+		$aviso2 = Mensagem::where('nome', '=', 'Aviso(NovoProjetoSegundo)')->get();
+
 		$niveis = DB::table('nivel_edicao')
 			->select(['nivel.id', 'nivel', 'min_ch', 'max_ch', 'palavras'])
 			->where('edicao_id', '=', Edicao::getEdicaoId())
@@ -91,7 +95,10 @@ class ProjetoController extends Controller
 			return $item->oculto == false;
 		});
 
-		return view('projeto.create')
+		return view('projeto.create',[
+			'aviso'=>$aviso[0]->conteudo,
+			'aviso2'=>$aviso2[0]->conteudo,
+		])
 			->withNiveis($niveis)
 			->withAreas($areas)
 			->withFuncoes($funcoes)
