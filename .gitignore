@@ -2,7 +2,7 @@
 /public/hot
 /public/storage
 /public/version.json
-public/img/
+/public/img/
 /storage/*.key
 /vendor
 /.idea
