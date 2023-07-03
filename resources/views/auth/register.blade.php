@@ -28,19 +28,32 @@
                     <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="alert alert-info text-center">
-                                <div class="container-fluid">
-                                    <div class="alert-icon">
-                                        <i class="material-icons">info_outline</i>
-                                    </div>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true"><i class="material-icons">clear</i></span>
-                                    </button>
+                    <div class="col-md-12">
+                        <div style="background-color:{{ $coravisos }}">
+                            <div class="container-fluid">
+                            <br>
+                            <div>
+                                <i class="material-icons" style="color: white;">info_outline</i>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="fechar-alerta">
+                                <span aria-hidden="true"><i class="material-icons">clear</i></span>
+                            </button>
+                            </div>
+                          
+                            <div class="text-center">
                                 {!! $aviso1 !!}
-                                </div>
+                            </div>
                             </div>
                         </div>
+                        </div>
+
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script>
+                        $(document).ready(function() {
+                            $('#fechar-alerta').click(function() {
+                            $(this).closest('.col-md-12').hide();
+                            });
+                        });
+                        </script>
                         <div class="col-md-12 text-center">
                             <div class="social-line">
                                 <a class="btn btn-simple btn-just-icon">

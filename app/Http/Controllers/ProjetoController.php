@@ -79,7 +79,6 @@ class ProjetoController extends Controller
 
 		$aviso = Mensagem::where('nome', '=', 'Aviso(NovoProjetoPrimeiro)')->get();
 		$aviso2 = Mensagem::where('nome', '=', 'Aviso(NovoProjetoSegundo)')->get();
-
 		$niveis = DB::table('nivel_edicao')
 			->select(['nivel.id', 'nivel', 'min_ch', 'max_ch', 'palavras'])
 			->where('edicao_id', '=', Edicao::getEdicaoId())

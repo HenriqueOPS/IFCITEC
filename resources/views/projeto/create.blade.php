@@ -13,11 +13,12 @@
             <div class="col-md-8 col-md-offset-2 col-sm-12">
                 <div class="main main-raised">
 
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1 col-xs-offset-1 col-xs-10">
-                            <h2>Novo Projeto</h2>
-                        </div>
-                    </div>
+                <div class="row">
+                <div class="col-md-10 col-md-offset-1 col-xs-offset-1 col-xs-10 text-center">
+                    <h2>Novo Projeto</h2>
+                </div>
+            </div>
+
 
                     <div class="row hide" id="loadCadastro">
 
@@ -46,21 +47,62 @@
 
                         <div class="row">
 
-                            <div class="col-md-12">
-                                <div class="alert alert-info text-center">
-                                    <div class="container-fluid">
-                                        <div class="alert-icon">
-                                            <i class="material-icons">info_outline</i>
-                                        </div>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true"><i class="material-icons">clear</i></span>
-                                        </button>
-                                        <b>{!!$aviso!!} </b>
-                                    </div>
-                                </div>
+                        <div class="col-md-12">
+                        <div style="background-color:{{ $coravisos }}">
+                            <div class="container-fluid">
+                            <br>
+                            <div>
+                                <i class="material-icons" style="color: white;">info_outline</i>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="fechar-alerta">
+                                <span aria-hidden="true"><i class="material-icons">clear</i></span>
+                            </button>
                             </div>
+                          
+                            <div class="text-center">
+                                {!! $aviso !!}
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script>
+                        $(document).ready(function() {
+                            $('#fechar-alerta').click(function() {
+                            $(this).closest('.col-md-12').hide();
+                            });
+                        });
+                        </script>
+
 
                             <div class="col-md-10 col-md-offset-1 col-xs-11">
+                            <div class="input-group{{ $errors->has('escola') ? ' has-error' : '' }}">
+                                    <span class="input-group-addon">
+                                        <i class="material-icons">school</i>
+                                    </span>
+                                    <div class="form-group">
+                                        <label class="control-label">Escola</label>
+                                        <select id="escola-select" name="escola"
+                                            value="{{ old('escola') ? old('escola') : '' }}" required>
+                                            <option></option>
+                                            @foreach ($escolas as $escola)
+                                                @if (old('escola') == $escola->id)
+                                                    <option value="{{ $escola->id }}" selected>
+                                                        {{ $escola->nome_curto }}</option>
+                                                @else
+                                                    <option value="{{ $escola->id }}">{{ $escola->nome_curto }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+
+                                        @if ($errors->has('escola'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('escola') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
                                 <div class="input-group{{ $errors->has('titulo') ? ' has-error' : '' }}">
                                     <span class="input-group-addon">
                                         <i class="material-icons">title</i>
@@ -157,9 +199,9 @@
                                     <span class="input-group-addon">
                                         <i class="material-icons">format_quote</i>
                                     </span>
-                                    <div class="alert alert-info text-center">
+                                    <div class="alert  text-center" style="background-color:{{ $coravisos }}">
                                         <div class="container-fluid">
-                                            <b>{!!$aviso2!!}</b>
+                                            {!!$aviso2!!}
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -174,33 +216,7 @@
                                     @endif
                                 </div>
 
-                                <div class="input-group{{ $errors->has('escola') ? ' has-error' : '' }}">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">school</i>
-                                    </span>
-                                    <div class="form-group">
-                                        <label class="control-label">Escola</label>
-                                        <select id="escola-select" name="escola"
-                                            value="{{ old('escola') ? old('escola') : '' }}" required>
-                                            <option></option>
-                                            @foreach ($escolas as $escola)
-                                                @if (old('escola') == $escola->id)
-                                                    <option value="{{ $escola->id }}" selected>
-                                                        {{ $escola->nome_curto }}</option>
-                                                @else
-                                                    <option value="{{ $escola->id }}">{{ $escola->nome_curto }}
-                                                    </option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-
-                                        @if ($errors->has('escola'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('escola') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
+                               
                             </div>
                         </div>
 

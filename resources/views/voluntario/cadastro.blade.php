@@ -50,19 +50,32 @@
 							{{ csrf_field() }}
 
 							<div class="row">
-								<div class="col-md-12">
-									<div class="alert alert-info text-center">
-										<div class="container-fluid">
-											<div class="alert-icon">
-												<i class="material-icons">info_outline</i>
-											</div>
-											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-												<span aria-hidden="true"><i class="material-icons">clear</i></span>
-											</button>
-											{!! $aviso !!}
-										</div>
-									</div>
-								</div>
+							<div class="col-md-12">
+                        <div style="background-color:{{ $coravisos }}">
+                            <div class="container-fluid">
+                            <br>
+                            <div>
+                                <i class="material-icons" style="color: white;">info_outline</i>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="fechar-alerta">
+                                <span aria-hidden="true"><i class="material-icons">clear</i></span>
+                            </button>
+                            </div>
+                          
+                            <div class="text-center">
+                                {!! $aviso !!}
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script>
+                        $(document).ready(function() {
+                            $('#fechar-alerta').click(function() {
+                            $(this).closest('.col-md-12').hide();
+                            });
+                        });
+                        </script>
 								<div class="row">
 									<div class="col-md-6 col-md-offset-3 text-center">
 										<button name="button" href="javascript:void(0);" class="btn btn-primary">Inscrever</button>

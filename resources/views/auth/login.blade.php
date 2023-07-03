@@ -100,10 +100,10 @@
 
                         </div>
 
-                        <div class="footer text-center">
-                            <input type="submit" class="btn btn-primary" value="Entrar">
-                            <a class="link" href="{{ url('/cadastro') }}">REGISTRE-SE</a>
-                            <a class="link" href="{{ route('password.request') }}">ESQUECEU SUA SENHA?</a>
+                        <div class="footer text-center" style=" display: flex;flex-direction: column;align-items: center;">
+                                <input type="submit" class="btn btn-primary" value="Entrar">
+                            <a class="btn btn-primary" href="{{ url('/cadastro') }}">INSCREVA-SE</a>
+                            <a class="btn btn-primary" href="{{ route('password.request') }}">ESQUECI MINHA SENHA</a>
                         </div>
 
                     </form>

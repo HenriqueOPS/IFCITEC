@@ -18,6 +18,8 @@ class AppServiceProvider extends ServiceProvider {
         if (!app()->runningInConsole() || app()->runningUnitTests()) {
             //seta variaveis globais
             $cor = DB::table('mensagem')->where('nome','=','cor_navbar')->get();
+            $coravisos = Mensagem::where('nome', '=', 'cor_avisos')->get();
+            view()->share('coravisos', $coravisos[0]->conteudo);
             view()->share('cor', $cor[0]->conteudo);
             $mensagem = Mensagem::where('nome', '=', 'Aviso(CadastroDeParticipante)')->get();
             view()->share('aviso1', $mensagem[0]->conteudo);
