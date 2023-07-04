@@ -788,16 +788,7 @@ class AdminController extends Controller
     public function configuracoes(){
         return view('admin.configuracoes.configuracoes');
     }
-    public function background(Request $request){
-        $nome = $request->imagem;
-        $requestImage = $request->image;
-        $extension = $requestImage->extension();
-        $imageName = $nome . "." . $extension;
-        $request->image->move(public_path('img'),$imageName);
-      
-        return redirect()->route('admin.configuracoes');
-        
-    }
+   
     public function navbar(Request $request){
         $cor = Mensagem::where('nome','=','cor_navbar')->get();
         $cor[0]->conteudo = $request->cor;

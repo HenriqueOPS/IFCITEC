@@ -81,7 +81,7 @@
         background-attachment: fixed;   
     }
 </style>
-<body class="masthead" style="background-image: url(https://inscricao-ifcitec.canoas.ifrs.edu.br/img/background.png);">
+<body class="masthead" style="background-image: url(data:image/png;base64,{{ $background }});">
     
     @if (!env('APP_DEBUG'))
         <!-- Google Tag Manager (noscript) -->
