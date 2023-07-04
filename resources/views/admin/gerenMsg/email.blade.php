@@ -61,12 +61,13 @@
             display: flex;
             flex-direction: row;
             width: 98%;
-            margin: 1%;
+            margin-top: 15px;
             padding: 2%;
-            height: 5%;
+            height: 40px;
             background-color: white;
             align-items: center;
             justify-content: space-between;
+          
         }
 
         .mensagem-box:hover {
@@ -196,9 +197,7 @@
                 </div>
             </div>
             <div class="container"  id="container-envio" style="display: none;">
-                <div class="card-body">
-                
-                </div>
+               
                 <div>
                     <input type="checkbox" id="usuario" name="funcoes[]" value="Usuário">
                     <label for="usuario">Usuário</label>
