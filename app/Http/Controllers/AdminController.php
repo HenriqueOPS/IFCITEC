@@ -168,21 +168,15 @@ class AdminController extends Controller
         return view('admin.escola.home', collect(['escolas' => $escolas]));
     }
 
-    public function niveis()
-    {
-        $niveis = Nivel::orderBy('nivel')->get();
-
-        return view('admin.nivel.home', collect(['niveis' => $niveis]));
-    }
-
-    public function areas()
+    public function areasPorNiveis()
     {
         $areas = AreaConhecimento::all(['id', 'area_conhecimento', 'descricao', 'nivel_id'])
         ->groupBy('nivel_id');
         $medio = $areas[2];
         $fundamental = $areas[3];
+        $niveis = Nivel::orderBy('nivel')->get();
 
-        return view('admin.area.home')->withMedio($medio)->withFundamental($fundamental);
+        return view('admin.area.home')->withMedio($medio)->withFundamental($fundamental)->withNiveis($niveis);
     }
 
     public function tarefas()
@@ -395,7 +389,7 @@ class AdminController extends Controller
                 'palavras' => $data['palavras'],
             ]);
 
-        return redirect()->route('administrador.niveis');
+        return redirect()->route('administrador.areas');
     }
 
     public function excluiNivel($id, $s)

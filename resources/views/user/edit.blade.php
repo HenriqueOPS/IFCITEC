@@ -48,10 +48,13 @@
     <span class="input-group-addon">
         <i class="material-icons">wc</i>
     </span>
-    <label style="margin-top:20px;">Masculino</label>
+    <div class="form-group label-floating">
+        <label class="control-label">Gênero</label>
+    </div>
     <input type="radio" id="masculino" name="genero" value="M" {{ isset($dados->genero) && $dados->genero === 'M' ? 'checked' : '' }} required>
-    <label style="margin-left:12px;">Feminino</label>
+    <label style="margin-top:5px; margin-right:15px;">Masculino</label>
     <input type="radio" id="feminino" name="genero" value="F" {{ isset($dados->genero) && $dados->genero === 'F' ? 'checked' : '' }} required>
+    <label style="margin-left:0px;">Feminino</label>
     @if ($errors->has('genero'))
         <span class="help-block">
             <strong>{{ $errors->first('genero') }}</strong>

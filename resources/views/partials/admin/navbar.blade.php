@@ -1,5 +1,5 @@
 <div id="page" class="col-md-12">
-    <ul class="nav nav-pills nav-pills-primary" role="tablist" style="display: flex; align-content: flex-start;overflow: scroll;">
+    <ul class="nav nav-pills nav-pills-primary" role="tablist" style="display: flex; align-content: flex-start;">
         <li id="nav-edicoes">
             <a href="{{ route('administrador') }}">
                 <i class="material-icons">adjust</i>
@@ -16,12 +16,6 @@
             <a href="{{ route('admin.empresas') }}">
                 <i class="material-icons">factory</i>
                 Empresas
-            </a>
-        </li>
-        <li id="nav-niveis">
-            <a href="{{ route('administrador.niveis') }}">
-                <i class="material-icons">school</i>
-                Níveis
             </a>
         </li>
         <li id="nav-areas">
@@ -66,6 +60,9 @@
                 Comissão Avaliadora
             </a>
         </li>
+    </ul>
+
+    <ul class="nav nav-pills nav-pills-primary" role="tablist" style="display: flex; justify-content: center;">
         <li id="nav-relatorios">
             <a href="{{ route('administrador.relatoriosEdicao') }}">
                 <i class="material-icons">description</i>
