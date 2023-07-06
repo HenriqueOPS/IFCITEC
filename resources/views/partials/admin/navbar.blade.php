@@ -21,7 +21,7 @@
         <li id="nav-areas">
             <a href="{{ route('administrador.areas') }}">
                 <i class="material-icons">brightness_auto</i>
-                Áreas
+                Áreas / Niveis
             </a>
         </li>
         <li id="nav-fichas">
