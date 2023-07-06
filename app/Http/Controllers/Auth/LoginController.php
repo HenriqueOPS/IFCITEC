@@ -43,7 +43,7 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public static function enviarEmailValidacao(int $idPessoa)
+    public static function enviarEmailValidacao($idPessoa)
     {
         $pessoa = Pessoa::all()->where('id', '=', $idPessoa)->first();
         dispatch(
