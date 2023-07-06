@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Mail\MailBase;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\MailAllJob;
+use Illuminate\Support\Facades\Queue;
 
 class GerenMsgController extends Controller
 {
@@ -52,23 +54,13 @@ class GerenMsgController extends Controller
     $funcoesEscolhidas = $req->input('funcoes');
 
     $teste = DB::table('funcao_pessoa')
-        ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
-        ->whereIn('funcao.funcao', $funcoesEscolhidas)
-        ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-        ->get()
-        ->toArray();
-
-    $destinatariosPorLote = 100; // Defina o número máximo de destinatários por lote
-
-    $batches = array_chunk($teste, $destinatariosPorLote); // Divide os destinatários em lotes
-
-    if (is_array($batches)) {
-        foreach ($batches as $batch) {
-            foreach ($batch as $item) {
-                $email = new MailBase($conteudo);
-                Mail::to($item->email)->queue($email);
-            }
-        }
+    ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
+    ->whereIn('funcao.funcao', $funcoesEscolhidas)
+    ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+    ->where('pessoa.oculto', false)
+    ->get();
+    foreach ($teste as $item) {
+        dispatch(new MailAllJob($conteudo, $item->email));
     }
 }
 }
