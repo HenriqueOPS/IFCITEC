@@ -196,48 +196,61 @@
                     <button id="summernote-save" class="btn btn-danger btn-block">Salvar</button>
                 </div>
             </div>
-            <div class="container"  id="container-envio" style="display: none;">
-               
-                <div>
-                    <input type="checkbox" id="usuario" name="funcoes[]" value="Usuário">
-                    <label for="usuario">Usuário</label>
-                    </div>
-                    <div>
-                    <input type="checkbox" id="organizador" name="funcoes[]" value="Organizador">
-                    <label for="organizador">Organizador</label>
-                    </div>
-                    <div>
-                    <input type="checkbox" id="avaliador" name="funcoes[]" value="Avaliador">
-                    <label for="avaliador">Avaliador</label>
-                    </div>
-                    <div>
-                    <input type="checkbox" id="homologador" name="funcoes[]" value="Homologador">
-                    <label for="homologador">Homologador</label>
-                    </div>
-                    <div>
-                    <input type="checkbox" id="autor" name="funcoes[]" value="Autor">
-                    <label for="autor">Autor</label>
-                    </div>
-                    <div>
-                    <input type="checkbox" id="coorientador" name="funcoes[]" value="Coorientador">
-                    <label for="coorientador">Coorientador</label>
-                    </div>
-                    <div>
-                    <input type="checkbox" id="orientador" name="funcoes[]" value="Orientador">
-                    <label for="orientador">Orientador</label>
-                    </div>
-                    <div>
-                    <input type="checkbox" id="administrador" name="funcoes[]" value="Administrador">
-                    <label for="administrador">Administrador</label>
-                    </div>
-                    <div>
-                    <input type="checkbox" id="voluntario" name="funcoes[]" value="Voluntário">
-                    <label for="voluntario">Voluntário</label>
-                    </div>
-                <div>
-                    <button class="btn btn-danger btn-block" id="botao-envio" >Enviar</button>
-                </div>
-            </div>
+            <div class="container" id="container-envio" style="display: none;">
+            <div id="quadro-geral">
+    <h2>Geral</h2>
+    <div>
+        <input type="checkbox" id="participantes" name="funcoesgerais[]" value="Participantes">
+        <label for="participantes">Participantes</label>
+    </div>
+    <div>
+        <input type="checkbox" id="escolas" name="funcoesgerais[]" value="Escolas">
+        <label for="escolas">Escolas</label>
+    </div>
+    <div>
+        <input type="checkbox" id="homologadores" name="funcoesgerais[]" value="Homologadores">
+        <label for="homologadores">Homologadores</label>
+    </div>
+    <div>
+        <input type="checkbox" id="avaliadores" name="funcoesgerais[]" value="Avaliadores">
+        <label for="avaliadores">Avaliadores</label>
+    </div>
+</div>
+
+<div id="quadro-edicao-corrente">
+    <h2>Edição Corrente</h2>
+    <div>
+        <input type="checkbox" id="autores" name="funcoesedicao[]" value="Autor">
+        <label for="autores">Autores</label>
+    </div>
+    <div>
+        <input type="checkbox" id="orientadores" name="funcoesedicao[]" value="Orientador">
+        <label for="orientadores">Orientadores</label>
+    </div>
+    <div>
+        <input type="checkbox" id="coorientadores" name="funcoesedicao[]" value="Coorientador">
+        <label for="coorientadores">Coorientadores</label>
+    </div>
+    <div>
+        <input type="checkbox" id="homologadores-edicao" name="funcoesedicao[]" value="Homologador">
+        <label for="homologadores-edicao">Homologadores</label>
+    </div>
+    <div>
+        <input type="checkbox" id="avaliadores-edicao" name="funcoesedicao[]" value="Avaliador">
+        <label for="avaliadores-edicao">Avaliadores</label>
+    </div>
+    <div>
+        <input type="checkbox" id="voluntarios" name="funcoesedicao[]" value="Voluntário">
+        <label for="voluntarios">Voluntários</label>
+    </div>
+</div>
+
+
+    <div>
+        <button class="btn btn-danger btn-block" id="botao-envio">Enviar</button>
+    </div>
+</div>
+
         </div>
     </section>
 @endsection
@@ -374,10 +387,12 @@
     let url = "{{ route('mensagens.enviar')}}";
 
     // Obter os valores selecionados dos checkboxes
-    let funcoesSelecionadas = $('input[name="funcoes[]"]:checked').map(function () {
+    let funcoesgerais = $('input[name="funcoesgerais[]"]:checked').map(function () {
         return $(this).val();
     }).get();
-
+    let funcoesedicao = $('input[name="funcoesedicao[]"]:checked').map(function () {
+        return $(this).val();
+    }).get();
     $.ajax({
         type: 'POST',
         url: url,
@@ -385,7 +400,8 @@
             _token: $('meta[name=csrf-token]').attr('content'),
             id: mensagemAtual.id,
             conteudo: utf8_to_b64($('#summernote').summernote('code')),
-            funcoes: funcoesSelecionadas // Enviar os valores selecionados dos checkboxes
+            funcoesgerais: funcoesgerais,
+            funcoesedicao: funcoesedicao // Enviar os valores selecionados dos checkboxes
         },
         dataType: 'json',
         error: data => {

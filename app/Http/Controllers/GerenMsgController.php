@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Mensagem;
 use App\Edicao;
+use App\Escola;
+use App\Pessoa;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Mail\MailBase;
@@ -49,18 +51,51 @@ class GerenMsgController extends Controller
         Mensagem::where('id', '=', $id)->delete();
     }
     public function enviar(Request $req)
-{
-    $conteudo = base64_decode($req->input('conteudo'));
-    $funcoesEscolhidas = $req->input('funcoes');
-
-    $teste = DB::table('funcao_pessoa')
-    ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
-    ->whereIn('funcao.funcao', $funcoesEscolhidas)
-    ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
-    ->where('pessoa.oculto', false)
-    ->get();
-    foreach ($teste as $item) {
-        dispatch(new MailAllJob($conteudo, $item->email));
+    {
+        $conteudo = base64_decode($req->input('conteudo'));
+        $funcoesgerais = $req->input('funcoesgerais');
+        $funcoesedicao = $req->input('funcoesedicao');
+        $geral = collect([]);
+        $edicao = collect([]);
+        
+        if (!is_null($funcoesgerais)) {
+            if (in_array('Participantes', $funcoesgerais)) {
+                $participantesEmails = Pessoa::pluck('email')->toArray();
+                $geral = $geral->concat($participantesEmails);
+            }
+            
+            if (in_array('Escolas', $funcoesgerais)) {
+                $escolasEmails = Escola::pluck('email')->toArray();
+                $geral = $geral->concat($escolasEmails);
+            }
+            
+            if (in_array('Homologadores', $funcoesgerais)) {
+                $homologadoresEmails = Pessoa::where('funcao', 'Homologadores')->pluck('email')->toArray();
+                $geral = $geral->concat($homologadoresEmails);
+            }
+            
+            if (in_array('Avaliadores', $funcoesgerais)) {
+                $avaliadoresEmails = Pessoa::where('funcao', 'Avaliadores')->pluck('email')->toArray();
+                $geral = $geral->concat($avaliadoresEmails);
+            }
+        }
+        
+        if (!is_null($funcoesedicao)) {
+            $edicao = DB::table('funcao_pessoa')
+                ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
+                ->whereIn('funcao.funcao', $funcoesedicao)
+                ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+                ->where('edicao_id', '=', Edicao::getEdicaoId())
+                ->where('pessoa.oculto', false)
+                ->select('pessoa.email')
+                ->distinct()
+                ->pluck('email');
+        }
+        
+        $emails = $geral->concat($edicao)->unique();
+        
+        foreach ($emails as $email) {
+            dispatch(new MailAllJob($conteudo, $email));
+        }
     }
-}
 }
