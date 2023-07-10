@@ -44,6 +44,7 @@ class GerenMsgController extends Controller
             ->where('id', '=', $req->all()['id'])
             ->limit(1)
             ->update(['conteudo' => $conteudo]);
+        return response()->json(['mensagem' => 'Emails Salvo com Sucesso']);
     }
 
     public function delete(int $id)

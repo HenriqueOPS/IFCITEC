@@ -368,6 +368,13 @@
                         conteudo: utf8_to_b64($('#summernote').summernote('code'))
                     },
                     dataType: 'json',
+                    success: function(response) {
+            // Manipule a resposta JSON aqui
+            if (response.mensagem) {
+                // Exiba a mensagem de sucesso ao usuário
+                alert(response.mensagem);
+            }
+        },
                     error: data => {
                         const dd = document.createElement('div');
                         document.getElementById('app').appendChild(dd);
