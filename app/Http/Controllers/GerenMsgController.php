@@ -111,5 +111,6 @@ class GerenMsgController extends Controller
         foreach ($emails as $email) {
             dispatch(new MailAllJob($conteudo, $email));
         }
+        return response()->json(['mensagem' => 'Emails enviados com sucesso']);
     }
 }

@@ -393,6 +393,7 @@
     let funcoesedicao = $('input[name="funcoesedicao[]"]:checked').map(function () {
         return $(this).val();
     }).get();
+    alert("Aguarde...");
     $.ajax({
         type: 'POST',
         url: url,
@@ -402,6 +403,13 @@
             conteudo: utf8_to_b64($('#summernote').summernote('code')),
             funcoesgerais: funcoesgerais,
             funcoesedicao: funcoesedicao // Enviar os valores selecionados dos checkboxes
+        },
+        success: function(response) {
+            // Manipule a resposta JSON aqui
+            if (response.mensagem) {
+                // Exiba a mensagem de sucesso ao usuário
+                alert(response.mensagem);
+            }
         },
         dataType: 'json',
         error: data => {
