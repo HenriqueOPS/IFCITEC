@@ -70,12 +70,26 @@ class GerenMsgController extends Controller
             }
             
             if (in_array('Homologadores', $funcoesgerais)) {
-                $homologadoresEmails = Pessoa::where('funcao', 'Homologadores')->pluck('email')->toArray();
+                $homologadoresEmails = DB::table('funcao_pessoa')
+                ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
+                ->whereIn('funcao.funcao', ['Homologador'])
+                ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+                ->where('pessoa.oculto', false)
+                ->select('pessoa.email')
+                ->distinct()
+                ->pluck('email');
                 $geral = $geral->concat($homologadoresEmails);
             }
             
             if (in_array('Avaliadores', $funcoesgerais)) {
-                $avaliadoresEmails = Pessoa::where('funcao', 'Avaliadores')->pluck('email')->toArray();
+                $avaliadoresEmails = DB::table('funcao_pessoa')
+                ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
+                ->whereIn('funcao.funcao', ['Avaliador'])
+                ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+                ->where('pessoa.oculto', false)
+                ->select('pessoa.email')
+                ->distinct()
+                ->pluck('email');
                 $geral = $geral->concat($avaliadoresEmails);
             }
         }
