@@ -45,37 +45,37 @@
                                 </a>
                             </li>
                             <li>
-                                <a id="4" role="tab" class="tab" data-toggle="tab">
+                                <a id="3" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">description</i>
                                     Homologação
                                 </a>
                             </li>
                             <li>
-                                <a id="5" role="tab" class="tab" data-toggle="tab">
+                                <a id="4" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">star</i>
                                     Premiação
                                 </a>
                             </li>
                             <li>
-                                <a id="6" role="tab" class="tab" data-toggle="tab">
+                                <a id="5" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">location_on</i>
                                     Presença (Certificados)
                                 </a>
                             </li>
                             <li>
-                                <a id="7" role="tab" class="tab" data-toggle="tab">
+                                <a id="6" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">school</i>
                                     Projetos
                                 </a>
                             </li>
                             <li>
-                                <a id="8" role="tab" class="tab" data-toggle="tab">
+                                <a id="7" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">directions_run</i>
                                     Voluntários
                                 </a>
                             </li>
                             <li>
-                                <a id="9" role="tab" class="tab" data-toggle="tab">
+                                <a id="8" role="tab" class="tab" data-toggle="tab">
                                     <i class="material-icons">group</i>
                                     Participantes
                                 </a>
