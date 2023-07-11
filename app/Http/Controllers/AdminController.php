@@ -896,7 +896,14 @@ class AdminController extends Controller
         return redirect()->route('admin.configuracoes');
 
     }
-
+    public function corBotoes(Request $req){
+        $cor = Mensagem::where('nome', '=', 'cor_botoes')->get();
+        $cor[0]->conteudo = $req->cor;
+        $cor[0]->timestamps = false;
+        $cor[0]->save();
+    
+        return redirect()->route('admin.configuracoes');
+    }
 
 
 }

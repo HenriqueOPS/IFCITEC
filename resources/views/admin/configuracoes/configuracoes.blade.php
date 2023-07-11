@@ -47,7 +47,12 @@
                         <input type="color" id="favcolor" name="cor" value="#ff0000"><br><br>
                         <button type="submit" class="btn btn-primary"  >Mudar cor dos avisos</button>
                     </form>
-                    
+                    <form method="POST" action="{{ route('admin.botoes')}}">
+                        {{ csrf_field() }}
+                        <label for="favcolor">Selecione a cor:</label>
+                        <input type="color" id="favcolor" name="cor" value="#ff0000"><br><br>
+                        <button type="submit" class="btn btn-primary"   >Mudar cor dos botoes</button>
+                    </form>
                 </div>
 
             </div>
@@ -59,7 +64,7 @@
 
 @section('css')
     <style>
-        
+    
     </style>
 @endsection
 

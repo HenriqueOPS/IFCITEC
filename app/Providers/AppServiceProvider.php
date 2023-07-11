@@ -1,21 +1,22 @@
 <?php
 
 namespace App\Providers;
+
 use App\Mensagem;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
-use App\Media;
 
-class AppServiceProvider extends ServiceProvider {
-
+class AppServiceProvider extends ServiceProvider
+{
     /**
      * Bootstrap any application services.
      *
      * @return void
      */
-    public function boot() {
+    public function boot()
+    {
         if (!app()->runningInConsole() || app()->runningUnitTests()) {
             $this->app['view']->composer('auth.login', function ($view) {
                 $teladelogin = DB::table('media')->where('nome', '=', 'teladelogin')->value('conteudo');
@@ -26,20 +27,40 @@ class AppServiceProvider extends ServiceProvider {
         }
 
         if (!app()->runningInConsole() || app()->runningUnitTests()) {
-            //seta variaveis globais
+            // Set global variables
             $background = DB::table('media')->where('nome', '=', 'background')->value('conteudo');
             view()->share('background', $background);
+
             $logonormal = DB::table('media')->where('nome', '=', 'logonormal')->value('conteudo');
             view()->share('logonormal', $logonormal);
-            $cor = DB::table('mensagem')->where('nome','=','cor_navbar')->get();
-            $coravisos = Mensagem::where('nome', '=', 'cor_avisos')->get();
-            view()->share('coravisos', $coravisos[0]->conteudo);
-            view()->share('cor', $cor[0]->conteudo);
-            $mensagem = Mensagem::where('nome', '=', 'Aviso(CadastroDeParticipante)')->get();
-            view()->share('aviso1', $mensagem[0]->conteudo);
-        } 
+
+            $cor = DB::table('mensagem')->where('nome', '=', 'cor_navbar')->value('conteudo');
+            view()->share('cor', $cor);
+
+            $coravisos = Mensagem::where('nome', '=', 'cor_avisos')->first();
+            if ($coravisos) {
+                view()->share('coravisos', $coravisos->conteudo);
+            }
+
+            $mensagem = Mensagem::where('nome', '=', 'Aviso(CadastroDeParticipante)')->first();
+            if ($mensagem) {
+                view()->share('aviso1', $mensagem->conteudo);
+            }
+
+            $corbotoes = Mensagem::where('nome', '=', 'cor_botoes')->first();
+            if (!$corbotoes) {
+                // Create a new record if 'cor_botoes' doesn't exist
+                $corbotoes = new Mensagem();
+                $corbotoes->nome = 'cor_botoes';
+                $corbotoes->tipo = 'cor';
+                $corbotoes->conteudo = '#000';
+                $corbotoes->save();
+            }
+            view()->share('corbotoes', $corbotoes->conteudo);
+        }
 
         Schema::defaultStringLength(191);
+
         if (env('APP_ENV') !== 'local') {
             $this->app['request']->server->set('HTTPS', true);
         }
@@ -50,8 +71,8 @@ class AppServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         //
     }
-
 }

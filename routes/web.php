@@ -206,6 +206,7 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 
 	// Administrador
 	Route::post('/administrador/navbar',"AdminController@navbar")->name('admin.navbar');
+	Route::post('/adminsitrador/cor_botoes',"AdminController@corBotoes")->name('admin.botoes');
 	Route::post('/administrador/cor_avisos',"AdminController@cordosavisos")->name('admin.avisos');
 	Route::post('/administrador/upload','MediaController@background')->name('admin.background');
 	Route::get('/administrador/configuracoes','AdminController@configuracoes')->name('admin.configuracoes');
