@@ -190,7 +190,7 @@
                             
                             <tr>
                                 <td>8</td>
-                                <td>Crachás Autores <b>Resumo</b></td>
+                                <td>Etiqueta Crachás Autores</td>
                                 <td class="text-right">
                                     <a href="{{ route('generateCrachasAutoresResumo', $edicao) }}" target="_blank"><i
                                             class="material-icons">visibility</i></a>
@@ -198,7 +198,7 @@
                             </tr>
                             <tr>
                                 <td>9</td>
-                                <td>Crachás Coorientadores <b>Resumo</b></td>
+                                <td>Etiqueta Crachás Coorientadores</td>
                                 <td class="text-right">
                                     <a href="{{ route('generateCrachasCoorientadoresResumo', $edicao) }}"
                                         target="_blank"><i class="material-icons">visibility</i></a>
@@ -206,7 +206,7 @@
                             </tr>
                             <tr>
                                 <td>10</td>
-                                <td>Crachás Comissão Avaliadora <b>Resumo</b></td>
+                                <td>Etiqueta Crachás Comissão Avaliadora</td>
                                 <td class="text-right">
                                     <a href="{{ route('generateCrachasComissaoAvaliadoraResumo', $edicao) }}"
                                         target="_blank"><i class="material-icons">visibility</i></a>
@@ -214,7 +214,7 @@
                             </tr>
                             <tr>
                                 <td>11</td>
-                                <td>Crachás Comissão Organizadora <b>Resumo</b></td>
+                                <td>Etiqueta Crachás Comissão Organizadora</td>
                                 <td class="text-right">
                                     <a href="{{ route('generateCrachasComissaoOrganizadoraResumo', $edicao) }}"
                                         target="_blank"><i class="material-icons">visibility</i></a>
@@ -222,7 +222,7 @@
                             </tr>
                             <tr>
                                 <td>12</td>
-                                <td>Crachás Orientadores <b>Resumo</b></td>
+                                <td>Etiqueta Crachás Orientadores</td>
                                 <td class="text-right">
                                     <a href="{{ route('generateCrachasOrientadoresResumo', $edicao) }}"
                                         target="_blank"><i class="material-icons">visibility</i></a>
@@ -230,7 +230,7 @@
                             </tr>
                             <tr>
                                 <td>13</td>
-                                <td>Crachás Voluntários <b>Resumo</b></td>
+                                <td>Etiqueta Crachás Voluntários</td>
                                 <td class="text-right">
                                     <a href="{{ route('generateCrachasVoluntariosResumo', $edicao) }}" target="_blank"><i
                                             class="material-icons">visibility</i></a>
