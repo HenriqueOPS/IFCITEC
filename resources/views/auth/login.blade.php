@@ -62,9 +62,9 @@
                 <div class="card card-signup" style="border-radius:50px;">
 
                     <div class="content box-logo text-center">
-                        <a class="btn btn-simple btn-just-icon">
+                     
                             <img src="data:image/png;base64,{{ $logo }}" title="IFCITEC" height="90" />
-                        </a>
+                 
                     </div>
 
                     <form class="form" method="post" action="{{ route('login.verification') }}">
@@ -122,5 +122,9 @@
     <!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
     <script src="{{ asset('js/material-kit.js') }}" type="text/javascript"></script>
     </body>
-
+    <style>
+           .btn {
+                background-color: {{$corbotoes}} !important; 
+            }
+    </style>
 </html>

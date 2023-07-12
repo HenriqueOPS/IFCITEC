@@ -175,6 +175,11 @@
     @yield('partials')
 
     @yield('js')
+    <style>
+           .btn {
+                background-color: {{$corbotoes}} !important; 
+            }
+    </style>
 
 
 </body>
