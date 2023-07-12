@@ -373,6 +373,7 @@
             if (response.mensagem) {
                 // Exiba a mensagem de sucesso ao usuário
                 alert(response.mensagem);
+                location.reload();
             }
         },
                     error: data => {

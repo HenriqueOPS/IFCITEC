@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class Mensagem extends Model
 {
     protected $table = 'mensagem';
-
+    public $timestamps = false;
     protected $fillable = [
         'conteudo', 'tipo'
     ];
