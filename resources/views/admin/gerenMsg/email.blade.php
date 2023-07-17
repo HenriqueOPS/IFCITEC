@@ -171,6 +171,12 @@
                             INSTAGRAM
                         </button>
                     </li>
+                      <li id="tipo-envio">
+                        <button id="goto-envio" data-nome="email" class="tipo-btn" data-envio="envio">
+                        <i class="material-icons">schedule_send</i>
+                            ENVIO
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -198,60 +204,60 @@
             </div>
             <div class="container" id="container-envio" style="display: none;">
             <div id="quadro-geral">
-    <h2>Geral</h2>
-    <div>
-        <input type="checkbox" id="participantes" name="funcoesgerais[]" value="Participantes">
-        <label for="participantes">Participantes</label>
-    </div>
-    <div>
-        <input type="checkbox" id="escolas" name="funcoesgerais[]" value="Escolas">
-        <label for="escolas">Escolas</label>
-    </div>
-    <div>
-        <input type="checkbox" id="homologadores" name="funcoesgerais[]" value="Homologadores">
-        <label for="homologadores">Homologadores</label>
-    </div>
-    <div>
-        <input type="checkbox" id="avaliadores" name="funcoesgerais[]" value="Avaliadores">
-        <label for="avaliadores">Avaliadores</label>
-    </div>
-</div>
-
-<div id="quadro-edicao-corrente">
-    <h2>Edição Corrente</h2>
-    <div>
-        <input type="checkbox" id="autores" name="funcoesedicao[]" value="Autor">
-        <label for="autores">Autores</label>
-    </div>
-    <div>
-        <input type="checkbox" id="orientadores" name="funcoesedicao[]" value="Orientador">
-        <label for="orientadores">Orientadores</label>
-    </div>
-    <div>
-        <input type="checkbox" id="coorientadores" name="funcoesedicao[]" value="Coorientador">
-        <label for="coorientadores">Coorientadores</label>
-    </div>
-    <div>
-        <input type="checkbox" id="homologadores-edicao" name="funcoesedicao[]" value="Homologador">
-        <label for="homologadores-edicao">Homologadores</label>
-    </div>
-    <div>
-        <input type="checkbox" id="avaliadores-edicao" name="funcoesedicao[]" value="Avaliador">
-        <label for="avaliadores-edicao">Avaliadores</label>
-    </div>
-    <div>
-        <input type="checkbox" id="voluntarios" name="funcoesedicao[]" value="Voluntário">
-        <label for="voluntarios">Voluntários</label>
-    </div>
-</div>
-
-
-    <div>
-        <button class="btn btn-danger btn-block" id="botao-envio">Enviar</button>
-    </div>
-</div>
-
+            <h2>Geral</h2>
+            <div>
+                <input type="checkbox" id="participantes" name="funcoesgerais[]" value="Participantes">
+                <label for="participantes">Participantes</label>
+            </div>
+            <div>
+                <input type="checkbox" id="escolas" name="funcoesgerais[]" value="Escolas">
+                <label for="escolas">Escolas</label>
+            </div>
+            <div>
+                <input type="checkbox" id="homologadores" name="funcoesgerais[]" value="Homologadores">
+                <label for="homologadores">Homologadores</label>
+            </div>
+            <div>
+                <input type="checkbox" id="avaliadores" name="funcoesgerais[]" value="Avaliadores">
+                <label for="avaliadores">Avaliadores</label>
+            </div>
         </div>
+
+        <div id="quadro-edicao-corrente">
+            <h2>Edição Corrente</h2>
+            <div>
+                <input type="checkbox" id="autores" name="funcoesedicao[]" value="Autor">
+                <label for="autores">Autores</label>
+            </div>
+            <div>
+                <input type="checkbox" id="orientadores" name="funcoesedicao[]" value="Orientador">
+                <label for="orientadores">Orientadores</label>
+            </div>
+            <div>
+                <input type="checkbox" id="coorientadores" name="funcoesedicao[]" value="Coorientador">
+                <label for="coorientadores">Coorientadores</label>
+            </div>
+            <div>
+                <input type="checkbox" id="homologadores-edicao" name="funcoesedicao[]" value="Homologador">
+                <label for="homologadores-edicao">Homologadores</label>
+            </div>
+            <div>
+                <input type="checkbox" id="avaliadores-edicao" name="funcoesedicao[]" value="Avaliador">
+                <label for="avaliadores-edicao">Avaliadores</label>
+            </div>
+            <div>
+                <input type="checkbox" id="voluntarios" name="funcoesedicao[]" value="Voluntário">
+                <label for="voluntarios">Voluntários</label>
+            </div>
+        </div>
+
+
+            <div>
+                <button class="btn btn-danger btn-block" id="botao-envio">Enviar</button>
+            </div>
+        </div>
+
+                </div>
     </section>
 @endsection
 
@@ -271,7 +277,7 @@
         let mensagemAtual = null;
 
         let tipoAtual = '';
-
+        let envio = '';
         function tipoOnClick(e) {
             e.preventDefault();
 
@@ -284,12 +290,14 @@
 
             if (e.target.localName === 'i') {
                 tipoAtual = e.target.parentNode.dataset.nome;
+                envio = e.target.parentNode.dataset.envio;
                 e.target.parentNode.parentNode.classList.add('tipo-selected');
             } else {
                 tipoAtual = e.target.dataset.nome;
+                envio = e.target.parentNode.dataset.envio;
                 e.target.parentNode.classList.add('tipo-selected');
             }
-            if (tipoAtual === 'email') {
+            if (envio === 'envio') {
                 document.getElementById('container-envio').style.display = 'block';
             } else {
                 document.getElementById('container-envio').style.display = 'none';
@@ -389,44 +397,44 @@
                 dialogsInBody: true,
             });
             $('#botao-envio').click((e) => {
-    if (mensagemAtual === null)
-        return;
+            if (mensagemAtual === null)
+                return;
 
-    let url = "{{ route('mensagens.enviar')}}";
+            let url = "{{ route('mensagens.enviar')}}";
 
-    // Obter os valores selecionados dos checkboxes
-    let funcoesgerais = $('input[name="funcoesgerais[]"]:checked').map(function () {
-        return $(this).val();
-    }).get();
-    let funcoesedicao = $('input[name="funcoesedicao[]"]:checked').map(function () {
-        return $(this).val();
-    }).get();
-    alert("Aguarde...");
-    $.ajax({
-        type: 'POST',
-        url: url,
-        data: {
-            _token: $('meta[name=csrf-token]').attr('content'),
-            id: mensagemAtual.id,
-            conteudo: utf8_to_b64($('#summernote').summernote('code')),
-            funcoesgerais: funcoesgerais,
-            funcoesedicao: funcoesedicao // Enviar os valores selecionados dos checkboxes
-        },
-        success: function(response) {
-            // Manipule a resposta JSON aqui
-            if (response.mensagem) {
-                // Exiba a mensagem de sucesso ao usuário
-                alert(response.mensagem);
-            }
-        },
-        dataType: 'json',
-        error: data => {
-            const dd = document.createElement('div');
-            document.getElementById('app').appendChild(dd);
-            dd.innerHTML = data.responseText;
-        }
-    });
-});
+            // Obter os valores selecionados dos checkboxes
+            let funcoesgerais = $('input[name="funcoesgerais[]"]:checked').map(function () {
+                return $(this).val();
+            }).get();
+            let funcoesedicao = $('input[name="funcoesedicao[]"]:checked').map(function () {
+                return $(this).val();
+            }).get();
+            alert("Aguarde...");
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    _token: $('meta[name=csrf-token]').attr('content'),
+                    id: mensagemAtual.id,
+                    conteudo: utf8_to_b64($('#summernote').summernote('code')),
+                    funcoesgerais: funcoesgerais,
+                    funcoesedicao: funcoesedicao // Enviar os valores selecionados dos checkboxes
+                },
+                success: function(response) {
+                    // Manipule a resposta JSON aqui
+                    if (response.mensagem) {
+                        // Exiba a mensagem de sucesso ao usuário
+                        alert(response.mensagem);
+                    }
+                },
+                dataType: 'json',
+                error: data => {
+                    const dd = document.createElement('div');
+                    document.getElementById('app').appendChild(dd);
+                    dd.innerHTML = data.responseText;
+                }
+            });
+        });
             
             fetchMensagens();
         });
