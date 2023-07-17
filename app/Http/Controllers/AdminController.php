@@ -8,6 +8,7 @@ use App\Endereco;
 use App\Enums\EnumFuncaoPessoa;
 use App\Enums\EnumSituacaoProjeto;
 use App\Escola;
+use App\Brindes;
 use App\Empresa;
 use App\Funcao;
 use App\Http\Requests\AreaRequest;
@@ -904,6 +905,44 @@ class AdminController extends Controller
     
         return redirect()->route('admin.configuracoes');
     }
+    public function brindes(){
+        $brindes = Brindes::orderBy('nome')->get();
+        return view('admin.brindes.home',['brindes' => $brindes]);
+    }
+    public function NovoBrinde(){
+        return view('admin.brindes.create');
+    }
+    public function cadastroBrinde(Request $req){
+        $data = $req->all();
+        Brindes::create([
+            'nome' => $data['nome'],
+            'quantidade' => $data['quantidade'],
+            'descricao' => $data['descricao'],
+        ]);
+    return redirect()->route('admin.brindes');
+    }
+    public function dadosBrinde($id){
+    $brinde = Brindes::find($id);
 
+    return response()->json(['dados' => $brinde]);
+    }
+    public function editarbrindes($id){
+        $brinde = Brindes::find($id);
+        return view('admin.brindes.edit', compact('brinde'));
+    }
+    public function editaBrinde(Request $request){
+        $idBrinde = $request->input('id_brinde');
+        $brinde = Brindes::find($idBrinde);
+        
+        // Faça as alterações necessárias no brinde com base nos dados enviados pelo formulário
+        
+        $brinde->nome = $request->input('nome');
+        $brinde->quantidade = $request->input('quantidade');
+        $brinde->descricao = $request->input('descricao');
+        
+        $brinde->save();
+        
+        return redirect()->route('admin.brindes')->with('success', 'Brinde atualizado com sucesso!');
+    }
 
 }

@@ -215,12 +215,18 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::post('/administrador/empresas/cadastrar','AdminController@cadastroEmpresa')->name('admin.empresas.cadastrar');
 	Route::get('/editar/empresa/{id}','AdminController@editarempresa')->name('admin.empresas.editar');
 	Route::post('/editar/empresa/editar','AdminController@editaEmpresa')->name('editaEmpresa');
+	Route::get('/administrador/brindes','AdminController@brindes')->name('admin.brindes');
+	Route::get('/administrador/brindes/novo','AdminController@NovoBrinde')->name('admin.brindes.novo');
+	Route::post('/administrador/brinde/cadastrar','AdminController@cadastroBrinde')->name('admin.brindes.cadastrar');
 	Route::get('/projetos/homologar-projetos', 'ProjetoController@homologarProjetos')->name('homologar-projetos');
 	Route::post('/projetos/homologa-projetos', 'ProjetoController@homologaProjetos')->name('homologa-projetos');
 	Route::get('/projeto/nao-compareceu/{id}/{s}', 'ProjetoController@projetoNaoCompareceu'); //
 	Route::get('/projeto/compareceu/avaliado/{id}/{s}', 'ProjetoController@projetoCompareceuAvaliado');
 	Route::get('/projeto/compareceu/nao-avaliado/{id}/{s}', 'ProjetoController@projetoCompareceuNaoAvaliado');
 	Route::get('/empresa/dados-empresa/{id}', 'AdminController@dadosEmpresa'); 
+	Route::get('/brinde/dados-brinde/{id}', 'AdminController@dadosBrinde')->name('brinde.dados');
+	Route::get('/admin/brindes/editar/{id}', 'AdminController@editarbrindes')->name('admin.brindes.editar');
+	Route::post('/edita-brinde', 'AdminController@editaBrinde')->name('editaBrinde');
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
 	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');
 	Route::get('/administrador/escolas', 'AdminController@escolas')->name('administrador.escolas');

@@ -6,14 +6,14 @@ use App\Mods\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
-class Empresa extends Model {
+class Brindes extends Model {
 
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'empresa';
+    protected $table = 'brindes';
 
     /**
      * The attributes that are mass assignable.
@@ -22,8 +22,7 @@ class Empresa extends Model {
      */
     public $timestamps = false;
     protected $fillable = [
-        'nome_completo', 'nome_curto', 'email', 'telefone', 'endereco_id',
-        'endereco', 'municipio', 'cep', 'uf', 'bairro', 'numero', 
+        'nome','quantidade','descricao'
     ];
 
 

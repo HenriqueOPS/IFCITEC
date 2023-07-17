@@ -18,6 +18,12 @@
                 Empresas
             </a>
         </li>
+        <li id="nav-brindes">
+            <a href="{{ route('admin.brindes') }}">
+                <i class="material-icons">shopping_bag</i>
+                Brindes
+            </a>
+        </li>
         <li id="nav-areas">
             <a href="{{ route('administrador.areas') }}">
                 <i class="material-icons">brightness_auto</i>
