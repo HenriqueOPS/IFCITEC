@@ -146,7 +146,7 @@ class RegisterController extends Controller
 			'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
 			'newsletter' => isset($data['newsletter']) ? $data['newsletter'] : false,
 			'oculto' => false,
-			'verificado' => false,
+			'verificado' => true,
 			'genero' => isset($data['genero']) ? $data['genero'] : null,
 		]);
 	}

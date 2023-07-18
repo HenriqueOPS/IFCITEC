@@ -11,9 +11,9 @@
                     </h3>
                     <br>
                     <div class="content box-logo text-center">
-                        <a class="btn btn-simple btn-just-icon">
+                      
                             <img src="{{ asset('img/logonormal.png') }}" title="IFCITEC" height="110" />
-                        </a>
+                
                     </div>
                     <div class="panel-body">
                         @if (isset($success))
