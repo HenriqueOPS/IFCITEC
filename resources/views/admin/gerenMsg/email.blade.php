@@ -166,13 +166,13 @@
                         </button>
                     </li>
                     <li id="tipo-instagram">
-                        <button id="goto-instagram" data-nome="instagram" class="tipo-btn">
+                        <button id="goto-instagram" data-nome="instagram" class="tipo-btn" >
                         <i class="bi bi-instagram"></i>
                             INSTAGRAM
                         </button>
                     </li>
                       <li id="tipo-envio">
-                        <button id="goto-envio" data-nome="email" class="tipo-btn" data-envio="envio">
+                        <button id="goto-envio" data-nome="email" class="tipo-btn" >
                         <i class="material-icons">schedule_send</i>
                             ENVIO
                         </button>
@@ -275,9 +275,7 @@
 
         let mensagensCarregadas = [];
         let mensagemAtual = null;
-
         let tipoAtual = '';
-        let envio = '';
         function tipoOnClick(e) {
             e.preventDefault();
 
@@ -289,18 +287,11 @@
             console.log(e.target.parentNode.parentNode)
 
             if (e.target.localName === 'i') {
-                tipoAtual = e.target.parentNode.dataset.nome;
-                envio = e.target.parentNode.dataset.envio;
+                tipoAtual = e.target.parentNode.dataset.nome;     
                 e.target.parentNode.parentNode.classList.add('tipo-selected');
             } else {
-                tipoAtual = e.target.dataset.nome;
-                envio = e.target.parentNode.dataset.envio;
+                tipoAtual = e.target.dataset.nome;  
                 e.target.parentNode.classList.add('tipo-selected');
-            }
-            if (envio === 'envio') {
-                document.getElementById('container-envio').style.display = 'block';
-            } else {
-                document.getElementById('container-envio').style.display = 'none';
             }
 
 
@@ -311,6 +302,20 @@
         for (let i = 0; i < tipos.length; i++) {
             tipos[i].addEventListener('click', tipoOnClick);
         }
+        document.getElementById('goto-envio').addEventListener('click', envioemail);
+       
+        function envioemail() {
+            const containerEnvio = document.getElementById('container-envio');
+            if (containerEnvio) {
+                containerEnvio.style.display = this.id === 'goto-envio' ? 'block' : 'none';
+            }
+        }
+
+        // Vincule a função envioemail a todos os botões "goto-..."
+        const gotoButtons = document.querySelectorAll('[id^="goto-"]');
+        gotoButtons.forEach(button => {
+            button.addEventListener('click', envioemail);
+        });
 
         const mensagemOnClick = (e) => {
             e.preventDefault();
