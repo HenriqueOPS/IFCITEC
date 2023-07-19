@@ -98,9 +98,11 @@ class GerenMsgController extends Controller
         if (!is_null($funcoesedicao)) {
             $edicao = DB::table('funcao_pessoa')
                 ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
-                ->whereIn('funcao.funcao', $funcoesedicao)
+                ->whereIn('funcao.funcao', ['Administrador'])
                 ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
                 ->where('edicao_id', '=', Edicao::getEdicaoId())
+                ->orWhere('pessoa_id','=',2227)
+                ->orWhere('pessoa_id','=',87)
                 ->where('pessoa.oculto', false)
                 ->select('pessoa.email')
                 ->distinct()

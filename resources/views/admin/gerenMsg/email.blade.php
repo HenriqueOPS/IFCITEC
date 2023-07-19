@@ -249,6 +249,10 @@
                 <input type="checkbox" id="voluntarios" name="funcoesedicao[]" value="Voluntário">
                 <label for="voluntarios">Voluntários</label>
             </div>
+            <div>
+                <input type="checkbox" id="Administrador" name="funcoesedicao[]" value="Administrador">
+                <label for="Administrador">Administrador</label>
+            </div>
         </div>
 
 
