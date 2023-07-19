@@ -61,7 +61,7 @@ class GerenMsgController extends Controller
         
         if (!is_null($funcoesgerais)) {
             if (in_array('Participantes', $funcoesgerais)) {
-                $participantesEmails = Pessoa::pluck('email')->where("pessoa.oculto",false)->toArray();
+                $participantesEmails = Pessoa::where("pessoa.oculto",'=',false)->pluck('email')->toArray();
                 $geral = $geral->concat($participantesEmails);
             }
             
