@@ -100,10 +100,12 @@
 
                         </div>
 
+                        <div class="footer text-center" style=" display:flex;flex-direction: row;align-items: center;">
+                                <input type="submit" class="btn btn-primary btn-sm" value="Entrar" style="margin: 20px 0px 0px 60px">
+                            <a class="btn btn-primary btn-sm" href="{{ url('/cadastro') }}" style="margin: 20px 0px 0px 50px">INSCREVA-SE</a>
+                        </div>
                         <div class="footer text-center" style=" display: flex;flex-direction: column;align-items: center;">
-                                <input type="submit" class="btn btn-primary" value="Entrar">
-                            <a class="btn btn-primary" href="{{ url('/cadastro') }}">INSCREVA-SE</a>
-                            <a class="btn btn-primary" href="{{ route('password.request') }}">ESQUECI MINHA SENHA</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('password.request') }}">ESQUECI MINHA SENHA</a>
                         </div>
 
                     </form>
