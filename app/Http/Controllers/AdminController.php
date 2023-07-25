@@ -907,10 +907,10 @@ class AdminController extends Controller
     }
     public function brindes(){
         $brindes = Brindes::orderBy('nome')->get();
-        return view('admin.brindes.home',['brindes' => $brindes]);
+        return view('admin.premiacao.home',['brindes' => $brindes]);
     }
     public function NovoBrinde(){
-        return view('admin.brindes.create');
+        return view('admin.premiacao.create');
     }
     public function cadastroBrinde(Request $req){
         $data = $req->all();
@@ -918,6 +918,7 @@ class AdminController extends Controller
             'nome' => $data['nome'],
             'quantidade' => $data['quantidade'],
             'descricao' => $data['descricao'],
+            'tamanho' => $data['tamanho'],
         ]);
     return redirect()->route('admin.brindes');
     }
@@ -928,7 +929,7 @@ class AdminController extends Controller
     }
     public function editarbrindes($id){
         $brinde = Brindes::find($id);
-        return view('admin.brindes.edit', compact('brinde'));
+        return view('admin.premiacao.edit', compact('brinde'));
     }
     public function editaBrinde(Request $request){
         $idBrinde = $request->input('id_brinde');
@@ -939,10 +940,55 @@ class AdminController extends Controller
         $brinde->nome = $request->input('nome');
         $brinde->quantidade = $request->input('quantidade');
         $brinde->descricao = $request->input('descricao');
-        
+        $brinde->descricao = $request->input('tamanho');
         $brinde->save();
         
-        return redirect()->route('admin.brindes')->with('success', 'Brinde atualizado com sucesso!');
+        return redirect()->route('admin.brindes')->with('success', 'Premiação atualizado com sucesso!');
+    }
+      public function adicionarQuantidade(Request $request)
+    {
+        // Valide os dados recebidos na requisição
+        $this->validate($request, [
+            'brinde_id' => 'required|integer',
+            'quantidade' => 'required|integer|min:1',
+        ]);
+
+        // Encontre o brinde pelo ID
+        $brinde = Brindes::findOrFail($request->brinde_id);
+
+        // Incremente a quantidade do brinde
+        $brinde->quantidade += $request->quantidade;
+
+        // Salve as mudanças no banco de dados
+        $brinde->save();
+
+        // Redirecione de volta à página anterior com uma mensagem de sucesso
+        return back()->with('success', 'Quantidade adicionada com sucesso!');
+    }
+    public function decrementarQuantidade(Request $request)
+    {
+        // Valide os dados recebidos na requisição
+        $this->validate($request, [
+            'brinde_id' => 'required|integer',
+            'quantidade' => 'required|integer|min:1',
+        ]);
+
+        // Encontre o brinde pelo ID
+        $brinde = Brindes::findOrFail($request->brinde_id);
+
+        // Verifique se a quantidade a decrementar é maior que a quantidade atual
+        if ($request->quantidade > $brinde->quantidade) {
+            return back()->with('error', 'A quantidade a decrementar é maior que a quantidade disponível!');
+        }
+
+        // Decremente a quantidade do brinde
+        $brinde->quantidade -= $request->quantidade;
+
+        // Salve as mudanças no banco de dados
+        $brinde->save();
+
+        // Redirecione de volta à página anterior com uma mensagem de sucesso
+        return back()->with('success', 'Quantidade decrementada com sucesso!');
     }
 
 }
