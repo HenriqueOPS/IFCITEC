@@ -39,20 +39,32 @@
                         {{ csrf_field() }}
                         <label for="favcolor">Selecione a cor:</label>
                         <input type="color" id="favcolor" name="cor" value="#ff0000"><br><br>
-                        <button type="submit" class="btn btn-primary"  >Mudar cor da NavBar</button>
+                        <button type="submit" class="btn btn-primary"  >Mudar cor da NavBar</button><br><br>
                     </form>
                     <form method="POST" action="{{ route('admin.avisos')}}">
                         {{ csrf_field() }}
                         <label for="favcolor">Selecione a cor:</label>
                         <input type="color" id="favcolor" name="cor" value="#ff0000"><br><br>
-                        <button type="submit" class="btn btn-primary"  >Mudar cor dos avisos</button>
+                        <button type="submit" class="btn btn-primary"  >Mudar cor dos avisos</button><br><br>
                     </form>
                     <form method="POST" action="{{ route('admin.botoes')}}">
                         {{ csrf_field() }}
                         <label for="favcolor">Selecione a cor:</label>
                         <input type="color" id="favcolor" name="cor" value="#ff0000"><br><br>
-                        <button type="submit" class="btn btn-primary"   >Mudar cor dos botoes</button>
+                        <button type="submit" class="btn btn-primary"   >Mudar cor dos botoes</button><br><br>
                     </form>
+                    <!--<form method="POST" action="{{ route('admin.fontes') }}/">
+                        {{ csrf_field() }}
+                        <label for="fontSelect">Selecione a fonte:</label>
+                        <select id="fontSelect" name="fonte">
+                            <option value="Arial">Arial</option>
+                            <option value="Verdana">Verdana</option>
+                            <option value="Helvetica">Helvetica</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                            !-- Adicione mais opções de fonte, se necessário --
+                        </select><br><br>
+                        <button type="submit" class="btn btn-primary">Mudar fonte do texto</button>
+                    </form>-->
                 </div>
 
             </div>

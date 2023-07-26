@@ -944,5 +944,13 @@ class AdminController extends Controller
         
         return redirect()->route('admin.brindes')->with('success', 'Brinde atualizado com sucesso!');
     }
-
+    /*public function fontes(Request $req){
+        $cor = Mensagem::where('nome', '=', 'fontes')->get();
+        $cor[0]->conteudo = $req->cor;
+        $cor[0]->timestamps = false;
+        $cor[0]->save();
+    
+        return redirect()->route('admin.configuracoes');
+    }
+    */
 }

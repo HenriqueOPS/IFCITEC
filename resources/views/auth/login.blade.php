@@ -51,7 +51,24 @@
         background-position:center;
         background-attachment: fixed;   
         height:100vh;
-    }
+        }
+        .btn {
+        background-image: linear-gradient(to right, #006175 0%, #00a950 100%);
+        border-radius: 20px;
+        box-sizing: border-box;
+        display: flex; /* Tornar os botões elementos flexíveis */
+        justify-content: center; /* Centralizar horizontalmente o conteúdo */
+        align-items: center; /* Centralizar verticalmente o conteúdo */
+        height: 50px; /* Altura dos botões */
+        font-size: 1.6em; /* Fonte dos botões */
+        position: relative;
+        text-decoration: none;
+        text-transform: none;
+        margin: 1.5rem 5rem;
+        }
+        .btn:hover {
+        color: #fff;                
+        }
     </style>
 
 
@@ -101,11 +118,11 @@
                         </div>
 
                         <div class="footer text-center" style=" display:flex;flex-direction: row;align-items: center;">
-                                <input type="submit" class="btn btn-primary btn-sm" value="Entrar" style="margin: 20px 0px 0px 60px">
-                            <a class="btn btn-primary btn-sm" href="{{ url('/cadastro') }}" style="margin: 20px 0px 0px 50px">INSCREVA-SE</a>
+                                <input type="submit" class="btn btn-primary btn-sm" value="ENTRAR" style="margin: 20px 0px 0px 60px">
+                            <a class="btn btn-primary btn-sm" href="{{ url('/cadastro') }}" style="margin: 20px 0px 0px 50px">INSCREVER</a>
                         </div>
                         <div class="footer text-center" style=" display: flex;flex-direction: column;align-items: center;">
-                            <a class="btn btn-primary btn-sm" href="{{ route('password.request') }}">ESQUECI MINHA SENHA</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('password.request') }}">MUDAR SENHA</a>
                         </div>
 
                     </form>
