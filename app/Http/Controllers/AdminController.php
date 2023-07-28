@@ -311,7 +311,7 @@ class AdminController extends Controller
             ->whereRaw('(funcao_pessoa.funcao_id = 3 or funcao_pessoa.funcao_id = 4)')
             ->select('comissao_edicao.id', 'funcao_pessoa.homologado', 'funcao_pessoa.funcao_id',
                 'pessoa.nome', 'pessoa.instituicao', 'pessoa.titulacao')
-            ->orderBy('funcao_pessoa.homologado')
+            ->orderByDesc('funcao_pessoa.homologado')
             ->orderBy('pessoa.nome', 'asc')
             ->get()
             ->toArray();

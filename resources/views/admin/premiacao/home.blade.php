@@ -37,9 +37,7 @@
                             <td>{{ $brinde['descricao'] }}</td>
                             <td>{{ $brinde['tamanho'] }}</td>
                             <td>{{ $brinde['quantidade'] }}</td>
-                            <td class="td-actions text-right">
-            <a href="javascript:void(0);" class="modalBrinde" data-toggle="modal" data-target="#modal-brinde" data-brinde="{{ $brinde['id'] }}"><i class="material-icons blue-icon">balance</i></a>
-            <a href="javascript:void(0);" onclick="abrirModalAdicionar({{ $brinde['id'] }})"><i class="material-icons">add_circle</i></a>
+                            <td class="td-actions text-right"> <a href="javascript:void(0);" onclick="abrirModalAdicionar({{ $brinde['id'] }})"><i class="material-icons">add_circle</i></a>
             <a href="javascript:void(0);" onclick="abrirModalDecrementar({{ $brinde['id'] }})"><i class="material-icons">remove_circle</i></a>       </td>
                         </tr>
                         @endforeach
