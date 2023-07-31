@@ -386,12 +386,13 @@
                     },
                     dataType: 'json',
                     success: function(response) {
-            // Manipule a resposta JSON aqui
-            if (response.mensagem) {
-                // Exiba a mensagem de sucesso ao usuário
-                alert(response.mensagem);
-                location.reload();
-            }
+                    // Manipule a resposta JSON aqui
+                    if (response.mensagem) {
+                        // Exiba a mensagem de sucesso ao usuário
+                        alert(response.mensagem);
+                        $('#summernote').summernote('reset');
+                        fetchMensagens();
+                    }   
         },
                     error: data => {
                         const dd = document.createElement('div');
@@ -418,7 +419,6 @@
             let funcoesedicao = $('input[name="funcoesedicao[]"]:checked').map(function () {
                 return $(this).val();
             }).get();
-            alert("Aguarde...");
             $.ajax({
                 type: 'POST',
                 url: url,
