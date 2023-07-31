@@ -172,7 +172,7 @@
                         </button>
                     </li>
                       <li id="tipo-envio">
-                        <button id="goto-envio" data-nome="email" class="tipo-btn" >
+                        <button id="goto-envio" data-nome="envio" class="tipo-btn" >
                         <i class="material-icons">schedule_send</i>
                             ENVIO
                         </button>
