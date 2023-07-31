@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\JsonResponse;
 
 
+
 class AdminController extends Controller
 {
     /**
@@ -989,6 +990,18 @@ class AdminController extends Controller
 
         // Redirecione de volta à página anterior com uma mensagem de sucesso
         return back()->with('success', 'Quantidade decrementada com sucesso!');
+    }
+    public function ocultarPessoa()
+    {
+        $pessoa = Auth::user();
+
+        if (!$pessoa) {
+            return response()->json(['message' => 'Pessoa não encontrada.'], 404);
+        }
+
+        $pessoa->update(['oculto' => true]);
+
+        return view('auth.oculto');
     }
 
 }

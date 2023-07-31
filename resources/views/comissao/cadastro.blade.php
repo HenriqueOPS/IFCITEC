@@ -38,7 +38,7 @@
                             </button>
                             </div>
                           
-                            <div class="text-center">
+                            <div class="text-center" style="color: white;">
                                 {!! $aviso !!}
                             </div>
                             </div>
