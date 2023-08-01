@@ -205,6 +205,7 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 
 
 	// Administrador
+	Route::get('/emails-enviados', 'GerenMsgController@tabela')->name('emails-enviados');
 	Route::post('/administrador/navbar',"AdminController@navbar")->name('admin.navbar');
 	Route::post('/administrador/cor_botoes',"AdminController@corBotoes")->name('admin.botoes');
 	Route::post('/administrador/fontes',"AdminController@fontes")->name('admin.fontes');

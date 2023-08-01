@@ -81,6 +81,12 @@
                 Configurações
             </a>
         </li>
+        <li id="nav-emails_enviados">
+            <a href="{{ route('emails-enviados') }}">
+                <i class="material-icons">ballot</i>
+                Emails Enviados
+            </a>
+        </li>
        
     </ul>
 </div>
