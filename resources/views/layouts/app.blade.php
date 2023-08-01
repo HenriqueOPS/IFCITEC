@@ -256,8 +256,11 @@
     @yield('js')
 
     <style>
-           .btn {
+            .btn {
                 background-color: {{$corbotoes}} !important; 
+            }
+            body{
+                font-family: {{$fonte}} !important;
             }
     </style>
 </body>

@@ -47,6 +47,16 @@ class AppServiceProvider extends ServiceProvider
                 view()->share('aviso1', $mensagem->conteudo);
             }
 
+            $fontes = Mensagem::where('nome','=','fontes')->first();
+            if (!$fontes){
+                $fontes = new Mensagem();
+                $fontes->nome = 'fontes';
+                $fontes->tipo = 'fonte';
+                $fontes->conteudo = 'Arial';
+                $fontes->save();
+            }
+            view()->share('fonte', $fontes->conteudo);
+
             $corbotoes = Mensagem::where('nome', '=', 'cor_botoes')->first();
             if (!$corbotoes) {
                 // Create a new record if 'cor_botoes' doesn't exist

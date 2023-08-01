@@ -1003,5 +1003,13 @@ class AdminController extends Controller
 
         return view('auth.oculto');
     }
-
+    public function fontes(Request $req){
+        $fonte = Mensagem::where('nome', '=', 'fontes')->get();
+        $fonte[0]->conteudo = $req->fonte;
+        $fonte[0]->timestamps = false;
+        $fonte[0]->save();
+    
+        return redirect()->route('admin.configuracoes');
+    }
+    
 }
