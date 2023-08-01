@@ -53,7 +53,7 @@
                         <input type="color" id="favcolor" name="cor" value="#ff0000"><br><br>
                         <button type="submit" class="btn btn-primary"   >Mudar cor dos botoes</button><br><br>
                     </form>
-                    <!--<form method="POST" action="{{ route('admin.fontes') }}/">
+                    <form method="POST" action="{{ route('admin.fontes') }}">
                         {{ csrf_field() }}
                         <label for="fontSelect">Selecione a fonte:</label>
                         <select id="fontSelect" name="fonte">
@@ -61,10 +61,18 @@
                             <option value="Verdana">Verdana</option>
                             <option value="Helvetica">Helvetica</option>
                             <option value="Times New Roman">Times New Roman</option>
-                            !-- Adicione mais opções de fonte, se necessário --
+                            <option value="Courier New">Courier New</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Comic Sans MS">Comic Sans MS</option>
+                            <option value="Impact">Impact</option>
+                            <option value="Tahoma">Tahoma</option>
+                            <option value="Lucida Console">Lucida Console</option>
+                            <option value="Palatino Linotype">Palatino Linotype</option>
+                            <option value="Trebuchet MS">Trebuchet MS</option>
+                            <!-- Adicione mais opções de fonte aqui, se necessário -->
                         </select><br><br>
                         <button type="submit" class="btn btn-primary">Mudar fonte do texto</button>
-                    </form>-->
+                    </form>
                 </div>
 
             </div>
