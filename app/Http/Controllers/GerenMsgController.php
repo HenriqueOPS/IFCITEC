@@ -110,10 +110,46 @@ class GerenMsgController extends Controller
         }
         
         $emails = $geral->concat($edicao)->unique();
-        
+        $contador = DB::table('emails_enviados')->where('email','=','contador')->get();
+        if (!$contador) {
+            DB::table('emails_enviados')->insert([
+                'email' => 'contador',
+                'horario_envio' => \Carbon\Carbon::now(),
+                'status' => true,
+                'lote' => 1,
+            ]);
+        }
         foreach ($emails as $email) {
             dispatch(new MailAllJob($conteudo, $email));
+            DB::table('emails_enviados')->insert([
+                'email' => $email,
+                'horario_envio' => \Carbon\Carbon::now(),
+                'status' => true,
+                'lote' => $contador[0]->lote,
+            ]);
         }
-        return response()->json(['mensagem' => 'Emails enviados com sucesso']);
+        $lote =  $contador[0]->lote;
+        $contador[0]->lote += 1;
+        DB::table('emails_enviados')->where('email', '=', 'contador')->update(['lote' => $contador[0]->lote]);
+        return response()->json(['mensagem' => 'Emails enviados com sucesso este é o Lote Numero ' . $lote]);
     }
+    public function tabela()
+    {
+          $emailsEnviados = DB::table('emails_enviados')
+            ->where('email', '!=', 'contador')
+            ->where('status', true)
+            ->orderBy('lote')
+            ->get();
+
+        // Buscar os lotes disponíveis para filtrar na view
+        $lotes = DB::table('emails_enviados')
+            ->select('lote')
+            ->where('email', '!=', 'contador')
+            ->where('status', true)
+            ->groupBy('lote')
+            ->pluck('lote');
+
+        return view('admin.gerenMsg.emails_enviados', compact('emailsEnviados', 'lotes'));
+   }
+    
 }
