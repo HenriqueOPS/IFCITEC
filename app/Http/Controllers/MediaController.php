@@ -40,7 +40,10 @@ class MediaController extends Controller
                 'nome' => $nome,
             ]);
         }
-    
+        if($nome=='Imagem'){
+            $directory = public_path('img');
+            $requestImage->move($directory, $nome .'.png');
+        }
         return redirect()->route('admin.configuracoes');
     }
 }

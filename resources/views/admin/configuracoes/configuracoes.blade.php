@@ -33,6 +33,8 @@
                                     <label for="logo-radio">Logo da navbar</label>
                                     <input type="radio" value="logonormal" id="logo-radio" name="imagem"/>
                                     <label for="logo-radio">Logo da tela de login</label>
+                                    <input type="radio" value="Imagem" id="logo-radio" name="imagem"/>
+                                    <label for="logo-radio">Imagem para os emails</label>
                                     <button type="submit" class="btn btn-primary" >mudar imagem</button>
                     </form>
                     <form method="POST" action="{{ route('admin.navbar')}}">

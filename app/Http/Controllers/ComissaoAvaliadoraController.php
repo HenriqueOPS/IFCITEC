@@ -382,7 +382,7 @@ class ComissaoAvaliadoraController extends Controller
 	{
 
 		$data = $req->all();
-
+		$funcoes = '';
 		$pessoa = Pessoa::find($data['pessoa_id']);
 
 		// homologa o avaliador
@@ -394,7 +394,7 @@ class ComissaoAvaliadoraController extends Controller
 					'edicao_id' => Edicao::getEdicaoId(),
 					'homologado' => true
 				]);
-		
+		$funcoes='Avaliador';
 
 		}
 
@@ -407,6 +407,7 @@ class ComissaoAvaliadoraController extends Controller
 					'edicao_id' => Edicao::getEdicaoId(),
 					'homologado' => true
 				]);
+		$funcoes = $funcoes . ' Homologador';
 		}
 
 		// seta homologado como false para função de avaliador/homologador
@@ -478,6 +479,8 @@ class ComissaoAvaliadoraController extends Controller
 					->update([
 						'homologado' => true
 					]);
+				$funcoes='Avaliador';
+
 			}
 
 			// Homologador
@@ -491,6 +494,7 @@ class ComissaoAvaliadoraController extends Controller
 					->update([
 						'homologado' => true
 					]);
+					$funcoes = $funcoes . ' Homologador';
 			}
 		} else { // Não existem áreas então NÃO HOMOLOGA
 
@@ -521,7 +525,10 @@ class ComissaoAvaliadoraController extends Controller
 					'homologado' => false
 				]);
 		}
-		$emailJob = (new \App\Jobs\MailBaseJob(Auth::user()->email, 'HomologacaoEmail', ['nome' => Auth::user()->nome])
+		if($funcoes == 'Avaliador Homologador'){
+			$funcoes = 'Avaliador/Homologador';
+		}
+		$emailJob = (new \App\Jobs\MailBaseJob(Auth::user()->email, 'HomologacaoEmail', ['nome' => Auth::user()->nome,'funcoes' => $funcoes])
 		)->delay(\Carbon\Carbon::now()->addSeconds(3));
 		dispatch($emailJob);
 		return redirect()->route('administrador.comissao');
