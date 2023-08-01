@@ -198,7 +198,7 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::post('/administrador/fichas/cadastrar', 'FichaController@store')->name('adminstrador.salvarFicha');
 	Route::get('/administrador/fichas/copiar', 'FichaController@copiarFicha')->name('adminstrador.copiarFicha');
 	Route::post('/administrador/fichas/copiar', 'FichaController@copiaFicha')->name('adminstrador.copiaFicha');
-
+	Route::get('/ocultar-pessoa', 'AdminController@ocultarPessoa')->name('pessoa.ocultar');
 	Route::get('/administrador/fichas/{id}', 'FichaController@show')->name('administrador.showFicha');
 	Route::get('/administrador/fichas/{id}/editar', 'FichaController@edit')->name('administrador.edit');
 	Route::post('/administrador/fichas/editar', 'FichaController@update')->name('administrador.alteraFicha');
@@ -218,6 +218,8 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::post('/editar/empresa/editar','AdminController@editaEmpresa')->name('editaEmpresa');
 	Route::get('/administrador/brindes','AdminController@brindes')->name('admin.brindes');
 	Route::get('/administrador/brindes/novo','AdminController@NovoBrinde')->name('admin.brindes.novo');
+	Route::post('/admin/premiacao/aumento', 'AdminController@adicionarQuantidade')->name('admin.premiacao.aumento');
+	Route::post('/admin/premiacao/decremento', 'AdminController@decrementarQuantidade')->name('admin.premiacao.decremento');
 	Route::post('/administrador/brinde/cadastrar','AdminController@cadastroBrinde')->name('admin.brindes.cadastrar');
 	Route::get('/projetos/homologar-projetos', 'ProjetoController@homologarProjetos')->name('homologar-projetos');
 	Route::post('/projetos/homologa-projetos', 'ProjetoController@homologaProjetos')->name('homologa-projetos');

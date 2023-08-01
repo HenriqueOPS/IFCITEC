@@ -100,7 +100,7 @@
 				</div>
 			</div>
 
-			<input class="btn btn-success align-center" type="submit" value="Enviar" >
+			<input class="btn btn-success align-center" type="submit" value="Salvar" >
 
 			</form>
 

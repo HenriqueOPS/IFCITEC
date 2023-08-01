@@ -66,7 +66,7 @@
                                     <span class="label label-warning">Não Homologado</span></td>
                                 @endif
                             <td class="text-right">
-                                <a href="{{route('homologarComissao',$c->id)}}"><i class="material-icons">visibility</i></a>
+                                <a href="{{route('homologarComissao',$c->id)}}"><i class="material-icons">group_add</i></a>
                                 <a href="javascript:void(0);" class="exclusaoComissao" id-comissao="{{ $c->id }}" id-funcao="{{ $c->funcao_id }}"><i class="material-icons">delete</i></a>
                             </td>
                         </tr>

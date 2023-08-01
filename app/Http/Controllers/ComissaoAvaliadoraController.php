@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\HomologacaoEmail;
+use Illuminate\Support\Facades\Mail;
 
 use App\Endereco;
 use App\Funcao;
@@ -392,6 +394,8 @@ class ComissaoAvaliadoraController extends Controller
 					'edicao_id' => Edicao::getEdicaoId(),
 					'homologado' => true
 				]);
+		
+
 		}
 
 		// homologa o homologador
@@ -517,7 +521,9 @@ class ComissaoAvaliadoraController extends Controller
 					'homologado' => false
 				]);
 		}
-
+		$emailJob = (new \App\Jobs\MailBaseJob(Auth::user()->email, 'HomologacaoEmail', ['nome' => Auth::user()->nome])
+		)->delay(\Carbon\Carbon::now()->addSeconds(3));
+		dispatch($emailJob);
 		return redirect()->route('administrador.comissao');
 	}
 

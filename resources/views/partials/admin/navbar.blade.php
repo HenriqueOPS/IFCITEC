@@ -21,7 +21,7 @@
         <li id="nav-brindes">
             <a href="{{ route('admin.brindes') }}">
                 <i class="material-icons">shopping_bag</i>
-                Brindes
+                Premiação
             </a>
         </li>
         <li id="nav-areas">

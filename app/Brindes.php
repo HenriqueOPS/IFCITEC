@@ -20,12 +20,11 @@ class Brindes extends Model {
      *
      * @var array
      */
-    public $timestamps = false;
     protected $fillable = [
-        'nome','quantidade','descricao'
+        'nome','quantidade','descricao','tamanho'
     ];
 
-
+    
  
 
 }
