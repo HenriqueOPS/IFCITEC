@@ -528,6 +528,7 @@ class ComissaoAvaliadoraController extends Controller
 		if($funcoes == 'Avaliador Homologador'){
 			$funcoes = 'Avaliador/Homologador';
 		}
+		#comentarios
 		$emailJob = (new \App\Jobs\MailBaseJob(Auth::user()->email, 'HomologacaoEmail', ['nome' => Auth::user()->nome,'funcoes' => $funcoes])
 		)->delay(\Carbon\Carbon::now()->addSeconds(3));
 		dispatch($emailJob);
