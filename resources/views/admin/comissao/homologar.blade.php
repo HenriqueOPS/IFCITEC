@@ -100,13 +100,7 @@
 										<span style="color: black">Quero ser Avaliador</span>
 									</label>
 								</div>
-								@else
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="avaliador">
-										<span style="color: black">Quero ser Avaliador</span>
-									</label>
-								</div>
+								
 								@endif
 								@if($pessoa->temFuncao('Homologador', TRUE))
 								<div class="checkbox">
@@ -115,19 +109,13 @@
 										<span style="color: black">Quero ser Homologador</span>
 									</label>
 								</div>
-								@else
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="homologador" >
-										<span style="color: black">Quero ser Homologador</span>
-									</label>
-								</div>
+							
 								@endif
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-6 col-md-offset-3 text-center">
-								<button type="submit" class="btn btn-primary">Homologar</button>
+								<button type="submit" class="btn btn-primary">Submeter</button>
 							</div>
 						</div>
 					</form>

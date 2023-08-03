@@ -382,48 +382,42 @@ class ComissaoAvaliadoraController extends Controller
 	{
 
 		$data = $req->all();
-		$funcoes = '';
-		$pessoa = Pessoa::find($data['pessoa_id']);
+		$funcoesHomologadas = '';
+		$funcoesNãoHomoladas = '';
+		$pessoa = Pessoa::find($data['pessoa_id']);	
 
-		// homologa o avaliador
-		if (isset($data['avaliador']) && !$pessoa->temFuncao('Avaliador', true)) {
+
+	
+		if (!isset($data['homologador']) && $pessoa->temFuncao('Homologador', TRUE)) {
+			// Set avaliador and homologador functions to false
 			DB::table('funcao_pessoa')
-				->insert([
-					'pessoa_id' => $data['pessoa_id'],
-					'funcao_id' => EnumFuncaoPessoa::getValue('Avaliador'),
-					'edicao_id' => Edicao::getEdicaoId(),
-					'homologado' => true
+				->where('pessoa_id', '=', $data['pessoa_id'])
+				->where('edicao_id', '=', Edicao::getEdicaoId())
+				->whereIn('funcao_id', [
+					EnumFuncaoPessoa::getValue('Homologador'),
+				])
+				->update([
+					'homologado' => false
 				]);
-		$funcoes='Avaliador';
-
-		}
-
-		// homologa o homologador
-		if (isset($data['homologador']) && !$pessoa->temFuncao('Homologador', true)) {
+			$funcoesNãoHomoladas = 'Homologador';
+		} 
+		if (!isset($data['avaliador']) && $pessoa->temFuncao('Avaliador', TRUE)) {
+			// Set avaliador and homologador functions to false
 			DB::table('funcao_pessoa')
-				->insert([
-					'pessoa_id' => $data['pessoa_id'],
-					'funcao_id' => EnumFuncaoPessoa::getValue('Homologador'),
-					'edicao_id' => Edicao::getEdicaoId(),
-					'homologado' => true
+				->where('pessoa_id', '=', $data['pessoa_id'])
+				->where('edicao_id', '=', Edicao::getEdicaoId())
+				->whereIn('funcao_id', [
+					EnumFuncaoPessoa::getValue('Avaliador'),
+				])
+				->update([
+					'homologado' => false
 				]);
-		$funcoes = $funcoes . ' Homologador';
-		}
+			$funcoesNãoHomoladas = $funcoesNãoHomoladas . 'Avaliador';
+		} 
+
 
 		// seta homologado como false para função de avaliador/homologador
-		DB::table('funcao_pessoa')
-			->where('pessoa_id', '=', $data['pessoa_id'])
-			->where('edicao_id', '=', Edicao::getEdicaoId())
-			->whereIn(
-				'funcao_id',
-				[
-					EnumFuncaoPessoa::getValue('Homologador'),
-					EnumFuncaoPessoa::getValue('Avaliador'),
-				]
-			)
-			->update([
-				'homologado' => false
-			]);
+
 
 		$areasComissao = DB::table('areas_comissao')
 			->select('area_id')
@@ -479,7 +473,7 @@ class ComissaoAvaliadoraController extends Controller
 					->update([
 						'homologado' => true
 					]);
-				$funcoes='Avaliador';
+				$funcoesHomologadas='Avaliador';
 
 			}
 
@@ -494,7 +488,7 @@ class ComissaoAvaliadoraController extends Controller
 					->update([
 						'homologado' => true
 					]);
-					$funcoes = $funcoes . ' Homologador';
+					$funcoesHomologadas = $funcoesHomologadas . ' Homologador';
 			}
 		} else { // Não existem áreas então NÃO HOMOLOGA
 
@@ -525,11 +519,20 @@ class ComissaoAvaliadoraController extends Controller
 					'homologado' => false
 				]);
 		}
-		if($funcoes == 'Avaliador Homologador'){
-			$funcoes = 'Avaliador/Homologador';
+		if($funcoesHomologadas == 'Avaliador Homologador'){
+			$funcoesHomologadas = 'Avaliador/Homologador';
+		}
+		if($funcoesHomologadas != ''){
+			$funcoesHomologadas = 'Você está Homologado no nosso sistema como ' . $funcoesHomologadas . '.';
 		}
 		#comentarios
-		$emailJob = (new \App\Jobs\MailBaseJob(Auth::user()->email, 'HomologacaoEmail', ['nome' => Auth::user()->nome,'funcoes' => $funcoes])
+		if($funcoesNãoHomoladas != ''){
+			if($funcoesNãoHomoladas == 'HomologadorAvaliador'){
+				$funcoesNãoHomoladas = 'Avaliador/Homologador';
+			}
+			$funcoesNãoHomoladas = 'Você não é um ' . $funcoesNãoHomoladas . ' no nosso sistema.';
+		}
+		$emailJob = (new \App\Jobs\MailBaseJob(Auth::user()->email, 'HomologacaoEmail', ['nome' => Auth::user()->nome,'funcoes' => $funcoesHomologadas,'naohomologadas' => $funcoesNãoHomoladas])
 		)->delay(\Carbon\Carbon::now()->addSeconds(3));
 		dispatch($emailJob);
 		return redirect()->route('administrador.comissao');
