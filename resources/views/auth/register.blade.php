@@ -55,8 +55,8 @@
                         });
                         </script>
                         <div class="col-md-12 text-center">
-                            <div class="social-line">
-                                <a class="btn btn-simple btn-just-icon">
+                            <div class="social-line" style="margin-top: 25px">
+                                <a>
                                     <img src="{{ asset('img/logo.png') }}" title="IFCITEC" height="75" />
                                 </a>
                             </div>
