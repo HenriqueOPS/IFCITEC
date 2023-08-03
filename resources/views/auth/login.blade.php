@@ -19,6 +19,7 @@
     <link rel="icon" href="{{ asset('img/icons/32x32.png') }}" sizes="32x32" />
     <link rel="icon" href="{{ asset('img/icons/192x192.png') }}" sizes="192x192" />
     <link rel="apple-touch-icon-precomposed" href="{{ asset('img/icons/180x180.png') }}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -84,8 +85,8 @@
                  
                     </div>
 
-                    <form class="form" method="post" action="{{ route('login.verification') }}">
-                        {{ csrf_field() }}
+                    <form class="form" id="loginForm" method="post" action="{{ route('login.verification') }}">
+                    {{ csrf_field() }}
 
                         <div class="content">
                             <div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
@@ -118,11 +119,13 @@
                         </div>
 
                         <div class="footer text-center" style=" display:flex;flex-direction: row;align-items: center;">
-                                <input type="submit" class="btn btn-primary btn-sm" value="ENTRAR" style="margin: 20px 0px 0px 60px">
-                            <a class="btn btn-primary btn-sm" href="{{ url('/cadastro') }}" style="margin: 20px 0px 0px 50px">INSCREVER</a>
+                            <div id="#loginForm">
+                                <button class="btn btn-primary btn-sm" style="margin: 20px 0px 0px 30px"><span class="material-symbols-outlined" style="margin: 0px 10px 0px 0px">home</span>ENTRAR</button>
+                            </div>    
+                        <a class="btn btn-primary btn-sm" href="{{ url('/cadastro') }}" style="margin: 20px 0px 0px 50px"><span class="material-symbols-outlined" style="margin: 0px 10px 0px 0px">person</span>INSCREVER</a>
                         </div>
                         <div class="footer text-center" style=" display: flex;flex-direction: column;align-items: center;">
-                            <a class="btn btn-primary btn-sm" href="{{ route('password.request') }}">MUDAR SENHA</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('password.request') }}"><span class="material-symbols-outlined" style="margin: 0px 10px 0px 0px">lock_reset</span>MUDAR SENHA</a>
                         </div>
 
                     </form>
@@ -140,6 +143,34 @@
 
     <!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
     <script src="{{ asset('js/material-kit.js') }}" type="text/javascript"></script>
+
+    <script>
+        $(document).ready(function() {
+            $("#loginForm").submit(function(event) {
+                event.preventDefault(); // Impede o comportamento padrão do envio do formulário
+
+                // Obtenha os dados do formulário
+                var formData = $(this).serialize();
+
+                // Envie os dados para o servidor usando Ajax
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('login.verification') }}",
+                    data: formData,
+                    success: function(response) {
+                        // Processar a resposta do servidor aqui, se necessário
+                        console.log(response);
+                        // Se o login for bem-sucedido, redirecionar para a página inicial
+                        window.location.href = "{{ route('home') }}";
+                    },
+                    error: function(xhr, status, error) {
+                        // Lidar com erros, se houver, aqui
+                        console.log(error);
+                    }
+                });
+            });
+        });
+    </script>
     </body>
     <style>
            .btn {
