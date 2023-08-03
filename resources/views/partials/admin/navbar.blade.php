@@ -1,15 +1,33 @@
 <div id="page" class="col-md-12">
     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="display: flex; align-content: flex-start;">
+        <li id="nav-areas">
+            <a href="{{ route('administrador.areas') }}">
+                <i class="material-icons">brightness_auto</i>
+                Áreas / Niveis
+            </a>
+        </li>
+        <li id="nav-comissao">
+            <a href="{{ route('administrador.comissao') }}">
+                <i class="material-icons">list_alt</i>
+                Comissão Avaliadora
+            </a>
+        </li>
+        <li id="nav-configuracoes">
+            <a href="{{ route('admin.configuracoes') }}">
+                <i class="material-icons">settings</i>
+                Configurações
+            </a>
+        </li>
         <li id="nav-edicoes">
             <a href="{{ route('administrador') }}">
                 <i class="material-icons">adjust</i>
                 Edições
             </a>
         </li>
-        <li id="nav-escolas">
-            <a href="{{ route('administrador.escolas') }}">
-                <i class="material-icons">account_balance</i>
-                Escolas
+        <li id="nav-emails_enviados">
+            <a href="{{ route('emails-enviados') }}">
+                <i class="material-icons">ballot</i>
+                Emails Enviados
             </a>
         </li>
         <li id="nav-empresas">
@@ -18,16 +36,10 @@
                 Empresas
             </a>
         </li>
-        <li id="nav-brindes">
-            <a href="{{ route('admin.brindes') }}">
-                <i class="material-icons">shopping_bag</i>
-                Premiação
-            </a>
-        </li>
-        <li id="nav-areas">
-            <a href="{{ route('administrador.areas') }}">
-                <i class="material-icons">brightness_auto</i>
-                Áreas / Niveis
+        <li id="nav-escolas">
+            <a href="{{ route('administrador.escolas') }}">
+                <i class="material-icons">account_balance</i>
+                Escolas
             </a>
         </li>
         <li id="nav-fichas">
@@ -36,10 +48,10 @@
                 Fichas
             </a>
         </li>
-        <li id="nav-tarefas">
-            <a href="{{ route('administrador.tarefas') }}">
-                <i class="material-icons">title</i>
-                Tarefas
+        <li id="nav-projetos">
+            <a href="{{ route('administrador.projetos') }}">
+                <i class="material-icons">list_alt</i>
+                Listar Projetos
             </a>
         </li>
         <li id="nav-mensagens">
@@ -54,39 +66,28 @@
                 Participantes
             </a>
         </li>
-        <li id="nav-projetos">
-            <a href="{{ route('administrador.projetos') }}">
-                <i class="material-icons">list_alt</i>
-                Listar Projetos
-            </a>
-        </li>
-        <li id="nav-comissao">
-            <a href="{{ route('administrador.comissao') }}">
-                <i class="material-icons">list_alt</i>
-                Comissão Avaliadora
-            </a>
-        </li>
+
     </ul>
 
     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="display: flex; justify-content: center;">
+        <li id="nav-brindes">
+            <a href="{{ route('admin.brindes') }}">
+                <i class="material-icons">shopping_bag</i>
+                Premiação
+            </a>
+        </li>
         <li id="nav-relatorios">
             <a href="{{ route('administrador.relatoriosEdicao') }}">
                 <i class="material-icons">description</i>
                 Relatórios
             </a>
         </li>
-        <li id="nav-configuracoes">
-            <a href="{{ route('admin.configuracoes') }}">
-                <i class="material-icons">settings</i>
-                Configurações
+        <li id="nav-tarefas">
+            <a href="{{ route('administrador.tarefas') }}">
+                <i class="material-icons">title</i>
+                Tarefas
             </a>
         </li>
-        <li id="nav-emails_enviados">
-            <a href="{{ route('emails-enviados') }}">
-                <i class="material-icons">ballot</i>
-                Emails Enviados
-            </a>
-        </li>
-       
+        
     </ul>
 </div>
