@@ -24,22 +24,25 @@
 	}
 
 	body{font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-		margin-left: 0.47cm;
-		margin-right: 0.47cm;
+		margin-left: 4.7mm;
+		margin-right: 4.7mm;
+		margin-top:9mm;
+ 
 	}
     
 	.cracha{
-		width: 9.90cm;
-		height: 5.58cm;
+		width: 99mm;
+		height: 52.8mm;
 		display: inline-block;
 		padding:0;
-		margin-top: 0.9cm;
+		margin: 0;
 		overflow: hidden;
-		
 		
 	}
 
-
+	.cracha:nth-child(9n){
+		margin-bottom:9mm;
+		}
 
 	.cracha .content{
 		width: 100%;
@@ -95,21 +98,19 @@
 </head>
 <body>
 
-@foreach($pessoas as $pessoa)
-
+@foreach($pessoas as $index => $pessoa)
 	<div class="cracha">
 		<div class="content">
-
 			<div class="dados">
 				<h2>{{$funcao}}</h2>
 				<h3>{{$pessoa->nome}}</h3>
 			</div>
-
 			<img src="{{route('qrcode',$pessoa->id)}}" class="qrcode">
-
 		</div>
 	</div>
-
+	@if(($index + 1) % 2 === 0)
+		<br> <!-- Adicionar uma quebra de linha a cada dois elementos -->
+	@endif
 @endforeach
 
 

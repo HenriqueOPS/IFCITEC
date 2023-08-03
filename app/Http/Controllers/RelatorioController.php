@@ -16,6 +16,11 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
+use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\IOFactory;
+use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Color;
+
 
 class RelatorioController extends Controller
 {
@@ -2567,4 +2572,29 @@ class RelatorioController extends Controller
         $filename = "csvRelatorioPorEscola.csv";
         return $this->returnsCSVStream($filename, $headerFields, $rows);
     }
+    public function generatePowerPoint()
+{
+    // Crie uma nova apresentação
+    $presentation = new PhpPresentation();
+
+    // Crie um slide
+    $slide = $presentation->getActiveSlide();
+
+    // Adicione um título ao slide
+    $shape = $slide->createRichTextShape();
+    $shape->setHeight(200);
+    $shape->setWidth(600);
+    $shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+    $textRun = $shape->createTextRun('Exemplo de Apresentação PowerPoint');
+    $textRun->getFont()->setBold(true);
+    $textRun->getFont()->setSize(20);
+    $textRun->getFont()->setColor(new Color('FF0000'));
+
+    // Salve a apresentação em um arquivo
+    $writer = IOFactory::createWriter($presentation, 'PowerPoint2007');
+    $filePath = public_path('example.pptx');
+    $writer->save($filePath);
+
+    return response()->download($filePath)->deleteFileAfterSend(true);
+}
 }
