@@ -18,9 +18,9 @@
                    <h2>Configurações</h2>
                 </div>
 
-                <div>
+                <div class="barrinha">
                     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
-                        <li class="active">
+                        <li>
                             <a id="1" class="tab-projetos" role="tab" data-toggle="tab">
                                 <i class="material-symbols-outlined">image</i>
                                 Imagens
@@ -139,6 +139,10 @@
         }
         .iform label{
             margin: 40px 20px 30px 0px;    
+        }
+        .barrinha{
+            display: flex;
+            justify-content: center;
         }
     </style>
 @endsection
