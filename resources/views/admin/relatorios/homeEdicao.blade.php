@@ -430,14 +430,7 @@
                                             class="material-icons">visibility</i></a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>Apresentação PowerPoint</td>
-                                <td class="text-right">
-                                    <a href="{{ route('gerar.powerpoint') }}" target="_blank"><i
-                                            class="material-icons">visibility</i></a>
-                                </td>
-                            </tr>
+                          
                         </tbody>
 
                         <tbody id="5">

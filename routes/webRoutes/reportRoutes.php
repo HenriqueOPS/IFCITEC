@@ -95,7 +95,6 @@ Route::get('/relatorio/projetos/classificacao/{edicao}', 'RelatorioController@cl
 Route::get('/relatorio/projetos/premiacao/{edicao}', 'RelatorioController@premiacaoProjetos')->name('premiacaoProjetos');
 Route::get('/csv/projetos/premiacao/{edicao}', 'RelatorioController@csvPremiados')->name('csvPremiados'); // csv
 Route::get('/relatorio/premiacao/certificados/{edicao}', 'RelatorioController@premiacaoCertificados')->name('premiacaoCertificados');
-Route::get('/gerar-powerpoint', 'RelatorioController@generatePowerPoint')->name('gerar.powerpoint');
 // Relatórios - Presença/Certficados
 Route::get('/csv/presenca/partcipantes/{edicao}', 'RelatorioController@csvPresencaParticipantes')->name('csvPresencaParticipantes');
 Route::get('/csv/presenca/avaliadores/{edicao}', 'RelatorioController@csvPresencaAvaliadores')->name('csvPresencaAvaliadores');
