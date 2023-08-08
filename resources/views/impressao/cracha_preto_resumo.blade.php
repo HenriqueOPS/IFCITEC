@@ -2,7 +2,8 @@
 <head>
 	<meta charset="utf-8">
 	
-<style>
+	
+	<style>
 
 @import "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700";
 
@@ -11,6 +12,8 @@
 	width: 21cm;
 	height: 29.7cm;
 	margin: 0;
+	margin-top: 0.9cm;
+	margin-left: 0.47cm;
 }
 
 @media all {
@@ -24,26 +27,20 @@
 	}
 
 	body{font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-		margin-left: 4.7mm;
-		margin-right: 4.7mm;
-		margin-top:9mm;
- 
+		margin: 0px; 
+		overflow: visible; 
 	}
     
 	.cracha{
-		width: 99mm;
-		height: 52.8mm;
+		width: 9.90cm;
+		height: 5.6cm;
 		display: inline-block;
 		padding:0;
 		margin: 0;
-		overflow: hidden;
+		margin-top: 0.16cm;
+		
 		
 	}
-
-	.cracha:nth-child(9n){
-		margin-bottom:9mm;
-		}
-
 	.cracha .content{
 		width: 100%;
 		margin: 0mm;
@@ -60,7 +57,7 @@
 		width: 100%;
 		height: 5mm;
 		font-size: 5mm;
-		overflow: hidden;
+	
 		margin: 0;
 		color: #fff;
 	}
@@ -68,18 +65,18 @@
 	.cracha .dados h2{
 		width: calc(100% - 12mm);
 		height: 8mm;
-		font-size: 23px;
 		line-height: 8mm;
-		overflow: hidden;
+	
 		padding: 2mm;
+		font-size: 23px;
 		background: rgb(0, 0, 0);
 		margin-left: 5mm;
 		margin-top: 0mm;
 		text-transform: uppercase;
 	}
 	.cracha .dados h3{
-		margin-top: 2mm;
 		font-size: 20px;
+		margin-top: 2mm;
 		width: calc(100% - 12mm);
 		margin-left: 5mm;
 		text-align: center;
@@ -98,19 +95,21 @@
 </head>
 <body>
 
-@foreach($pessoas as $index => $pessoa)
+@foreach($pessoas as $pessoa)
+
 	<div class="cracha">
 		<div class="content">
+
 			<div class="dados">
 				<h2>{{$funcao}}</h2>
 				<h3>{{$pessoa->nome}}</h3>
 			</div>
+
 			<img src="{{route('qrcode',$pessoa->id)}}" class="qrcode">
+
 		</div>
 	</div>
-	@if(($index + 1) % 2 === 0)
-		<br> <!-- Adicionar uma quebra de linha a cada dois elementos -->
-	@endif
+
 @endforeach
 
 
