@@ -37,7 +37,6 @@
 		display: inline-block;
 		padding:0;
 		margin: 0;
-		margin-top: 0.16cm;
 		
 		
 	}
