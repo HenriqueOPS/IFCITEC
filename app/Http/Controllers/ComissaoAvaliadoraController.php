@@ -532,7 +532,7 @@ class ComissaoAvaliadoraController extends Controller
 			}
 			$funcoesNãoHomoladas = 'Você não é um ' . $funcoesNãoHomoladas . ' no nosso sistema.';
 		}
-		$emailJob = (new \App\Jobs\MailBaseJob(Auth::user()->email, 'HomologacaoEmail', ['nome' => Auth::user()->nome,'funcoes' => $funcoesHomologadas,'naohomologadas' => $funcoesNãoHomoladas])
+		$emailJob = (new \App\Jobs\MailBaseJob($pessoa->email, 'HomologacaoEmail', ['nome' =>$pessoa->nome,'funcoes' => $funcoesHomologadas,'naohomologadas' => $funcoesNãoHomoladas])
 		)->delay(\Carbon\Carbon::now()->addSeconds(3));
 		dispatch($emailJob);
 		return redirect()->route('administrador.comissao');
