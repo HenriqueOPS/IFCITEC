@@ -265,6 +265,10 @@
     </section>
 @endsection
 
+@section('partials')
+    @include('partials.modalMensagem')
+@endsection
+
 @section('js')
     <!-- summernote css/js -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
@@ -386,14 +390,16 @@
                     },
                     dataType: 'json',
                     success: function(response) {
-                    // Manipule a resposta JSON aqui
-                    if (response.mensagem) {
-                        // Exiba a mensagem de sucesso ao usuário
-                        alert(response.mensagem);
+                        // Preencha a mensagem na modal
+                        $('#mensagemContainer').text(response.mensagem);
+
+                        // Abra a modal
+                        $('#modalMensagem').modal('show');
+
+                        // Limpe o Summernote e atualize as mensagens
                         $('#summernote').summernote('reset');
                         fetchMensagens();
-                    }   
-        },
+                    },
                     error: data => {
                         const dd = document.createElement('div');
                         document.getElementById('app').appendChild(dd);
