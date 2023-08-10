@@ -183,6 +183,24 @@
                     </div>
                 </div>
 
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">school</i>
+                    </span>
+                    <div class="form-group label-floating">
+                        <span class="modal-projeto escola"></span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-symbols-outlined" style="margin-top: 10px;">location_on</i>
+                    </span>
+                    <div class="form-group label-floating">
+                        <span class="modal-projeto municipio"></span>-<span class="modal-projeto uf"></span>
+                    </div>
+                </div>
+
                 <div>
                     <h5>Homologação</h5>
 
@@ -279,6 +297,9 @@ $('.dados-projeto').click(function() {
 
         $(".modal-projeto.nivel").html(res.nivel);
         $(".modal-projeto.area").html(res.area);
+        $(".modal-projeto.escola").html(res.escola_nome);
+        $(".modal-projeto.municipio").html(res.escola_municipio);
+        $(".modal-projeto.uf").html(res.escola_uf);
 
         var homologadores = res.homologacao;
         if(homologadores.length){

@@ -848,8 +848,16 @@ foreach ($palavrasChaves as $palavra) {
 
 	public function statusProjeto($id)
 	{
-
+		
 		$projeto = Projeto::find($id);
+
+		// Obter informações da escola associada ao projeto
+		$escolaInfo = DB::table('escola_funcao_pessoa_projeto')
+			->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+			->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
+			->select('escola.nome_completo', 'endereco.municipio', 'endereco.uf')
+			->where('escola_funcao_pessoa_projeto.projeto_id', $id)
+			->first();
 
 		$response = [
 			'titulo' => $projeto->titulo,
@@ -858,6 +866,9 @@ foreach ($palavrasChaves as $palavra) {
 			'situacao' => $projeto->getStatus(),
 			'homologacao' => array(),
 			'avaliacao' => array(),
+			'escola_nome' => $escolaInfo->nome_completo,
+			'escola_municipio' => $escolaInfo->municipio,
+			'escola_uf' => $escolaInfo->uf,
 		];
 
 		//Busca o nome dos Homologadores
