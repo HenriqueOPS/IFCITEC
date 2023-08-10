@@ -1177,9 +1177,7 @@ class RelatorioController extends Controller
     {
         $niveis = Edicao::find($edicao)->niveis;
 
-        return PDF::loadView('relatorios.gerais.niveis', ['niveis' => $niveis])
-            ->setPaper('A4', 'landscape')
-            ->download('niveis.pdf');
+        return view('relatorios.gerais.niveis', ['niveis' => $niveis]);
     }
 
     public function escolas()
@@ -1720,16 +1718,14 @@ class RelatorioController extends Controller
     {
         $areas = Edicao::find($edicao)->areas;
 
-        return PDF::loadView('relatorios.gerais.areas', ['areas' => $areas])
-            ->setPaper('A4', 'landscape')
-            ->download('areas.pdf');
+        return view('relatorios.gerais.areas', ['areas' => $areas]);
     }
 
     public function edicoes()
     {
         $edicoes = Edicao::orderBy('ano')->get();
 
-        return PDF::loadView('relatorios.gerais.edicoes', ['edicoes' => $edicoes])->download('edicoes.pdf');
+        return view('relatorios.gerais.edicoes', ['edicoes' => $edicoes]);
     }
 
     public function funcoesUsuarios()
