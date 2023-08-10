@@ -39,6 +39,9 @@
 					</div>
 
 					<div class="row">
+					<strong class="col-md-5 col-md-offset-1">Data de Inscrição</strong>
+						<span class="col-md-5 col-md-offset-1">{{ $comissaoEdicao->data_criacao }}</span>
+
 						<strong class="col-md-5 col-md-offset-1">Instituição</strong>
 						<span class="col-md-5 col-md-offset-1">{{ $pessoa->instituicao }}</span>
 

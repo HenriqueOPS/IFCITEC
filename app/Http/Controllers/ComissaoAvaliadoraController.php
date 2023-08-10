@@ -375,7 +375,7 @@ class ComissaoAvaliadoraController extends Controller
 		if ($projetosAreas == null)
 			$areasConhecimento = $areas;
 
-		return view('admin.comissao.homologar', compact('id', 'pessoa', 'idsAreas', 'areas', 'nivel', 'areasConhecimento'));
+		return view('admin.comissao.homologar', compact('id', 'pessoa', 'idsAreas', 'areas', 'nivel', 'areasConhecimento','comissaoEdicao'));
 	}
 
 	public function homologaComissao(Request $req)
