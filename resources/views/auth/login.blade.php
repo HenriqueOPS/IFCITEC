@@ -56,7 +56,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 50px;
+            height: 43px;
             font-size: 1.6em;
             position: relative;
             text-decoration: none;
@@ -98,21 +98,17 @@
                             </span>
                         </div>
                     </div>
-
-                    <div class="footer text-center" style=" display:flex;flex-direction: row;align-items: center;">
+                    <div class="footer text-center" style=" display:flex;flex-direction: column;align-items: center;">
                         <div id="loginForm">
-                            <button class="btn btn-primary btn-sm" style="margin: 20px 0px 0px 30%"  onclick="submitLoginForm()">
+                            <button class="btn btn-primary btn-sm" onclick="submitLoginForm()">
                                 <span class="material-symbols-outlined" style="margin: 0px 10px 0px 0px">home</span>
                                 ENTRAR
                             </button>
                         </div>
-                        <a class="btn btn-primary btn-sm" href="{{ url('/cadastro') }}" style="margin: 20px 0px 0px 20%">
+                        <a class="btn btn-primary btn-sm" href="{{ url('/cadastro') }}">
                             <span class="material-symbols-outlined" style="margin: 0px 10px 0px 0px">person</span>
                             INSCREVER
                         </a>
-                    </div>
-
-                    <div class="footer text-center" style=" display: flex;flex-direction: column;align-items: center;">
                         <a class="btn btn-primary btn-sm" href="{{ route('password.request') }}">
                             <span class="material-symbols-outlined" style="margin: 0px 10px 0px 0px">lock_reset</span>
                             MUDAR SENHA
