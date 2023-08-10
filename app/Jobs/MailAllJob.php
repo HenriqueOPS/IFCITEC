@@ -15,6 +15,7 @@ class MailAllJob implements ShouldQueue
 
     protected $conteudo;
     protected $email;
+    protected $titulo;
 
     /**
      * Create a new job instance.
@@ -22,10 +23,11 @@ class MailAllJob implements ShouldQueue
      * @param string $conteudo
      * @param string $email
      */
-    public function __construct($conteudo, $email)
+    public function __construct($conteudo, $email, $titulo)
     {
         $this->conteudo = $conteudo;
         $this->email = $email;
+        $this->titulo = $titulo; 
     }
 
     /**
@@ -35,7 +37,7 @@ class MailAllJob implements ShouldQueue
      */
     public function handle()
     {
-        $email = new \App\Mail\MailBase($this->conteudo);
+        $email = new \App\Mail\MailMassa($this->conteudo, $this->titulo);
         Mail::to($this->email)->send($email);
     }
 }
