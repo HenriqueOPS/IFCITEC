@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\HomologacaoEmail;
 use Illuminate\Support\Facades\Mail;
-
+use Carbon\Carbon;
 use App\Endereco;
 use App\Funcao;
 use App\Pessoa;
@@ -375,6 +375,7 @@ class ComissaoAvaliadoraController extends Controller
 		if ($projetosAreas == null)
 			$areasConhecimento = $areas;
 
+			$comissaoEdicao->data_criacao = Carbon::parse($comissaoEdicao->data_criacao)->format('d/m/Y H:i:s');
 		return view('admin.comissao.homologar', compact('id', 'pessoa', 'idsAreas', 'areas', 'nivel', 'areasConhecimento','comissaoEdicao'));
 	}
 
