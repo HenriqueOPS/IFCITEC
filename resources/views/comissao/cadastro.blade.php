@@ -24,6 +24,17 @@
                     <form method="post" id="formulario" action="{{route('cadastroAvaliador')}}">
 
                         {{ csrf_field() }}
+                        @if ($errors->any())
+                    <div class="col-md-10 col-md-offset-1 col-xs-11">
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @endif
 
                         <div class="row">
                        
@@ -269,6 +280,7 @@
                             </div>
                         </div>
                     </form>
+                  
 
 					@endif
                 </div>

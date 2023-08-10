@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\HomologacaoEmail;
@@ -179,13 +181,43 @@ class ComissaoAvaliadoraController extends Controller
 	}
 
 	public function cadastraComissao(Request $req)
-	{
-		$data = $req->all();
-
-		if (Pessoa::find(Auth::id())->endereco_id != null) { // altera o endereço do caboclo
-			$idEndereco = DB::table('endereco')
-				->where('id', '=', Pessoa::find(Auth::id())->endereco_id)
-				->update([
+	{ 
+		
+		try {
+            $data = $req->all();
+            $val = Validator::make($data,[
+                'cep' => 'required|',
+                'endereco' => 'required|string',
+                'bairro' => 'required|string',
+                'municipio' => 'required|string',
+                'uf' => 'required|string|max:2',
+                'numero' => 'required|string',
+                'titulacao' => 'required|string',
+				'lattes' => 'required|active_url|max:190',
+                'profissao' => 'required|string',
+                'instituicao' => 'required|string',
+                'area_id' => 'required|array',
+                'area_id.*' => 'required|numeric',
+                'funcao' => 'required|array',
+            ]);
+			if ($val->fails()) {
+                return redirect()->back()->withErrors($val->errors())->withInput();
+            }
+			DB::beginTransaction();
+			if (Pessoa::find(Auth::id())->endereco_id != null) { // altera o endereço do caboclo
+				$idEndereco = DB::table('endereco')
+					->where('id', '=', Pessoa::find(Auth::id())->endereco_id)
+					->update([
+						'cep' => $data['cep'],
+						'endereco' => $data['endereco'],
+						'bairro' => $data['bairro'],
+						'municipio' => $data['municipio'],
+						'uf' => $data['uf'],
+						'numero' => $data['numero']
+					]);
+			} else { // cria um registro de endereço
+	
+				$idEndereco = Endereco::create([
 					'cep' => $data['cep'],
 					'endereco' => $data['endereco'],
 					'bairro' => $data['bairro'],
@@ -193,118 +225,121 @@ class ComissaoAvaliadoraController extends Controller
 					'uf' => $data['uf'],
 					'numero' => $data['numero']
 				]);
-		} else { // cria um registro de endereço
-
-			$idEndereco = Endereco::create([
-				'cep' => $data['cep'],
-				'endereco' => $data['endereco'],
-				'bairro' => $data['bairro'],
-				'municipio' => $data['municipio'],
-				'uf' => $data['uf'],
-				'numero' => $data['numero']
-			]);
-
-			$idEndereco = $idEndereco['original']['id'];
-		}
-
-		DB::table('pessoa')
-			->where('id', '=', Auth::id())
-			->update([
-				'titulacao' => $data['titulacao'],
-				'lattes' => $data['lattes'],
-				'profissao' => $data['profissao'],
-				'instituicao' => $data['instituicao'],
-				'endereco_id' => $idEndereco,
-			]);
-
-		$comissaoEdicao = DB::table('comissao_edicao')
-			->where('edicao_id', '=', Edicao::getEdicaoId())
-			->where('pessoa_id', '=', Auth::id())
-			->get();
-
-		if ($comissaoEdicao->count()) {
-			$comissaoEdicaoId = $comissaoEdicao->first()->id;
-		} else {
-			$comissaoEdicaoId = DB::table('comissao_edicao')
-				->insertGetId([
-					'edicao_id' => Edicao::getEdicaoId(),
-					'pessoa_id' => Auth::id()
+	
+				$idEndereco = $idEndereco['original']['id'];
+			}
+	
+			DB::table('pessoa')
+				->where('id', '=', Auth::id())
+				->update([
+					'titulacao' => $data['titulacao'],
+					'lattes' => $data['lattes'],
+					'profissao' => $data['profissao'],
+					'instituicao' => $data['instituicao'],
+					'endereco_id' => $idEndereco,
 				]);
-		}
-
-		// remove as áreas da comissão caso esteja tentando cadastrar dnv
-		DB::table('areas_comissao')
-			->where('comissao_edicao_id', '=', $comissaoEdicaoId)
-			->delete();
-
-		$areas = $data['area_id'];
-		foreach ($areas as $areaId) {
+	
+			$comissaoEdicao = DB::table('comissao_edicao')
+				->where('edicao_id', '=', Edicao::getEdicaoId())
+				->where('pessoa_id', '=', Auth::id())
+				->get();
+	
+			if ($comissaoEdicao->count()) {
+				$comissaoEdicaoId = $comissaoEdicao->first()->id;
+			} else {
+				$comissaoEdicaoId = DB::table('comissao_edicao')
+					->insertGetId([
+						'edicao_id' => Edicao::getEdicaoId(),
+						'pessoa_id' => Auth::id()
+					]);
+			}
+	
+			// remove as áreas da comissão caso esteja tentando cadastrar dnv
 			DB::table('areas_comissao')
-				->insert([
-					'area_id' => $areaId,
-					'comissao_edicao_id' => $comissaoEdicaoId,
-					'homologado' => null
-				]);
-		}
-
-		// Avaliador
-		if (in_array("1", $data['funcao'])) {
-			$idFuncaoAvaliador = DB::table('funcao')
-				->where('funcao', 'Avaliador')
-				->get();
-
-			$idFuncaoAvaliador = $idFuncaoAvaliador->first()->id;
-
-			$isAvaliador = DB::table('funcao_pessoa')
-				->where('edicao_id', '=', Edicao::getEdicaoId())
-				->where('funcao_id', '=', $idFuncaoAvaliador)
-				->where('pessoa_id', '=', Auth::id())
-				->get();
-
-			if (!$isAvaliador->count()) {
-				DB::table('funcao_pessoa')
+				->where('comissao_edicao_id', '=', $comissaoEdicaoId)
+				->delete();
+	
+			$areas = $data['area_id'];
+			foreach ($areas as $areaId) {
+				DB::table('areas_comissao')
 					->insert([
-						'edicao_id' => Edicao::getEdicaoId(),
-						'funcao_id' => $idFuncaoAvaliador,
-						'pessoa_id' => Auth::id(),
+						'area_id' => $areaId,
+						'comissao_edicao_id' => $comissaoEdicaoId,
 						'homologado' => null
 					]);
 			}
-		}
-
-		// Homologador
-		if (in_array("2", $data['funcao'])) {
-
-			$idFuncaoHomologador = DB::table('funcao')
-				->where('funcao', 'Homologador')
-				->get();
-
-			$idFuncaoHomologador = $idFuncaoHomologador->first()->id;
-
-			$isHomologador = DB::table('funcao_pessoa')
-				->where('edicao_id', '=', Edicao::getEdicaoId())
-				->where('funcao_id', '=', $idFuncaoHomologador)
-				->where('pessoa_id', '=', Auth::id())
-				->get();
-
-			if (!$isHomologador->count()) {
-				DB::table('funcao_pessoa')
-					->insert([
-						'edicao_id' => Edicao::getEdicaoId(),
-						'funcao_id' => $idFuncaoHomologador,
-						'pessoa_id' => Auth::id(),
-						'homologado' => null
-					]);
+	
+			// Avaliador
+			if (in_array("1", $data['funcao'])) {
+				$idFuncaoAvaliador = DB::table('funcao')
+					->where('funcao', 'Avaliador')
+					->get();
+	
+				$idFuncaoAvaliador = $idFuncaoAvaliador->first()->id;
+	
+				$isAvaliador = DB::table('funcao_pessoa')
+					->where('edicao_id', '=', Edicao::getEdicaoId())
+					->where('funcao_id', '=', $idFuncaoAvaliador)
+					->where('pessoa_id', '=', Auth::id())
+					->get();
+	
+				if (!$isAvaliador->count()) {
+					DB::table('funcao_pessoa')
+						->insert([
+							'edicao_id' => Edicao::getEdicaoId(),
+							'funcao_id' => $idFuncaoAvaliador,
+							'pessoa_id' => Auth::id(),
+							'homologado' => null
+						]);
+				}
+			}
+	
+			// Homologador
+			if (in_array("2", $data['funcao'])) {
+	
+				$idFuncaoHomologador = DB::table('funcao')
+					->where('funcao', 'Homologador')
+					->get();
+	
+				$idFuncaoHomologador = $idFuncaoHomologador->first()->id;
+	
+				$isHomologador = DB::table('funcao_pessoa')
+					->where('edicao_id', '=', Edicao::getEdicaoId())
+					->where('funcao_id', '=', $idFuncaoHomologador)
+					->where('pessoa_id', '=', Auth::id())
+					->get();
+	
+				if (!$isHomologador->count()) {
+					DB::table('funcao_pessoa')
+						->insert([
+							'edicao_id' => Edicao::getEdicaoId(),
+							'funcao_id' => $idFuncaoHomologador,
+							'pessoa_id' => Auth::id(),
+							'homologado' => null
+						]);
+				}
+			}
+	
+			$emailJob = (new \App\Jobs\MailBaseJob(Auth::user()->email, 'Comissao Avaliadora', ['nome' => Auth::user()->nome])
+			)->delay(\Carbon\Carbon::now()->addSeconds(3));
+	
+			dispatch($emailJob);
+			DB::commit();
+	
+			return redirect()->route('autor');
+			}
+			catch (ValidationException $e) {
+				// Redirecionar de volta com os erros de validação e os dados de entrada
+				return redirect()->back()->withErrors($e->errors())->withInput();
+			}catch (\Exception $e) {
+				DB::rollback();
+	
+				// Lidar com a exceção de forma adequada
+				return response()->json(['error' => 'Ocorreu um erro: ' . $e->getMessage()], 500);
 			}
 		}
-
-		$emailJob = (new \App\Jobs\MailBaseJob(Auth::user()->email, 'Comissao Avaliadora', ['nome' => Auth::user()->nome])
-		)->delay(\Carbon\Carbon::now()->addSeconds(3));
-
-		dispatch($emailJob);
-
-		return redirect()->route('autor');
-	}
+		
+	
 
 	public function homologarComissao($id)
 	{
