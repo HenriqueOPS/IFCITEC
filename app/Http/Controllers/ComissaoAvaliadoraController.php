@@ -243,7 +243,7 @@ class ComissaoAvaliadoraController extends Controller
 				->insert([
 					'area_id' => $areaId,
 					'comissao_edicao_id' => $comissaoEdicaoId,
-					'homologado' => false
+					'homologado' => null
 				]);
 		}
 
@@ -267,7 +267,7 @@ class ComissaoAvaliadoraController extends Controller
 						'edicao_id' => Edicao::getEdicaoId(),
 						'funcao_id' => $idFuncaoAvaliador,
 						'pessoa_id' => Auth::id(),
-						'homologado' => false
+						'homologado' => null
 					]);
 			}
 		}
@@ -293,7 +293,7 @@ class ComissaoAvaliadoraController extends Controller
 						'edicao_id' => Edicao::getEdicaoId(),
 						'funcao_id' => $idFuncaoHomologador,
 						'pessoa_id' => Auth::id(),
-						'homologado' => false
+						'homologado' => null
 					]);
 			}
 		}

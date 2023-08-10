@@ -55,16 +55,17 @@
                         @else
                             <tr class="avaliador">
                         @endif
-
                             <td>{{$c->nome}}</td>
                             <td>{{$c->instituicao}}</td>
                             <td>{{$c->titulacao}}</td>
                             <td>
-                                @if($c->homologado)
-                                    <span class="label label-success">Homologado</span></td>
-                                @else
-                                    <span class="label label-warning">Não Homologado</span></td>
-                                @endif
+                            @if ($c->homologado === true)
+                            <span class="label label-success">Homologado</span>
+                            @elseif ($c->homologado === false)
+                            <span class="label label-warning">Não Homologado</span>
+                            @else
+                            <span class="label label-default">Cadastrado</span>
+                            @endif
                             <td class="text-right">
                                 <a href="{{route('homologarComissao',$c->id)}}"><i class="material-icons">group_add</i></a>
                                 <a href="javascript:void(0);" class="exclusaoComissao" id-comissao="{{ $c->id }}" id-funcao="{{ $c->funcao_id }}"><i class="material-icons">delete</i></a>
