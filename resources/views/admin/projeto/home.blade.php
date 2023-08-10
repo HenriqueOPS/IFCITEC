@@ -158,7 +158,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="nomeProjeto"></h5>
+                <h5 class="modal-title" id="nomeProjeto" style="font-weight: bold;"></h5>
 
                 <div id="projetoStatus" style="margin-top: 10px;"></div>
             </div>
@@ -202,13 +202,13 @@
                 </div>
 
                 <div>
-                    <h5>Homologação</h5>
+                    <h5><strong>Homologação</strong></h5>
 
                     <div id="homologadores"></div>
                 </div>
 
                 <div>
-                    <h5>Avaliação</h5>
+                    <h5><strong>Avaliação</strong></h5>
 
                     <div id="avaliadores"></div>
                 </div>
