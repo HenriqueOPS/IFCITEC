@@ -202,7 +202,13 @@
                     <button id="summernote-save" class="btn btn-danger btn-block">Salvar</button>
                 </div>
             </div>
+
             <div class="container" id="container-envio" style="display: none;">
+            <div class="mb-3">
+            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Título" value="">
+        </div>
+
+
             <div id="quadro-geral">
             <h2>Geral</h2>
             <div>
@@ -419,6 +425,8 @@
             let url = "{{ route('mensagens.enviar')}}";
 
             // Obter os valores selecionados dos checkboxes
+            let titulo = $('#titulo').val();
+            console.log(titulo);
             let funcoesgerais = $('input[name="funcoesgerais[]"]:checked').map(function () {
                 return $(this).val();
             }).get();
@@ -433,7 +441,8 @@
                     id: mensagemAtual.id,
                     conteudo: utf8_to_b64($('#summernote').summernote('code')),
                     funcoesgerais: funcoesgerais,
-                    funcoesedicao: funcoesedicao // Enviar os valores selecionados dos checkboxes
+                    funcoesedicao: funcoesedicao,
+                    titulo:titulo, // Enviar os valores selecionados dos checkboxes
                 },
                 success: function(response) {
                     // Manipule a resposta JSON aqui

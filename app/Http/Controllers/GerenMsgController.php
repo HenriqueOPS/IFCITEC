@@ -54,6 +54,7 @@ class GerenMsgController extends Controller
     public function enviar(Request $req)
     {
         $conteudo = base64_decode($req->input('conteudo'));
+        $titulo = $req->input('titulo');
         $funcoesgerais = $req->input('funcoesgerais');
         $funcoesedicao = $req->input('funcoesedicao');
         $geral = collect([]);
@@ -120,7 +121,7 @@ class GerenMsgController extends Controller
             ]);
         }
         foreach ($emails as $email) {
-            dispatch(new MailAllJob($conteudo, $email));
+            dispatch(new MailAllJob($conteudo, $email, $titulo));
             DB::table('emails_enviados')->insert([
                 'email' => $email,
                 'horario_envio' => \Carbon\Carbon::now(),
