@@ -952,8 +952,15 @@ class AdminController extends Controller
         $this->validate($request, [
             'brinde_id' => 'required|integer',
             'quantidade' => 'required|integer|min:1',
+            'origem_destino' => 'required|',
         ]);
-
+        DB::table('movimentacao_registros')->insert([
+            'origem_destino' => $request->origem_destino, // Update this based on your requirement
+            'quantidade_movimentada' => $request->quantidade,
+            'data_movimentacao' => \Carbon\Carbon::now(),
+            'brinde_id' => $request->brinde_id,
+            'tipo_movimentacao' => true, // Assuming true represents "Adição"
+        ]);
         // Encontre o brinde pelo ID
         $brinde = Brindes::findOrFail($request->brinde_id);
 
@@ -972,6 +979,13 @@ class AdminController extends Controller
         $this->validate($request, [
             'brinde_id' => 'required|integer',
             'quantidade' => 'required|integer|min:1',
+        ]);
+        DB::table('movimentacao_registros')->insert([
+            'origem_destino' => $request->origem_destino, // Update this based on your requirement
+            'quantidade_movimentada' => $request->quantidade,
+            'data_movimentacao' => \Carbon\Carbon::now(),
+            'brinde_id' => $request->brinde_id,
+            'tipo_movimentacao' => false, // Assuming true represents "Adição"
         ]);
 
         // Encontre o brinde pelo ID
@@ -1011,5 +1025,12 @@ class AdminController extends Controller
     
         return redirect()->route('admin.configuracoes');
     }
+    public function showRegistros($id)
+{
+    // Fetch the data of the movement record with the provided ID
+    $movimentoRegistro = DB::table('movimentacao_registros')->where('brinde_id', $id)->get();
+    // You can return the data in a format that suits your needs, such as JSON or a view
+    return response()->json($movimentoRegistro); // Or return a view with the data
+}
     
 }

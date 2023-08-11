@@ -37,13 +37,37 @@
                             <td>{{ $brinde['descricao'] }}</td>
                             <td>{{ $brinde['tamanho'] }}</td>
                             <td>{{ $brinde['quantidade'] }}</td>
-                            <td class="td-actions text-right"> <a href="javascript:void(0);" onclick="abrirModalAdicionar({{ $brinde['id'] }})"><i class="material-icons">add_circle</i></a>
-            <a href="javascript:void(0);" onclick="abrirModalDecrementar({{ $brinde['id'] }})"><i class="material-icons">remove_circle</i></a>       </td>
+                            
+                            <td class="td-actions text-right">
+                            <a href="javascript:void(0);" onclick="abrirModalNotaFiscal({{ $brinde['id'] }})"><i class="material-icons">receipt_long</i></a>
+                                 <a href="javascript:void(0);" onclick="abrirModalAdicionar({{ $brinde['id'] }})"><i class="material-icons">add_circle</i></a>
+                                 <a href="javascript:void(0);" onclick="abrirModalDecrementar({{ $brinde['id'] }})"><i class="material-icons">remove_circle</i></a>   
+                                    </td>
+    
                         </tr>
                         @endforeach
                   
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-nota-fiscal" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="modal-nota-fiscal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nota Fiscal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Add your content here -->
+                <!-- For example, display details of the movement, note, etc. -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
             </div>
         </div>
     </div>
@@ -121,7 +145,12 @@
                         <input type="number" class="form-control" name="quantidade" required>
                         <input type="hidden" name="brinde_id" id="brinde_id_adicionar" value="">
                     </div>
+                    <div class="form-group">
+                        <label for="origem_destino">Origem do Brinde</label>
+                        <input type="text" class="form-control" name="origem_destino" required>
+                    </div>
                 </div>
+                
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-success">Adicionar</button>
@@ -148,11 +177,17 @@
                         <input type="number" class="form-control" name="quantidade" required>
                         <input type="hidden" name="brinde_id" id="brinde_id_decrementar" value="">
                     </div>
-                </div>
-                <div class="modal-footer">
+                    <div class="form-group">
+                        <label for="origem_destino">Destino</label>
+                        <input type="text" class="form-control" name="origem_destino" required>
+                    </div>
+                    <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-danger">Decrementar</button>
                 </div>
+                </div>
+                </div>
+             
             </form>
         </div>
     </div>
@@ -214,5 +249,33 @@ function abrirModalDecrementar(idBrinde) {
     $("#brinde_id_decrementar").val(idBrinde);
     $("#modal-decrementar-quantidade").modal();
 }
+function abrirModalNotaFiscal(idBrinde) {
+    carregarRegistros(idBrinde);
+    $("#modal-nota-fiscal").modal();
+}
+function carregarRegistros(idBrinde) {
+    // Make an Ajax request to fetch the movement records
+    $.get(`/movimento-registros/${idBrinde}`, function (data) {
+        // Process the returned data and display it in the modal
+        var registrosHtml = '';
+        console.log(data);
+        // Iterate through the records and build the HTML
+        data.forEach(function (registro) {
+            registrosHtml += `
+                <div class="registro-item">
+                    Origem/Destino: ${registro.origem_destino}<br>
+                    Quantidade Movimentada: ${registro.quantidade_movimentada}<br>
+                    Data Movimentação: ${registro.data_movimentacao}<br>
+                    Tipo Movimentação: ${registro.tipo_movimentacao ? 'Adição' : 'Decréscimo'}
+                </div>
+                <hr>
+            `;
+        });
+
+        // Update the modal content with the HTML
+        $('#modal-nota-fiscal .modal-body').html(registrosHtml);
+    });
+}
+
 </script>
 @endsection
