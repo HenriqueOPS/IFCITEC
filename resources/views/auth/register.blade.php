@@ -67,11 +67,18 @@
                                 <span class="input-group-addon">
                                     <i class="material-icons">face</i>
                                 </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Nome</label>
-                                    <input style="text-transform: capitalize" type="text" class="form-control" name="nome" value="{{ old('nome') }}" required>
-                                </div>
-                                @if ($errors->has('nome'))
+                            <div class="form-group label-floating">
+                                <label class="control-label">Nome</label>
+                                <input type="text" class="form-control" name="nome" value="{{ old('nome') }}" required oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);" required> 
+                                 </div>
+
+                            <div class="form-group label-floating">
+                                <label class="control-label">Sobrenome</label>
+                                <input type="text" class="form-control" name="sobrenome" value="{{ old('sobrenome') }}" required oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);" required>
+                            </div>
+
+        <input type="hidden" name="nome_completo" id="nome_completo" value="{{ old('nome') }} {{ old('sobrenome') }}">
+                               @if ($errors->has('nome'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('nome') }}</strong>
                                 </span>
