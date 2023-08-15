@@ -244,6 +244,7 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::get('/administrador/relatorios/{edicao?}', 'AdminController@relatorios')->name('administrador.relatorios');
 	Route::get('/administrador/escolhe-edicao/relatorios', 'AdminController@relatoriosEdicao')->name('administrador.relatoriosEdicao');
 	Route::post('/administrador/escolhe-edicao/relatorios', 'AdminController@relatoriosEscolheEdicao')->name('administrador.escolheEdicao');
+	Route::get('/movimento-registros/{id}', 'AdminController@showRegistros')->name('movimento-registros.show');
 
 	// Dashboard
 	Route::get('/administrador/dashboard', 'AdminController@dashboardPage')->name('dashboard');

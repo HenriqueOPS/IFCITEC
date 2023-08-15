@@ -137,7 +137,7 @@ class RegisterController extends Controller
 		}
 
 		return Pessoa::create([
-			'nome' => $data['nome'],
+			'nome' => $data['nome_completo'],
 			'email' => $data['email'],
 			'senha' => bcrypt($data['senha']),
 			'dt_nascimento' => Carbon::createFromFormat('d/m/Y', $data['dt_nascimento']),

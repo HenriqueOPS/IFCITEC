@@ -913,16 +913,26 @@ class AdminController extends Controller
     public function NovoBrinde(){
         return view('admin.premiacao.create');
     }
-    public function cadastroBrinde(Request $req){
+    public function cadastroBrinde(Request $req) {
         $data = $req->all();
-        Brindes::create([
+        $brinde = Brindes::create([
             'nome' => $data['nome'],
             'quantidade' => $data['quantidade'],
             'descricao' => $data['descricao'],
             'tamanho' => $data['tamanho'],
         ]);
-    return redirect()->route('admin.brindes');
+    
+        DB::table('movimentacao_registros')->insert([
+            'origem_destino' => $data['origem_destino'], // Update this based on your requirement
+            'quantidade_movimentada' => $data['quantidade'],
+            'data_movimentacao' => \Carbon\Carbon::now(),
+            'brinde_id' => $brinde->id,
+            'tipo_movimentacao' => true, // Assuming true represents "Adição"
+        ]);
+    
+        return redirect()->route('admin.brindes');
     }
+    
     public function dadosBrinde($id){
     $brinde = Brindes::find($id);
 
@@ -937,11 +947,8 @@ class AdminController extends Controller
         $brinde = Brindes::find($idBrinde);
         
         // Faça as alterações necessárias no brinde com base nos dados enviados pelo formulário
-        
-        $brinde->nome = $request->input('nome');
-        $brinde->quantidade = $request->input('quantidade');
         $brinde->descricao = $request->input('descricao');
-        $brinde->descricao = $request->input('tamanho');
+        $brinde->tamanho = $request->input('tamanho');
         $brinde->save();
         
         return redirect()->route('admin.brindes')->with('success', 'Premiação atualizado com sucesso!');
@@ -952,8 +959,15 @@ class AdminController extends Controller
         $this->validate($request, [
             'brinde_id' => 'required|integer',
             'quantidade' => 'required|integer|min:1',
+            'origem_destino' => 'required|',
         ]);
-
+        DB::table('movimentacao_registros')->insert([
+            'origem_destino' => $request->origem_destino, // Update this based on your requirement
+            'quantidade_movimentada' => $request->quantidade,
+            'data_movimentacao' => \Carbon\Carbon::now(),
+            'brinde_id' => $request->brinde_id,
+            'tipo_movimentacao' => true, // Assuming true represents "Adição"
+        ]);
         // Encontre o brinde pelo ID
         $brinde = Brindes::findOrFail($request->brinde_id);
 
@@ -972,6 +986,13 @@ class AdminController extends Controller
         $this->validate($request, [
             'brinde_id' => 'required|integer',
             'quantidade' => 'required|integer|min:1',
+        ]);
+        DB::table('movimentacao_registros')->insert([
+            'origem_destino' => $request->origem_destino, // Update this based on your requirement
+            'quantidade_movimentada' => $request->quantidade,
+            'data_movimentacao' => \Carbon\Carbon::now(),
+            'brinde_id' => $request->brinde_id,
+            'tipo_movimentacao' => false, // Assuming true represents "Adição"
         ]);
 
         // Encontre o brinde pelo ID
@@ -1026,4 +1047,12 @@ class AdminController extends Controller
     public function navProjetos(){
         return view('admin.navbar.projetos');
     }
+    public function showRegistros($id)
+{
+    // Fetch the data of the movement record with the provided ID
+    $movimentoRegistro = DB::table('movimentacao_registros')->where('brinde_id', $id)->get();
+    // You can return the data in a format that suits your needs, such as JSON or a view
+    return response()->json($movimentoRegistro); // Or return a view with the data
+}
+    
 }

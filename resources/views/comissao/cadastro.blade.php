@@ -24,6 +24,17 @@
                     <form method="post" id="formulario" action="{{route('cadastroAvaliador')}}">
 
                         {{ csrf_field() }}
+                        @if ($errors->any())
+                    <div class="col-md-10 col-md-offset-1 col-xs-11">
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @endif
 
                         <div class="row">
                        
@@ -141,7 +152,7 @@
                                                         <label>
                                                             <input type="checkbox"
                                                                    class="checkboxNivel{{$area->id}} checkboxArea"
-                                                                   value="{{$area->id}}" name='area_id[]'>
+                                                                   value="{{$area->id}}" name='area_id[]' >
                                                             {{$area->area_conhecimento}}
                                                         </label>
                                                     </div>
@@ -269,6 +280,7 @@
                             </div>
                         </div>
                     </form>
+                  
 
 					@endif
                 </div>
@@ -346,20 +358,20 @@
 
 
 
-        $('button[type="submit"]').attr('disabled', 'disabled');
+    var $submitBtn = $('button[type="submit"]');
+    var $funcaoCheckboxes = $('[name="funcao[]"]');
+    var $areaCheckboxes = $('[name="area_id[]"]');
 
-        $('[name="funcao[]"]').change(function () {
-            $('button[type="submit"]').attr('disabled', 'disabled');
+    $submitBtn.attr('disabled', 'disabled');
 
+    function updateSubmitButton() {
+        var funcaoSelected = $funcaoCheckboxes.is(':checked');
+        var areaSelected = $areaCheckboxes.is(':checked');
 
-            var formSerialized = $('#formulario').serializeArray();
-            formSerialized.forEach(function (field) {
-				if (field.name == 'funcao[]') {
-                    $('button[type="submit"]').removeAttr('disabled');
-                    console.log(field);
-                }
-            });
-        });
+        $submitBtn.prop('disabled', !(funcaoSelected && areaSelected));
+    }
+
+    $funcaoCheckboxes.add($areaCheckboxes).on('change', updateSubmitButton);
 
 	});
 

@@ -449,6 +449,9 @@
                     if (response.mensagem) {
                         // Exiba a mensagem de sucesso ao usuário
                         alert(response.mensagem);
+                        $('#quadro-geral input[type="checkbox"]').prop('checked', false);
+        $('#quadro-edicao-corrente input[type="checkbox"]').prop('checked', false);
+
                     }
                 },
                 dataType: 'json',
