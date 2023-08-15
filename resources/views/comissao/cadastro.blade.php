@@ -152,7 +152,7 @@
                                                         <label>
                                                             <input type="checkbox"
                                                                    class="checkboxNivel{{$area->id}} checkboxArea"
-                                                                   value="{{$area->id}}" name='area_id[]' required>
+                                                                   value="{{$area->id}}" name='area_id[]' >
                                                             {{$area->area_conhecimento}}
                                                         </label>
                                                     </div>
