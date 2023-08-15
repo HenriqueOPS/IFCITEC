@@ -1,5 +1,44 @@
 <div id="page" class="col-md-12">
     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="display: flex; align-content: flex-start;">
+        <li id="nav-adm">
+            <a href="{{ route('navbarAdministrativa') }}">
+                <i class="material-symbols-outlined">admin_panel_settings</i>
+                Administrativa
+            </a>
+        </li>
+        <li id="nav-participantes">
+            <a href="{{ route('navbarParticipantes') }}">
+                <i class="material-icons">person</i>
+                Participantes
+            </a>
+        </li>
+        <li id="nav-comissoes">
+            <a href="{{ route('navbarComissoes') }}">
+                <i class="material-symbols-outlined">group</i>
+                Comissões
+            </a>
+        </li>
+        <li id="nav-comunicacoes">
+            <a href="{{ route('navbarComunicacoes') }}">
+                <i class="material-symbols-outlined">mail</i>
+                Comunicações
+            </a>
+        </li>
+        <li id="nav-projetos">
+            <a href="{{ route('navbarProjetos') }}">
+                <i class="material-icons">school</i>
+                Projetos
+            </a>
+        </li>
+        <li id="nav-relatorios">
+            <a href="{{ route('administrador.relatoriosEdicao') }}">
+                <i class="material-icons">description</i>
+                Relatórios
+            </a>
+        </li>
+    </ul>    
+
+    <ul class="nav nav-pills nav-pills-primary" role="tablist" style="display: flex; align-content: flex-start;">
         <li id="nav-areas">
             <a href="{{ route('administrador.areas') }}">
                 <i class="material-icons">brightness_auto</i>
@@ -66,10 +105,6 @@
                 Participantes
             </a>
         </li>
-
-    </ul>
-
-    <ul class="nav nav-pills nav-pills-primary" role="tablist" style="display: flex; justify-content: center;">
         <li id="nav-brindes">
             <a href="{{ route('admin.brindes') }}">
                 <i class="material-icons">shopping_bag</i>
