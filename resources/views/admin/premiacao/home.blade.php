@@ -33,7 +33,7 @@
                     @foreach($brindes as $i => $brinde)
                         <tr>
                             <td class="text-center">{{ $i+1 }}</td>
-                            <td>{{ $brinde['nome'] }}</td>
+                            <td><a href="{{ route('admin.brindes.editar', $brinde['id'])}}"> {{ $brinde['nome'] }}</a></td>
                             <td>{{ $brinde['descricao'] }}</td>
                             <td>{{ $brinde['tamanho'] }}</td>
                             <td>{{ $brinde['quantidade'] }}</td>

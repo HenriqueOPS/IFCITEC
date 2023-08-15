@@ -22,6 +22,7 @@
                                         <label class="control-label">Nome</label>
                                         <input type="text" class="form-control" name="nome" required>
                                     </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -62,6 +63,19 @@
                                     <div class="form-group label-floating">
                                         <label class="control-label">Tamanho</label>
                                         <input type="text" class="form-control" name="tamanho" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="material-icons">local_shipping</i>
+                                    </span>
+                                    <div class="form-group label-floating">
+                                    <label for="origem_destino">Origem do Brinde</label>
+                        <input type="text" class="form-control" name="origem_destino" required>
                                     </div>
                                 </div>
                             </div>

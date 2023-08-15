@@ -913,16 +913,26 @@ class AdminController extends Controller
     public function NovoBrinde(){
         return view('admin.premiacao.create');
     }
-    public function cadastroBrinde(Request $req){
+    public function cadastroBrinde(Request $req) {
         $data = $req->all();
-        Brindes::create([
+        $brinde = Brindes::create([
             'nome' => $data['nome'],
             'quantidade' => $data['quantidade'],
             'descricao' => $data['descricao'],
             'tamanho' => $data['tamanho'],
         ]);
-    return redirect()->route('admin.brindes');
+    
+        DB::table('movimentacao_registros')->insert([
+            'origem_destino' => $data['origem_destino'], // Update this based on your requirement
+            'quantidade_movimentada' => $data['quantidade'],
+            'data_movimentacao' => \Carbon\Carbon::now(),
+            'brinde_id' => $brinde->id,
+            'tipo_movimentacao' => true, // Assuming true represents "Adição"
+        ]);
+    
+        return redirect()->route('admin.brindes');
     }
+    
     public function dadosBrinde($id){
     $brinde = Brindes::find($id);
 
@@ -937,11 +947,8 @@ class AdminController extends Controller
         $brinde = Brindes::find($idBrinde);
         
         // Faça as alterações necessárias no brinde com base nos dados enviados pelo formulário
-        
-        $brinde->nome = $request->input('nome');
-        $brinde->quantidade = $request->input('quantidade');
         $brinde->descricao = $request->input('descricao');
-        $brinde->descricao = $request->input('tamanho');
+        $brinde->tamanho = $request->input('tamanho');
         $brinde->save();
         
         return redirect()->route('admin.brindes')->with('success', 'Premiação atualizado com sucesso!');
