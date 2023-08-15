@@ -69,15 +69,16 @@
                                 </span>
                             <div class="form-group label-floating">
                                 <label class="control-label">Nome</label>
-                                <input type="text" class="form-control" name="nome" value="{{ old('nome') }}" required oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);" required> 
+                                <input type="text" class="form-control" name="nome" value="{{ old('nome') }}" required oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);updateFullName();" required> 
                                  </div>
 
                             <div class="form-group label-floating">
                                 <label class="control-label">Sobrenome</label>
-                                <input type="text" class="form-control" name="sobrenome" value="{{ old('sobrenome') }}" required oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);" required>
+                                <input type="text" class="form-control" name="sobrenome" value="{{ old('sobrenome') }}" required oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);updateFullName();" required>
                             </div>
 
-        <input type="hidden" name="nome_completo" id="nome_completo" value="{{ old('nome') }} {{ old('sobrenome') }}">
+                            <input type="hidden" name="nome_completo" id="nome_completo" value="">
+    
                                @if ($errors->has('nome'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('nome') }}</strong>
@@ -165,6 +166,8 @@
                                 <div class="form-group label-floating">
                                     <label class="control-label">Whatssap</label>
                                     <input type="tel" OnKeyPress="formatar('## #####-####', this)" class="form-control" name="telefone" maxlength="13" value="{{ old('telefone') }}" required>
+                                    <small class="form-text text-muted">Informe o número com DDD e utilize o formato: 99 99999-9999</small>
+
                                 </div>
                                 @if ($errors->has('telefone'))
                                 <span class="help-block">
@@ -284,6 +287,11 @@ function formatar(mascara, documento) {
         documento.value += texto.substring(0, 1);
     }
 }
+function updateFullName() {
+        const nome = document.getElementsByName('nome')[0].value;
+        const sobrenome = document.getElementsByName('sobrenome')[0].value;
+        document.getElementById('nome_completo').value = nome + ' ' + sobrenome;
+    }
 
 </script>
 @endsection
