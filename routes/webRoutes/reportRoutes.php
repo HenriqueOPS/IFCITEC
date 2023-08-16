@@ -61,6 +61,7 @@ Route::get('/cracha/gerar-crachas/voluntarios/{edicao}', 'CrachaController@gener
 Route::get('/cracha/gerar-crachas/voluntarios-resumo/{edicao}', 'CrachaController@generateCrachasVoluntariosResumo')->name('generateCrachasVoluntariosResumo');
 Route::get('/cracha/gerar-crachas/branco/{edicao}', 'CrachaController@generateCrachas')->name('generateCrachas');
 Route::get('/cracha/qr-code/{id}', 'CrachaController@generateQrCode')->name('qrcode'); // QrCode image
+Route::get('/relatorio', 'RelatorioController@funcoesSys')->name('relatorio.index');
 
 // Relatórios - Gerais
 Route::get('/csv/anais/ifcitec/{edicao}', 'RelatorioController@csvAnais')->name('csvAnais');
@@ -75,6 +76,7 @@ Route::get('escolasContato', 'RelatorioController@csvEmailNomeEscolas')->name('c
 Route::get('/relatorio/escolas/tipo-escola', 'RelatorioController@escolaPorTipo')->name('relatorioEscolaPorTipo');
 Route::get('/escolas/tipo-escola-csv', 'RelatorioController@csvEscolaPorTipo')->name('csvEscolaPorTipo');
 Route::get('/relatorio/mostratec/{edicao}', 'RelatorioController@relatorioMOSTRATEC')->name('relatorioMOSTRATEC');
+Route::get('/download-escolas-csv/{editionId}', 'RelatorioController@generateCSVForEdition')->name('download.relatorio.por.escola');
 
 // Relatórios - Lanche
 Route::get('/relatorio/vale-lanche/gerar/{edicao}', 'RelatorioController@gerarValeLanche')->name('geraValeLanche');

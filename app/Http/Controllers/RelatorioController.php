@@ -2593,4 +2593,61 @@ class RelatorioController extends Controller
 
     return response()->download($filePath)->deleteFileAfterSend(true);
 }
+public  function generateCSVForEdition($editionId) {
+    // Obtenha as escolas participantes da edição especificada
+    $escolas = DB::table('escola_funcao_pessoa_projeto')
+    ->where('escola_funcao_pessoa_projeto.edicao_id', '=', 10)
+    ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+    ->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
+    ->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+    ->distinct() // Retorna apenas registros únicos
+    ->get();
+        $rows = [];
+        foreach ($escolas as $escola) {
+            array_push($rows, [
+                utf8_decode($escola->uf),
+                utf8_decode($escola->municipio),
+                utf8_decode($escola->nivel_id),
+                utf8_decode($escola->nome_curto),
+                utf8_decode($escola->titulo)
+            ]);
+        }
+
+        $headerFields = [
+            'Estado',
+            'Município',
+            'Nível',
+            'Escola',
+            'Projeto'
+        ];
+
+        $filename = "csvRelatorioPorEscola.csv";
+        return $this->returnsCSVStream($filename, $headerFields, $rows);
+    
+}
+public function funcoesSys(){
+            $funcoes = DB::table('funcao_pessoa')
+            ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
+            ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+            ->where('edicao_id', '=', Edicao::getEdicaoId())
+            ->distinct()
+            ->get();
+            $rows = [];
+            $agrupado = [];
+        foreach ($funcoes as $funcao) {
+            $nomeFuncao = $funcao->funcao; // Certifique-se de usar o nome correto da propriedade
+            if (!isset($agrupado[$nomeFuncao])) {
+                $agrupado[$nomeFuncao] = [];
+            }
+            $agrupado[$nomeFuncao][] = $funcao->nome;
+        }
+        $header = [
+            'Funcao',
+            'Nomes de Usuario'
+        ];
+        $filename = "funcoesSys.csv";
+        $nomesDasFuncoes = array_keys($agrupado);
+        return $this->returnsCSVStream($filename, $header, $rows);
+}
+
 }

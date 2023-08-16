@@ -206,8 +206,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Palavras Chaves</label>
-                                        <input type="text" id="palavras-chaves" name="palavras_chaves"
-                                            value="{{ old('palavras_chaves') }}" required>
+                                        <input  type="text" id="palavras-chaves" name="palavras_chaves"
+                                            value="{{ old('palavras_chaves') }}"  >
                                     </div>
                                     @if ($errors->has('palavras_chaves'))
                                         <span class="help-block">
@@ -569,17 +569,20 @@
             $('#resumo').keyup(function() {
                 $('#total-char').html($('#resumo').val().length);
             });
-$('#palavras-chaves').selectize({
+            $('#palavras-chaves').selectize({
     delimiter: ',',
     persist: false,
     create: function(input) {
+        // Capitalize a primeira letra da entrada e converta o restante em minúsculas
+        var capitalizedInput = input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
+
         return {
-            value: input,
-            text: input
+            value: capitalizedInput, // Usar a versão capitalizada como valor
+            text: capitalizedInput // Usar a versão capitalizada como texto exibido
         };
     },
     onInitialize: function() {
-        //$('.selectize-control').addClass('form-group');
+        // Adicione a classe 'form-control' para aprimorar a aparência da entrada
         $('.selectize-input').addClass('form-control');
     },
     render: {

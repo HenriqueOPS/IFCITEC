@@ -364,9 +364,10 @@ foreach ($palavrasChaves as $palavra) {
 
 		foreach ($coorientador as $c => $id)
 			array_push($idPessoasProjeto, $id->pessoa_id);
-
+		$avisotemp = Mensagem::where('nome','=','Aviso(EdiçãoProjeto)')->pluck('conteudo');
+		$aviso = $avisotemp[0];
 		if (in_array(Auth::user()->id, $idPessoasProjeto) || Auth::user()->temFuncao('Organizador') || Auth::user()->temFuncao('Administrador'))
-			return view('projeto.edit', compact('niveis', 'areas', 'funcoes', 'escolas', 'projetoP', 'nivelP', 'areaP', 'escolaP', 'palavrasP', 'autor', 'orientador', 'coorientador', 'pessoas'));
+			return view('projeto.edit', compact('niveis', 'areas', 'funcoes', 'escolas', 'projetoP', 'nivelP', 'areaP', 'escolaP', 'palavrasP', 'autor', 'orientador', 'coorientador', 'pessoas','aviso'));
 
 		return redirect()->route('home');
 	}

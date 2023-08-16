@@ -23,7 +23,7 @@
                         {{ csrf_field() }}
 
                         <input type="hidden" name="id_projeto" value="{{ $projetoP->id }}">
-
+                        
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="alert alert-info text-center">
@@ -34,7 +34,7 @@
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true"><i class="material-icons">clear</i></span>
                                         </button>
-                                        <b>ATENÇÃO: </b>É obrigatória a leitura do edital.
+                                        {!! $aviso !!}
                                     </div>
                                 </div>
                             </div>
