@@ -1032,6 +1032,21 @@ class AdminController extends Controller
     
         return redirect()->route('admin.configuracoes');
     }
+    public function administrativa(){
+        return view('admin.navbar.administrativa');
+    }
+    public function participantes(){
+        return view('admin.navbar.participantes');
+    }
+    public function comissoes(){
+        return view('admin.navbar.comissoes');
+    }
+    public function comunicacoes(){
+        return view('admin.navbar.comunicacoes');
+    }
+    public function navProjetos(){
+        return view('admin.navbar.projetos');
+    }
     public function showRegistros($id)
 {
     // Fetch the data of the movement record with the provided ID
