@@ -272,8 +272,6 @@
 </div>
 
 <script type="application/javascript">
-document.getElementById('nav-projetos').classList.add('active');
-
 $('.dados-projeto').click(function() {
 
     //recupera o id do projeto
