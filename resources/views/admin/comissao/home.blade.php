@@ -113,7 +113,6 @@
 
 
 $(document).ready(function () {
-
     //comissao avaliadora
     $('tr.homologador').hide();
 
