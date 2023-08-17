@@ -98,20 +98,18 @@
 								<p>Você pode escolher varios:</p>
 							
 								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="avaliador" checked>
-										<span style="color: black">Quero ser Avaliador</span>
-									</label>
-								</div>
-								
-					
-						
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="homologador"  checked>
-										<span style="color: black">Quero ser Homologador</span>
-									</label>
-								</div>
+								<label>
+									<input type="checkbox" name="avaliador" {{ in_array(3, $funcaodesejada) ? 'checked' : '' }}>
+									<span style="color: black">Quero ser Avaliador</span>
+								</label>
+							</div>
+
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="homologador" {{ in_array(4, $funcaodesejada) ? 'checked' : '' }}>
+									<span style="color: black">Quero ser Homologador</span>
+								</label>
+							</div>
 			
 							</div>
 						</div>
