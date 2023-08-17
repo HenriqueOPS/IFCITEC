@@ -63,16 +63,22 @@
                             </div>
                             <input type="radio" value="background" id="background-radio" name="imagem"/>
                             <label for="background-radio">Tela da Plataforma</label>
+
                             <input type="radio" value="teladelogin" id="teladelogin-radio" name="imagem"/>
                             <label for="teladelogin-radio">Tela de Login</label>
+
                             <input type="radio" value="ifcitecheader" id="ifcitecheader-radio" name="imagem"/>
                             <label for="ifcitecheader-radio">Cabeçalho dos relátorios</label>
-                            <input type="radio" value="logo" id="logo-radio" name="imagem"/>
-                            <label for="logo-radio">Logo da navbar</label>
-                            <input type="radio" value="logonormal" id="logo-radio" name="imagem"/>
-                            <label for="logo-radio">Logo da tela de login</label>
+
+                            <input type="radio" value="logonormal" id="logonormal-radio" name="imagem"/>
+                            <label for="logonormal-radio">Logo da navbar</label>
+
+                            <input type="radio" value="logo" id="login-radio" name="imagem"/>
+                            <label for="login-radio">Logo da tela de login</label>
+
                             <input type="radio" value="Imagem" id="logo-radio" name="imagem"/>
                             <label for="logo-radio">Imagem para os emails</label><br>
+
                             <button type="submit" class="btn btn-primary" >mudar imagem</button>
                         </div>            
                     </form>

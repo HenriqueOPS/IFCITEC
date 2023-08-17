@@ -23,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('teladelogin', $teladelogin);
                 $logo = DB::table('media')->where('nome', '=', 'logonormal')->value('conteudo');
                 $view->with('logo', $logo);
+                $logologin = DB::table('media')->where('nome', '=', 'logo')->value('conteudo');
+                $view->with('logologin', $logologin); 
             });
         }
 

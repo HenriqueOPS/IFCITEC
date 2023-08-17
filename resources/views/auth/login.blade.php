@@ -39,7 +39,7 @@
         }
 
         .footer {
-            margin-bottom: 25px;
+            margin-bottom: 10px;
         }
 
         .masthead {
@@ -61,7 +61,7 @@
             position: relative;
             text-decoration: none;
             text-transform: none;
-            margin: 1.5rem 5rem;
+            margin: 1rem 5rem;
         }
 
         .btn:hover {
@@ -74,7 +74,7 @@
             <div class="col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1">
                 <div class="card card-signup" style="border-radius:50px;">
                     <div class="content box-logo text-center">
-                        <img src="data:image/png;base64,{{ $logo }}" title="IFCITEC" height="90" />
+                        <img src="data:image/png;base64,{{ $logologin }}" title="IFCITEC" height="90" />
                     </div>
 
                     <div class="content">
