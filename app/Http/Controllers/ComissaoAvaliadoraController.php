@@ -348,7 +348,7 @@ class ComissaoAvaliadoraController extends Controller
 		$pessoa = Pessoa::find($comissaoEdicao->pessoa_id);
 		$funcaodesejada = DB::table('funcao_pessoa')
 		->where('edicao_id',Edicao::getEdicaoId())
-		->where('pessoa_id', 2227)
+		->where('pessoa_id', $comissaoEdicao->pessoa_id)
 		->get()
 		->pluck('funcao_id')
 		->toArray();
