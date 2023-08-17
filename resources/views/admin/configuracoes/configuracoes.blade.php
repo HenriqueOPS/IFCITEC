@@ -150,8 +150,6 @@
 
 @section('js')
 <script>
-    document.getElementById('nav-configuracoes').classList.add('active');
-
     // Função para mostrar o formulário correspondente à opção clicada
     function mostrarFormulario(opcao) {
         $('.formulario-configuracao').hide();
