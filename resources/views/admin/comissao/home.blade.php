@@ -110,6 +110,8 @@
 
 <script src="{{asset('js/main.js')}}"></script>
 <script type="application/javascript">
+
+
 $(document).ready(function () {
     //comissao avaliadora
     $('tr.homologador').hide();

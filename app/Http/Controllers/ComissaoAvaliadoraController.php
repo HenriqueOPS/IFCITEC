@@ -346,7 +346,14 @@ class ComissaoAvaliadoraController extends Controller
 
 		$comissaoEdicao = DB::table('comissao_edicao')->find($id);
 		$pessoa = Pessoa::find($comissaoEdicao->pessoa_id);
-
+		$funcaodesejada = DB::table('funcao_pessoa')
+		->where('edicao_id',Edicao::getEdicaoId())
+		->where('pessoa_id', $comissaoEdicao->pessoa_id)
+		->get()
+		->pluck('funcao_id')
+		->toArray();
+	
+	
 		$areasComissao = DB::table('areas_comissao')
 			->select('area_id')
 			->where('comissao_edicao_id', '=', $id)
@@ -411,7 +418,7 @@ class ComissaoAvaliadoraController extends Controller
 			$areasConhecimento = $areas;
 
 			$comissaoEdicao->data_criacao = Carbon::parse($comissaoEdicao->data_criacao)->format('d/m/Y H:i:s');
-		return view('admin.comissao.homologar', compact('id', 'pessoa', 'idsAreas', 'areas', 'nivel', 'areasConhecimento','comissaoEdicao'));
+		return view('admin.comissao.homologar', compact('id', 'pessoa', 'idsAreas', 'areas', 'nivel', 'areasConhecimento','comissaoEdicao','funcaodesejada'));
 	}
 
 	public function homologaComissao(Request $req)
