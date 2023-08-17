@@ -266,13 +266,6 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::post('/administrador/muda/nota-revisao/projeto', 'AdminController@mudaNotaRevisao')->name('mudaNotaRevisao');
 	Route::post('/administrador/muda/nota-avaliacao/projeto', 'AdminController@mudaNotaAvaliacao')->name('mudaNotaAvaliacao');
 
-	//Rotas Navbar
-	Route::get('/administrador/administrativa', 'AdminController@administrativa')->name('navbarAdministrativa');
-	Route::get('/administrador/participantes', 'AdminController@participantes')->name('navbarParticipantes');
-	Route::get('/administrador/comissoes', 'AdminController@comissoes')->name('navbarComissoes');
-	Route::get('/administrador/comunicacoes', 'AdminController@comunicacoes')->name('navbarComunicacoes');
-	Route::get('/administrador/navprojetos', 'AdminController@navProjetos')->name('navbarProjetos');
-
 	require_once "webRoutes/reportRoutes.php";
 
 
