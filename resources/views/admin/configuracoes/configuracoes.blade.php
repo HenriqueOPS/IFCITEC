@@ -50,6 +50,12 @@
                                 Fontes
                             </a>
                         </li>
+                        <li>
+                            <a id="6" class="tab-projetos" role="tab" data-toggle="tab">
+                                <i class="material-symbols-outlined">image</i>
+                                Premiação
+                            </a>
+                        </li>
                     </ul>
                 </div>
 
@@ -119,6 +125,28 @@
                             <!-- Adicione mais opções de fonte aqui, se necessário -->
                         </select><br><br>
                         <button type="submit" class="btn btn-primary">Mudar fonte do texto</button>
+                    </form>
+                    <form id="6-form" class="formulario-configuracao" method="POST" action="{{ route('admin.background') }}" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                        <div class="iform">
+                            <label for="image">Selecione a Imagem, deverá ser do tipo png</label>
+                            <div class="imgform d-flex flex-column align-items-center">
+                            <input type="file" id="formFile" name="image" class="form-control-file mx-auto"/>
+                            </div>                            
+                            <input type="radio" value="certificados" id="certificados-radio" name="imagem"/>
+                            <label for="certificados-radio">Certificado</label>
+
+                            <input type="radio" value="capa" id="capa-radio" name="imagem"/>
+                            <label for="capa-radio">Capa apresentação</label>
+
+                            <input type="radio" value="sobrecapa" id="sobrecapa-radio" name="imagem"/>
+                            <label for="sobrecapa-radio">Sobrecapa apresentação</label>
+
+                            <input type="radio" value="fundo" id="fundo-radio" name="imagem"/>
+                            <label for="fundo-radio">Fundo apresentação</label><br>
+
+                            <button type="submit" class="btn btn-primary" >mudar imagem</button>
+                        </div>            
                     </form>
                 </div>
 
