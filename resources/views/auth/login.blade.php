@@ -67,13 +67,16 @@
         .btn:hover {
             color: #fff;                
         }
+        #image {
+            margin-top: -45px
+        }
     </style>
     
     <div class="container-login container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1">
                 <div class="card card-signup" style="border-radius:50px;">
-                    <div class="content box-logo text-center">
+                    <div  id="image" class="content box-logo text-center">
                         <img src="data:image/png;base64,{{ $logologin }}" title="IFCITEC" height="90" />
                     </div>
 
