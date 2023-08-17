@@ -625,11 +625,13 @@ foreach ($palavrasChaves as $palavra) {
 			abort(404);
 		}
 
-		$numProjetos = DB::raw('SELECT count(*)
-			FROM revisao
-			JOIN projeto ON projeto.id = revisao.projeto_id
-			WHERE pessoa_id = pessoa.id AND projeto.edicao_id = comissao_edicao.edicao_id');
-
+		$numProjetos = DB::table('revisao')
+		->join('projeto', 'projeto.id', '=', 'revisao.projeto_id')
+		->where('projeto.edicao_id', Edicao::getEdicaoId())
+		->join('pessoa', 'revisao.pessoa_id', '=', 'pessoa.id')
+		->join('comissao_edicao', 'projeto.edicao_id', '=', 'comissao_edicao.edicao_id')
+		->select(DB::raw('count(*) as num_projetos'))
+		->value('num_projetos');
 		$revisores = DB::table('areas_comissao')
 			->select('pessoa.id', 'pessoa.nome', 'pessoa.instituicao', 'pessoa.titulacao', DB::raw('(' . $numProjetos . ') as num_projetos'))
 			//busca pelo registro na comissao avaliadora
