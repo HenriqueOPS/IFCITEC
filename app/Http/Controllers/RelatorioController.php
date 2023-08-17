@@ -2593,23 +2593,31 @@ class RelatorioController extends Controller
 
     return response()->download($filePath)->deleteFileAfterSend(true);
 }
-public  function generateCSVForEdition($editionId) {
+public  function generateCSVForEdition($edicao) {
     // Obtenha as escolas participantes da edição especificada
     $escolas = DB::table('escola_funcao_pessoa_projeto')
-    ->where('escola_funcao_pessoa_projeto.edicao_id', '=', 10)
+    ->where('escola_funcao_pessoa_projeto.edicao_id', '=', $edicao)
     ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
     ->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
     ->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+    ->select('uf','municipio','escola','nivel_id','nome_curto')
+    ->orderBy('uf')
     ->distinct() // Retorna apenas registros únicos
     ->get();
         $rows = [];
         foreach ($escolas as $escola) {
+            $nivel = '';
+            if($escola->nivel_id == 3){
+                $nivel = 'Medio';
+            }if($escola->nivel_id == 2){
+                $nivel = 'Fundamental';
+            }
             array_push($rows, [
                 utf8_decode($escola->uf),
                 utf8_decode($escola->municipio),
-                utf8_decode($escola->nivel_id),
+                utf8_decode($nivel),
                 utf8_decode($escola->nome_curto),
-                utf8_decode($escola->titulo)
+          
             ]);
         }
 
@@ -2618,7 +2626,7 @@ public  function generateCSVForEdition($editionId) {
             'Município',
             'Nível',
             'Escola',
-            'Projeto'
+     
         ];
 
         $filename = "csvRelatorioPorEscola.csv";
@@ -2626,27 +2634,48 @@ public  function generateCSVForEdition($editionId) {
     
 }
 public function funcoesSys(){
-            $funcoes = DB::table('funcao_pessoa')
+            $pessoasgerais = DB::table('funcao_pessoa')
+            ->where('funcao_id', '!=', 8)
             ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
             ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
             ->where('edicao_id', '=', Edicao::getEdicaoId())
+            ->select('nome','funcao','pessoa_id')
+            ->orderBy('funcao')
+            ->distinct()
+            ->get();
+            $administradores =  DB::table('funcao_pessoa')
+            ->where('funcao_pessoa.funcao_id', 8)
+            ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
+            ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+            ->where('edicao_id', '=', Edicao::getEdicaoId()) 
+            ->orWhere('edicao_id', 1)
+            ->select('nome','funcao','pessoa_id')
+            ->orderBy('nome')
             ->distinct()
             ->get();
             $rows = [];
             $agrupado = [];
-        foreach ($funcoes as $funcao) {
-            $nomeFuncao = $funcao->funcao; // Certifique-se de usar o nome correto da propriedade
-            if (!isset($agrupado[$nomeFuncao])) {
-                $agrupado[$nomeFuncao] = [];
-            }
-            $agrupado[$nomeFuncao][] = $funcao->nome;
-        }
+    
         $header = [
             'Funcao',
             'Nomes de Usuario'
         ];
+        foreach ($administradores as $administrador) {
+            array_push($rows, [
+                utf8_decode($administrador->funcao),
+                utf8_decode($administrador->nome),
+                utf8_decode($administrador->pessoa_id),
+            ]);
+        }
+        foreach ($pessoasgerais as $pessoa) {
+            array_push($rows, [
+                utf8_decode($pessoa->funcao),
+                utf8_decode($pessoa->nome),
+                utf8_decode($pessoa->pessoa_id),
+            ]);
+        }
         $filename = "funcoesSys.csv";
-        $nomesDasFuncoes = array_keys($agrupado);
+    
         return $this->returnsCSVStream($filename, $header, $rows);
 }
 
