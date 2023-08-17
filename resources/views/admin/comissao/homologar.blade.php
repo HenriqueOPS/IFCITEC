@@ -96,7 +96,7 @@
 						<div class="row">
 							<div class="col-md-10 col-md-offset-1 col-xs-offset-1">
 								<p>Você pode escolher varios:</p>
-								@if($pessoa->temFuncao('Avaliador', TRUE))
+							
 								<div class="checkbox">
 									<label>
 										<input type="checkbox" name="avaliador" checked>
@@ -104,16 +104,15 @@
 									</label>
 								</div>
 								
-								@endif
-								@if($pessoa->temFuncao('Homologador', TRUE))
+					
+						
 								<div class="checkbox">
 									<label>
 										<input type="checkbox" name="homologador"  checked>
 										<span style="color: black">Quero ser Homologador</span>
 									</label>
 								</div>
-							
-								@endif
+			
 							</div>
 						</div>
 						<div class="row">

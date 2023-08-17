@@ -499,33 +499,69 @@ class ComissaoAvaliadoraController extends Controller
 				]);
 
 			// Avaliador
-			if (isset($data['avaliador'])) {
-				DB::table('funcao_pessoa')
-					->where([
+			$funcoesHomologadas = '';
+
+				if (isset($data['avaliador'])) {
+					$avaliadorData = [
 						'pessoa_id' => $data['pessoa_id'],
 						'edicao_id' => Edicao::getEdicaoId(),
-						'funcao_id' => EnumFuncaoPessoa::getValue('Avaliador')
-					])
-					->update([
+						'funcao_id' => EnumFuncaoPessoa::getValue('Avaliador'),
 						'homologado' => true
-					]);
-				$funcoesHomologadas='Avaliador';
+					];
 
-			}
+					$existingAvaliador = DB::table('funcao_pessoa')
+						->where( 'pessoa_id',$data['pessoa_id'])
+						->where('edicao_id', '=', Edicao::getEdicaoId())
+						->where('funcao_id',EnumFuncaoPessoa::getValue('Avaliador'))
+						->first();
 
-			// Homologador
-			if (isset($data['homologador'])) {
-				DB::table('funcao_pessoa')
-					->where([
+					if ($existingAvaliador === null) {
+						DB::table('funcao_pessoa')->insert($avaliadorData);
+					}else{
+						DB::table('funcao_pessoa')
+						->where('pessoa_id', '=', $data['pessoa_id'])
+						->where('edicao_id', '=', Edicao::getEdicaoId())
+						->whereIn('funcao_id', [
+							EnumFuncaoPessoa::getValue('Avaliador'),
+						])
+						->update([
+							'homologado' => true
+						]);
+					}
+
+					$funcoesHomologadas = 'Avaliador';
+				}
+
+				if (isset($data['homologador'])) {
+					$homologadorData = [
 						'pessoa_id' => $data['pessoa_id'],
 						'edicao_id' => Edicao::getEdicaoId(),
-						'funcao_id' => EnumFuncaoPessoa::getValue('Homologador')
-					])
-					->update([
+						'funcao_id' => EnumFuncaoPessoa::getValue('Homologador'),
 						'homologado' => true
-					]);
-					$funcoesHomologadas = $funcoesHomologadas . ' Homologador';
-			}
+					];
+
+					$existingHomologador = DB::table('funcao_pessoa')
+					->where( 'pessoa_id',$data['pessoa_id'])
+					->where('edicao_id', '=', Edicao::getEdicaoId())
+					->where('funcao_id',EnumFuncaoPessoa::getValue('Homologador'))
+					->first();
+
+					if ($existingHomologador === null) {
+						DB::table('funcao_pessoa')->insert($homologadorData);
+					}else{
+						DB::table('funcao_pessoa')
+						->where('pessoa_id', '=', $data['pessoa_id'])
+						->where('edicao_id', '=', Edicao::getEdicaoId())
+						->whereIn('funcao_id', [
+							EnumFuncaoPessoa::getValue('Homologador'),
+						])
+						->update([
+							'homologado' => true
+						]);
+					}
+
+					$funcoesHomologadas .= ' Homologador';
+				}
 		} else { // Não existem áreas então NÃO HOMOLOGA
 
 			// Deleta os campos das areas
