@@ -625,30 +625,31 @@ foreach ($palavrasChaves as $palavra) {
 			abort(404);
 		}
 
-		$edicaoId = Edicao::getEdicaoId();
-
 		$numProjetos = DB::table('revisao')
-			->join('projeto', 'projeto.id', '=', 'revisao.projeto_id')
-			->where('projeto.edicao_id', $edicaoId)
-			->selectRaw('count(*) as num_projetos')
-			->value('num_projetos');
-
+		->join('projeto', 'projeto.id', '=', 'revisao.projeto_id')
+		->where('projeto.edicao_id', Edicao::getEdicaoId())
+		->join('pessoa', 'revisao.pessoa_id', '=', 'pessoa.id')
+		->join('comissao_edicao', 'projeto.edicao_id', '=', 'comissao_edicao.edicao_id')
+		->select(DB::raw('count(*) as num_projetos'))
+		->value('num_projetos');
 		$revisores = DB::table('areas_comissao')
-			->select('pessoa.id', 'pessoa.nome', 'pessoa.instituicao', 'pessoa.titulacao')
-			->selectRaw("{$numProjetos} as num_projetos")
-			->join('comissao_edicao', function ($join) use ($edicaoId) {
+			->select('pessoa.id', 'pessoa.nome', 'pessoa.instituicao', 'pessoa.titulacao', DB::raw('(' . $numProjetos . ') as num_projetos'))
+			//busca pelo registro na comissao avaliadora
+			->join('comissao_edicao', function ($join) {
 				$join->on('comissao_edicao.id', '=', 'areas_comissao.comissao_edicao_id');
-				$join->where('comissao_edicao.edicao_id', $edicaoId);
+				$join->where('comissao_edicao.edicao_id', '=', Edicao::getEdicaoId());
 			})
+			//busca pela pessoa
 			->join('pessoa', 'pessoa.id', '=', 'comissao_edicao.pessoa_id')
-			->join('funcao_pessoa', function ($join) use ($edicaoId) {
+			//busca pela função homologador (id => 4) HARD CODED e foda-se
+			->join('funcao_pessoa', function ($join) {
 				$join->on('pessoa.id', '=', 'funcao_pessoa.pessoa_id');
-				$join->where('funcao_pessoa.edicao_id', $edicaoId);
-				$join->where('funcao_pessoa.funcao_id', 4); // Homologador
-				$join->where('funcao_pessoa.homologado', true);
+				$join->where('funcao_pessoa.edicao_id', '=', Edicao::getEdicaoId());
+				$join->where('funcao_pessoa.funcao_id', '=', 4);
+				$join->where('funcao_pessoa.homologado', '=', true);
 			})
-			->where('area_id', $projeto->area_id)
-			->where('areas_comissao.homologado', true)
+			->where('area_id', '=', $projeto->area_id)
+			->where('areas_comissao.homologado', '=', true)
 			->orderBy('pessoa.nome')
 			->get();
 

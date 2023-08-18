@@ -29,7 +29,7 @@
                                                </div>
                                                <div>
                                                    <b><i class="material-icons small">settings</i></b>
-                                                   {{$revisor->pessoa->getTotalRevisoes()}} projetos
+                                                   {{  app('App\Http\Controllers\AdminController')->getTotalRevisoes($revisor->id)}} projetos
                                                </div>
                                            </div>
                                        </div>
@@ -58,7 +58,7 @@
                                                 </div>
                                                 <div>
                                                     <b><i class="material-icons small">settings</i></b>
-                                                    {{$revisor->pessoa->getTotalRevisoes()}} projetos
+                                                    {{  app('App\Http\Controllers\AdminController')->getTotalRevisoes($revisor->pessoa->id) }}  projetos
                                                 </div>
                                             </div>
                                         </div>

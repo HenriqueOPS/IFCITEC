@@ -1039,5 +1039,17 @@ class AdminController extends Controller
     // You can return the data in a format that suits your needs, such as JSON or a view
     return response()->json($movimentoRegistro); // Or return a view with the data
 }
+public  function getTotalRevisoes($id)
+{
+    $total = DB::table('revisao')
+        ->select(DB::raw('count(*) as total'))
+        ->join('public.pessoa', 'revisao.pessoa_id', '=', 'public.pessoa.id')
+        ->join('projeto','revisao.projeto_id','projeto.id')
+        ->where('projeto.edicao_id',Edicao::getEdicaoId())
+        ->where('public.pessoa.id', '=', $id)
+        ->first();
+
+    return $total->total;
+}
     
 }
