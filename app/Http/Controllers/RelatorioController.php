@@ -2595,6 +2595,7 @@ class RelatorioController extends Controller
 }
 public  function generateCSVForEdition($edicao) {
     // Obtenha as escolas participantes da edição especificada
+
     $projetos = DB::table('escola_funcao_pessoa_projeto')
     ->where('escola_funcao_pessoa_projeto.edicao_id', '=', $edicao)
     ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
@@ -2620,15 +2621,15 @@ public  function generateCSVForEdition($edicao) {
         return count($projetos);
     });
     $rows = [];
-        foreach ($escolas as $escola) {
-            array_push($rows, [
-                utf8_decode($escola->uf),
-                utf8_decode($escola->municipio),
-                utf8_decode($this->nivelEscola($escola->escola_id)),
-                utf8_decode($escola->nome_curto),
-                utf8_decode($contagemPorNomeCurto[$escola->nome_curto]),
-            ]);
-        }
+            foreach ($escolas as $escola) {
+                $row = new \stdClass();
+                $row->uf =$escola->uf;
+                $row->municipio = $escola->municipio;
+                $row->nivel = $this->nivelEscola($escola->escola_id);
+                $row->nome_curto =$escola->nome_curto;
+                $row->contagem = $contagemPorNomeCurto[$escola->nome_curto];
+                $rows[] = $row;
+            }
 
         $headerFields = [
             'Estado',
@@ -2639,7 +2640,7 @@ public  function generateCSVForEdition($edicao) {
         ];
 
         $filename = "csvRelatorioPorEscola.csv";
-        return $this->returnsCSVStream($filename, $headerFields, $rows);
+        return view('relatorios.gerais.escolasparticipantes',compact('rows'));
     
 }
     public function nivelEscola($id){
@@ -2702,7 +2703,6 @@ public  function generateCSVForEdition($edicao) {
                 utf8_decode($pessoa->pessoa_id),
             ]);
         }
-        $filename = "funcoesSys.csv";
     
         return $this->returnsCSVStream($filename, $header, $rows);
 }

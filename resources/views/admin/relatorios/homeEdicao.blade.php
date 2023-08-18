@@ -344,7 +344,8 @@
                                 <td>Escolas Participantes</td>
                                 <td class="text-right">
                                     <a href="{{ route('download.relatorio.por.escola', $edicao) }}" target="_blank">
-                                        <i class="material-icons">arrow_downward</i>
+                                        <i
+                                            class="material-icons">visibility</i>
                                     </a>
                                 </td>
                             </tr>
