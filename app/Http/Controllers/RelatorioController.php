@@ -2607,9 +2607,9 @@ public  function generateCSVForEdition($edicao) {
         $rows = [];
         foreach ($escolas as $escola) {
             $nivel = '';
-            if($escola->nivel_id == 3){
+            if($escola->nivel_id == 2){
                 $nivel = 'Medio';
-            }if($escola->nivel_id == 2){
+            }if($escola->nivel_id == 3){
                 $nivel = 'Fundamental';
             }
             array_push($rows, [
