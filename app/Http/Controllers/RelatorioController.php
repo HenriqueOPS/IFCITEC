@@ -2595,16 +2595,31 @@ class RelatorioController extends Controller
 }
 public  function generateCSVForEdition($edicao) {
     // Obtenha as escolas participantes da edição especificada
+    $projetos = DB::table('escola_funcao_pessoa_projeto')
+    ->where('escola_funcao_pessoa_projeto.edicao_id', '=', $edicao)
+    ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+    ->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
+    ->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
+    ->select('uf','municipio','escola','nivel_id','nome_curto','titulo')
+    ->distinct()
+    ->orderBy('uf') // Retorna apenas registros únicos
+    ->get();
+    
+    $projetosAgrupados = $projetos->groupBy('nome_curto');
     $escolas = DB::table('escola_funcao_pessoa_projeto')
     ->where('escola_funcao_pessoa_projeto.edicao_id', '=', $edicao)
     ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
     ->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
     ->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
     ->select('uf','municipio','escola','nivel_id','nome_curto')
-    ->orderBy('uf')
-    ->distinct() // Retorna apenas registros únicos
+    ->distinct()
+    ->orderBy('uf') // Retorna apenas registros únicos
     ->get();
-        $rows = [];
+
+    $contagemPorNomeCurto = $projetosAgrupados->map(function ($projetos) {
+        return count($projetos);
+    });
+    $rows = [];
         foreach ($escolas as $escola) {
             $nivel = '';
             if($escola->nivel_id == 2){
@@ -2617,7 +2632,7 @@ public  function generateCSVForEdition($edicao) {
                 utf8_decode($escola->municipio),
                 utf8_decode($nivel),
                 utf8_decode($escola->nome_curto),
-          
+                utf8_decode($contagemPorNomeCurto[$escola->nome_curto]),
             ]);
         }
 
