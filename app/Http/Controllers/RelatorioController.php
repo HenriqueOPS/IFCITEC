@@ -2611,7 +2611,7 @@ public  function generateCSVForEdition($edicao) {
     ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
     ->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
     ->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-    ->select('uf','municipio','escola','nivel_id','nome_curto','escola_id')
+    ->select('uf','municipio','escola','nome_curto','escola_id')
     ->distinct()
     ->orderBy('uf') // Retorna apenas registros únicos
     ->get();
