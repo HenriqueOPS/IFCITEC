@@ -620,12 +620,12 @@ foreach ($palavrasChaves as $palavra) {
 
 	public function showFormVinculaHomologador($id)
 	{
-		$projeto = Projeto::find(433);
+		$projeto = Projeto::find($id);
 		if (!($projeto instanceof Projeto)) {
 			abort(404);
 		}
 
-		$edicaoId =10;
+		$edicaoId = Edicao::getEdicaoId();
 
 		$numProjetos = DB::table('revisao')
 			->join('projeto', 'projeto.id', '=', 'revisao.projeto_id')

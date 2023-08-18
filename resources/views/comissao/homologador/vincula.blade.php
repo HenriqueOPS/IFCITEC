@@ -29,7 +29,7 @@
                                                </div>
                                                <div>
                                                    <b><i class="material-icons small">settings</i></b>
-                                                   {{$revisor->num_projetos}} projetos
+                                                   {{$revisor->pessoa->getTotalRevisoes()}} projetos
                                                </div>
                                            </div>
                                        </div>
