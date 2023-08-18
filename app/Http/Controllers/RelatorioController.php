@@ -2600,7 +2600,7 @@ public  function generateCSVForEdition($edicao) {
     ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
     ->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
     ->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-    ->select('uf','municipio','escola','nivel_id','nome_curto','titulo')
+    ->select('uf','municipio','escola','nome_curto','titulo')
     ->distinct()
     ->orderBy('uf') // Retorna apenas registros únicos
     ->get();
@@ -2611,7 +2611,7 @@ public  function generateCSVForEdition($edicao) {
     ->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
     ->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
     ->join('projeto', 'escola_funcao_pessoa_projeto.projeto_id', '=', 'projeto.id')
-    ->select('uf','municipio','escola','nivel_id','nome_curto')
+    ->select('uf','municipio','escola','nivel_id','nome_curto','escola_id')
     ->distinct()
     ->orderBy('uf') // Retorna apenas registros únicos
     ->get();
@@ -2621,16 +2621,10 @@ public  function generateCSVForEdition($edicao) {
     });
     $rows = [];
         foreach ($escolas as $escola) {
-            $nivel = '';
-            if($escola->nivel_id == 2){
-                $nivel = 'Medio';
-            }if($escola->nivel_id == 3){
-                $nivel = 'Fundamental';
-            }
             array_push($rows, [
                 utf8_decode($escola->uf),
                 utf8_decode($escola->municipio),
-                utf8_decode($nivel),
+                utf8_decode($this->nivelEscola($escola->escola_id)),
                 utf8_decode($escola->nome_curto),
                 utf8_decode($contagemPorNomeCurto[$escola->nome_curto]),
             ]);
@@ -2648,7 +2642,26 @@ public  function generateCSVForEdition($edicao) {
         return $this->returnsCSVStream($filename, $headerFields, $rows);
     
 }
-public function funcoesSys(){
+    public function nivelEscola($id){
+        $escola = DB::table('escola_funcao_pessoa_projeto')
+        ->where('escola_id',$id)
+        ->join('projeto','projeto.id','escola_funcao_pessoa_projeto.projeto_id')
+        ->select('nivel_id')
+        ->distinct()
+        ->pluck('nivel_id');
+       $resultado='';
+        if ($escola->contains(2)) {
+            $resultado = 'Medio';
+        } 
+        if ($escola->contains(3)) {
+            $resultado = 'Fundamental';
+        } 
+        if ($escola->contains(2) && $escola->contains(3)) {
+            $resultado = 'Medio/Fundamental';
+        }
+        return $resultado;
+    }
+    public function funcoesSys(){
             $pessoasgerais = DB::table('funcao_pessoa')
             ->where('funcao_id', '!=', 8)
             ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
