@@ -257,6 +257,9 @@
     @yield('js')
 
     <style>
+            .nav-pills > li.active > a{
+                background-color:  {{$corbotoes}}!important;
+            }
             .btn {
                 background-color: {{$corbotoes}} !important; 
             }
