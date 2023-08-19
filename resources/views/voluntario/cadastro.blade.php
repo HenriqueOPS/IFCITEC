@@ -66,7 +66,100 @@
                             </div>
                             </div>
                         </div>
-                        </div>
+						<div class="row">
+
+									<div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
+							<div class="col-md-12 text-center">
+								<h3>Meus Dados</h3>
+							</div>
+
+							<div class="input-group{{ $errors->has('nome') ? ' has-error' : '' }}">
+								<span class="input-group-addon">
+									<i class="material-icons">face</i>
+								</span>
+								<div class="form-group label-floating">
+									<label class="control-label">Nome</label>
+									<input style="text-transform: capitalize" type="text" class="form-control"
+										name="nome" value="{{ isset($pessoa->nome) ? $pessoa->nome : '' }}" required>
+								</div>
+								@if ($errors->has('nome'))
+									<span class="help-block">
+										<strong>{{ $errors->first('nome') }}</strong>
+									</span>
+								@endif
+								
+							</div>
+							<div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                    <span class="input-group-addon">
+                                        <i class="material-icons">email</i>
+                                    </span>
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">Email</label>
+                                        <input type="email" class="form-control" name="email"
+                                            value="{{ isset($pessoa->email) ? $pessoa->email : '' }}" required>
+                                    </div>
+                                    @if ($errors->has('email'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+								<div class="input-group{{ $errors->has('telefone') ? ' has-error' : '' }}">
+                                    <span class="input-group-addon">
+                                        <i class="material-icons">perm_phone_msg</i>
+                                    </span>
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">Whatsapp</label>
+                                        <input type="tel" OnKeyPress="formatar('## #####-####', this)"
+                                            class="form-control" name="telefone" maxlength="13"
+                                            value="{{ $pessoa->telefone ?? '' }}" required>
+                                    </div>
+                                    @if ($errors->has('telefone'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('telefone') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+							
+							<div class="input-group ">
+								
+									<span class="input-group-addon">
+										<i class="material-icons">school</i>
+									</span>
+									<label class="control-label">Curso</label>
+								<select class="form-control" name="curso" required>
+									<option value="" disabled selected>Escolha uma opção</option>
+									<option value="DS">DS</option>
+									<option value="ADM">ADM</option>
+									<option value="ELE">ELE</option>
+								</select>
+							
+							</div>
+
+							<div class="input-group ">
+								
+								<span class="input-group-addon">
+									<i class="material-icons">date_range</i>
+								</span>
+								<label class="control-label">Ano</label>
+							<select class="form-control" name="ano" required>
+								<option value="" disabled selected>Escolha uma opção</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+							</select>
+						
+						</div>
+	
+						
+		
+
+					
+
+								
+		
+						
 
                         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                         <script>
