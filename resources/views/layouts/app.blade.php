@@ -81,7 +81,17 @@
         background-position:center;
         background-attachment: fixed;   
     }
+    .nav-pills > li.active > a{
+                background-color:  {{$corbotoes}}!important;
+            }
+            .btn {
+                background-color: {{$corbotoes}} !important; 
+            }
+            body{
+                font-family: {{$fonte}} !important;
+            }
 </style>
+
 <body class="masthead" style="background-image: url(data:image/png;base64,{{ $background }});">
     
     @if (!env('APP_DEBUG'))
@@ -256,17 +266,7 @@
 
     @yield('js')
 
-    <style>
-            .nav-pills > li.active > a{
-                background-color:  {{$corbotoes}}!important;
-            }
-            .btn {
-                background-color: {{$corbotoes}} !important; 
-            }
-            body{
-                font-family: {{$fonte}} !important;
-            }
-    </style>
+
 </body>
 
 </html>
