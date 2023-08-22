@@ -75,12 +75,13 @@
 								</div>
 							</div>
 							@if(isset($projeto->nota_revisao) &&  $projeto->nota_revisao !== null)
-								Nota revisao {{ $projeto->nota_revisao }},
+								<strong><div style="margin: 10px 0px 0px 15px;">Nota do Homologador : {{ $projeto->nota_revisao }} |</strong>
+								<a href="{{route('notaProjeto',$projeto->id)}}"><i class="material-icons ">info_i</i></a></div>
 							@endif
 							@if(isset($projeto->nota_avaliacao) &&  $projeto->nota_avaliacao !== null)
-								Nota avaliacao {{ $projeto->nota_avaliacao }},
+								Nota da Avaliacao {{ $projeto->nota_avaliacao }},
 							@endif
-							<a href="{{route('notaProjeto',$projeto->id)}}"><i class="material-icons ">looks_one</i></a>
+
 						@endforeach
 
 					</div>
