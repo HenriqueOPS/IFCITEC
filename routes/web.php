@@ -81,7 +81,7 @@ Route::group(['middleware' => ['IsVerificado']], function () {
 	Route::post('/lgpdaceito/{id}','PessoaController@lgpdaceito')->name('lgpdaceito');
 	// Autor
 	Route::get('/autor', 'AutorController@index')->name('autor');
-
+	Route::get('/autor/notarevisao/{id}','AutorController@nota')->name('notaProjeto');
 	//Comissao Avaliadora
 	Route::get('/comissao-avaliadora', 'ComissaoAvaliadoraController@index')->name('comissao');
 

@@ -74,7 +74,13 @@
 									@endforeach
 								</div>
 							</div>
-
+							@if(isset($projeto->nota_revisao) &&  $projeto->nota_revisao !== null)
+								Nota revisao {{ $projeto->nota_revisao }},
+							@endif
+							@if(isset($projeto->nota_avaliacao) &&  $projeto->nota_avaliacao !== null)
+								Nota avaliacao {{ $projeto->nota_avaliacao }},
+							@endif
+							<a href="{{route('notaProjeto',$projeto->id)}}"><i class="material-icons ">looks_one</i></a>
 						@endforeach
 
 					</div>

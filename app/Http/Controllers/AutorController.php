@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-
+use App\Situacao;
+use Illuminate\Support\Facades\DB;
 use App\Edicao;
 use App\Projeto;
 
@@ -25,7 +26,7 @@ class AutorController extends Controller {
     public function index() {
 		$projetos = [];
 
-		$projetos['autor'] = Projeto::select('id', 'titulo')
+		$projetos['autor'] = Projeto::select('id', 'titulo','nota_revisao','nota_avaliacao')
 			->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'projeto_id')
 			->where('pessoa_id', '=', Auth::user()->id)
 			->where('projeto.edicao_id', '=', Edicao::getEdicaoId())
@@ -48,5 +49,17 @@ class AutorController extends Controller {
 
 		return view('user.home')->withProjetos($projetos);
     }
+	public function nota($id){
+		$projeto = Projeto::find($id);
+        $situacoes = Situacao::all();
+
+        $revisao = DB::table('revisao')->join('pessoa', 'revisao.pessoa_id', '=', 'pessoa.id')
+            ->select('revisao.pessoa_id', 'revisao.observacao', 'revisao.nota_final', 'pessoa.nome')
+            ->where('revisao.projeto_id', $id)
+            ->get()->toArray();
+
+        return view('projeto.notaRevisao', array('projeto' => $projeto, 'situacoes' => $situacoes, 'revisao' => $revisao));
+    
+	}
 
 }
