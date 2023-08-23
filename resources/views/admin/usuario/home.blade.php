@@ -22,16 +22,22 @@
                         <tr>
                             <th class="text-center">#</th>
                             <th>Usuários</th>
+                            <th>Ocultar</th>
                             <th>E-mail</th>
                             <th class="text-right">Ações</th>
                         </tr>
                     </div>
                     </thead>
 
-                    <tbody id="5">
-                        @foreach($usuarios as $key=>$usuario)
-                            <tr>
+                        <tbody id="5">
+                                                        @foreach($usuarios as $key=>$usuario)
+                                <tr>
                                 <td class="text-center">{{$key + 1}}</td>
+                                <td>
+                                <input type="checkbox" class="custom-control-input" id="customSwitch{{$usuario->id}}" onclick="oculto({{$usuario->id}}, {{$usuario->oculto}})" {{$usuario->oculto ? 'checked' : ''}}>
+  
+                                <label>Ocultar</label>
+                                </td>
                                 <td>{{$usuario->nome}}</td>
                                 <td>{{$usuario->email}}</td>
                                 <td class="text-right">
@@ -59,6 +65,27 @@
 
 @section('js')
 <script>
+    function oculto($id,$estado){
+        $estado = !$estado
+        $.ajax({
+            url: '/ocultarusuario-admin/' + $id,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                _token: '{{ csrf_token() }}',
+                estado: $estado // Certifique-se de que esta variável esteja definida
+            },
+            success: function(response) {
+                // Faça algo aqui após a ocultação do usuário
+                alert(response.message);
+            },
+            error: function(error) {
+                // Trate erros aqui
+                alert('Erro ao ocultar usuário: ', error.message);
+            }
+        });
+    }
+   
 	document.getElementById('nav-usuarios').classList.add('active');
 </script>
 @endsection
