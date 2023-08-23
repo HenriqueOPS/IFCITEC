@@ -65,4 +65,12 @@
 		@endforeach
 	</div>
 </div>
+<style>
+  body {
+    background-image: url(data:image/png;base64,{{$fundo}});
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+</style>
 @endsection

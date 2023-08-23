@@ -36,6 +36,9 @@ class AppServiceProvider extends ServiceProvider
             $logonormal = DB::table('media')->where('nome', '=', 'logonormal')->value('conteudo');
             view()->share('logonormal', $logonormal);
 
+            $fundo = DB::table('media')->where('nome', '=', 'fundo')->value('conteudo');
+            view()->share('fundo', $fundo);
+
             $cor = DB::table('mensagem')->where('nome', '=', 'cor_navbar')->value('conteudo');
             view()->share('cor', $cor);
 
