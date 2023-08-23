@@ -190,9 +190,7 @@ class AdminController extends Controller
 
     public function usuarios()
     {
-        $usuarios = Pessoa::orderBy('nome')
-            ->where('oculto', false)
-            ->get();
+        $usuarios = Pessoa::orderBy('nome')->get();
 
         return view('admin.usuario.home')->withUsuarios($usuarios);
     }
@@ -1024,6 +1022,21 @@ class AdminController extends Controller
 
         return view('auth.oculto');
     }
+    public function ocultar($id, Request $request){
+        $novoEstado = $request->input('oculto');
+        $pessoa = Pessoa::where('id',$id)->get();
+
+        if (!$pessoa) {
+            return response()->json(['message' => 'Pessoa não encontrada.'], 404);
+        }
+
+        $pessoa[0]->oculto = $novoEstado;
+        $pessoa[0]->save();
+
+        return response()->json(['message' => 'Pessoa Atualizada com sucesso.']);
+
+    }
+
     public function fontes(Request $req){
         $fonte = Mensagem::where('nome', '=', 'fontes')->get();
         $fonte[0]->conteudo = $req->fonte;
