@@ -77,7 +77,7 @@ Route::get('/relatorio/escolas/tipo-escola', 'RelatorioController@escolaPorTipo'
 Route::get('/escolas/tipo-escola-csv', 'RelatorioController@csvEscolaPorTipo')->name('csvEscolaPorTipo');
 Route::get('/relatorio/mostratec/{edicao}', 'RelatorioController@relatorioMOSTRATEC')->name('relatorioMOSTRATEC');
 Route::get('/download-escolas-csv/{editionId}', 'RelatorioController@generateCSVForEdition')->name('download.relatorio.por.escola');
-
+Route::get('/download/Homologadores/{id}','RelatorioController@GetRevisoesPorHomologador')->name('download.homologadores');
 // Relatórios - Lanche
 Route::get('/relatorio/vale-lanche/gerar/{edicao}', 'RelatorioController@gerarValeLanche')->name('geraValeLanche');
 Route::post('/relatorio/vale-lanche/{edicao}', 'RelatorioController@valeLanche')->name('valeLanche');
