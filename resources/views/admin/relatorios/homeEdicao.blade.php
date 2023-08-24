@@ -349,6 +349,15 @@
                                     </a>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>14</td>
+                                <td>Qtd de Projetos por Homologador</td>
+                                <td class="text-right">
+                                    <a href="{{ route('download.homologadores', $edicao) }}" target="_blank">
+                                    <i class="material-icons">arrow_downward</i>
+                                    </a>
+                                </td>
+                            </tr>
                         </tbody>
 
 

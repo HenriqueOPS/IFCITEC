@@ -2706,5 +2706,27 @@ public  function generateCSVForEdition($edicao) {
     
         return $this->returnsCSVStream($filename, $header, $rows);
 }
-
+    public function GetRevisoesPorHomologador($id){
+        $homologadores = DB::table('funcao_pessoa')
+        ->where('funcao_id',4)
+        ->where('edicao_id',$id)
+        ->join('pessoa','pessoa.id','funcao_pessoa.pessoa_id')
+        ->select('nome','id')
+        ->get();
+        $header = [
+            'Nome',
+            'Qtd de Projetos'
+        ];
+        $rows = [];
+        $filename = "RevisoesPorHomologador.csv";
+        foreach($homologadores as $homologador){
+            array_push($rows,[
+                $homologador->nome,
+                app('App\Http\Controllers\AdminController')->getTotalRevisoes($homologador->id)
+            ]);
+        }
+        return $this->returnsCSVStream($filename, $header, $rows);
+    
+    }
+    
 }
