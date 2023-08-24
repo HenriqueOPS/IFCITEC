@@ -1052,7 +1052,7 @@ class AdminController extends Controller
     // You can return the data in a format that suits your needs, such as JSON or a view
     return response()->json($movimentoRegistro); // Or return a view with the data
 }
-public  function getTotalRevisoes($id)
+    public  function getTotalRevisoes($id)
 {
     $total = DB::table('revisao')
         ->select(DB::raw('count(*) as total'))
@@ -1064,5 +1064,16 @@ public  function getTotalRevisoes($id)
 
     return $total->total;
 }
+    public function Cursos(){
+        $cursos = DB::table('cursos')->get();
+        return view('administrador.cursos.home',compact('cursos'));
+    }
+    public function CreateCurso(Request $req){
+       
+        DB::table('cursos')->insert([
+            'nome' => $req->input('nome'),
+        ]);
+      return redirect()->route('admin.cursos');
+    }
     
 }

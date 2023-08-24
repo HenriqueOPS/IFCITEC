@@ -141,13 +141,17 @@
 								<span class="input-group-addon">
 									<i class="material-icons">date_range</i>
 								</span>
-								<label class="control-label">Ano</label>
+								<label class="control-label">Ano ou Semestre</label>
 							<select class="form-control" name="ano" required>
 								<option value="" disabled selected>Escolha uma opção</option>
 								<option value="1">1</option>
 								<option value="2">2</option>
 								<option value="3">3</option>
 								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
 							</select>
 						
 						</div>
