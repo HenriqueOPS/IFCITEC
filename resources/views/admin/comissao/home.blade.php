@@ -74,7 +74,40 @@
 
                     @endforeach
                     </tbody>
+                        </table>
+                        <div class="col-md-12 text-center">
+                                <h2>Voluntarios</h2>
+                        </div>
+                    <table class='table'>
+                    <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Ano</th>
+                                <th>Curso</th>
+                                <th>Turma</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($voluntarios as $voluntario)
+                                <tr>
+                                    <th>{{$voluntario->nome}}</th>
+                                    <th>{{$voluntario->ano}}</th>
+                                    <th>{{$voluntario->curso}}</th>
+                                    <th>{{$voluntario->turma}}</th>
+                                    <th>@if ($voluntario->homologado === true)
+                            <span class="label label-success">Homologado</span>
+                            @elseif ($voluntario->homologado === false)
+                            <span class="label label-warning">Não Homologado</span>
+                            @else
+                            <span class="label label-default">Cadastrado</span>
+                            @endif</th>
+                                    
+                                </tr>
+                            @endforeach
+                        </tbody>
                     </table>
+
                 </div>
             </div>
         </div>

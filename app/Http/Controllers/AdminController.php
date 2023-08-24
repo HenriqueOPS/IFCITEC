@@ -314,8 +314,15 @@ class AdminController extends Controller
             ->orderBy('pessoa.nome', 'asc')
             ->get()
             ->toArray();
-
-        return view('admin.comissao.home', collect(['comissao' => $comissao]));
+        $voluntarios = DB::table('funcao_pessoa')
+        ->where('funcao_id',9)
+        ->where('funcao_pessoa.edicao_id',Edicao::getEdicaoId())
+        ->join('pessoa','pessoa.id','funcao_pessoa.pessoa_id')
+        ->join('voluntarios','voluntarios.id','funcao_pessoa.pessoa_id')
+        ->where('voluntarios.edicao_id',Edicao::getEdicaoId())
+        ->select('nome','homologado','ano','turma','curso')
+        ->get();
+        return view('admin.comissao.home', collect(['comissao' => $comissao]),compact('voluntarios'));
     }
 
     public function relatorios($edicao)
