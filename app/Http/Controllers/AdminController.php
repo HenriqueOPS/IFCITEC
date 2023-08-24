@@ -1072,6 +1072,7 @@ class AdminController extends Controller
        
         DB::table('cursos')->insert([
             'nome' => $req->input('nome'),
+            'nivel'=> $req->input('nivel')
         ]);
       return redirect()->route('admin.cursos');
     }
@@ -1082,8 +1083,17 @@ class AdminController extends Controller
     public function UpdateCurso(Request $req){
         $curso = DB::table('cursos')->where('id', $req->input('id'))->first();
         $curso->nome = $req->input('nome');
+        $curso->nivel = $req->input('nome');
         $curso->timestamp = false;
         $curso->save();
         return redirect()->route('admin.cursos');
+    }
+    public function ReadCurso($id){
+        $curso = DB::table('cursos')->where('id',$id)->first();
+        if ($curso) {
+            return response()->json($curso);
+        } else {
+            return response()->json(['error' => 'Curso não encontrado'], 404);
+        }
     }
 }
