@@ -1075,5 +1075,7 @@ class AdminController extends Controller
         ]);
       return redirect()->route('admin.cursos');
     }
-    
+    public function CriarCursos(){
+        return view('administrador.cursos.create');
+    }
 }
