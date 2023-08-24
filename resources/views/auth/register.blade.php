@@ -69,19 +69,19 @@
                                 </span>
                             <div class="form-group label-floating">
                                 <label class="control-label">Nome</label>
-                                <input type="text" class="form-control" name="nome" value="{{ old('nome') }}" required oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);updateFullName();" required> 
+                                <input type="text" class="form-control" name="nome" value="{{ old('nome') }}"  oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);updateFullName();" > 
                                  </div>
 
                             <div class="form-group label-floating">
                                 <label class="control-label">Sobrenome</label>
-                                <input type="text" class="form-control" name="sobrenome" value="{{ old('sobrenome') }}" required oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);updateFullName();" required>
+                                <input type="text" class="form-control" name="sobrenome" value="{{ old('sobrenome') }}"  oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);updateFullName();" >
                             </div>
 
                             <input type="hidden" name="nome_completo" id="nome_completo" value="">
     
                                @if ($errors->has('nome'))
                                 <span class="help-block">
-                                    <strong>{{ $errors->first('nome') }}</strong>
+                                    <strong>{{ $errors->first('nome') }}</strong
                                 </span>
                                 @endif
                             </div>
@@ -94,7 +94,7 @@
                                 <div class="form-group label-floating">
                                     <label class="control-label">Gênero</label>
                                 </div>
-                                <input type="radio" id="masculino" name="genero" value="M" required>
+                                <input type="radio" id="masculino" name="genero" value="M" >
                                 <label style="margin-top:5px; margin-right:15px;">Masculino</label>
                                  <input type="radio" id="feminino" name="genero" value="F">
                                  <label style="margin-left:0px;">Feminino</label>
@@ -110,7 +110,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">CPF</label>
-                                    <input type="text" OnKeyPress="formatar('###.###.###-##', this)" maxlength="14" class="form-control" pattern="^([0-9][0-9][0-9].)+([0-9][0-9])" name="cpf" value="{{old('cpf')}}" required>
+                                    <input type="text" OnKeyPress="formatar('###.###.###-##', this)" maxlength="14" class="form-control" pattern="^([0-9][0-9][0-9].)+([0-9][0-9])" name="cpf" value="{{old('cpf')}}" >
                                 </div>
                                 @if ($errors->has('cpf'))
                                 <span class="help-block">
@@ -125,7 +125,7 @@
                                 </span>
                                 <div class="form-group ">
                                     <label class="control-label">Data Nascimento</label>
-                                    <input type="text" class="form-control datepicker" name="dt_nascimento" value="{{ old('dt_nascimento') }}"  required>
+                                    <input type="text" class="form-control datepicker" name="dt_nascimento" value="{{ old('dt_nascimento') }}"  >
                                 </div>
                                 @if ($errors->has('dt_nascimento'))
                                 <span class="help-block">
@@ -140,7 +140,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Email</label>
-                                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" >
                                 </div>
                                 @if ($errors->has('email'))
                                 <span class="help-block">
@@ -155,7 +155,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Confirme o Email</label>
-                                    <input type="email" class="form-control" name="email_confirmation" required>
+                                    <input type="email" class="form-control" name="email_confirmation" >
                                 </div>
                             </div>
 
@@ -165,7 +165,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Whatssap</label>
-                                    <input type="tel" OnKeyPress="formatar('## #####-####', this)" class="form-control" name="telefone" maxlength="13" value="{{ old('telefone') }}" required>
+                                    <input type="tel" OnKeyPress="formatar('## #####-####', this)" class="form-control" name="telefone" maxlength="13" value="{{ old('telefone') }}" >
                                     <small class="form-text text-muted">Informe o número com DDD e utilize o formato: 99 99999-9999</small>
 
                                 </div>
@@ -182,7 +182,7 @@
                                 </span>
                                 <div class="form-group">
                                     <label class="control-label">Camisa</label>
-                                    <select id="camisa-select" name="camisa" value="{{ old('camisa') }}" required>
+                                    <select id="camisa-select" name="camisa" value="{{ old('camisa') }}" >
                                       <option value="P">P</option>
                                       <option value="M">M</option>
                                       <option value="G">G</option>
@@ -204,7 +204,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Senha</label>
-                                    <input type="password" class="form-control" name="senha" required>
+                                    <input type="password" class="form-control" name="senha" >
                                 </div>
                                 @if ($errors->has('senha'))
                                 <span class="help-block">
@@ -219,7 +219,7 @@
                                 </span>
                                 <div class="form-group label-floating">
                                     <label class="control-label">Confirme a Senha</label>
-                                    <input type="password" class="form-control" name="senha_confirmation" required>
+                                    <input type="password" class="form-control" name="senha_confirmation" >
                                 </div>
                             </div>
 

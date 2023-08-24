@@ -117,7 +117,7 @@ class RegisterController extends Controller
 					'min:11',
 					'max:14',
 					'validateCpf',
-					Rule::unique('pessoas', 'cpf')->where(function ($query) {
+					Rule::unique('pessoa','cpf')->where(function ($query) {
 						$query->where('oculto', false);
 					}),
 				]
