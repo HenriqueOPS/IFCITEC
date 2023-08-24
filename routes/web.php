@@ -269,6 +269,7 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::post('/administrador/cursos/create','AdminController@CreateCurso')->name('admin.cursos.create');
 	Route::post('/administrador/cursos/delete','AdminController@DeleteCurso')->name('admin.cursos.delete');
 	Route::post('/administrador/cursos/update','AdminController@UpdateCurso')->name('admin.cursos.update');
+	Route::get('/administrador/cursos/{id}','AdminController@ReadCurso')->name('admin.cursos.read');
 	require_once "webRoutes/reportRoutes.php";
 
 
