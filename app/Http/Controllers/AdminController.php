@@ -1066,7 +1066,7 @@ class AdminController extends Controller
 }
     public function Cursos(){
         $cursos = DB::table('cursos')->get();
-        return view('administrador.cursos.home',compact('cursos'));
+        return view('admin.cursos.home',compact('cursos'));
     }
     public function CreateCurso(Request $req){
        
@@ -1075,7 +1075,15 @@ class AdminController extends Controller
         ]);
       return redirect()->route('admin.cursos');
     }
-    public function CriarCursos(){
-        return view('administrador.cursos.create');
+    public function DeleteCurso(Request $req){
+        DB::table('cursos')->where('id', $req->input('id'))->delete();
+        return redirect()->route('admin.cursos');
+    }
+    public function UpdateCurso(Request $req){
+        $curso = DB::table('cursos')->where('id', $req->input('id'))->first();
+        $curso->nome = $req->input('nome');
+        $curso->timestamp = false;
+        $curso->save();
+        return redirect()->route('admin.cursos');
     }
 }
