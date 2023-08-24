@@ -265,6 +265,9 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::get('/administrador/nota-avaliacao/projeto/{projeto}', 'AdminController@notaAvaliacao')->name('notaAvaliacao');
 	Route::post('/administrador/muda/nota-revisao/projeto', 'AdminController@mudaNotaRevisao')->name('mudaNotaRevisao');
 	Route::post('/administrador/muda/nota-avaliacao/projeto', 'AdminController@mudaNotaAvaliacao')->name('mudaNotaAvaliacao');
+	
+	
+	/*cursos*/
 	Route::get('/administrador/cursos','AdminController@Cursos')->name('admin.cursos');
 	Route::post('/administrador/cursos/create','AdminController@CreateCurso')->name('admin.cursos.create');
 	Route::post('/administrador/cursos/delete','AdminController@DeleteCurso')->name('admin.cursos.delete');

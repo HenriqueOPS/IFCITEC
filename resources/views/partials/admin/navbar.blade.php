@@ -1,6 +1,14 @@
+<style>
+    @media only screen and (max-width: 992px) {
+        #a666{
+            display: none;
+        } 
+    }
+</style>
+
 <div id="page" class="col-md-12" style="display: flex; justify-content: center;">
     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="display: flex; align-items: center;">
-        <li class="nav-item dropdown" style="margin: 0px 5px 0px 0px;">
+        <li class="nav-item dropdown" id="a666" style="margin: 0px 5px 0px 0px;">
             <a class="nav-link dropdown-toggle" href="#" id="dropdownAdministrativa" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="material-symbols-outlined">admin_panel_settings</i>
                 Administrativa
@@ -27,6 +35,10 @@
                         Tarefas
                     </a>
                 </li>
+                <li><a class="dropdown-item" style="text-decoration: none;" href="{{ route('admin.cursos') }}">
+                    <i class="material-symbols-outlined" style="display: flex; justify-content: center;">school</i>
+                    Cursos
+                </a></li>
             </ul>
         </li>
         <li class="nav-item dropdown" style="margin: 0px 5px 0px 5px;">

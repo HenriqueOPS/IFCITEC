@@ -19,27 +19,27 @@
                             <thead id="4">
                     <div id="4">
                         <div class="col-md-3">
-                            <a href="{{ route('cadastroTarefa') }}" class="btn btn-primary btn-round">
-                                <i class="material-icons">add</i> Adicionar Tarefa
+                            <a href="" class="btn btn-primary btn-round">
+                                <i class="material-icons">add</i> Adicionar Curso
                             </a>
                         </div>
                     </div>
                     <div id="4">
                         <tr>
                             <th class="text-center">#</th>
-                            <th>Tarefa</th>
-                            <th>Descrição</th>
+                            <th>Curso</th>
+                            <th>Nível</th>
                             <th class="text-right">Ações</th>
                         </tr>
                     </div>
                     </thead>
 
                     <tbody id="4">
-                        @foreach($tarefas as $id => $tarefa)
+                        @foreach($cursos as $id => $curso)
                         <tr>
                             <td class="text-center">{{$id+1}}</td>
-                            <td>{{$tarefa->tarefa}}</td>
-                            <td>{{$tarefa->descricao}}</td>
+                            <td>{{$curso->tarefa}}</td>
+                            <td>{{$curso->nivel}}</td>
                             <td class="text-right">
                             <a href="{{ route('tarefaVoluntarios', $tarefa->id) }}" target="_blank"><i class="material-icons">description</i></a>
 
