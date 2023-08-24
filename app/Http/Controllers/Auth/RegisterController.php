@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 //
 use App\Endereco;
 
@@ -111,7 +112,16 @@ class RegisterController extends Controller
 				'senha' => 'required|string|confirmed',
 				'dt_nascimento' => 'required|date_format:d/m/Y|before:today|after:01/01/1900',
 				'telefone' => 'required|string|min:13|max:13',
-				'cpf' => 'string|min:11|max:14|validateCpf',
+				'cpf' => [
+					'string',
+					'min:11',
+					'max:14',
+					'validateCpf',
+					Rule::unique('pessoas', 'cpf')->where(function ($query) {
+						$query->where('oculto', false);
+					}),
+				]
+				,
 				'newletter' => 'boolean',
 				'genero' => 'required|in:M,F',
 				//COMECO do código que necessitará um refact issue #40

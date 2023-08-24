@@ -1023,15 +1023,15 @@ class AdminController extends Controller
         return view('auth.oculto');
     }
     public function ocultar($id, Request $request){
-        $novoEstado = $request->input('oculto');
-        $pessoa = Pessoa::where('id',$id)->get();
+        $novoEstado = $request->input('estado');
+        $pessoa = Pessoa::where('id',$id)->first();
 
         if (!$pessoa) {
             return response()->json(['message' => 'Pessoa não encontrada.'], 404);
         }
 
-        $pessoa[0]->oculto = $novoEstado;
-        $pessoa[0]->save();
+        $pessoa->oculto = $novoEstado;
+        $pessoa->save();
 
         return response()->json(['message' => 'Pessoa Atualizada com sucesso.']);
 

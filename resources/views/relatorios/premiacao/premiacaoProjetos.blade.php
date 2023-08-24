@@ -1,6 +1,14 @@
 @extends('relatorios.relatorioPaisagem')
 
 @section('content')
+<style>
+  body {
+    background-image: url(data:image/png;base64,{{$fundo}});
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+</style>
 <header>
 	<img src="{{ asset('img/ifcitecheader.png')  }}"/>
 	<h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE PREMIAÇÃO DA {{\App\Edicao::numeroEdicao($edicao)}} IFCITEC</h2>
@@ -65,12 +73,5 @@
 		@endforeach
 	</div>
 </div>
-<style>
-  body {
-    background-image: url(data:image/png;base64,{{$fundo}});
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-</style>
+
 @endsection

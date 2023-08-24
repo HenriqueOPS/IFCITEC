@@ -1,6 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
+<script>    
+function oculto($id,$estado){
+        $estado = !$estado
+        $.ajax({
+            url: '/ocultarusuario-admin/' + $id,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                _token: '{{ csrf_token() }}',
+                estado: $estado // Certifique-se de que esta variável esteja definida
+            },
+            success: function(response) {
+                // Faça algo aqui após a ocultação do usuário
+                alert(response.message);
+            },
+            error: function(error) {
+                // Trate erros aqui
+                alert('Erro ao ocultar usuário: ', error.message);
+            }
+        });
+    }
+   </script>
 <div class="container">
 	<div class="row">
 		<div class="col-md-12 text-center">
@@ -65,27 +87,7 @@
 
 @section('js')
 <script>
-    function oculto($id,$estado){
-        $estado = !$estado
-        $.ajax({
-            url: '/ocultarusuario-admin/' + $id,
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                _token: '{{ csrf_token() }}',
-                estado: $estado // Certifique-se de que esta variável esteja definida
-            },
-            success: function(response) {
-                // Faça algo aqui após a ocultação do usuário
-                alert(response.message);
-            },
-            error: function(error) {
-                // Trate erros aqui
-                alert('Erro ao ocultar usuário: ', error.message);
-            }
-        });
-    }
-   
+
 	document.getElementById('nav-usuarios').classList.add('active');
 </script>
 @endsection
