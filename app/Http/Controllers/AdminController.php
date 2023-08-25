@@ -320,7 +320,8 @@ class AdminController extends Controller
         ->join('pessoa','pessoa.id','funcao_pessoa.pessoa_id')
         ->join('voluntarios','voluntarios.id','funcao_pessoa.pessoa_id')
         ->where('voluntarios.edicao_id',Edicao::getEdicaoId())
-        ->select('nome','homologado','ano','turma','curso')
+        ->select('nome','homologado','ano','turma','curso','pessoa_id')
+        ->orderBy('homologado', 'desc')
         ->get();
         return view('admin.comissao.home', collect(['comissao' => $comissao]),compact('voluntarios'));
     }

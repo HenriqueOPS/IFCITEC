@@ -203,6 +203,8 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::get('/administrador/fichas/{id}/editar', 'FichaController@edit')->name('administrador.edit');
 	Route::post('/administrador/fichas/editar', 'FichaController@update')->name('administrador.alteraFicha');
 	Route::post('/ocultarusuario-admin/{id}','AdminController@ocultar')->name('administrador.ocultar');
+	Route::get('/voluntario/info/{id}','VoluntarioController@info')->name('voluntario.info');
+	Route::post('/voluntario/homologar/{id}','VoluntarioController@homologar')->name('voluntario.homologar');
 
 	// Administrador
 	Route::get('/emails-enviados', 'GerenMsgController@tabela')->name('emails-enviados');

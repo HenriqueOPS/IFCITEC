@@ -108,4 +108,23 @@ class VoluntarioController extends Controller
 			return view('voluntario.temTrabalho');
 		}
 	}
+	public function info($id){
+		$voluntario = DB::table('voluntarios')->where('id', $id)->first();
+		$pessoa = DB::table('pessoa')->where('id', $id)->first();
+	
+		// Juntar os objetos em um único objeto
+		$info = (object) array_merge((array) $voluntario, (array) $pessoa);
+	
+		return response()->json($info);
+	}
+	public function homologar($id,Request $req){
+		$update = $req->input('homologado');
+		$voluntario = DB::table('funcao_pessoa')
+		->where('pessoa_id',$id)
+		->where('funcao_id',9)
+		->where('edicao_id',Edicao::getEdicaoId())
+		->update(['homologado' => $update]);
+		return response()->json(['success' => 'Operação Realizada com sucesso']);
+		
+	}
 }

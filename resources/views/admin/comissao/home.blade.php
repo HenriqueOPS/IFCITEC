@@ -15,7 +15,7 @@
     <div class="row">
         <div class="col-md-12 main main-raised">
             <div class="list-projects">
-                    <table class="table">
+                    <table class="table" id="tab-comissao">
                         <div id="7">
                         <ul class="tab-comissao nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
                             <li class="active">
@@ -28,6 +28,12 @@
                                 <a id="homologador" role="tab" data-toggle="tab">
                                     <i class="material-icons">description</i>
                                     Homologadores
+                                </a>
+                            </li>
+                            <li>
+                                <a id="voluntario" role="tab" data-toggle="tab">
+                                    <i class="material-icons">description</i>
+                                    Voluntarios
                                 </a>
                             </li>
                         </ul>
@@ -75,38 +81,42 @@
                     @endforeach
                     </tbody>
                         </table>
-                        <div class="col-md-12 text-center">
-                                <h2>Voluntarios</h2>
-                        </div>
-                    <table class='table'>
-                    <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Ano</th>
-                                <th>Curso</th>
-                                <th>Turma</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($voluntarios as $voluntario)
-                                <tr>
-                                    <th>{{$voluntario->nome}}</th>
-                                    <th>{{$voluntario->ano}}</th>
-                                    <th>{{$voluntario->curso}}</th>
-                                    <th>{{$voluntario->turma}}</th>
-                                    <th>@if ($voluntario->homologado === true)
-                            <span class="label label-success">Homologado</span>
-                            @elseif ($voluntario->homologado === false)
-                            <span class="label label-warning">Não Homologado</span>
-                            @else
-                            <span class="label label-default">Cadastrado</span>
-                            @endif</th>
-                                    
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                      
+                        <table class="table" id="tab-voluntario">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Ano/Semestre</th>
+                                        <th>Curso</th>
+                                        <th>Turma</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($voluntarios as $voluntario)
+                                        <tr>
+                                            <td>{{$voluntario->nome}}</td>
+                                            <td>{{$voluntario->ano}}</td>
+                                            <td>{{$voluntario->curso}}</td>
+                                            <td>{{$voluntario->turma}}</td>
+                                            <td>
+                                                @if ($voluntario->homologado === true)
+                                                    <span class="label label-success">Homologado</span>
+                                                @elseif ($voluntario->homologado === false)
+                                                    <span class="label label-warning">Não Homologado</span>
+                                                @else
+                                                    <span class="label label-default">Cadastrado</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                            <a href="javascript:void(0);" class="HomologarVoluntario" data-id={{$voluntario->pessoa_id}}><i class="material-icons">group_add</i></a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
 
                 </div>
             </div>
@@ -137,6 +147,29 @@
     </div>
 </div>
 <!-- Fim Modal -->
+<div id="ModalHomologar" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="ModalDelete">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Homologar Voluntario</h5>
+            </div>
+
+            <div class="modal-body">
+                    <p><i class="material-icons">person</i> <strong>Nome:</strong> <span id="nome"></span></p>
+                    <p><i class="material-icons">email</i> <strong>Email:</strong> <span id="email"></span></p>
+                    <p><i class="material-icons">event</i> <strong>Ano/Semestre:</strong> <span id="ano"></span></p>
+                    <p><i class="material-icons">school</i> <strong>Curso:</strong> <span id="curso"></span></p>
+                    <p><i class="material-icons">school</i> <strong>Turma:</strong> <span id="turma"></span></p>
+                    <p><i class="material-icons">phone</i> <strong>Telefone:</strong> <span id="telefone"></span></p>
+         
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" id="NhomologarBtn">Não Homologar</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="homologarBtn">Homologar</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('js')
@@ -148,15 +181,23 @@
 $(document).ready(function () {
     //comissao avaliadora
     $('tr.homologador').hide();
-
+    $('#tab-voluntario').hide();
     $('.tab-comissao #homologador').click(function (e) {
         $('tr.avaliador').hide();
         $('tr.homologador').show();
+        $('#tab-voluntario').hide();
+        $('#tab-comissao').show();
     });
 
     $('.tab-comissao #avaliador').click(function (e) {
         $('tr.avaliador').show();
         $('tr.homologador').hide();
+        $('#tab-voluntario').hide();
+        $('#tab-comissao').show();
+    });
+    $('.tab-comissao #voluntario').click(function (e){
+        $('#tab-comissao').hide();
+        $('#tab-voluntario').show();
     });
 
 
@@ -184,7 +225,50 @@ $('.exclusaoComissao').click(function(){
     });
 
 });
-
+$('.HomologarVoluntario').click(function(){
+    $("#ModalHomologar").modal();
+            $.ajax({
+                url: '/voluntario/info/' + $(this).data('id'),
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    // Atualizar o conteúdo da div voluntarioInfo com as informações recebidas
+                    $('#nome').text(data.nome);
+                    $('#email').text(data.email);
+                    $('#ano').text(data.ano);
+                    $('#curso').text(data.curso);
+                    $('#turma').text(data.turma);
+                    $('#telefone').text(data.telefone);
+                    $('#homologarBtn').attr('data-id', data.id);
+                    $('#NhomologarBtn').attr('data-id', data.id);
+                },
+                error: function() {
+                    console.log('Erro ao obter informações do voluntário.');
+                }
+            });
+    
+})
+$('#homologarBtn').click(function(){
+    homologação($(this).data('id'),true)
+})
+$('#NhomologarBtn').click(function(){
+    homologação($(this).data('id'),false)
+})
+ function homologação(id,opção){
+    $.ajax({
+                url: '/voluntario/homologar/' + id,
+                type: 'POST',
+                dataType: 'json',
+                data: { homologado: opção },
+                success: function(data) {
+                 alert(data.success)
+                 location.reload();
+                },
+                error: function() {
+                    alert('Erro ao obter informações do voluntário.');
+                }
+            });
+ }
 </script>
 
 @endsection
