@@ -31,6 +31,10 @@
                                                        <b><i class="material-icons small">settings</i></b>
                                                        {{$avaliador->num_projetos}} projetos
                                                    </div>
+                                                   <div>
+                                                    <b><i class="material-icons small">settings</i></b>
+                                                    Instituicao: {{ $avaliador->instituicao  }}  
+                                                </div>
                                                </div>
                                            </div>
                                        </div>
@@ -57,6 +61,10 @@
                                                 <div>
                                                     <b><i class="material-icons small">settings</i></b>
                                                     {{$avaliacao->pessoa->getTotalAvaliacoes()}} projetos
+                                                </div>
+                                                <div>
+                                                    <b><i class="material-icons small">school</i></b>
+                                                    Instituicao: {{ $avaliacao->pessoa->instituicao  }}  
                                                 </div>
                                             </div>
                                         </div>

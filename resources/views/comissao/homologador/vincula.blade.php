@@ -60,6 +60,10 @@
                                                     <b><i class="material-icons small">settings</i></b>
                                                     {{  app('App\Http\Controllers\AdminController')->getTotalRevisoes($revisor->pessoa->id) }}  projetos
                                                 </div>
+                                                <div>
+                                                    <b><i class="material-icons small">school</i></b>
+                                                    Instituicao: {{ $revisor->pessoa->instituicao  }}  
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

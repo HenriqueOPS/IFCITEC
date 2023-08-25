@@ -1104,4 +1104,15 @@ class AdminController extends Controller
             return response()->json(['error' => 'Curso não encontrado'], 404);
         }
     }
+    public function GetTotalAvaliacoes($id){
+        $total = DB::table('avaliacao')
+        ->select(DB::raw('count(*) as total'))
+        ->join('public.pessoa', 'avaliacao.pessoa_id', '=', 'public.pessoa.id')
+        ->join('projeto','avaliacao.projeto_id','projeto.id')
+        ->where('projeto.edicao_id',Edicao::getEdicaoId())
+        ->where('public.pessoa.id', '=', $id)
+        ->first();
+
+    return $total->total;
+    }
 }
