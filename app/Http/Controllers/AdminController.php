@@ -1067,7 +1067,7 @@ class AdminController extends Controller
     public function Cursos(){
         $cursos = DB::table('cursos')->get();
         $nivel = DB::table('nivel')->select('id','nivel')->get();
-        return view('admin.cursos.home',compact('cursos','nivel'));
+        return view('admin.cursos.home', compact('cursos', 'nivel'));
     }
     public function CreateCurso(Request $req){
        

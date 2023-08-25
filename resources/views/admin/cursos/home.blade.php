@@ -1,68 +1,92 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-	<div class="row">
-		<div class="col-md-12 text-center">
-			<h2>Painel administrativo</h2>
-		</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var deleteIcons = document.querySelectorAll('.delete-course');
+        deleteIcons.forEach(function(icon) {
+            icon.addEventListener('click', function() {
+                var courseId = icon.getAttribute('data-id');
+                if (confirm('Tem certeza de que deseja excluir este curso?')) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '{{ route('admin.cursos.delete') }}', true);
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+                    
+                    xhr.onload = function() {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            location.reload();
+                        } else {
+                            alert('Erro ao excluir o curso.');
+                        }
+                    };
+                    
+                    xhr.onerror = function() {
+                        alert('Erro na solicitação. Verifique sua conexão.');
+                    };
+                    
+                    xhr.send('id=' + courseId);
+                }
+            });
+        });
+    });
+</script>
 
-		@include('partials.admin.navbar')
-	</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h2>Painel administrativo</h2>
+        </div>
+        @include('partials.admin.navbar')
+        @include('partials.modalCurso')
+    </div>
 </div>
 <br><br>
 <div class="container">
     <div class="row">
         <div class="col-md-12 col-xs-12 main main-raised">
             <div class="list-projects">
-                    <table class="table">
-                            <thead id="4">
-                    <div id="4">
-                        <div class="col-md-3">
-                            <a href="" class="btn btn-primary btn-round">
-                                <i class="material-icons">add</i> Adicionar Curso
-                            </a>
+                <table class="table">
+                    <thead id="4">
+                        <div id="4">
+                            <div class="col-md-3">
+                                <a data-toggle="modal" data-target="#Modal" class="btn btn-primary btn-round">
+                                    <i class="material-icons">add</i> Adicionar Curso
+                                </a>
+                            </div>
+                            </div>
+                            <div id="4">
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th>Curso</th>
+                                <th>Nível</th>
+                                <th class="text-right">Ações</th>
+                            </tr>
                         </div>
-                    </div>
-                    <div id="4">
-                        <tr>
-                            <th class="text-center">#</th>
-                            <th>Curso</th>
-                            <th>Nível</th>
-                            <th class="text-right">Ações</th>
-                        </tr>
-                    </div>
                     </thead>
-
-                    <tbody id="4">
+                    <tbody>
                         @foreach($cursos as $id => $curso)
                         <tr>
                             <td class="text-center">{{$id+1}}</td>
-                            <td>{{$curso->tarefa}}</td>
-                            <td>{{$curso->nivel}}</td>
+                            <td>{{$curso->nome}}</td>
+                            <td>
+                                @php
+                                $nivel = \App\Nivel::find($curso->nivel_id);
+                                if ($nivel) {
+                                    echo($nivel->nivel);
+                                }
+                                @endphp
+                            </td>
                             <td class="text-right">
-                            <a href="{{ route('tarefaVoluntarios', $tarefa->id) }}" target="_blank"><i class="material-icons">description</i></a>
-
-                            <a href="javascript:void(0);" class="modalTarefa" data-toggle="modal" data-target="#modal7" id-tarefa="{{ $tarefa->id }}"><i class="material-icons blue-icon">remove_red_eye</i></a>
-
-                            <a href="{{ route('tarefa', $tarefa->id) }}"><i class="material-icons">edit</i></a>
-
-                            <a href="javascript:void(0);" class="exclusaoTarefa" id-tarefa="{{ $tarefa->id }}"><i class="material-icons blue-icon">delete</i></a>
-
+                                <i class="material-icons blue-icon delete-course" data-id="{{$curso->id}}">delete</i>
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
-                    </table>
-                </div>
+                </table>
             </div>
         </div>
     </div>
 </div>
 @endsection
 
-@section('partials')
-
-    @include('partials.modalTarefa')
-
-@endsection
