@@ -155,15 +155,15 @@
 							</select>
 						
 						</div>
-	
-						
-		
-
-					
-
+						<div class="input-group ">
 								
-		
-						
+									<span class="input-group-addon">
+										<i class="material-icons">school</i>
+									</span>
+								<label class="control-label">Turma</label>
+								<input type="text" class="form-control" name="turma" maxlength="5" required>
+							
+							</div>
 
                         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                         <script>

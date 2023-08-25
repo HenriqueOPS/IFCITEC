@@ -69,7 +69,9 @@ class VoluntarioController extends Controller
 		$voluntarioData = [
 			'id' => $pessoa->id,      // Defina o ID do voluntário
 			'ano' =>  $req->input('ano'),
-			'curso' =>  $req->input('curso')
+			'curso' =>  $req->input('curso'),
+			'turma' => $req->input('turma'),
+			'edicao_id' =>  Edicao::getEdicaoId()
 		];
 		DB::table('voluntarios')->insert($voluntarioData);
 		// Salva as alterações no registro da pessoa
@@ -93,7 +95,7 @@ class VoluntarioController extends Controller
 					'edicao_id' => Edicao::getEdicaoId(),
 					'funcao_id' => $funcaoVoluntarioId,
 					'pessoa_id' => Auth::id(),
-					'homologado' => false
+					'homologado' => null
 				]);
 
 			$emailJob = (new \App\Jobs\MailBaseJob(Auth::user()->email, 'Voluntario', ['nome' => Auth::user()->nome]))
