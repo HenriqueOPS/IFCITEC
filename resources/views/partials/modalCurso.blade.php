@@ -8,7 +8,7 @@
             <div class="modal-body">
                 <form method="post" action="{{ route('admin.cursos.create')}}">
                     {{ csrf_field() }}
-                    <div class="row">
+                    <div class="row" style="overflow:hidden">
                         <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
                             <div class="input-group{{ $errors->has('nome') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
@@ -24,13 +24,12 @@
                                 </span>
                                 @endif
                             </div>
-                            <label for="fontSelect">Selecione a fonte:</label>
+                            <label for="fontSelect">Selecione o nivel:</label>
                             <select id="fontSelect" name="nivel" required>
-                                @foreach($nivel as $item)
-                                <option value="{{$item->id}}">{{ $item->nivel }}</option>
-                                @endforeach
-                            </select>
-
+                            @foreach($nivel as $item)
+                                <option value="{{ $item->id }}" >{{ $item->nivel }}</option>
+                            @endforeach
+                        </select>
                         </div>
                     </div>
                     <div class="row">

@@ -504,9 +504,15 @@
                 $("#ModalInfo").modal();
             });
 
-            $('#resumo').keyup(function() {
-                $('#total-char').html($('#resumo').val().length);
-            });
+            $(document).ready(function() {
+    // Atualizar contagem de caracteres ao carregar a página
+    $('#total-char').html($('#resumo').val().length);
+
+    // Atualizar contagem de caracteres durante a digitação
+    $('#resumo').keyup(function() {
+        $('#total-char').html($(this).val().length);
+    });
+});
 
             var oldEscola = $('#escola-select').attr("value");
             $('#escola-select').selectize({

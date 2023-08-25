@@ -128,10 +128,9 @@
 									</span>
 									<label class="control-label">Curso</label>
 								<select class="form-control" name="curso" required>
-									<option value="" disabled selected>Escolha uma opção</option>
-									<option value="DS">DS</option>
-									<option value="ADM">ADM</option>
-									<option value="ELE">ELE</option>
+									@foreach($cursos as $curso)
+									<option value="{{$curso->nome}}">{{$curso->nome}}</option>
+									@endforeach
 								</select>
 							
 							</div>

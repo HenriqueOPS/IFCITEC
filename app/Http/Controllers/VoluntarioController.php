@@ -54,7 +54,8 @@ class VoluntarioController extends Controller
 		} else {
 			$tarefas = Tarefa::orderBy('tarefa')->get();
 			$aviso = Mensagem::where('nome','=','Aviso(CadastroDeVoluntarios)')->get();
-			return view('voluntario.cadastro')->withTarefas($tarefas)->withAviso($aviso[0]->conteudo)->withPessoa($pessoa);
+			$cursos = DB::table('cursos')->select('nome','nivel_id')->get();
+			return view('voluntario.cadastro',compact('cursos'))->withTarefas($tarefas)->withAviso($aviso[0]->conteudo)->withPessoa($pessoa);
 		}
 	}
 
