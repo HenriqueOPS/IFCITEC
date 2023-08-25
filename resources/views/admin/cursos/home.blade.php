@@ -38,7 +38,6 @@
             <h2>Painel administrativo</h2>
         </div>
         @include('partials.admin.navbar')
-        @include('partials.modalCurso')
     </div>
 </div>
 <br><br>
@@ -50,7 +49,7 @@
                     <thead id="4">
                         <div id="4">
                             <div class="col-md-3">
-                                <a data-toggle="modal" data-target="#Modal" class="btn btn-primary btn-round">
+                                <a data-toggle="modal" data-target="#ModalCurso" class="btn btn-primary btn-round">
                                     <i class="material-icons">add</i> Adicionar Curso
                                 </a>
                             </div>
@@ -71,9 +70,9 @@
                             <td>{{$curso->nome}}</td>
                             <td>
                                 @php
-                                $nivel = \App\Nivel::find($curso->nivel_id);
-                                if ($nivel) {
-                                    echo($nivel->nivel);
+                                $_nivel = \App\Nivel::find($curso->nivel_id);
+                                if ($_nivel) {
+                                    echo($_nivel->nivel);
                                 }
                                 @endphp
                             </td>
@@ -88,5 +87,8 @@
         </div>
     </div>
 </div>
+@endsection
+@section('partials')
+@include('partials.modalCurso', ['nivel' => $nivel])
 @endsection
 
