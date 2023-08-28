@@ -30,7 +30,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-offset-1">
-                            <h3>{{$revisao[0]->nome}}</h3>
+                            <h3>Homologador 1 </h3>
                         </div>
                     </div>
                     <div class="row">
@@ -49,7 +49,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-offset-1">
-                            <h3>{{$revisao[1]->nome}} </h3>
+                            <h3>Homologador 2</h3>
                         </div>
                     </div>
                     <div class="row">
