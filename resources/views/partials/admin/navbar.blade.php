@@ -1,19 +1,11 @@
-<style>
-    @media only screen and (max-width: 992px) {
-        #a666{
-            display: none;
-        } 
-    }
-</style>
-
 <div id="page" class="col-md-12" style="display: flex; justify-content: center;">
     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="display: flex; align-items: center;">
-        <li class="nav-item dropdown" id="a666" style="margin: 0px 5px 0px 0px;">
+        <li class="nav-item dropdown" style="margin: 0px 5px 0px 0px;">
             <a class="nav-link dropdown-toggle" href="#" id="dropdownAdministrativa" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="material-symbols-outlined">admin_panel_settings</i>
                 Administrativa
             </a>
-            <ul class="dropdown-menu" aria-labelledby="dropdownAdministrativa" style="display: flex; justify-content: center;">
+            <ul class="dropdown-menu" aria-labelledby="dropdownAdministrativa">
                 <li><a class="dropdown-item" style="text-decoration: none;" href="{{ route('administrador.areas') }}">
                     <i class="material-icons" style="display: flex; justify-content: center;">brightness_auto</i>
                     Áreas / Níveis
@@ -46,7 +38,7 @@
                 <i class="material-icons" style="display: flex; justify-content: center;">person</i>
                 Participantes
             </a>
-            <ul class="dropdown-menu" aria-labelledby="dropdownParticipantes" style="display: flex; justify-content: center;">
+            <ul class="dropdown-menu" aria-labelledby="dropdownParticipantes">
                 <li><a class="dropdown-item" href="{{ route('admin.empresas') }}">
                     <i class="material-icons" style="display: flex; justify-content: center;">factory</i>
                     Empresas
@@ -66,7 +58,7 @@
                 <i class="material-symbols-outlined" style="display: flex; justify-content: center;">group</i>
                 Comissões
             </a>
-            <ul class="dropdown-menu" aria-labelledby="dropdownComissoes" style="display: flex; justify-content: center;">
+            <ul class="dropdown-menu" aria-labelledby="dropdownComissoes">
                 <li><a class="dropdown-item" style="text-decoration: none;" href="{{ route('administrador.comissao') }}">
                     <i class="material-icons" style="display: flex; justify-content: center;">list_alt</i>
                     Comissão Avaliadora
@@ -78,7 +70,7 @@
                 <i class="material-symbols-outlined" style="display: flex; justify-content: center;">mail</i>
                 Comunicações
             </a>
-            <ul class="dropdown-menu" aria-labelledby="dropdownComunicacoes" style="display: flex; justify-content: center;">
+            <ul class="dropdown-menu" aria-labelledby="dropdownComunicacoes">
                 <li><a class="dropdown-item" style="text-decoration: none;" href="{{ route('emails-enviados') }}">
                     <i class="material-icons" style="display: flex; justify-content: center;">ballot</i>
                     Mensagens Enviadas
@@ -94,7 +86,7 @@
                 <i class="material-icons" style="display: flex; justify-content: center;">school</i>
                 Projetos
             </a>
-            <ul class="dropdown-menu" aria-labelledby="dropdownProjetos" style="display: flex; justify-content: center;">
+            <ul class="dropdown-menu" aria-labelledby="dropdownProjetos">
                 <li><a class="dropdown-item" style="text-decoration: none;" href="{{ route('administrador.projetos') }}">
                     <i class="material-icons" style="display: flex; justify-content: center;">list_alt</i>
                     Listar Projetos
