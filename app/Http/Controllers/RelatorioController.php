@@ -1636,6 +1636,7 @@ class RelatorioController extends Controller
                 $projetos = Projeto::where('edicao_id', '=', $edicao)
                     ->where('area_id', '=', $area->id)
                     ->where('nivel_id', '=', $nivel->id)
+                    ->orderBy('nota_revisao','desc')
                     ->get();
 
                 array_push($projetosArea, [
