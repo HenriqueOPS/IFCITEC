@@ -38,8 +38,29 @@
                                     </div>
                                 </div>
                             </div>
-
+                        
                             <div class="col-md-10 col-md-offset-1 col-xs-11">
+                            <div class="input-group{{ $errors->has('escola') ? ' has-error' : '' }}">
+                                    <span class="input-group-addon">
+                                        <i class="material-icons">school</i>
+                                    </span>
+                                    <div class="form-group">
+                                        <label class="control-label">Escola</label>
+                                        <select id="escola-select" name="escola"
+                                            value="{{ isset($escolaP->first()->escola_id) ? $escolaP->first()->escola_id : '' }}"
+                                            required>
+                                            <option></option>
+                                            @foreach ($escolas as $escola)
+                                                <option value="{{ $escola->id }}">{{ $escola->nome_curto }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('escola'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('escola') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
                                 <div class="input-group{{ $errors->has('titulo') ? ' has-error' : '' }}">
                                     <span class="input-group-addon">
                                         <i class="material-icons">title</i>
@@ -152,27 +173,7 @@
                                     @endif
                                 </div>
 
-                                <div class="input-group{{ $errors->has('escola') ? ' has-error' : '' }}">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">school</i>
-                                    </span>
-                                    <div class="form-group">
-                                        <label class="control-label">Escola</label>
-                                        <select id="escola-select" name="escola"
-                                            value="{{ isset($escolaP->first()->escola_id) ? $escolaP->first()->escola_id : '' }}"
-                                            required>
-                                            <option></option>
-                                            @foreach ($escolas as $escola)
-                                                <option value="{{ $escola->id }}">{{ $escola->nome_curto }}</option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('escola'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('escola') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
+                          
                             </div>
                         </div>
 
