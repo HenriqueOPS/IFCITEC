@@ -1,27 +1,3 @@
-<style>
-    #a666{
-        display: flex; justify-content: center;
-    }
-@media (max-width: 750px) {
-    #barrinha {
-        justify-content: flex-start !important;
-    }
-
-    .vertical-dropdown-menu {
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        position: static !important; 
-        width: 100% !important; 
-    }
-    
-    .vertical-dropdown-menu .dropdown-item {
-        display: block !important; 
-        width: 100% !important; 
-        text-align: left !important; 
-    }
-}
-</style>
-
 <div id="page" class="col-md-12" style="display: flex; justify-content: center;">
     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="display: flex; align-items: center;">
         <li class="nav-item dropdown" style="margin: 0px 5px 0px 0px;">
@@ -94,7 +70,7 @@
                 <i class="material-symbols-outlined" style="display: flex; justify-content: center;">mail</i>
                 Comunicações
             </a>
-            <ul class="dropdown-menu" aria-labelledby="dropdownComunicacoes" style="display: flex; justify-content: center;">
+            <ul class="dropdown-menu" aria-labelledby="dropdownComunicacoes">
                 <li><a class="dropdown-item" style="text-decoration: none;" href="{{ route('emails-enviados') }}">
                     <i class="material-icons" style="display: flex; justify-content: center;">ballot</i>
                     Mensagens Enviadas
