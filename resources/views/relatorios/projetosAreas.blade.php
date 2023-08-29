@@ -25,6 +25,7 @@
 						<thead>
 							<tr>
 								<th>Titulo do Projeto</th>
+								<th>Nota Final</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -34,6 +35,9 @@
 							<tr>
 								<td>
 									<a style="color: #000;">{{ $projeto->titulo }}</a>
+								</td>
+								<td>
+									<a style="color: #000;">{{ $projeto->nota_revisao }}</a>
 								</td>
 							</tr>
 
