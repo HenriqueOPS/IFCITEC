@@ -55,15 +55,15 @@
 
 					<tbody id="0">
 
-					<div id="0" class="list-projects">
+					<div id="0" class="list-projects ">
 
 						@if(count($projetos['autor']) == 0)
 							<h3 class="text-center">Você não é <b>Autor</b> em nenhum Projeto</h3>
 						@endif
 
 						@foreach($projetos['autor'] as $projeto)
-
-							<div class="project">
+				
+							<div class="project col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1"  >
 								<div class="project-title">
 									<span><a href="{{ route('projeto.show', ['projeto' => $projeto->id]) }}">{{ $projeto->titulo }}</a></span>
 								</div>
@@ -73,10 +73,59 @@
 										{{$pessoa->nome}},
 									@endforeach
 								</div>
+								<strong>Nota da Homologação : {{ $projeto->nota_revisao }} |</strong>
 							</div>
 							@if(isset($projeto->nota_revisao) &&  $projeto->nota_revisao !== null)
-								<strong><div style="margin: 10px 0px 0px 15px;">Nota da Homologação : {{ $projeto->nota_revisao }} |</strong>
-								<a href="{{route('notaProjeto',$projeto->id)}}"><i class="material-icons ">info_i</i></a></div>
+							
+						
+								
+						<div class="row">
+                        <div class="col-md-10 col-md-offset-1 col-xs-offset-1 text-center">
+                            <h2>Homologação:</h2>
+                        </div>
+                    </div>
+                   
+                    <div class="row">
+                                <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
+                                 <strong>Nota do Homologador 1: </strong>{{$revisao[0]->nota_final}}
+                                </div>
+                    </div>
+                    <div class="row" id="selects">
+                            <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
+                               
+                                  
+                                 <strong>Observação do Homologador 1: </strong>{{$revisao[0]->observacao}}
+                               
+                            </div>
+                    </div>
+                    <hr>
+                  
+                    <div class="row">
+                                <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
+                                <strong>Nota do Homologador 2: </strong> {{$revisao[1]->nota_final}}
+                                </div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
+                             
+                                <strong>Observação do Homologador 2: </strong>  {{$revisao[1]->observacao}}
+                                
+                            </div>
+                    </div>
+                    <div class="row">
+                            
+                                    <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 ">
+                                        <strong>Status do Projeto: </strong> <strong>
+                                    @foreach($situacoes as $situacao)
+                                            @if($projeto->situacao_id == $situacao->id)                                        
+                                                        {{$situacao->situacao}}
+                                        @endif
+                                        @endforeach
+                                        </strong>
+                                    </div>
+
+                      
+                    </div>
 							@endif
 							@if(isset($projeto->nota_avaliacao) &&  $projeto->nota_avaliacao !== null)
 								Nota da Avaliacao {{ $projeto->nota_avaliacao }},

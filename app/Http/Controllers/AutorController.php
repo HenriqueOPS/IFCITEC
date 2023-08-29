@@ -26,7 +26,7 @@ class AutorController extends Controller {
     public function index() {
 		$projetos = [];
 
-		$projetos['autor'] = Projeto::select('id', 'titulo','nota_revisao','nota_avaliacao')
+		$projetos['autor'] = Projeto::select('id', 'titulo','nota_revisao','nota_avaliacao','situacao_id')
 			->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'projeto_id')
 			->where('pessoa_id', '=', Auth::user()->id)
 			->where('projeto.edicao_id', '=', Edicao::getEdicaoId())
@@ -46,8 +46,12 @@ class AutorController extends Controller {
 			->where('projeto.edicao_id', '=', Edicao::getEdicaoId())
 			->where('funcao_id', '=', 6) // Coorientador
 			->get();
-
-		return view('user.home')->withProjetos($projetos);
+			$situacoes = Situacao::all();
+			$revisao = DB::table('revisao')->join('pessoa', 'revisao.pessoa_id', '=', 'pessoa.id')
+            ->select('revisao.pessoa_id', 'revisao.observacao', 'revisao.nota_final', 'pessoa.nome')
+            ->where('revisao.projeto_id', $projetos['autor'][0]->id)
+            ->get()->toArray();
+		return view('user.home')->withProjetos($projetos)->withRevisao($revisao)->withSituacoes($situacoes);
     }
 	public function nota($id){
 		$projeto = Projeto::find($id);
@@ -57,8 +61,6 @@ class AutorController extends Controller {
             ->select('revisao.pessoa_id', 'revisao.observacao', 'revisao.nota_final', 'pessoa.nome')
             ->where('revisao.projeto_id', $id)
             ->get()->toArray();
-
-        return view('projeto.notaRevisao', array('projeto' => $projeto, 'situacoes' => $situacoes, 'revisao' => $revisao));
     
 	}
 
