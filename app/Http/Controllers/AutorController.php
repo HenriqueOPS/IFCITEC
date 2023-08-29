@@ -47,10 +47,14 @@ class AutorController extends Controller {
 			->where('funcao_id', '=', 6) // Coorientador
 			->get();
 			$situacoes = Situacao::all();
-			$revisao = DB::table('revisao')->join('pessoa', 'revisao.pessoa_id', '=', 'pessoa.id')
+			if(isset($projetos['autor'][0]->id)){
+				$revisao = DB::table('revisao')->join('pessoa', 'revisao.pessoa_id', '=', 'pessoa.id')
             ->select('revisao.pessoa_id', 'revisao.observacao', 'revisao.nota_final', 'pessoa.nome')
             ->where('revisao.projeto_id', $projetos['autor'][0]->id)
             ->get()->toArray();
+			}else{
+				$revisao=null;
+			}
 		return view('user.home')->withProjetos($projetos)->withRevisao($revisao)->withSituacoes($situacoes);
     }
 	public function nota($id){
