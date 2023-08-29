@@ -112,15 +112,19 @@
                                     @endif
 
                                     @if($projeto->getStatus() == "Não Homologado")
-                                        @if($projeto->statusHomologacao())
+                                        @if($projeto->statusHomologacao() == 2)
                                             <span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
-                                        @else
-                                            <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
-                                        @endif
+                                        @elseif($projeto->statusHomologacao() == 1)
+                                            <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;background-color: yellow;">&nbsp;</span>
+                                       @else
+                                       <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+                                            @endif
                                     @elseif($projeto->getStatus() == "Não Avaliado")
-                                        @if($projeto->statusAvaliacao())
+                                        @if($projeto->statusAvaliacao() == 2)
                                             <span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
-                                        @else
+                                            @elseif($projeto->statusAvaliacao() == 1)
+                                            <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;background-color: yellow;">&nbsp;</span>
+                                            @else
                                             <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
                                         @endif
                                     @endif
