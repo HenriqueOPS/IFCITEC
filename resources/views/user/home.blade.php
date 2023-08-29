@@ -73,7 +73,7 @@
 										{{$pessoa->nome}},
 									@endforeach
 								</div>
-								<strong>Nota da Homologação : {{ $projeto->nota_revisao }} |</strong>
+								<strong>Nota da Homologação : {{ $projeto->nota_revisao }} </strong>
 							</div>
 							@if(isset($projeto->nota_revisao) &&  $projeto->nota_revisao !== null)
 							
@@ -82,14 +82,23 @@
 						<div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-offset-1 text-center">
                             <h2>Homologação:</h2>
+					
                         </div>
                     </div>
                    
                     <div class="row">
                                 <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
                                  <strong>Nota do Homologador 1: </strong>{{$revisao[0]->nota_final}}
+							
                                 </div>
                     </div>
+					<div class="row">
+                                <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
+								<strong>{{ $campos[0]->descricao }}: </strong> {{$campos[0]->valor}}
+							
+                                </div>
+                    </div>
+					
                     <div class="row" id="selects">
                             <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
                                
@@ -104,7 +113,16 @@
                                 <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
                                 <strong>Nota do Homologador 2: </strong> {{$revisao[1]->nota_final}}
                                 </div>
+								
                     </div>
+					    
+                    <div class="row">
+                                <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
+								<strong>{{ $campos[1]->descricao }}: </strong> {{$campos[1]->valor}}
+                                </div>
+								
+                    </div>
+					
                     <div class="row">
                             <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
                              
@@ -112,20 +130,7 @@
                                 
                             </div>
                     </div>
-                    <div class="row">
-                            
-                                    <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 ">
-                                        <strong>Status do Projeto: </strong> <strong>
-                                    @foreach($situacoes as $situacao)
-                                            @if($projeto->situacao_id == $situacao->id)                                        
-                                                        {{$situacao->situacao}}
-                                        @endif
-                                        @endforeach
-                                        </strong>
-                                    </div>
 
-                      
-                    </div>
 							@endif
 							@if(isset($projeto->nota_avaliacao) &&  $projeto->nota_avaliacao !== null)
 								Nota da Avaliacao {{ $projeto->nota_avaliacao }},

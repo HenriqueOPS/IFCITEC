@@ -26,7 +26,7 @@ class AutorController extends Controller {
     public function index() {
 		$projetos = [];
 
-		$projetos['autor'] = Projeto::select('id', 'titulo','nota_revisao','nota_avaliacao','situacao_id')
+		$projetos['autor'] = Projeto::select('id', 'titulo','nota_revisao','nota_avaliacao','situacao_id','nivel_id')
 			->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'projeto_id')
 			->where('pessoa_id', '=', Auth::user()->id)
 			->where('projeto.edicao_id', '=', Edicao::getEdicaoId())
@@ -52,10 +52,23 @@ class AutorController extends Controller {
             ->select('revisao.pessoa_id', 'revisao.observacao', 'revisao.nota_final', 'pessoa.nome')
             ->where('revisao.projeto_id', $projetos['autor'][0]->id)
             ->get()->toArray();
+			$campos = DB::table('campos_avaliacao')
+			->where('edicao_id',Edicao::getEdicaoId())
+			->where('nivel_id', $projetos['autor'][0]->nivel_id)
+			->join('dados_avaliacao','dados_avaliacao.campo_id','campos_avaliacao.id')
+			->where('dados_avaliacao.projeto_id',$projetos['autor'][0]->id)
+			->get()->toArray();
 			}else{
+				$campos = null;
 				$revisao=null;
 			}
-		return view('user.home')->withProjetos($projetos)->withRevisao($revisao)->withSituacoes($situacoes);
+		
+
+		return view('user.home',)
+		->withProjetos($projetos)
+		->withRevisao($revisao)
+		->withSituacoes($situacoes)
+		->withCampos($campos);
     }
 	public function nota($id){
 		$projeto = Projeto::find($id);
