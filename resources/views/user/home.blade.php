@@ -73,9 +73,18 @@
 										{{$pessoa->nome}},
 									@endforeach
 								</div>
-								<strong>Nota da Homologação : {{ $projeto->nota_revisao }} </strong>
+								<?php
+						
+						$dataCitada = \Carbon\Carbon::parse($data);
+						$umDiaDepois = $dataCitada->copy()->addSecond();
+						?>
+								@if(isset($projeto->nota_revisao) &&  $projeto->nota_revisao !== null && \Carbon\Carbon::now()->greaterThanOrEqualTo($umDiaDepois) )
+							
+								<strong>Nota da Homologação: {{ number_format($projeto->nota_revisao, 2) }}</strong>
+
+								@endif
 							</div>
-							@if(isset($projeto->nota_revisao) &&  $projeto->nota_revisao !== null)
+							@if(isset($projeto->nota_revisao) &&  $projeto->nota_revisao !== null  && \Carbon\Carbon::now()->greaterThanOrEqualTo($umDiaDepois))
 							
 						
 								
@@ -92,12 +101,14 @@
 							
                                 </div>
                     </div>
+					@foreach($campos[0] as $campo)
 					<div class="row">
-                                <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
-								<strong>{{ $campos[0]->descricao }}: </strong> {{$campos[0]->valor}}
-							
-                                </div>
-                    </div>
+						<div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
+							<strong>Categoria: {{$campo->categoria_avaliacao}}, Descrição: {{ $campo->descricao }}, Peso {{$campo->peso}}:</strong> {{$campo->valor}}
+						</div>
+					</div>
+				@endforeach
+				
 					
                     <div class="row" id="selects">
                             <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
@@ -115,13 +126,14 @@
                                 </div>
 								
                     </div>
-					    
-                    <div class="row">
-                                <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
-								<strong>{{ $campos[1]->descricao }}: </strong> {{$campos[1]->valor}}
-                                </div>
-								
-                    </div>
+					@foreach($campos[1] as $campo)
+					<div class="row">
+						<div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
+							<strong>Categoria: {{$campo->categoria_avaliacao}}, Descrição: {{ $campo->descricao }}, Peso {{$campo->peso}}:</strong> {{$campo->valor}}
+						</div>
+					</div>
+				@endforeach
+                 
 					
                     <div class="row">
                             <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">

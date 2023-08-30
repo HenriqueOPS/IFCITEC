@@ -53,11 +53,21 @@ class AutorController extends Controller {
             ->where('revisao.projeto_id', $projetos['autor'][0]->id)
             ->get()->toArray();
 			$campos = DB::table('campos_avaliacao')
-			->where('edicao_id',Edicao::getEdicaoId())
-			->where('nivel_id', $projetos['autor'][0]->nivel_id)
+			->where('campos_avaliacao.edicao_id',Edicao::getEdicaoId())
+			->where('campos_avaliacao.nivel_id', $projetos['autor'][0]->nivel_id)
 			->join('dados_avaliacao','dados_avaliacao.campo_id','campos_avaliacao.id')
 			->where('dados_avaliacao.projeto_id',$projetos['autor'][0]->id)
-			->get()->toArray();
+			->join('categoria_avaliacao','campos_avaliacao.categoria_id','categoria_avaliacao.id')
+			->select('dados_avaliacao.pessoa_id','categoria_avaliacao.categoria_avaliacao','categoria_avaliacao.peso','dados_avaliacao.valor','campos_avaliacao.descricao')
+			->get();
+			$DataFechamento = DB::table('edicao')
+			->where('id',Edicao::getEdicaoId())
+			->pluck('homologacao_fechamento');
+			$campos = $campos->groupBy('pessoa_id')->map(function ($itens) {
+				return $itens->values()->toArray();
+			})->values()->toArray();
+			
+		
 			}else{
 				$campos = null;
 				$revisao=null;
@@ -68,7 +78,8 @@ class AutorController extends Controller {
 		->withProjetos($projetos)
 		->withRevisao($revisao)
 		->withSituacoes($situacoes)
-		->withCampos($campos);
+		->withCampos($campos)
+		->withData($DataFechamento[0]);
     }
 	public function nota($id){
 		$projeto = Projeto::find($id);
