@@ -39,7 +39,9 @@ class AutorController extends Controller {
 			->where('projeto.edicao_id', '=', Edicao::getEdicaoId())
 			->where('funcao_id', '=', 7) // Orientador
 			->get();
-
+			$DataFechamento = DB::table('edicao')
+			->where('id',Edicao::getEdicaoId())
+			->pluck('homologacao_fechamento');
 		$projetos['coorientador'] = Projeto::select('id', 'titulo')
 			->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'projeto_id')
 			->where('pessoa_id', '=', Auth::user()->id)
@@ -60,9 +62,7 @@ class AutorController extends Controller {
 			->join('categoria_avaliacao','campos_avaliacao.categoria_id','categoria_avaliacao.id')
 			->select('dados_avaliacao.pessoa_id','categoria_avaliacao.categoria_avaliacao','categoria_avaliacao.peso','dados_avaliacao.valor','campos_avaliacao.descricao')
 			->get();
-			$DataFechamento = DB::table('edicao')
-			->where('id',Edicao::getEdicaoId())
-			->pluck('homologacao_fechamento');
+			
 			$campos = $campos->groupBy('pessoa_id')->map(function ($itens) {
 				return $itens->values()->toArray();
 			})->values()->toArray();
