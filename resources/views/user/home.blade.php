@@ -160,7 +160,6 @@
 						<div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-offset-1 text-center">
                             <h2>Avaliacão:</h2>
-							
                         </div>
                     </div>
                    

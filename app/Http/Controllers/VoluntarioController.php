@@ -124,6 +124,10 @@ class VoluntarioController extends Controller
 		->where('funcao_id',9)
 		->where('edicao_id',Edicao::getEdicaoId())
 		->update(['homologado' => $update]);
+		$pessoa = Pessoa::where('id',$id)->first();
+		$emailJob = (new \App\Jobs\MailBaseJob($pessoa->email, 'EmailVoluntarios', ['nome' => $pessoa->nome]))
+				->delay(\Carbon\Carbon::now()->addSeconds(3));
+			dispatch($emailJob);
 		return response()->json(['success' => 'Operação Realizada com sucesso']);
 		
 	}
