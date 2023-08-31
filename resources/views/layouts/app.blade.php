@@ -90,6 +90,14 @@
             body{
                 font-family: {{$fonte}} !important;
             }
+
+    @media (max-width: 778px){
+        #barrinha{
+            overflow-x: scroll !important;
+        }
+    
+    }   
+
 </style>
 
 <body class="masthead" style="background-image: url(data:image/png;base64,{{ $background }});">
