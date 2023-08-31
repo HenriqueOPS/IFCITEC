@@ -1037,33 +1037,28 @@ foreach ($palavrasChaves as $palavra) {
 					}
 				}
 			}
-
-			// primeira homologação de trabalhos
-			if (count($homologadosAntes) == 0) {
-				// Dispara os emails dos projetos não homologado
-				foreach ($IDprojetosNaoHomologados as $IDprojeto) {
-
-					$projeto = Projeto::select('id', 'titulo')
-						->where('id', $IDprojeto)
-						->get();
-
-					if ($projeto->count()) {
-
-						foreach ($projeto[0]->pessoas as $pessoa) {
-							dispatch(
-								new \App\Jobs\MailBaseJob(
-									$pessoa->email,
-									'Projeto Nao Homologado',
-									[
-										'nome' => $pessoa->nome,
-										'titulo' => $projeto[0]->titulo
-									]
-								)
-							);
-						}
-					}
-				}
+			$homologadosAntes = Projeto::select('projeto.id','pessoa_id','email','titulo','nome')
+			->where('projeto.edicao_id', '=', Edicao::getEdicaoId())
+			->where('situacao_id', '=', EnumSituacaoProjeto::getValue('Homologado'))
+			->join('escola_funcao_pessoa_projeto','escola_funcao_pessoa_projeto.projeto_id','projeto.id')
+			->join('pessoa','escola_funcao_pessoa_projeto.pessoa_id','pessoa.id')
+			->get();
+			
+			foreach ($homologadosAntes as $pessoa) {
+				dispatch(
+					new \App\Jobs\MailBaseJob(
+						$pessoa->email,
+						'Projeto Homologado',
+						[
+							'nome' => $pessoa->nome,
+							'titulo' =>$pessoa->titulo,
+							'idProj' => $pessoa->id
+						]
+					)
+				);
 			}
+			// primeira homologação de trabalhos
+		
 		}
 
 		return redirect(route('administrador.projetos'));

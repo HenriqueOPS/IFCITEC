@@ -101,7 +101,7 @@
 							
                                 </div>
                     </div>
-					@foreach($campos[0] as $campo)
+					@foreach($homologacao[0] as $campo)
 					<div class="row">
 						<div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
 							<strong>Categoria: {{$campo->categoria_avaliacao}}, Descrição: {{ $campo->descricao }}, Peso {{$campo->peso}}:</strong> {{$campo->valor}}

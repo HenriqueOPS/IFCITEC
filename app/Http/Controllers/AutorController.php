@@ -48,38 +48,44 @@ class AutorController extends Controller {
 			->where('projeto.edicao_id', '=', Edicao::getEdicaoId())
 			->where('funcao_id', '=', 6) // Coorientador
 			->get();
-			$situacoes = Situacao::all();
 			if(isset($projetos['autor'][0]->id)){
-				$revisao = DB::table('revisao')->join('pessoa', 'revisao.pessoa_id', '=', 'pessoa.id')
-            ->select('revisao.pessoa_id', 'revisao.observacao', 'revisao.nota_final', 'pessoa.nome')
-            ->where('revisao.projeto_id', $projetos['autor'][0]->id)
-            ->get()->toArray();
-			$campos = DB::table('campos_avaliacao')
-			->where('campos_avaliacao.edicao_id',Edicao::getEdicaoId())
-			->where('campos_avaliacao.nivel_id', $projetos['autor'][0]->nivel_id)
-			->join('dados_avaliacao','dados_avaliacao.campo_id','campos_avaliacao.id')
-			->where('dados_avaliacao.projeto_id',$projetos['autor'][0]->id)
-			->join('categoria_avaliacao','campos_avaliacao.categoria_id','categoria_avaliacao.id')
-			->select('dados_avaliacao.pessoa_id','categoria_avaliacao.categoria_avaliacao','categoria_avaliacao.peso','dados_avaliacao.valor','campos_avaliacao.descricao')
-			->get();
-			
-			$campos = $campos->groupBy('pessoa_id')->map(function ($itens) {
+			$homologacao = DB::table('formulario')
+				->where('formulario.edicao_id',Edicao::getEdicaoId())
+				->where('formulario.nivel_id',$projetos['autor'][0]->nivel_id)
+				->where('tipo','homologacao')
+				->join('formulario_categoria_avaliacao','formulario.idformulario','formulario_categoria_avaliacao.formulario_idformulario')
+				->join('categoria_avaliacao','formulario_categoria_avaliacao.categoria_avaliacao_id','categoria_avaliacao.id')
+				->join('campos_avaliacao','categoria_avaliacao.id','campos_avaliacao.categoria_id')
+				->join('dados_avaliacao','dados_avaliacao.campo_id','campos_avaliacao.id')
+				->where('projeto_id',$projetos['autor'][0]->id)
+				->get();		
+			$homologacao = $homologacao->groupBy('pessoa_id')->map(function ($itens) {
 				return $itens->values()->toArray();
 			})->values()->toArray();
-			
+			$avaliacao = DB::table('formulario')
+			->where('formulario.edicao_id',Edicao::getEdicaoId())
+			->where('formulario.nivel_id',$projetos['autor'][0]->nivel_id)
+			->where('tipo','avaliacao')
+			->join('formulario_categoria_avaliacao','formulario.idformulario','formulario_categoria_avaliacao.formulario_idformulario')
+			->join('categoria_avaliacao','formulario_categoria_avaliacao.categoria_avaliacao_id','categoria_avaliacao.id')
+			->get();
+			$idsCategorias = []; 
+			foreach ($avaliacao as $elemento) {
+				$idsCategorias[] = $elemento->id; 
+			}
 		
+		
+
 			}else{
-				$campos = null;
-				$revisao=null;
+				$homologacao = null;
+			
 			}
 		
 
-		return view('user.home',)
+		return view('user.home')
 		->withProjetos($projetos)
-		->withRevisao($revisao)
-		->withSituacoes($situacoes)
-		->withCampos($campos)
-		->withData($DataFechamento[0]);
+		->withData($DataFechamento[0])
+		->withHomologacao($homologacao);
     }
 	public function nota($id){
 		$projeto = Projeto::find($id);
