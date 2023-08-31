@@ -104,10 +104,16 @@
                                     @endif
 
                                     @if($projeto->getStatus() == "Homologado")
+                                    <!-- COnfirmou Presença -->
                                         @if($projeto->statusPresenca())
-                                            <span class="label label-warning" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+                                        <span class="material-symbols-outlined" style="color: green;display: inline-flex; width: 20px; padding: 5px;">
+                                            check_box
+                                        </span>
+
                                         @else
-                                            <span class="label label-default" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+                                        <span class="material-symbols-outlined" style="color: red;display: inline-flex; width: 20px; padding: 5px;">
+check_box_outline_blank
+</span>
                                         @endif
                                     @endif
 

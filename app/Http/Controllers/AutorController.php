@@ -57,7 +57,10 @@ class AutorController extends Controller {
 				->join('categoria_avaliacao','formulario_categoria_avaliacao.categoria_avaliacao_id','categoria_avaliacao.id')
 				->join('campos_avaliacao','categoria_avaliacao.id','campos_avaliacao.categoria_id')
 				->join('dados_avaliacao','dados_avaliacao.campo_id','campos_avaliacao.id')
-				->where('projeto_id',$projetos['autor'][0]->id)
+				->where('dados_avaliacao.projeto_id',$projetos['autor'][0]->id)
+				->join('revisao','dados_avaliacao.pessoa_id','revisao.pessoa_id')
+				->where('revisao.projeto_id',$projetos['autor'][0]->id)
+				->select('valor','observacao','categoria_avaliacao','campos_avaliacao.descricao','nota_final','categoria_avaliacao.peso')
 				->get();		
 			$homologacao = $homologacao->groupBy('pessoa_id')->map(function ($itens) {
 				return $itens->values()->toArray();
@@ -68,22 +71,20 @@ class AutorController extends Controller {
 			->where('tipo','avaliacao')
 			->join('formulario_categoria_avaliacao','formulario.idformulario','formulario_categoria_avaliacao.formulario_idformulario')
 			->join('categoria_avaliacao','formulario_categoria_avaliacao.categoria_avaliacao_id','categoria_avaliacao.id')
+			->join('campos_avaliacao','categoria_avaliacao.id','campos_avaliacao.categoria_id')
+			->join('dados_avaliacao','dados_avaliacao.campo_id','campos_avaliacao.id')
+			->where('projeto_id',$projetos['autor'][0]->id)
 			->get();
-			$idsCategorias = []; 
-			foreach ($avaliacao as $elemento) {
-				$idsCategorias[] = $elemento->id; 
-			}
-		
-		
 
 			}else{
 				$homologacao = null;
-			
+				$avaliacao = null;
 			}
 		
 
 		return view('user.home')
 		->withProjetos($projetos)
+		->withAvaliacao($avaliacao)
 		->withData($DataFechamento[0])
 		->withHomologacao($homologacao);
     }

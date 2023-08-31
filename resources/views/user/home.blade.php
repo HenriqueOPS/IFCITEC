@@ -78,13 +78,13 @@
 						$dataCitada = \Carbon\Carbon::parse($data);
 						$umDiaDepois = $dataCitada->copy()->addSecond();
 						?>
-								@if(isset($projeto->nota_revisao) &&  $projeto->nota_revisao !== null && \Carbon\Carbon::now()->greaterThanOrEqualTo($umDiaDepois) )
+								@if(isset($projetos->nota_revisao) &&  $projetos->nota_revisao !== null && \Carbon\Carbon::now()->greaterThanOrEqualTo($umDiaDepois) )
 							
 								<strong>Nota da Homologação: {{ number_format($projeto->nota_revisao, 2) }}</strong>
 
 								@endif
 							</div>
-							@if(isset($projeto->nota_revisao) &&  $projeto->nota_revisao !== null  && \Carbon\Carbon::now()->greaterThanOrEqualTo($umDiaDepois))
+							@if(isset($projetos->nota_revisao) &&  $projetos->nota_revisao !== null  && \Carbon\Carbon::now()->greaterThanOrEqualTo($umDiaDepois))
 							
 						
 								
@@ -97,7 +97,7 @@
                    
                     <div class="row">
                                 <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                                 <strong>Nota do Homologador 1: </strong>{{$revisao[0]->nota_final}}
+                                 <strong>Nota do Homologador 1: </strong>{{$homologacao[0][0]->nota_final}}
 							
                                 </div>
                     </div>
@@ -114,7 +114,7 @@
                             <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
                                
                                   
-                                 <strong>Observação do Homologador 1: </strong>{{$revisao[0]->observacao}}
+                                 <strong>Observação do Homologador 1: </strong>{{$homologacao[0][0]->observacao}}
                                
                             </div>
                     </div>
@@ -122,11 +122,11 @@
                   
                     <div class="row">
                                 <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                                <strong>Nota do Homologador 2: </strong> {{$revisao[1]->nota_final}}
+                                <strong>Nota do Homologador 2: </strong> {{$homologacao[1][0]->nota_final}}
                                 </div>
 								
                     </div>
-					@foreach($campos[1] as $campo)
+					@foreach($homologacao[1] as $campo)
 					<div class="row">
 						<div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
 							<strong>Categoria: {{$campo->categoria_avaliacao}}, Descrição: {{ $campo->descricao }}, Peso {{$campo->peso}}:</strong> {{$campo->valor}}
@@ -138,7 +138,7 @@
                     <div class="row">
                             <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
                              
-                                <strong>Observação do Homologador 2: </strong>  {{$revisao[1]->observacao}}
+                                <strong>Observação do Homologador 2: </strong>  {{$homologacao[1][0]->observacao}}
                                 
                             </div>
                     </div>
