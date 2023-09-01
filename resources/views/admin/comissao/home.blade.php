@@ -263,7 +263,8 @@ $('.excluirvoluntario').click(function(){
         dataType: 'json',
         data: { senha: senhaAdmin, id: idvoluntario },
         success: function(response) {
-            alert(response.message); // Exibir a mensagem da resposta JSON
+            alert(response.message); 
+            location.reload();// Exibir a mensagem da resposta JSON
         },
         error: function(response) {
             alert(response.responseText);

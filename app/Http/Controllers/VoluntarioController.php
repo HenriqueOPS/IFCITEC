@@ -99,7 +99,7 @@ class VoluntarioController extends Controller
 					'homologado' => null
 				]);
 
-			$emailJob = (new \App\Jobs\MailBaseJob(Auth::user()->email, 'Voluntario', ['nome' => Auth::user()->nome]))
+			$emailJob = (new \App\Jobs\MailBaseJob(Auth::user()->email, 'VoluntarioInscrição', ['nome' => Auth::user()->nome]))
 				->delay(\Carbon\Carbon::now()->addSeconds(3));
 			dispatch($emailJob);
 
@@ -118,16 +118,24 @@ class VoluntarioController extends Controller
 		return response()->json($info);
 	}
 	public function homologar($id,Request $req){
-		$update = $req->input('homologado');
+		$update = filter_var($req->input('homologado'), FILTER_VALIDATE_BOOLEAN);
 		$voluntario = DB::table('funcao_pessoa')
 		->where('pessoa_id',$id)
 		->where('funcao_id',9)
 		->where('edicao_id',Edicao::getEdicaoId())
 		->update(['homologado' => $update]);
 		$pessoa = Pessoa::where('id',$id)->first();
-		$emailJob = (new \App\Jobs\MailBaseJob($pessoa->email, 'EmailVoluntarios', ['nome' => $pessoa->nome]))
-				->delay(\Carbon\Carbon::now()->addSeconds(3));
-			dispatch($emailJob);
+		if ($update == true) {
+            $emailJob = (new \App\Jobs\MailBaseJob($pessoa->email, 'VoluntarioHomologado', ['nome' => $pessoa->nome]))
+                ->delay(\Carbon\Carbon::now()->addSeconds(3));
+            dispatch($emailJob);
+        } elseif ($update == false) {
+            $emailJob = (new \App\Jobs\MailBaseJob($pessoa->email, 'VoluntarioNãoHomologado', ['nome' => $pessoa->nome]))
+                ->delay(\Carbon\Carbon::now()->addSeconds(3));
+            dispatch($emailJob);
+        }
+    
+	
 		return response()->json(['success' => 'Operação Realizada com sucesso']);
 		
 	}
