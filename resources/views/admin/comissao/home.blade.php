@@ -110,7 +110,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                            <a href="javascript:void(0);" class="exclusaoComissao" ><i class="material-icons">delete</i></a>
+                                            <a href="javascript:void(0);" class="excluirvoluntario" data-id={{$voluntario->pessoa_id}} ><i class="material-icons">delete</i></a>
                                             <a href="javascript:void(0);" class="HomologarVoluntario" data-id={{$voluntario->pessoa_id}}><i class="material-icons">group_add</i></a>
                                             </td>
                                         </tr>
@@ -147,6 +147,29 @@
         </div>
     </div>
 </div>
+<div id="deletarvoluntario" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="ModalDelete">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Deletar voluntario</h5>
+            </div>
+
+            <div class="modal-body">
+                <span>Para deletar o usuário, confirme sua senha.</span>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">lock_outline</i>
+                    </span>
+                    <input type="password" placeholder="Senha..." class="form-control" id="senhaAdmin" name="password" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary excluirvolunt" data-dismiss="modal">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Fim Modal -->
 <div id="ModalHomologar" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="ModalDelete">
     <div class="modal-dialog" role="document">
@@ -225,6 +248,28 @@ $('.exclusaoComissao').click(function(){
         });
     });
 
+});
+$('.excluirvoluntario').click(function(){
+    idvoluntario = $(this).attr('data-id')
+    $("#deletarvoluntario").modal();
+
+    $('.excluirvolunt').click(function(){
+        var senhaAdmin = document.getElementById("senhaAdmin").value;
+        console.log(senhaAdmin);
+        var urlConsulta = '/excluir-voluntario';
+        $.ajax({
+        url: urlConsulta,
+        type: 'GET',
+        dataType: 'json',
+        data: { senha: senhaAdmin, id: idvoluntario },
+        success: function(response) {
+            alert(response.message); // Exibir a mensagem da resposta JSON
+        },
+        error: function(response) {
+            alert(response.responseText);
+        }
+    });
+    });
 });
 $('.HomologarVoluntario').click(function(){
     $("#ModalHomologar").modal();

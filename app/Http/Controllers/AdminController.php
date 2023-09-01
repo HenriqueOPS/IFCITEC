@@ -1117,4 +1117,33 @@ class AdminController extends Controller
 
     return $total->total;
     }
+ 
+    public function excluir_voluntario(Request $req)
+    {
+        // Verifique se o usuário atual está autenticado como administrador
+
+            $senhaAdmin = $req->input('senha');
+            $idVoluntario = $req->input('id');
+
+            // Verifique a senha do administrador
+            if (password_verify($senhaAdmin, Auth::user()['attributes']['senha'])) {
+                // Excluir relacionamentos de funções de pessoa (caso existam)
+                DB::table('funcao_pessoa')
+                    ->where('pessoa_id', $idVoluntario)
+                    ->where('funcao_id', 9)
+                    ->where('edicao_id', Edicao::getEdicaoId())
+                    ->delete();
+
+                // Excluir o voluntário
+                DB::table('voluntarios')
+                    ->where('id', $idVoluntario)
+                    ->where('edicao_id', Edicao::getEdicaoId())
+                    ->delete();
+
+                return response()->json(['message' => 'Voluntário excluído com sucesso' ]);
+            } else {
+                return response()->json(['message' => 'Senha incorreta'], 401);
+            }
+        }
+    
 }

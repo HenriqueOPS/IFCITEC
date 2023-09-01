@@ -207,6 +207,7 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::post('/voluntario/homologar/{id}','VoluntarioController@homologar')->name('voluntario.homologar');
 
 	// Administrador
+	Route::get('/excluir-voluntario','AdminController@excluir_voluntario');
 	Route::get('/emails-enviados', 'GerenMsgController@tabela')->name('emails-enviados');
 	Route::post('/administrador/navbar',"AdminController@navbar")->name('admin.navbar');
 	Route::post('/administrador/cor_botoes',"AdminController@corBotoes")->name('admin.botoes');
