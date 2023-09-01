@@ -110,6 +110,7 @@
                                                 @endif
                                             </td>
                                             <td>
+                                            <a href="javascript:void(0);" class="exclusaoComissao" ><i class="material-icons">delete</i></a>
                                             <a href="javascript:void(0);" class="HomologarVoluntario" data-id={{$voluntario->pessoa_id}}><i class="material-icons">group_add</i></a>
                                             </td>
                                         </tr>

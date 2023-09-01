@@ -322,6 +322,7 @@ class AdminController extends Controller
         ->where('voluntarios.edicao_id',Edicao::getEdicaoId())
         ->select('nome','homologado','ano','turma','curso','pessoa_id')
         ->orderBy('homologado', 'desc')
+        ->orderBy('nome')
         ->get();
         return view('admin.comissao.home', collect(['comissao' => $comissao]),compact('voluntarios'));
     }
