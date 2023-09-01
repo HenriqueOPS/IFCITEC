@@ -41,7 +41,7 @@
 						$dataCitada = \Carbon\Carbon::parse($datahom);
 						$umDiaDepois = $dataCitada->copy()->addSecond();
 						?>
-                        	@if(isset($projeto->nota_revisao) && $projeto->nota_revisao !== null && \Carbon\Carbon::now()->greaterThanOrEqualTo($umDiaDepois) )
+                        	@if(isset($projeto->nota_avaliacao) && $projeto->nota_avaliacao !== null && \Carbon\Carbon::now()->greaterThanOrEqualTo($dataava) )
                             <strong>Nota da Avaliacao: {{ number_format($projeto->nota_avaliacao, 2) }}</strong><br>
                             @endif
 								@if(isset($projeto->nota_revisao) && $projeto->nota_revisao !== null && \Carbon\Carbon::now()->greaterThanOrEqualTo($umDiaDepois) )
