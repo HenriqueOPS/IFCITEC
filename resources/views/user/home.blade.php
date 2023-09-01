@@ -206,7 +206,7 @@
                     <div class="row">
                             <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
                              
-                                <strong>Observação do Homologador 2: </strong>  {{$avaliacao[1][0]->observacao}}
+                                <strong>Observação do Avaliador 2: </strong>  {{$avaliacao[1][0]->observacao}}
                                 
                             </div>
                     </div>

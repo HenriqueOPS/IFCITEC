@@ -275,21 +275,48 @@ foreach ($palavrasChaves as $palavra) {
 			->get()->count();
 
 		//Busca pelas observações dos Homologadores
-		$obsHomologadores = DB::table('revisao')
-			->select('observacao', 'nota_final')
-			->where('projeto_id', '=', $projeto->id)
-			->where('revisado', '=', true)
-			->get();
-
+		$homologacao = DB::table('formulario')
+				->where('formulario.edicao_id',Edicao::getEdicaoId())
+				->where('formulario.nivel_id',$projeto->nivel_id)
+				->where('tipo','homologacao')
+				->join('formulario_categoria_avaliacao','formulario.idformulario','formulario_categoria_avaliacao.formulario_idformulario')
+				->join('categoria_avaliacao','formulario_categoria_avaliacao.categoria_avaliacao_id','categoria_avaliacao.id')
+				->join('campos_avaliacao','categoria_avaliacao.id','campos_avaliacao.categoria_id')
+				->join('dados_avaliacao','dados_avaliacao.campo_id','campos_avaliacao.id')
+				->where('dados_avaliacao.projeto_id',$projeto->id)
+				->join('revisao','dados_avaliacao.pessoa_id','revisao.pessoa_id')
+				->where('revisao.projeto_id',$projeto->id)
+				->select('dados_avaliacao.pessoa_id','valor','observacao','categoria_avaliacao','campos_avaliacao.descricao','nota_final','categoria_avaliacao.peso')
+				->get();		
+			$homologacao = $homologacao->groupBy('pessoa_id')->map(function ($itens) {
+				return $itens->values()->toArray();
+			})->values()->toArray();		
+			$DataFechamentoHom = DB::table('edicao')
+			->where('id',Edicao::getEdicaoId())
+			->pluck('homologacao_fechamento');
+			$DataFechamentoAva = DB::table('edicao')
+			->where('id',Edicao::getEdicaoId())
+			->pluck('avaliacao_fechamento');
 		//Busca pelas observações dos Avaliadores
-		$obsAvaliadores = DB::table('avaliacao')
-			->select('observacao', 'nota_final')
-			->where('projeto_id', '=', $projeto->id)
-			->where('avaliado', '=', true)
-			->get();
-
-		return view('projeto.show', compact('ehHomologador', 'ehAvaliador', 'obsHomologadores', 'obsAvaliadores'))
-			->withProjeto($projeto);
+		$avaliacao = DB::table('formulario')
+		->where('formulario.edicao_id',Edicao::getEdicaoId())
+		->where('formulario.nivel_id',2)
+		->where('tipo','avaliacao')
+		->join('formulario_categoria_avaliacao','formulario.idformulario','formulario_categoria_avaliacao.formulario_idformulario')
+		->join('categoria_avaliacao','formulario_categoria_avaliacao.categoria_avaliacao_id','categoria_avaliacao.id')
+		->join('campos_avaliacao','categoria_avaliacao.id','campos_avaliacao.categoria_id')
+		->join('dados_avaliacao','dados_avaliacao.campo_id','campos_avaliacao.id')
+		->where('dados_avaliacao.projeto_id',605)
+		->join('revisao','dados_avaliacao.pessoa_id','revisao.pessoa_id')
+		->where('revisao.projeto_id',605)
+		->select('dados_avaliacao.pessoa_id','valor','observacao','categoria_avaliacao','campos_avaliacao.descricao','nota_final','categoria_avaliacao.peso')
+		->get();	
+		$avaliacao = $avaliacao->groupBy('pessoa_id')->map(function ($itens) {
+			return $itens->values()->toArray();
+		})->values()->toArray();
+		return view('projeto.show', compact('ehHomologador', 'ehAvaliador', 'homologacao', 'avaliacao'))
+			->withProjeto($projeto)	->withDatahom($DataFechamentoHom[0])
+			->withDataava($DataFechamentoAva[0]);
 	}
 
 	/**
