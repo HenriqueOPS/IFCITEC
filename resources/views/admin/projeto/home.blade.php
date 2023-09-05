@@ -426,7 +426,7 @@ $('.naoCompareceu').click(function(){
  
     $('.confirma').click(function(){
         var urlConsulta = '.././projeto/nao-compareceu/'+idProjeto+'/'+$('#passwordNaoCompareceu').val();
-        console.log(idProjeto);
+     
  
         $.get(urlConsulta, function (res){
             if(res == 'true'){
