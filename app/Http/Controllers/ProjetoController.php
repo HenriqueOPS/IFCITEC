@@ -1117,7 +1117,7 @@ foreach ($palavrasChaves as $palavra) {
 				'situacao_id' => EnumSituacaoProjeto::getValue('NaoCompareceu')
 			]);
 			$emails = DB::table('escola_funcao_pessoa_projeto')
-			->where('projeto_id',605)
+			->where('projeto_id',$id)
 			->join('pessoa','pessoa.id','escola_funcao_pessoa_projeto.pessoa_id')
 			->join('projeto','projeto.id', 'escola_funcao_pessoa_projeto.projeto_id')
 			->select('email','nome','titulo')
