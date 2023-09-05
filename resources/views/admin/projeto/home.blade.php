@@ -148,7 +148,10 @@ check_box_outline_blank
                                 @if($projeto->getStatus() == "Não Homologado" || $projeto->getStatus() == "Homologado")
                                      <a href="{{route('notaRevisao',$projeto->id)}}"><i class="material-icons blue-icon">looks_one</i></a>
                                 @endif
-
+                                
+                               <a href="javascript:void(0);"class="naoCompareceu" data-id={{$projeto->id}} ><span class="material-icons">
+                                                    delete
+                                                    </span></a> 
                             </div>
                         </div>
 
@@ -407,12 +410,14 @@ function showAll(){
 
 <script type="application/javascript">
 $('.naoCompareceu').click(function(){
-    var idProjeto= $(this).attr('id-projeto');
+    var idProjeto= $(this).attr('data-id');
 
     $("#ModalNaoCompareceu").modal();
-
+ 
     $('.confirma').click(function(){
         var urlConsulta = '.././projeto/nao-compareceu/'+idProjeto+'/'+$('#passwordNaoCompareceu').val();
+        console.log(idProjeto);
+ 
         $.get(urlConsulta, function (res){
             if(res == 'true'){
                 bootbox.alert("O projeto mudou de situação com sucesso!");
