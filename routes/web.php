@@ -205,7 +205,7 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::post('/ocultarusuario-admin/{id}','AdminController@ocultar')->name('administrador.ocultar');
 	Route::get('/voluntario/info/{id}','VoluntarioController@info')->name('voluntario.info');
 	Route::post('/voluntario/homologar/{id}','VoluntarioController@homologar')->name('voluntario.homologar');
-
+	Route::get('/projeto/NaoComparecera/{id}','ProjetoController@projetoNaovai');
 	// Administrador
 	Route::get('/excluir-voluntario','AdminController@excluir_voluntario');
 	Route::get('/emails-enviados', 'GerenMsgController@tabela')->name('emails-enviados');

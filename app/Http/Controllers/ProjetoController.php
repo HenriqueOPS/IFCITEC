@@ -1122,6 +1122,18 @@ foreach ($palavrasChaves as $palavra) {
 
 		return 'false';
 	}
+	public function projetoNaovai($id)
+	{ //Ajax
+	
+			Projeto::where('id', $id)->update([
+				'situacao_id' => EnumSituacaoProjeto::getValue('NaoCompareceu')
+			]);
+
+			return view('projeto.nãocomparecerá');
+
+		}
+
+	
 
 	public function projetoCompareceuAvaliado($id, $s)
 	{ //Ajax
