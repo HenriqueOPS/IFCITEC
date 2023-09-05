@@ -24,7 +24,14 @@
             <div class="list-projects">
                 <h5><b id="geral">Número de projetos: <span id="nProjetos">{{ count($projetos) }}</span> </b></h5>
                 <h5><b id="situacao">Número de projetos: <span>{{ count($projetos) }}</span> </b></h5>
+               <h5> <b><?php
+                $countPresencaTrue = $projetos->filter(function ($projeto) {
+                    return $projeto->presenca === true;
+                })->count();
 
+                echo "Total Projetos com presença confirmada: " . $countPresencaTrue;
+                ?></b></h5>
+                <h5><b>Falta Confirmar: {{count($projetos) - $countPresencaTrue }}</b></h5>
                 <div>
                     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
                         <li class="active">
@@ -75,7 +82,8 @@
                 <div>
 
                     <a href="{{ route('homologar-projetos') }}" id="homologarTrabalhos" class="btn btn-sm btn-primary">Homologar Trabalhos</a>
-
+          
+                    
                     @foreach($projetos as $projeto)
 
                         <div class="row project situacao-{{ $projeto->situacao_id }}">
@@ -92,7 +100,9 @@
                                 </div>
                             </div>
                             <div class="col-md-2 actions text-center">
+                                
                                 <div class="status">
+                                    
                                     @if($projeto->getStatus() == "Não Homologado" || $projeto->getStatus() == "Não Avaliado")
                                         <span class="label label-info">{{$projeto->getStatus()}}</span>
                                     @elseif ($projeto->getStatus() == "Homologado" || $projeto->getStatus() == "Avaliado")

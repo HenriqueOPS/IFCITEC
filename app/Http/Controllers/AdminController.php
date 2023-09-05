@@ -152,12 +152,12 @@ class AdminController extends Controller
     public function projetos()
     {
 
-        $projetos = Projeto::select('titulo', 'id', 'situacao_id')
+        $projetos = Projeto::select('titulo', 'id', 'situacao_id','presenca')
             ->orderBy('titulo')
             ->where('edicao_id', Edicao::getEdicaoId())
             ->get()
             ->keyBy('id');
-
+            
         $periodoAvaliacao = Edicao::consultaPeriodo('Avaliação');
 
         return view('admin.projeto.home', compact('periodoAvaliacao'))->withProjetos($projetos);
