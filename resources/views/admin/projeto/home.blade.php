@@ -24,14 +24,14 @@
             <div class="list-projects">
                 <h5><b id="geral">Número de projetos: <span id="nProjetos">{{ count($projetos) }}</span> </b></h5>
                 <h5><b id="situacao">Número de projetos: <span>{{ count($projetos) }}</span> </b></h5>
-               <h5> <b><?php
+               <h5 class="nHomlogados"> <b><?php
                 $countPresencaTrue = $projetos->filter(function ($projeto) {
                     return $projeto->presenca === true;
                 })->count();
 
                 echo "Total Projetos com presença confirmada: " . $countPresencaTrue;
                 ?></b></h5>
-                <h5><b>Falta Confirmar: {{count($projetos) - $countPresencaTrue }}</b></h5>
+                <h5 class="nHomlogados"><b>Falta Confirmar: {{$numprojshomologados - $countPresencaTrue }}</b></h5>
                 <div>
                     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
                         <li class="active">
@@ -364,30 +364,36 @@ $('.dados-projeto').click(function() {
 $(document).ready(function () {
     $('#homologarTrabalhos').hide();
     $("#situacao").hide();
-
+    $(".nHomlogados").hide();
     $('.tab-projetos').click(function (e) {
         var target = $(this)[0];
 
 		$('#homologarTrabalhos').hide();
 
-        if (target.id==2)
+        if (target.id==2){
             $('#homologarTrabalhos').show();
-
+            $(".nHomlogados").hide();
+        }
         if (target.id=='situacao') {
             $("#geral").hide();
             $("#situacao").show();
             showAll();
-        } else {
+            $(".nHomlogados").hide();
+        } 
+      
+        else {
             $("#situacao").hide();
             $("#geral").show();
             $("#nProjetos").html($('div.project.situacao-'+target.id).length);
-
+            $(".nHomlogados").hide();
             hideAll();
 
             $('div.project.situacao-'+target.id).show();
 			$('div[id='+target.id+']').show();
         }
-
+        if(target.id==3){
+            $(".nHomlogados").show();
+        }
     });
 
 });
