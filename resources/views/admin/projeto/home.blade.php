@@ -24,14 +24,16 @@
             <div class="list-projects">
                 <h5><b id="geral">Número de projetos: <span id="nProjetos">{{ count($projetos) }}</span> </b></h5>
                 <h5><b id="situacao">Número de projetos: <span>{{ count($projetos) }}</span> </b></h5>
-               <h5 class="nHomlogados"> <b><?php
+               <h5 class="nHomlogados" style="display:flex;
+        justify-content: flex-end;"> <b><?php
                 $countPresencaTrue = $projetos->filter(function ($projeto) {
                     return $projeto->presenca === true;
                 })->count();
 
                 echo "Total Projetos com presença confirmada: " . $countPresencaTrue;
                 ?></b></h5>
-                <h5 class="nHomlogados"><b>Falta Confirmar: {{$numprojshomologados - $countPresencaTrue }}</b></h5>
+                <h5 class="nHomlogados" style="display:flex;
+        justify-content: flex-end;"><b>Falta Confirmar: {{$numprojshomologados - $countPresencaTrue }}</b></h5>
                 <div>
                     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
                         <li class="active">
