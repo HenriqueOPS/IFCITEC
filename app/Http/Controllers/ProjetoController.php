@@ -287,6 +287,7 @@ foreach ($palavrasChaves as $palavra) {
 				->join('revisao','dados_avaliacao.pessoa_id','revisao.pessoa_id')
 				->where('revisao.projeto_id',$projeto->id)
 				->select('dados_avaliacao.pessoa_id','valor','observacao','categoria_avaliacao','campos_avaliacao.descricao','nota_final','categoria_avaliacao.peso')
+				->distinct()
 				->get();		
 			$homologacao = $homologacao->groupBy('pessoa_id')->map(function ($itens) {
 				return $itens->values()->toArray();
@@ -300,16 +301,17 @@ foreach ($palavrasChaves as $palavra) {
 		//Busca pelas observações dos Avaliadores
 		$avaliacao = DB::table('formulario')
 		->where('formulario.edicao_id',Edicao::getEdicaoId())
-		->where('formulario.nivel_id',2)
+		->where('formulario.nivel_id',$projeto->nivel_id)
 		->where('tipo','avaliacao')
 		->join('formulario_categoria_avaliacao','formulario.idformulario','formulario_categoria_avaliacao.formulario_idformulario')
 		->join('categoria_avaliacao','formulario_categoria_avaliacao.categoria_avaliacao_id','categoria_avaliacao.id')
 		->join('campos_avaliacao','categoria_avaliacao.id','campos_avaliacao.categoria_id')
 		->join('dados_avaliacao','dados_avaliacao.campo_id','campos_avaliacao.id')
-		->where('dados_avaliacao.projeto_id',605)
+		->where('dados_avaliacao.projeto_id',$projeto->id)
 		->join('revisao','dados_avaliacao.pessoa_id','revisao.pessoa_id')
-		->where('revisao.projeto_id',605)
+		->where('revisao.projeto_id',$projeto->id)
 		->select('dados_avaliacao.pessoa_id','valor','observacao','categoria_avaliacao','campos_avaliacao.descricao','nota_final','categoria_avaliacao.peso')
+		->distinct()
 		->get();	
 		$avaliacao = $avaliacao->groupBy('pessoa_id')->map(function ($itens) {
 			return $itens->values()->toArray();
