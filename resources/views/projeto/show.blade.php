@@ -64,12 +64,14 @@
                                 
                                     </div>
                         </div>
+                        <br>
                         @foreach($homologacao[0] as $campo)
                         <div class="row">
                             <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
                                 <strong>Categoria: {{$campo->categoria_avaliacao}}, Descrição: {{ $campo->descricao }}, Peso {{$campo->peso}}:</strong> {{$campo->valor}}
                             </div>
                         </div>
+                          <br>
                     @endforeach
                     
                         
@@ -81,6 +83,7 @@
                                    
                                 </div>
                         </div>
+                        <br>
                         <hr>
                       
                         <div class="row">
@@ -89,12 +92,14 @@
                                     </div>
                                     
                         </div>
+                        <br>
                         @foreach($homologacao[1] as $campo)
                         <div class="row">
                             <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
                                 <strong>Categoria: {{$campo->categoria_avaliacao}}, Descrição: {{ $campo->descricao }}, Peso {{$campo->peso}}:</strong> {{$campo->valor}}
                             </div>
                         </div>
+                        <br>
                     @endforeach
                      
                         
@@ -105,6 +110,7 @@
                                     
                                 </div>
                         </div>
+                        <br>
     
                            
     
@@ -130,12 +136,14 @@
 							
                                 </div>
                     </div>
+                    <br>
 					@foreach($avaliacao[0] as $campo)
 					<div class="row">
 						<div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
-							<strong>Categoria: {{$campo->categoria_avaliacao}}, Descrição: {{ $campo->descricao }}, Peso {{$campo->peso}}:</strong> {{$campo->valor}}
+							<strong>Categoria: </strong> {{$campo->categoria_avaliacao}}, <strong><br>Descrição: </strong>{{ $campo->descricao }}, <strong><br>Peso {{$campo->peso}}:</strong>{{$campo->valor}}
 						</div>
 					</div>
+                    <br>
 				@endforeach
 				
 					
@@ -147,6 +155,7 @@
                                
                             </div>
                     </div>
+                    <br>
                     <hr>
                   @if(array_key_exists(1,$avaliacao))
                     <div class="row">
@@ -155,12 +164,14 @@
                                 </div>
 								
                     </div>
+                    <br>
 					@foreach($avaliacao[1] as $campo)
 					<div class="row">
 						<div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
-							<strong>Categoria: {{$campo->categoria_avaliacao}}, Descrição: {{ $campo->descricao }}, Peso {{$campo->peso}}:</strong> {{$campo->valor}}
+							<strong>Categoria:</strong>  {{$campo->categoria_avaliacao}}, <strong>Descrição: </strong>{{ $campo->descricao }},<strong>Peso {{$campo->peso}}:</strong>  {{$campo->valor}}
 						</div>
 					</div>
+                    <br>
 				@endforeach
                  
 					
@@ -171,6 +182,7 @@
                                 
                             </div>
                     </div>
+                    <br>
 					@endif
 							@endif
 
@@ -178,11 +190,11 @@
 
                         <div class="col-md-3 col-xs-10 col-xs-offset-1">
 
-							@if(Auth::user()->temFuncao('Administrador') || (\App\Edicao::consultaPeriodo('Inscrição')))
+							@if(Auth::user()->temFuncao('Administrador') || (\App\Edicao::consultaPeriodo('')))
 
 								<a href="{{ route('editarProjeto', $projeto->id) }}" class="btn btn-success">
 									Editar informações
-								</a>
+								</a>Inscrição
 
 							@endif
 

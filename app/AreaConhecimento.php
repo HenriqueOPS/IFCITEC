@@ -109,11 +109,85 @@ class AreaConhecimento extends Model
             ->orderBy('projeto.nota_avaliacao', 'desc')
             ->orderBy('nota', 'desc')
             ->orderBy('projeto.created_at', 'asc')
-            ->limit(5)
+            ->limit(3)
             ->get();
 
         return $projetos->reverse();
     }
+    public function getClassificacaoProjetosCertificados2($id, $edicao)
+	{
+		$subQuery = DB::table('revisao')
+			->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
+			->where('revisao.projeto_id', '=', DB::raw('projeto.id'))
+			->toSql();
+
+		$projetos = Projeto::select(DB::raw('(' . $subQuery . ') as nota'), 'projeto.nota_avaliacao', 'projeto.titulo', 'projeto.situacao_id', 'escola.nome_curto')
+			->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+			->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+			->where('projeto.edicao_id', '=', $edicao)
+			->where('projeto.situacao_id', '=', EnumSituacaoProjeto::getValue('Avaliado'))
+			->where('projeto.nota_avaliacao', '<>', NULL)
+			->where('projeto.nivel_id', $id)
+			->groupBy('projeto.id')
+			->groupBy('escola.nome_curto')
+			->orderBy('projeto.nota_avaliacao', 'desc')
+			->orderBy('nota', 'desc')
+			->orderBy('projeto.created_at', 'asc')
+            ->limit(2)
+			->get();
+
+		return $projetos;
+	}
+    public function getClassificacaoProjetosCertificados4($id, $edicao)
+	{
+		$subQuery = DB::table('revisao')
+			->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
+			->where('revisao.projeto_id', '=', DB::raw('projeto.id'))
+			->toSql();
+
+		$projetos = Projeto::select(DB::raw('(' . $subQuery . ') as nota'), 'projeto.nota_avaliacao', 'projeto.titulo', 'projeto.situacao_id', 'escola.nome_curto')
+			->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+			->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+			->where('projeto.edicao_id', '=', $edicao)
+			->where('projeto.situacao_id', '=', EnumSituacaoProjeto::getValue('Avaliado'))
+			->where('projeto.nota_avaliacao', '<>', NULL)
+			->where('projeto.nivel_id', $id)
+			->groupBy('projeto.id')
+			->groupBy('escola.nome_curto')
+			->orderBy('projeto.nota_avaliacao', 'desc')
+			->orderBy('nota', 'desc')
+			->orderBy('projeto.created_at', 'asc')
+            ->limit(3)
+			->get();
+
+		return $projetos;
+	}
+    public function getClassificacaoProjetosCertificados3($id, $edicao)
+	{
+		$subQuery = DB::table('revisao')
+			->select(DB::raw('COALESCE(AVG(revisao.nota_final),0)'))
+			->where('revisao.projeto_id', '=', DB::raw('projeto.id'))
+			->toSql();
+
+		$projetos = Projeto::select(DB::raw('(' . $subQuery . ') as nota'), 'projeto.nota_avaliacao', 'projeto.titulo', 'projeto.situacao_id', 'escola.nome_curto')
+			->join('escola_funcao_pessoa_projeto', 'projeto.id', '=', 'escola_funcao_pessoa_projeto.projeto_id')
+			->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+			->where('projeto.edicao_id', '=', $edicao)
+			->where('projeto.situacao_id', '=', EnumSituacaoProjeto::getValue('Avaliado'))
+			->where('projeto.nota_avaliacao', '<>', NULL)
+			->where('projeto.nivel_id', $id)
+			->groupBy('projeto.id')
+			->groupBy('escola.nome_curto')
+			->orderBy('projeto.nota_avaliacao', 'desc')
+			->orderBy('nota', 'desc')
+			->orderBy('projeto.created_at', 'asc')
+            ->limit(1)
+			->get();
+
+		return $projetos;
+	}
+
+
 
     public function getClassificacaoCertificados($id, $edicao)
     {

@@ -193,6 +193,7 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')->name('vinculaAvaliadorPost');
 
 	// Fichas de Avaliação/Homologação
+	Route::get('/gerar/apresentacao/{edicao}','RelatorioController@gerarapresentacao')->name('premiacao.apresentacao');
 	Route::get('/administrador/fichas', 'FichaController@index')->name('administrador.ficha');
 	Route::get('/administrador/fichas/cadastrar', 'FichaController@create')->name('adminstrador.cadastrarFicha');
 	Route::post('/administrador/fichas/cadastrar', 'FichaController@store')->name('adminstrador.salvarFicha');

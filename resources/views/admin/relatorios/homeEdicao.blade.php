@@ -390,6 +390,22 @@
                             </tr>
                             <tr>
                                 <td>4</td>
+                                <td>Relatório de Projetos Não Homologados Para a Edição Corrente (Por Nível)</td>
+                                <td class="text-right">
+                                    <a href="{{ route('projetosNaoHomologadosNivel', $edicao) }}" target="_blank"><i
+                                            class="material-icons">visibility</i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Relatório de Projetos Não Homologados por Nível e Área</td>
+                                <td class="text-right">
+                                    <a href="{{ route('relatorioProjetosArea', $edicao) }}" target="_blank"><i
+                                            class="material-icons">visibility</i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
                                 <td>Relatório de Projetos Classificados Para a Edição Corrente (Por Área do Conhecimento)
                                 </td>
                                 <td class="text-right">
@@ -398,7 +414,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>5</td>
+                                <td>7</td>
                                 <td>Relatório de Projetos Classificados Para a Edição Corrente (Por Nível)</td>
                                 <td class="text-right">
                                     <a href="{{ route('projetosClassificadosNivel', $edicao) }}" target="_blank"><i
@@ -406,21 +422,15 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>6</td>
+                                <td>8</td>
                                 <td>Relatório de Projetos Classificados Para a Edição Corrente (Sem Notas)</td>
                                 <td class="text-right">
                                     <a href="{{ route('projetosClassificadosSemNota', $edicao) }}" target="_blank"><i
                                             class="material-icons">visibility</i></a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>7</td>
-                                <td>Relatório de Projetos Não Homologados Para a Edição Corrente (Por Nível)</td>
-                                <td class="text-right">
-                                    <a href="{{ route('projetosNaoHomologadosNivel', $edicao) }}" target="_blank"><i
-                                            class="material-icons">visibility</i></a>
-                                </td>
-                            </tr>
+                        
+
                         </tbody>
 
                         <tbody id="4">
@@ -458,7 +468,14 @@
                                             class="material-icons">visibility</i></a>
                                 </td>
                             </tr>
-                          
+                            <tr>
+                                <td>5</td>
+                                <td>Apresentação</td>
+                                <td class="text-right">
+                                    <a href="{{ route('premiacao.apresentacao', $edicao) }}" target="_blank"><i
+                                            class="material-icons">visibility</i></a>
+                                </td>
+                            </tr>
                         </tbody>
 
                         <tbody id="5">
@@ -514,15 +531,7 @@
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td>3</td>
-                                <td>Relatório de Projetos por Nível e Área</td>
-                                <td class="text-right">
-                                    <a href="{{ route('relatorioProjetosArea', $edicao) }}" target="_blank"><i
-                                            class="material-icons">visibility</i></a>
-                                </td>
-                            </tr>
-
+                     
                             <tr>
                                 <td>4</td>
                                 <td>Relatório de Projetos E Seus Status</td>

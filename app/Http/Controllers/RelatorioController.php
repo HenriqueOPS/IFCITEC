@@ -1944,7 +1944,7 @@ class RelatorioController extends Controller
 
     public function premiacaoProjetos($edicao)
     {
-        $areas = Edicao::find($edicao)->areas;
+        $areas = Edicao::find(10)->areas;
 
         /*
         return PDF::loadView('relatorios.premiacao.premiacaoProjetos', ['areas' => $areas, 'edicao' => $edicao])
@@ -2729,5 +2729,19 @@ public  function generateCSVForEdition($edicao) {
         return $this->returnsCSVStream($filename, $header, $rows);
     
     }
+    public function gerarapresentacao($edicao){
+        $areas = Edicao::find($edicao)->areas()->orderBy('nivel_id', 'desc')->get();
+        $areasNivel2 = $areas->filter(function ($area) {
+            return $area->nivel_id === 2;
+        });
+        
+        $areasNivel3 = $areas->filter(function ($area) {
+            return $area->nivel_id === 3;
+        });
+        return View(
+            'relatorios.premiacao.Apresentação',
+            ['areasNivel2' => $areasNivel2,'areasNivel3' => $areasNivel3,'edicao' => $edicao]
+        ) ;
     
+    }
 }
