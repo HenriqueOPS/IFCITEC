@@ -4,7 +4,7 @@
 <style>
 @media all {
 	@page{
-        size: A4 landscape;
+    size: A4 landscape;
     margin: 0;
 	}
 	*{
@@ -83,7 +83,7 @@
 				<div class="content" style="  display: flex;
             justify-content: center;
             align-items: center;
-            height: 80vh;">
+            height: 100vh;">
 					<div class="dados">
 						<h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase;width:800px;">Ensino Fundamental</h1>
 					
@@ -107,7 +107,7 @@
             <div class="content"  style="  display: flex;
             justify-content: center;
             align-items: center;
-            height: 80vh;">
+            height: 100vh;">
                 <div class="dados">
                     <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase;width:800px;"> {{$area->area_conhecimento}}</h1>
                    
@@ -150,7 +150,7 @@
             <div class="content" style="  display: flex;
             justify-content: center;
             align-items: center;
-            height: 80vh;">
+            height: 100vh;">
                 <div class="dados">
                     <h1 style="font-size: 8mm; width:800px;"> {{$projeto->titulo}}<br><br></h1>
                     <h2 style="font-size: 8mm;width:800px;  "> {{$projeto->nome_curto}}</h2>
@@ -177,7 +177,7 @@
 				<div class="content" style="  display: flex;
             justify-content: center;
             align-items: center;
-            height: 80vh;">
+            height: 100vh;">
 					<div class="dados">
                     <h1 style="margin-top: 10mm; font-size: 8mm; text-transform: uppercase;width:800px;">Ensino Médio, Ensino Médio Integrado ao Técnico e da Educação Profissional de Nível Técnico</h1>
 	
@@ -200,7 +200,7 @@
             <div class="content"  style="  display: flex;
             justify-content: center;
             align-items: center;
-            height: 80vh;">
+            height: 100vh;">
                 <div class="dados">
                     <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase;width:800px;"> {{$area->area_conhecimento}}</h1>
                    
@@ -243,7 +243,7 @@
             <div class="content"  style="  display: flex;
             justify-content: center;
             align-items: center;
-            height: 80vh;">
+            height: 100vh;">
                 <div class="dados">
                     <h1 style=" font-size: 8mm; width:800px; "> {{$projeto->titulo}}<br><br></h1>
                     <h2 style="font-size: 8mm;  width:800px;"> {{$projeto->nome_curto}}</h2>
@@ -270,7 +270,7 @@
 				<div class="content" style="  display: flex;
             justify-content: center;
             align-items: center;
-            height: 80vh;">
+            height: 100vh;">
 					<div class="dados">
 						<h1 style="margin-top: 10mm; font-size: 14mm; text-transform: uppercase;width:800px;">Feiras afiliadas</h1>
 					
@@ -291,7 +291,7 @@
             <div class="content" style="  display: flex;
         justify-content: center;
         align-items: center;
-        height: 80vh;">
+        height: 100vh;">
                 <div class="dados">
                     <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase;width:800px;">mostratec</h1>
                     @php
@@ -320,7 +320,7 @@
             <div class="content" style="  display: flex;
             justify-content: center;
             align-items: center;
-            height: 80vh;">
+            height: 100vh;">
                 <div class="dados">
                     <h1  style="margin-top: 10mm; font-size: 8mm; text-transform: uppercase;width:800px;">Ensino Médio, Ensino Médio Integrado ao Técnico e da Educação Profissional de Nível Técnico <br><br></h1>
                     <p style="font-size: 6mm;width:800px;  ">{{$projeto->titulo}}<br><br></p>
@@ -352,7 +352,7 @@
             <div class="content" style="  display: flex;
             justify-content: center;
             align-items: center;
-            height: 80vh;">
+            height: 100vh;">
                 <div class="dados">
                     <h1  style="margin-top: 10mm; font-size: 8mm; text-transform: uppercase;width:800px;">Ensino fundamental<br><br></h1>
                     <p style="font-size: 6mm;width:800px;  ">{{$projeto->titulo}}<br><br></p>
@@ -375,7 +375,7 @@
         <div class="content" style="display: flex;
             justify-content: center;
             align-items: center;
-            height: 80vh;">
+            height: 100vh;">
             <div class="dados">
                 <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">febrace</h1>
                 @php
@@ -399,7 +399,7 @@
                 <div class="content" style="display: flex;
                     justify-content: center;
                     align-items: center;
-                    height: 80vh;">
+                    height: 100vh;">
                     <div class="dados">
                         <h1 style="margin-top: 10mm; font-size: 8mm; text-transform: uppercase; width:800px;">Ensino Médio, Ensino Médio Integrado ao Técnico e da Educação Profissional de Nível Técnico <br><br></h1>
                         <p style="font-size: 6mm;width:800px;">{{$projeto->titulo}}<br><br></p>
@@ -424,7 +424,7 @@
         <div class="content" style="display: flex;
             justify-content: center;
             align-items: center;
-            height: 80vh;">
+            height: 100vh;">
             <div class="dados">
                 <h1 style="margin-top: 10mm; font-size: 16mm; text-transform: uppercase; width:800px;">Muito obrigado!<br></h1>
                 <p style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">Nos vemos na próxima edição!</p>
