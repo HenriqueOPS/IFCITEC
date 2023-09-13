@@ -25,7 +25,11 @@ Route::get('/version', function () {
 	echo "Pipeline ID: " . $strData[1];
 });
 
+Route::get('/organizador/presenca', 'OrganizadorController@presenca')->name('organizacao.presenca');
 Route::get('/', function () {
+	//arrumar posteriormente
+	// if(Auth::check() && Auth::user()->temFuncao('Voluntário'))
+	// return redirect()->route('organizacao.presenca');
 	if (Auth::check())
 		return redirect()->route('home');
 
@@ -301,7 +305,7 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
 	Route::get('/projeto/{id}/status/', 'ProjetoController@statusProjeto')->name('statusProjeto'); //Ajax
 
 	// Presença
-	Route::get('/organizador/presenca', 'OrganizadorController@presenca')->name('organizacao.presenca');
+
 
 	// Usuarios
 	Route::get('/organizador/usuarios', 'OrganizadorController@usuarios')->name('organizacao.usuarios');

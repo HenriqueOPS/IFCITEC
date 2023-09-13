@@ -2194,10 +2194,10 @@ class RelatorioController extends Controller
             ->orderBy('projeto.created_at', 'asc')
             ->get();
 
-        $data = Edicao::select('feira_fechamento')
+        $data = Edicao::select('credenciamento_abertura')
             ->where('id', $edicao)->get();
 
-        $data = date('d/m/Y', strtotime($data->first()->feira_fechamento));
+        $data = date('d/m/Y', strtotime($data->first()->credenciamento_abertura));
 
         return PDF::loadView(
             'relatorios.premiacao.premiacaoCertificados',
