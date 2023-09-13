@@ -2738,7 +2738,7 @@ public  function generateCSVForEdition($edicao) {
         $areasNivel3 = $areas->filter(function ($area) {
             return $area->nivel_id === 3;
         });
-        return View(
+        return view(
             'relatorios.premiacao.Apresentação',
             ['areasNivel2' => $areasNivel2,'areasNivel3' => $areasNivel3,'edicao' => $edicao]
         ) ;

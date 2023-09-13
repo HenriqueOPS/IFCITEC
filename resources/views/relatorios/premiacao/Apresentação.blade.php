@@ -179,7 +179,7 @@
             align-items: center;
             height: 100vh;">
 					<div class="dados">
-                    <h1 style="margin-top: 10mm; font-size: 8mm; text-transform: uppercase;width:800px;">Ensino Médio, Ensino Médio Integrado ao Técnico e da Educação Profissional de Nível Técnico</h1>
+                    <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase;width:800px;">Ensino Médio, Ensino Médio Integrado ao Técnico e da Educação Profissional de Nível Técnico</h1>
 	
 					</div>
 				</div>
@@ -322,7 +322,7 @@
             align-items: center;
             height: 100vh;">
                 <div class="dados">
-                    <h1  style="margin-top: 10mm; font-size: 8mm; text-transform: uppercase;width:800px;">Ensino Médio, Ensino Médio Integrado ao Técnico e da Educação Profissional de Nível Técnico <br><br></h1>
+                    <h1  style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase;width:800px;">Ensino Médio, Ensino Médio Integrado ao Técnico e da Educação Profissional de Nível Técnico <br><br></h1>
                     <p style="font-size: 6mm;width:800px;  ">{{$projeto->titulo}}<br><br></p>
                     <h2 style="font-size: 6mm;width:800px;  "> {{$projeto->nome_curto}}</h2>
                 </div>
@@ -354,7 +354,7 @@
             align-items: center;
             height: 100vh;">
                 <div class="dados">
-                    <h1  style="margin-top: 10mm; font-size: 8mm; text-transform: uppercase;width:800px;">Ensino fundamental<br><br></h1>
+                    <h1  style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase;width:800px;">Ensino fundamental<br><br></h1>
                     <p style="font-size: 6mm;width:800px;  ">{{$projeto->titulo}}<br><br></p>
                     <h2 style="font-size: 6mm;width:800px;  "> {{$projeto->nome_curto}}</h2>
                 </div>
@@ -401,7 +401,7 @@
                     align-items: center;
                     height: 100vh;">
                     <div class="dados">
-                        <h1 style="margin-top: 10mm; font-size: 8mm; text-transform: uppercase; width:800px;">Ensino Médio, Ensino Médio Integrado ao Técnico e da Educação Profissional de Nível Técnico <br><br></h1>
+                        <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">Ensino Médio, Ensino Médio Integrado ao Técnico e da Educação Profissional de Nível Técnico <br><br></h1>
                         <p style="font-size: 6mm;width:800px;">{{$projeto->titulo}}<br><br></p>
                         <h2 style="font-size: 6mm;width:800px;">{{$projeto->nome_curto}}</h2>
                     </div>

@@ -42,24 +42,24 @@
 						$umDiaDepois = $dataCitada->copy()->addSecond();
 						?>
                         	@if(isset($projeto->nota_avaliacao) && $projeto->nota_avaliacao !== null && \Carbon\Carbon::now()->greaterThanOrEqualTo($dataava) )
-                            <strong>Nota da Avaliacao: {{ number_format($projeto->nota_avaliacao, 2) }}</strong><br>
+                            <strong>Nota Final da Avaliação: {{ number_format($projeto->nota_avaliacao, 2) }}</strong><br>
                             @endif
 								@if(isset($projeto->nota_revisao) && $projeto->nota_revisao !== null && \Carbon\Carbon::now()->greaterThanOrEqualTo($umDiaDepois) )
 							
-								<strong>Nota da Homologação: {{ number_format($projeto->nota_revisao, 2) }}</strong>
+								<strong>Nota Final da Homologação: {{ number_format($projeto->nota_revisao, 2) }}</strong>
                                 	
 						
-						
+                                <hr>
 								
                             <div class="row">
-                            <div class="col-md-10 col-md-offset-1 col-xs-offset-1 text-center">
-                                <h2>Homologação:</h2>
-                        
+                            <div class="col-md-12  ">
+                                <h3><b>Homologação</b></h3>
+                                <hr>
                             </div>
                         </div>
                        
                         <div class="row">
-                                    <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
+                                    <div class="col-md-7 ">
                                      <strong>Nota do Homologador 1: </strong>{{ number_format($homologacao[0][0]->nota_final, 2)}}
                                 
                                     </div>
@@ -67,8 +67,9 @@
                         <br>
                         @foreach($homologacao[0] as $campo)
                         <div class="row">
-                            <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                                <strong>Categoria: {{$campo->categoria_avaliacao}}, Descrição: {{ $campo->descricao }}, Peso {{$campo->peso}}:</strong> {{$campo->valor}}
+                            <div class="col-md-5 ">
+                              
+                                {{$campo->categoria_avaliacao}}-{{ $campo->descricao }}:{{$campo->valor}}
                             </div>
                         </div>
                           <br>
@@ -76,7 +77,7 @@
                     
                         
                         <div class="row" id="selects">
-                                <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
+                                <div class="col-md-10 ">
                                    
                                       
                                      <strong>Observação do Homologador 1: </strong>{{$homologacao[0][0]->observacao}}
@@ -87,16 +88,17 @@
                         <hr>
                       
                         <div class="row">
-                                    <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                                    <strong>Nota do Homologador 2: </strong> {{ number_format($homologacao[1][0]->nota_final, 2)}}
+                                    <div class="col-md-7 ">
+                                    <strong>Nota do Homologador 2: </strong>{{ number_format($homologacao[1][0]->nota_final, 2)}}
                                     </div>
+                                   
                                     
                         </div>
                         <br>
                         @foreach($homologacao[1] as $campo)
                         <div class="row">
-                            <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
-                                <strong>Categoria: {{$campo->categoria_avaliacao}}, Descrição: {{ $campo->descricao }}, Peso {{$campo->peso}}:</strong> {{$campo->valor}}
+                            <div class="col-md-5 ">
+                            {{$campo->categoria_avaliacao}}-{{ $campo->descricao }}:{{$campo->valor}}
                             </div>
                         </div>
                         <br>
@@ -104,7 +106,7 @@
                      
                         
                         <div class="row">
-                                <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
+                                <div class="col-md-10 ">
                                  
                                     <strong>Observação do Homologador 2: </strong>  {{$homologacao[1][0]->observacao}}
                                     
@@ -122,16 +124,18 @@
 						$umDiaDepois = $dataCitada->copy()->addSecond();
 						?>
 							
-						
+				
 							@if(isset($projeto->nota_avaliacao) && $projeto->nota_avaliacao !== null && \Carbon\Carbon::now()->greaterThanOrEqualTo($umDiaDepois))					
-						<div class="row">
-                        <div class="col-md-10 col-md-offset-1 col-xs-offset-1 text-center">
-                            <h2>Avaliacão:</h2>
+                            <hr>
+                            <div class="row">
+                            <div class="col-md-12  ">
+                                <h3><b>Avaliacão</b></h3>
+                                <hr>
+                            </div>
                         </div>
-                    </div>
                    
                     <div class="row">
-                                <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
+                                <div class="col-md-7 ">
                                  <strong>Nota do Avaliador 1: </strong>{{ number_format($avaliacao[0][0]->nota_final, 2)}}
 							
                                 </div>
@@ -139,8 +143,8 @@
                     <br>
 					@foreach($avaliacao[0] as $campo)
 					<div class="row">
-						<div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
-							<strong>Categoria: </strong> {{$campo->categoria_avaliacao}}, <strong><br>Descrição: </strong>{{ $campo->descricao }}, <strong><br>Peso {{$campo->peso}}:</strong>{{$campo->valor}}
+						<div class="col-md-5 ">
+							 {{$campo->categoria_avaliacao}}-{{ $campo->descricao }}:{{$campo->valor}}
 						</div>
 					</div>
                     <br>
@@ -148,7 +152,7 @@
 				
 					
                     <div class="row" id="selects">
-                            <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
+                            <div class="col-md-10 ">
                                
                                   
                                  <strong>Observação do Avaliador 1: </strong>{{$avaliacao[0][0]->observacao}}
@@ -159,7 +163,7 @@
                     <hr>
                   @if(array_key_exists(1,$avaliacao))
                     <div class="row">
-                                <div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
+                                <div class="col-md-7 ">
                                 <strong>Nota do Avaliador 2: </strong> {{ number_format($avaliacao[1][0]->nota_final, 2)}}
                                 </div>
 								
@@ -167,8 +171,8 @@
                     <br>
 					@foreach($avaliacao[1] as $campo)
 					<div class="row">
-						<div class="col-md-5 col-md-offset-1 col-xs-9 col-xs-offset-1">
-							<strong>Categoria:</strong>  {{$campo->categoria_avaliacao}}, <strong>Descrição: </strong>{{ $campo->descricao }},<strong>Peso {{$campo->peso}}:</strong>  {{$campo->valor}}
+						<div class="col-md-5 ">
+                        {{$campo->categoria_avaliacao}}-{{ $campo->descricao }}:{{$campo->valor}}
 						</div>
 					</div>
                     <br>
@@ -176,7 +180,7 @@
                  
 					
                     <div class="row">
-                            <div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
+                            <div class="col-md-10 ">
                              
                                 <strong>Observação do Avaliador 2: </strong>  {{$avaliacao[1][0]->observacao}}
                                 
@@ -188,7 +192,7 @@
 
                         </div>
 
-                        <div class="col-md-3 col-xs-10 col-xs-offset-1">
+                        <div class="col-md-3 ">
 
 							@if(Auth::user()->temFuncao('Administrador') || (\App\Edicao::consultaPeriodo('')))
 
