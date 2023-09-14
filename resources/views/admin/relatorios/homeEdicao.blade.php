@@ -612,7 +612,7 @@
                             </tr>
                             <tr>
                                 <td>13</td>
-                                <td>Email Orientadores e Coorientadores</td>
+                                <td> Relatório de Email Orientadores e Coorientadores que comparecerão (Edição Corrente)</td>
                                 <td class="text-right">
                                     <a href="{{ route('EmailOrientadoreseCoorientadores', $edicao) }}" target="_blank"><i
                                     class="material-icons">arrow_downward</i></a>
@@ -620,7 +620,7 @@
                             </tr>
                             <tr>
                                 <td>14</td>
-                                <td>Nome e Telefone dos Avaliadores</td>
+                                <td>Relatório de Nomes e Telefones dos Avaliadores que comparecerão (Edição Corrente)</td>
                                 <td class="text-right">
                                     <a href="{{ route('NomeTelefoneAvaliadores') }}" target="_blank"><i
                                     class="material-icons">arrow_downward</i></a>
