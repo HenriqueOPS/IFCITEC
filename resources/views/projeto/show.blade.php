@@ -67,12 +67,29 @@
                         <br>
                         @foreach($homologacao[0] as $campo)
                         <div class="row">
-                            <div class="col-md-5 ">
-                              
-                                {{$campo->categoria_avaliacao}}-{{ $campo->descricao }}:{{$campo->valor}}
-                            </div>
+                        <div class="col-md-5">
+                        @php
+                            $id = $campo->categoria_avaliacao;
+                        @endphp
+                        <div id="{{ $id }}" class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>{{ $campo->descricao }}:{{ $campo->valor }}
+                    </div>
+
+                    <script>
+                        // Vamos supor que você queira selecionar o primeiro elemento com um ID específico, por exemplo, "exemploId".
+                        var id = '{{ $id }}';
+
+                        // Seleciona todos os elementos com o mesmo ID
+                        var elementos = document.querySelectorAll('#' + id);
+
+                        // Esconde todos os elementos, exceto o primeiro
+                        for (var i = 1; i < elementos.length; i++) {
+                            elementos[i].style.display = 'none';
+                        }
+                    </script>
+
+
                         </div>
-                          <br>
+                   
                     @endforeach
                     
                         
@@ -97,11 +114,29 @@
                         <br>
                         @foreach($homologacao[1] as $campo)
                         <div class="row">
-                            <div class="col-md-5 ">
-                            {{$campo->categoria_avaliacao}}-{{ $campo->descricao }}:{{$campo->valor}}
-                            </div>
+                        <div class="col-md-5">
+                        @php
+                            $id = $campo->categoria_avaliacao . 2;
+                        @endphp
+                        <div id="{{ $id }}" class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>{{ $campo->descricao }}:{{ $campo->valor }}
+                    </div>
+
+                    <script>
+                        // Vamos supor que você queira selecionar o primeiro elemento com um ID específico, por exemplo, "exemploId".
+                        var id = '{{ $id }}';
+
+                        // Seleciona todos os elementos com o mesmo ID
+                        var elementos = document.querySelectorAll('#' + id);
+
+                        // Esconde todos os elementos, exceto o primeiro
+                        for (var i = 1; i < elementos.length; i++) {
+                            elementos[i].style.display = 'none';
+                        }
+                    </script>
+
+
                         </div>
-                        <br>
+                   
                     @endforeach
                      
                         
@@ -143,11 +178,29 @@
                     <br>
 					@foreach($avaliacao[0] as $campo)
 					<div class="row">
-						<div class="col-md-5 ">
-							 {{$campo->categoria_avaliacao}}-{{ $campo->descricao }}:{{$campo->valor}}
-						</div>
+                    <div class="col-md-5">
+                        @php
+                            $id = $campo->categoria_avaliacao . 3;
+                        @endphp
+                        <div id="{{ $id }}" class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>{{ $campo->descricao }}:{{ $campo->valor }}
+                    </div>
+
+                    <script>
+                        // Vamos supor que você queira selecionar o primeiro elemento com um ID específico, por exemplo, "exemploId".
+                        var id = '{{ $id }}';
+
+                        // Seleciona todos os elementos com o mesmo ID
+                        var elementos = document.querySelectorAll('#' + id);
+
+                        // Esconde todos os elementos, exceto o primeiro
+                        for (var i = 1; i < elementos.length; i++) {
+                            elementos[i].style.display = 'none';
+                        }
+                    </script>
+
+
 					</div>
-                    <br>
+                
 				@endforeach
 				
 					
@@ -171,11 +224,29 @@
                     <br>
 					@foreach($avaliacao[1] as $campo)
 					<div class="row">
-						<div class="col-md-5 ">
-                        {{$campo->categoria_avaliacao}}-{{ $campo->descricao }}:{{$campo->valor}}
-						</div>
+                    <div class="col-md-5">
+                        @php
+                            $id = $campo->categoria_avaliacao . 4;
+                        @endphp
+                        <div id="{{ $id }}" class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>{{ $campo->descricao }}:{{ $campo->valor }}
+                    </div>
+
+                    <script>
+                        // Vamos supor que você queira selecionar o primeiro elemento com um ID específico, por exemplo, "exemploId".
+                        var id = '{{ $id }}';
+
+                        // Seleciona todos os elementos com o mesmo ID
+                        var elementos = document.querySelectorAll('#' + id);
+
+                        // Esconde todos os elementos, exceto o primeiro
+                        for (var i = 1; i < elementos.length; i++) {
+                            elementos[i].style.display = 'none';
+                        }
+                    </script>
+
+
 					</div>
-                    <br>
+                
 				@endforeach
                  
 					
