@@ -101,7 +101,7 @@
 		<div class="content">
 
 			<div class="dados">
-				<h2>{{$funcao}}</h2>
+				<h2>{{$pessoa->tarefa}}</h2>
 				<h3>{{$pessoa->nome}}</h3>
 			</div>
 
