@@ -2779,4 +2779,33 @@ public  function generateCSVForEdition($edicao) {
         return $this->returnsCSVStream($filename, $header, $rows);
     
     }
+    public function NomeTelefoneAvaliadores(){
+        $ids = DB::table('funcao_pessoa')
+        ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
+        ->where('funcao.id', 3)
+        ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+        ->where('edicao_id', '=', Edicao::getEdicaoId())
+        ->orWhere('pessoa_id','=',2227)
+        ->orWhere('pessoa_id','=',87)
+        ->where('pessoa.oculto', false)
+        ->distinct()
+        ->pluck('pessoa_id');
+        $pessoas = DB::table('pessoa')
+        ->whereIn('pessoa.id',$ids)
+        ->pluck('telefone','nome');
+        $header = [
+            'nome',
+            'telefone'
+         ];
+         $rows = [];
+         $filename = "NomeTelefoneAvaliadores.csv";
+         $pessoas = $pessoas->toArray();
+         foreach($pessoas as $nome => $telefone){
+            array_push($rows, [
+                'nome' => $nome,
+                'telefone' => $telefone
+            ]);
+         }
+         return $this->returnsCSVStream($filename, $header, $rows);
+    }
 }

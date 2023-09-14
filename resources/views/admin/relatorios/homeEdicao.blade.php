@@ -618,7 +618,14 @@
                                     class="material-icons">arrow_downward</i></a>
                                 </td>
                             </tr>
-                          
+                            <tr>
+                                <td>14</td>
+                                <td>Nome e Telefone dos Avaliadores</td>
+                                <td class="text-right">
+                                    <a href="{{ route('NomeTelefoneAvaliadores') }}" target="_blank"><i
+                                    class="material-icons">arrow_downward</i></a>
+                                </td>
+                            </tr>
                         </tbody>
                         <tbody id="7">
                             <tr>
