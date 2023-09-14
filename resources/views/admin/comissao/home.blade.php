@@ -112,7 +112,8 @@
                                             <td>
                                             <a href="javascript:void(0);" class="excluirvoluntario" data-id={{$voluntario->pessoa_id}} ><i class="material-icons">delete</i></a>
                                             <a href="javascript:void(0);" class="HomologarVoluntario" data-id={{$voluntario->pessoa_id}}><i class="material-icons">group_add</i></a>
-                                            </td>
+                                            <a href="javascript:void(0);" class="infoVoluntario" data-id="{{$voluntario->pessoa_id}}"><i class="material-icons">work</i></a>
+
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -194,6 +195,37 @@
         </div>
     </div>
 </div>
+<div id="ModalInfoVoluntario" class="modal fade bd-example-modal-lg" role="dialog" aria-labelledby="ModalInfoVoluntario">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: black;">Funcões</h5>
+            </div>
+
+            <div class="modal-body">
+               <form action="{{ route('AtualizarFuncao') }}" method="post">
+               {{ csrf_field() }}
+               <div class="form-group">
+               <input type="hidden" name="pessoa_id" value="">
+        @foreach($funcoesvoluntarios as $funcao)
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="funcao" id="funcao{{$funcao->id}}" value="{{$funcao->id}}">
+                <label class="form-check-label" for="funcao{{$funcao->id}}" style="color: black;">{{$funcao->tarefa}}</label>
+
+            </div>
+        @endforeach
+    </div>
+  
+        <input type="submit" value="Enviar" class="btn btn-primary">
+               </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('js')
@@ -316,6 +348,29 @@ $('#NhomologarBtn').click(function(){
                 }
             });
  }
+ $('.infoVoluntario').click(function () {
+    var voluntarioId = $(this).data('id');
+    $.ajax({
+    url: '/funcoes-ativas/' + voluntarioId,
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+        // Verifique se a resposta contém a função ativa
+       
+            // Desmarque todos os radios e, em seguida, marque o radio correspondente
+            $('input[type="radio"]').prop('checked', false);
+            $('input[name="pessoa_id"]').val(voluntarioId);
+            $('#funcao' + data.tarefa_id).prop('checked', true);
+        
+    },
+    error: function() {
+        console.log('Erro ao obter funções ativas.');
+    }
+});
+    // Abra o modal.
+    $('#ModalInfoVoluntario').modal('show');
+});
+
 </script>
 
 @endsection

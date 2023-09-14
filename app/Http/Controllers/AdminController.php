@@ -324,8 +324,11 @@ class AdminController extends Controller
         ->orderBy('homologado', 'desc')
         ->orderBy('nome')
         ->get();
-        return view('admin.comissao.home', collect(['comissao' => $comissao]),compact('voluntarios'));
-    }
+        $funcoesvoluntarios = DB::table('tarefa')->get();
+        $funcoesvoluntarios = DB::table('tarefa')->get();
+
+        return view('admin.comissao.home', compact('comissao', 'voluntarios', 'funcoesvoluntarios'));
+        }
 
     public function relatorios($edicao)
     {
@@ -1145,5 +1148,40 @@ class AdminController extends Controller
                 return response()->json(['message' => 'Senha incorreta'], 401);
             }
         }
-    
+    public function funcoesAtivas($id){
+        $funcoesAtivas = DB::table('pessoa_tarefa')
+        ->where('edicao_id', Edicao::getEdicaoId())
+        ->where('pessoa_id',$id)
+        ->first();
+        return response()->json($funcoesAtivas);
+    }
+    public function AtualizarFuncao(Request $request){
+        $pessoa_id = $request->input('pessoa_id');
+        $tarefa_id = $request->input('funcao'); 
+        $funcoesAtivas = DB::table('pessoa_tarefa')
+        ->where('edicao_id', Edicao::getEdicaoId())
+        ->where('pessoa_id',$pessoa_id)
+        ->first();
+        if( $funcoesAtivas ==  null){
+            DB::table('pessoa_tarefa')->insert([
+                'pessoa_id' => $pessoa_id,
+                'tarefa_id' => $tarefa_id,
+                'edicao_id' => Edicao::getEdicaoId(),
+            ]);
+        }
+        else{
+            DB::table('pessoa_tarefa')
+            ->where('pessoa_id', $pessoa_id)
+            ->where('edicao_id', Edicao::getEdicaoId())
+            ->update([
+                'pessoa_id' => $pessoa_id,
+                'tarefa_id' => $tarefa_id,
+                'edicao_id' => Edicao::getEdicaoId(),
+            ]);
+        
+            
+        }
+        return redirect()->route('administrador.comissao');
+
+    }
 }

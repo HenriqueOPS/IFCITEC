@@ -125,7 +125,8 @@ Route::group(['middleware' => ['IsVerificado']], function () {
 
 /* Rotas Administrador */
 Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () {
-
+	Route::get('/funcoes-ativas/{id}','AdminController@funcoesAtivas');
+	Route::post('/atualizar-funcao','AdminController@AtualizarFuncao')->name('AtualizarFuncao');
 	Route::get('/gerenciar', 'AdminController@administrarUsuarios');
 	Route::post('/gerenciar-usuario/{id}', 'AdminController@editaFuncaoUsuario')->name('editaFuncaoUsuario');
 	Route::get('/gerenciar/usuario/{id}', 'AdminController@editarFuncaoUsuario')->name('editarFuncaoUsuario');
