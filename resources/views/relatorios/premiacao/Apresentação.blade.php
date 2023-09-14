@@ -72,6 +72,7 @@
 
 <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Capa.png'))) }}" alt="Imagem em base64" style="width: 297mm; height: 210mm;">
 <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Capa_2.png'))) }}" alt="Imagem em base64" style="width: 297mm; height: 210mm;">	
+<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Capa_3.png'))) }}" alt="Imagem em base64" style="width: 297mm; height: 210mm;">	
 <ul >
  
      </li>
@@ -262,7 +263,7 @@
     <ul >
  
      </li>
-			<li  style=" background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
+			<li  style=" background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/FeirasAfiliadas.png'))) }}');
         background-repeat: no-repeat;
         background-size: cover;
         width: 297mm; height: 210mm;">
@@ -272,7 +273,7 @@
             align-items: center;
             height: 100vh;">
 					<div class="dados">
-						<h1 style="margin-top: 10mm; font-size: 14mm; text-transform: uppercase;width:800px;">Feiras afiliadas</h1>
+						
 					
 					</div>
 				</div>
@@ -283,7 +284,7 @@
 		</ul>  <ul >
  
  <li>
-        <li  style=" background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
+        <li  style=" background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Mostratec.png'))) }}');
     background-repeat: no-repeat;
     background-size: cover;
     width: 297mm; height: 210mm;">
@@ -293,7 +294,7 @@
         align-items: center;
         height: 100vh;">
                 <div class="dados">
-                    <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase;width:800px;">mostratec</h1>
+                
                     @php
 					$projetos = $area->getClassificacaoProjetosCertificados2(2, $edicao);
                    
@@ -311,7 +312,7 @@
  
  </li>
  
- <li  style=" background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
+ <li  style=" background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/TemplateAfiliadas.png'))) }}');
     background-repeat: no-repeat;
     background-size: cover;
     width: 297mm; height: 210mm;">
@@ -342,8 +343,9 @@
                 <ul >
  
  </li>
- 
- <li  style=" background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
+ <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Mostratec jr.png'))) }}" alt="Imagem em base64" style="width: 297mm; height: 210mm;">	
+
+ <li  style=" background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/TemplateAfiliadas.png'))) }}');
     background-repeat: no-repeat;
     background-size: cover;
     width: 297mm; height: 210mm;">
@@ -366,8 +368,10 @@
     </ul>
   
     @endforeach
-    <ul>
-    <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
+    
+
+<ul>
+    <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/FEBIC.png'))) }}');
         background-repeat: no-repeat;
         background-size: cover;
         width: 297mm; height: 210mm;">
@@ -377,7 +381,52 @@
             align-items: center;
             height: 100vh;">
             <div class="dados">
-                <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">febrace</h1>
+           
+        </div> @php
+                $projetos = $area->getClassificacaoProjetosCertificados4(2, $edicao);
+                $cont=1;
+                @endphp
+
+    </li>
+</ul>
+@foreach($projetos as $projeto)
+   @if($cont==3 || $cont==4)
+        <ul>
+            <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/TemplateAfiliadas.png'))) }}');
+                background-repeat: no-repeat;
+                background-size: cover;
+                width: 297mm; height: 210mm;">
+
+                <div class="content" style="display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;">
+                    <div class="dados">
+                        <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">Ensino Médio, Ensino Médio Integrado ao Técnico e da Educação Profissional de Nível Técnico <br><br></h1>
+                        <p style="font-size: 6mm;width:800px;">{{$projeto->titulo}}<br><br></p>
+                        <h2 style="font-size: 6mm;width:800px;">{{$projeto->nome_curto}}</h2>
+                    </div>
+                </div>
+
+            </li>
+        </ul>
+  @endif
+  @php
+  $cont++;
+  @endphp
+ 
+@endforeach
+    <ul>
+    <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Febrace.png'))) }}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 297mm; height: 210mm;">
+
+        <div class="content" style="display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;">
+            <div class="dados">
                 @php
                 $projetos = $area->getClassificacaoProjetosCertificados4(2, $edicao);
                 $cont=1;
@@ -389,9 +438,9 @@
 </ul>
 
 @foreach($projetos as $projeto)
-   @if($cont==3)
+   @if($cont==5)
         <ul>
-            <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
+            <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/TemplateAfiliadas.png'))) }}');
                 background-repeat: no-repeat;
                 background-size: cover;
                 width: 297mm; height: 210mm;">
@@ -415,8 +464,9 @@
   @endphp
  
 @endforeach
+
 <ul>
-    <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
+    <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/FEMIC.png'))) }}');
         background-repeat: no-repeat;
         background-size: cover;
         width: 297mm; height: 210mm;">
@@ -426,53 +476,7 @@
             align-items: center;
             height: 100vh;">
             <div class="dados">
-            <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">femic</h1>   </div>
-        </div> @php
-                $projetos = $area->getClassificacaoProjetosCertificados4(2, $edicao);
-                $cont=1;
-                @endphp
 
-    </li>
-</ul>
-@foreach($projetos as $projeto)
-   @if($cont==4 || $cont==5)
-        <ul>
-            <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
-                background-repeat: no-repeat;
-                background-size: cover;
-                width: 297mm; height: 210mm;">
-
-                <div class="content" style="display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;">
-                    <div class="dados">
-                        <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">Ensino Médio, Ensino Médio Integrado ao Técnico e da Educação Profissional de Nível Técnico <br><br></h1>
-                        <p style="font-size: 6mm;width:800px;">{{$projeto->titulo}}<br><br></p>
-                        <h2 style="font-size: 6mm;width:800px;">{{$projeto->nome_curto}}</h2>
-                    </div>
-                </div>
-
-            </li>
-        </ul>
-  @endif
-  @php
-  $cont++;
-  @endphp
- 
-@endforeach
-<ul>
-    <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
-        background-repeat: no-repeat;
-        background-size: cover;
-        width: 297mm; height: 210mm;">
-
-        <div class="content" style="display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;">
-            <div class="dados">
-            <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">febic</h1>   </div>
         </div> @php
                 $projetos = $area->getClassificacaoProjetosCertificados4(2, $edicao);
                 $cont=1;
@@ -483,7 +487,7 @@
 @foreach($projetos as $projeto)
    @if($cont==6 || $cont==7)
         <ul>
-            <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
+            <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/TemplateAfiliadas.png'))) }}');
                 background-repeat: no-repeat;
                 background-size: cover;
                 width: 297mm; height: 210mm;">
@@ -507,8 +511,11 @@
   @endphp
  
 @endforeach
+<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Voto Popular.png'))) }}" alt="Imagem em base64" style="width: 297mm; height: 210mm;">
+
+
 <ul>
-    <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
+    <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Prêmios Destaque.png'))) }}');
         background-repeat: no-repeat;
         background-size: cover;
         width: 297mm; height: 210mm;">
@@ -518,7 +525,7 @@
             align-items: center;
             height: 100vh;">
             <div class="dados">
-            <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">projetos destaque</h1>  
+      
  </div>
 
         </div>
@@ -526,7 +533,7 @@
     </li>
 </ul>
   <ul>
-    <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
+    <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Bolsas.png'))) }}');
         background-repeat: no-repeat;
         background-size: cover;
         width: 297mm; height: 210mm;">
@@ -535,16 +542,14 @@
             justify-content: center;
             align-items: center;
             height: 100vh;">
-            <div class="dados">
-            <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">Bolsas Cnpq</h1>  
-            <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">icj + atp-a</h1> </div>
+
 
         </div>
 
     </li>
 </ul>
 <ul>
-    <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
+    <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/TemplateLimpo.png'))) }}');
         background-repeat: no-repeat;
         background-size: cover;
         width: 297mm; height: 210mm;">
