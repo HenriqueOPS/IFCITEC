@@ -283,7 +283,6 @@ class CrachaController extends Controller {
 		return view('impressao.cracha_azul', compact('pessoas', 'edicao'));
 	}
 	public function generateCrachasVoluntariosResumo($edicao){
-		$edicao=11;
 		$pessoas = DB::table('funcao_pessoa')
 			->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
 			->select('pessoa.nome', 'pessoa.id', 'tarefa.tarefa')
