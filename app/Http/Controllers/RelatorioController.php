@@ -2744,4 +2744,39 @@ public  function generateCSVForEdition($edicao) {
         ) ;
     
     }
+    public function EmailOrientadoreseCoorientadores($edicao){
+        $ids = DB::table('funcao_pessoa')
+        ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
+        ->where('funcao.id', 7)
+        ->orWhere('funcao.id', 6)
+        ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
+        ->where('edicao_id', '=', Edicao::getEdicaoId())
+        ->orWhere('pessoa_id','=',2227)
+        ->orWhere('pessoa_id','=',87)
+        ->where('pessoa.oculto', false)
+        ->distinct()
+        ->pluck('pessoa_id');
+        $projetos = DB::table('projeto')
+        ->where('situacao_id', '>=', 3)
+        ->where('situacao_id', '<', 9)
+        ->where('edicao_id',$edicao)
+        ->pluck('id');
+        $emails = DB::table('escola_funcao_pessoa_projeto')
+        ->whereIn('projeto_id',$projetos)
+        ->join('pessoa','escola_funcao_pessoa_projeto.pessoa_id','pessoa.id')
+        ->whereIn('pessoa.id',$ids)
+        ->pluck('email');
+        $header = [
+           'emails'
+        ];
+        $rows = [];
+        $filename = "EmailOrientadoreseCoorientadores.csv";
+        foreach($emails as $email){
+            array_push($rows,[
+                $email,
+            ]);
+        }
+        return $this->returnsCSVStream($filename, $header, $rows);
+    
+    }
 }

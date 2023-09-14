@@ -610,6 +610,14 @@
                                     class="material-icons">arrow_downward</i></a>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>13</td>
+                                <td>Email Orientadores e Coorientadores</td>
+                                <td class="text-right">
+                                    <a href="{{ route('EmailOrientadoreseCoorientadores', $edicao) }}" target="_blank"><i
+                                    class="material-icons">arrow_downward</i></a>
+                                </td>
+                            </tr>
                           
                         </tbody>
                         <tbody id="7">

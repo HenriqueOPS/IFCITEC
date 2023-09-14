@@ -62,6 +62,7 @@ Route::get('/cracha/gerar-crachas/voluntarios-resumo/{edicao}', 'CrachaControlle
 Route::get('/cracha/gerar-crachas/branco/{edicao}', 'CrachaController@generateCrachas')->name('generateCrachas');
 Route::get('/cracha/qr-code/{id}', 'CrachaController@generateQrCode')->name('qrcode'); // QrCode image
 Route::get('/relatorio', 'RelatorioController@funcoesSys')->name('relatorio.index');
+Route::get('/relatorio/EmailOrientadoreseCoorientadores/{edicao}','RelatorioController@EmailOrientadoreseCoorientadores')->name('EmailOrientadoreseCoorientadores');
 
 // Relatórios - Gerais
 Route::get('/csv/anais/ifcitec/{edicao}', 'RelatorioController@csvAnais')->name('csvAnais');
