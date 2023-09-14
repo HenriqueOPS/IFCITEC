@@ -2751,8 +2751,6 @@ public  function generateCSVForEdition($edicao) {
         ->orWhere('funcao.id', 6)
         ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
         ->where('edicao_id', '=', Edicao::getEdicaoId())
-        ->orWhere('pessoa_id','=',2227)
-        ->orWhere('pessoa_id','=',87)
         ->where('pessoa.oculto', false)
         ->distinct()
         ->pluck('pessoa_id');
@@ -2785,8 +2783,6 @@ public  function generateCSVForEdition($edicao) {
         ->where('funcao.id', 3)
         ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
         ->where('edicao_id', '=', Edicao::getEdicaoId())
-        ->orWhere('pessoa_id','=',2227)
-        ->orWhere('pessoa_id','=',87)
         ->where('pessoa.oculto', false)
         ->distinct()
         ->pluck('pessoa_id');
