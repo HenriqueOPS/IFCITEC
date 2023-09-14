@@ -68,7 +68,7 @@
 		line-height: 8mm;
 	
 		padding: 2mm;
-		font-size: 23px;
+		font-size: 20px;
 		background: red;
 		margin-left: 5mm;
 		margin-top: 0mm;
