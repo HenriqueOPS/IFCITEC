@@ -93,7 +93,9 @@
 
     @media (max-width: 778px){
         #barrinha{
-            overflow-x: scroll !important;
+            display:flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
         }
     
     }   
