@@ -2779,11 +2779,9 @@ public  function generateCSVForEdition($edicao) {
     }
     public function NomeTelefoneAvaliadores(){
         $ids = DB::table('funcao_pessoa')
-        ->join('funcao', 'funcao.id', '=', 'funcao_pessoa.funcao_id')
-        ->where('funcao.id', 3)
+        ->where('funcao_id', 3)
         ->join('pessoa', 'funcao_pessoa.pessoa_id', '=', 'pessoa.id')
         ->where('edicao_id', '=', Edicao::getEdicaoId())
-        ->where('pessoa.oculto', false)
         ->distinct()
         ->pluck('pessoa_id');
         $pessoas = DB::table('pessoa')
