@@ -157,7 +157,7 @@ class AreaConhecimento extends Model
 			->orderBy('projeto.nota_avaliacao', 'desc')
 			->orderBy('nota', 'desc')
 			->orderBy('projeto.created_at', 'asc')
-            ->limit(3)
+            ->limit(7)
 			->get();
 
 		return $projetos;

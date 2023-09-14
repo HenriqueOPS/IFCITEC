@@ -325,7 +325,6 @@ class AdminController extends Controller
         ->orderBy('nome')
         ->get();
         $funcoesvoluntarios = DB::table('tarefa')->get();
-        $funcoesvoluntarios = DB::table('tarefa')->get();
 
         return view('admin.comissao.home', compact('comissao', 'voluntarios', 'funcoesvoluntarios'));
         }

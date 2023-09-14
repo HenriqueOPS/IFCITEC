@@ -282,7 +282,7 @@
     </li>
 		</ul>  <ul >
  
- </li>
+ <li>
         <li  style=" background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
     background-repeat: no-repeat;
     background-size: cover;
@@ -426,6 +426,134 @@
             align-items: center;
             height: 100vh;">
             <div class="dados">
+            <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">femic</h1>   </div>
+        </div> @php
+                $projetos = $area->getClassificacaoProjetosCertificados4(2, $edicao);
+                $cont=1;
+                @endphp
+
+    </li>
+</ul>
+@foreach($projetos as $projeto)
+   @if($cont==4 || $cont==5)
+        <ul>
+            <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
+                background-repeat: no-repeat;
+                background-size: cover;
+                width: 297mm; height: 210mm;">
+
+                <div class="content" style="display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;">
+                    <div class="dados">
+                        <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">Ensino Médio, Ensino Médio Integrado ao Técnico e da Educação Profissional de Nível Técnico <br><br></h1>
+                        <p style="font-size: 6mm;width:800px;">{{$projeto->titulo}}<br><br></p>
+                        <h2 style="font-size: 6mm;width:800px;">{{$projeto->nome_curto}}</h2>
+                    </div>
+                </div>
+
+            </li>
+        </ul>
+  @endif
+  @php
+  $cont++;
+  @endphp
+ 
+@endforeach
+<ul>
+    <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 297mm; height: 210mm;">
+
+        <div class="content" style="display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;">
+            <div class="dados">
+            <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">febic</h1>   </div>
+        </div> @php
+                $projetos = $area->getClassificacaoProjetosCertificados4(2, $edicao);
+                $cont=1;
+                @endphp
+
+    </li>
+</ul>
+@foreach($projetos as $projeto)
+   @if($cont==6 || $cont==7)
+        <ul>
+            <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
+                background-repeat: no-repeat;
+                background-size: cover;
+                width: 297mm; height: 210mm;">
+
+                <div class="content" style="display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;">
+                    <div class="dados">
+                        <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">Ensino Médio, Ensino Médio Integrado ao Técnico e da Educação Profissional de Nível Técnico <br><br></h1>
+                        <p style="font-size: 6mm;width:800px;">{{$projeto->titulo}}<br><br></p>
+                        <h2 style="font-size: 6mm;width:800px;">{{$projeto->nome_curto}}</h2>
+                    </div>
+                </div>
+
+            </li>
+        </ul>
+  @endif
+  @php
+  $cont++;
+  @endphp
+ 
+@endforeach
+<ul>
+    <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 297mm; height: 210mm;">
+
+        <div class="content" style="display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;">
+            <div class="dados">
+            <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">projetos destaque</h1>  
+ </div>
+
+        </div>
+
+    </li>
+</ul>
+  <ul>
+    <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 297mm; height: 210mm;">
+
+        <div class="content" style="display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;">
+            <div class="dados">
+            <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">Bolsas Cnpq</h1>  
+            <h1 style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">icj + atp-a</h1> </div>
+
+        </div>
+
+    </li>
+</ul>
+<ul>
+    <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Níveis.png'))) }}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 297mm; height: 210mm;">
+
+        <div class="content" style="display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;">
+            <div class="dados">
                 <h1 style="margin-top: 10mm; font-size: 16mm; text-transform: uppercase; width:800px;">Muito obrigado!<br></h1>
                 <p style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">Nos vemos na próxima edição!</p>
             </div>
@@ -433,6 +561,7 @@
 
     </li>
 </ul>
+
 
   
 </body>
