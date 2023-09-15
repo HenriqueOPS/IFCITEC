@@ -336,4 +336,32 @@ class Pessoa extends Authenticatable
 
         return $projetos;
     }
+    public function EcontroladorDePresenca(){
+        $idfuncao = DB::table('tarefa')
+        ->select('id')
+        ->where('tarefa', 'Controlador de Presença')
+        ->first();
+        $status = DB::table('pessoa_tarefa')
+        ->where('pessoa_id',$this->id)
+        ->where('tarefa_id',$idfuncao->id)
+        ->where('edicao_id',Edicao::getEdicaoId())
+        ->first();
+
+        $dataFeira = DB::table('edicao')
+        ->where('id',Edicao::getEdicaoId())
+        ->select('avaliacao_abertura','avaliacao_fechamento')
+        ->first();
+
+        $dataAbertura = $dataFeira->avaliacao_abertura;
+        $dataAbertura = strtotime($dataAbertura);
+
+        $dataFechamento = $dataFeira->avaliacao_fechamento;
+        $dataFechamento = strtotime($dataFechamento);
+
+        $dataAtualTimestamp = strtotime(date('d-m-Y')); 
+        if($status != null && $dataAtualTimestamp >= $dataAbertura && $dataAtualTimestamp <= $dataFechamento ){
+            return true;
+        }
+        return false;
+    }
 }

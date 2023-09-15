@@ -27,9 +27,9 @@ Route::get('/version', function () {
 
 Route::get('/organizador/presenca', 'OrganizadorController@presenca')->name('organizacao.presenca');
 Route::get('/', function () {
-	//arrumar posteriormente
-	// if(Auth::check() && Auth::user()->temFuncao('Voluntário'))
-	// return redirect()->route('organizacao.presenca');
+
+ 	if(Auth::check() && Auth::user()->EcontroladorDePresenca())
+		 return redirect()->route('organizacao.presenca');
 	if (Auth::check())
 		return redirect()->route('home');
 
