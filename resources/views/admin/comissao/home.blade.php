@@ -87,7 +87,7 @@
                         </thead>
                         <tbody>
                             @foreach($voluntarios as $voluntario)
-                            <tr>
+                            <tr class="voluntario">
                                 <td>{{$voluntario->nome}}</td>
                                 <td>{{$voluntario->ano}}</td>
                                 <td>{{$voluntario->curso}}</td>
@@ -237,7 +237,7 @@
         function atualizarContadores() {
             var totalAvaliadores = $('tr.avaliador').length;
             var totalHomologadores = $('tr.homologador').length;
-            var totalVoluntarios = $('#tab-voluntario tbody ').length;
+            var totalVoluntarios = $('tr.voluntario').length;
 
             // Atualizar os contadores nas abas correspondentes
             $('#avaliador-counter').text(totalAvaliadores);
@@ -249,7 +249,7 @@
         atualizarContadores();
 
         // Chame a função para atualizar os contadores sempre que houver uma alteração na tabela
-        $('tr.avaliador, tr.homologador, #tab-voluntario tbody tr').on('change', function () {
+        $('tr.avaliador, tr.homologador, tr.voluntario').on('change', function () {
             atualizarContadores();
         });
     });
@@ -314,6 +314,7 @@
                 $('#telefone').text(data.telefone);
                 $('#homologarBtn').attr('data-id', data.id);
                 $('#NhomologarBtn').attr('data-id', data.id);
+            
             },
             error: function () {
                 console.log('Erro ao obter informações do voluntário.');
