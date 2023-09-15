@@ -145,7 +145,7 @@
             data: formData,
             success: function(response) {
                 console.log(response);
-                window.location.href = "{{ route('home') }}";
+                window.location.href = "{{ route('ifcitec.home') }}";
             },
             error: function(xhr, status, error) {
                 var errors = xhr.responseJSON;
