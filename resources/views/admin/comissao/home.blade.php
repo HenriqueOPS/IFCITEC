@@ -249,9 +249,7 @@
         atualizarContadores();
 
         // Chame a função para atualizar os contadores sempre que houver uma alteração na tabela
-        $('tr.avaliador, tr.homologador, tr.voluntario').on('change', function () {
-            atualizarContadores();
-        });
+       
     });
 
     $('.exclusaoComissao').click(function () {
