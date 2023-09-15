@@ -96,7 +96,7 @@
                         <div class="row" id="selects">
                                 <div class="col-md-10 ">
                                    
-                                      
+                                      <br>
                                      <strong>Observação do Homologador 1: </strong>{{$homologacao[0][0]->observacao}}
                                    
                                 </div>
@@ -142,7 +142,7 @@
                         
                         <div class="row">
                                 <div class="col-md-10 ">
-                                 
+                                <br>
                                     <strong>Observação do Homologador 2: </strong>  {{$homologacao[1][0]->observacao}}
                                     
                                 </div>
@@ -206,7 +206,7 @@
 					
                     <div class="row" id="selects">
                             <div class="col-md-10 ">
-                               
+                            <br>
                                   
                                  <strong>Observação do Avaliador 1: </strong>{{$avaliacao[0][0]->observacao}}
                                
@@ -252,7 +252,7 @@
 					
                     <div class="row">
                             <div class="col-md-10 ">
-                             
+                            <br>
                                 <strong>Observação do Avaliador 2: </strong>  {{$avaliacao[1][0]->observacao}}
                                 
                             </div>
