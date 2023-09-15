@@ -71,8 +71,8 @@
 <body>
 
 <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Capa.png'))) }}" alt="Imagem em base64" style="width: 297mm; height: 210mm;">
-<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Capa_2.png'))) }}" alt="Imagem em base64" style="width: 297mm; height: 210mm;">	
 <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Capa_3.png'))) }}" alt="Imagem em base64" style="width: 297mm; height: 210mm;">	
+<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Capa_2.png'))) }}" alt="Imagem em base64" style="width: 297mm; height: 210mm;">	
 <ul >
  
      </li>
