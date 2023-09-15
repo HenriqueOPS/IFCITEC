@@ -336,6 +336,7 @@ $('#formulario').submit(function (e) {
 	$.post('{{ route('adminstrador.salvarFicha') }}', formSerialized)
 		.done(function () {
 			$('.alert-success').show();
+			location.reload();
 		})
 		.fail(function (res) {
             $('#sendError').show();
