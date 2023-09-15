@@ -67,11 +67,11 @@
                         <br>
                         @foreach($homologacao[0] as $campo)
                         <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-12">
                         @php
                             $id = $campo->categoria_avaliacao;
                         @endphp
-                        <div id="{{ $id }}" class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>{{ $campo->descricao }}:{{ $campo->valor }}
+                        <div id="{{ $id }}" class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>-{{ $campo->descricao }}:<strong>{{ $campo->valor }}</strong>
                     </div>
 
                     <script>
@@ -114,11 +114,11 @@
                         <br>
                         @foreach($homologacao[1] as $campo)
                         <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-12">
                         @php
                             $id = $campo->categoria_avaliacao . 2;
                         @endphp
-                        <div id="{{ $id }}" class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>{{ $campo->descricao }}:{{ $campo->valor }}
+                        <div id="{{ $id }}" class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>-{{ $campo->descricao }}:<strong>{{ $campo->valor }}</strong>
                     </div>
 
                     <script>
@@ -178,11 +178,11 @@
                     <br>
 					@foreach($avaliacao[0] as $campo)
 					<div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-12">
                         @php
                             $id = $campo->categoria_avaliacao . 3;
                         @endphp
-                        <div id="{{ $id }}" class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>{{ $campo->descricao }}:{{ $campo->valor }}
+                        <div id="{{ $id }}" class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>-{{ $campo->descricao }}:<strong>{{ $campo->valor }}</strong>
                     </div>
 
                     <script>
@@ -224,11 +224,11 @@
                     <br>
 					@foreach($avaliacao[1] as $campo)
 					<div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-12">
                         @php
                             $id = $campo->categoria_avaliacao . 4;
                         @endphp
-                        <div id="{{ $id }}" class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>{{ $campo->descricao }}:{{ $campo->valor }}
+                        <div id="{{ $id }}" class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>-{{ $campo->descricao }}:<strong>{{ $campo->valor }}</strong>
                     </div>
 
                     <script>

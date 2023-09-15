@@ -548,24 +548,7 @@
 
     </li>
 </ul>
-<ul>
-    <li style="background-image: url('data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/TemplateLimpo.png'))) }}');
-        background-repeat: no-repeat;
-        background-size: cover;
-        width: 297mm; height: 210mm;">
-
-        <div class="content" style="display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;">
-            <div class="dados">
-                <h1 style="margin-top: 10mm; font-size: 16mm; text-transform: uppercase; width:800px;">Muito obrigado!<br></h1>
-                <p style="margin-top: 10mm; font-size: 12mm; text-transform: uppercase; width:800px;">Nos vemos na próxima edição!</p>
-            </div>
-        </div>
-
-    </li>
-</ul>
+<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('img/Final.jpeg'))) }}" alt="Imagem em base64" style="width: 297mm; height: 210mm;">
 
 
   
