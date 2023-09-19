@@ -2060,8 +2060,20 @@ class RelatorioController extends Controller
             ->where('edicao_id', '=', $edicao)
             ->join('nivel', 'nivel_edicao.nivel_id', '=', 'nivel.id')
             ->get();
-
-        return view('relatorios.projetos.gerarLocalizacaoProjetos', ['edicao' => $edicao])->withNiveis($niveis);
+        $contagemProjetos = DB::table('projeto')
+            ->select('nivel_id', DB::raw('count(*) as total_projetos'))
+            ->where('edicao_id', $edicao)
+            ->whereIn('projeto.situacao_id', [
+                EnumSituacaoProjeto::getValue('Homologado'),
+                EnumSituacaoProjeto::getValue('NaoAvaliado'),
+                EnumSituacaoProjeto::getValue('Avaliado'),
+            ])
+            ->groupBy('nivel_id')
+            ->get();
+        $nivelMedio = $contagemProjetos[0]->total_projetos;
+        $nivelFundamental = $contagemProjetos[1]->total_projetos;
+        return view('relatorios.projetos.gerarLocalizacaoProjetos', ['edicao' => $edicao,
+        'ProjetosMedio' => $nivelMedio,'ProjetosFundamental'=>$nivelFundamental])->withNiveis($niveis);
     }
 
     public function geraLocalizacaoProjetos(Request $req, $edicao)
