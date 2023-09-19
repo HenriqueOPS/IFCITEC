@@ -23,15 +23,15 @@
                                     <strong>{{ $errors->first('nome') }}</strong>
                                 </span>
                                 @endif
-                            </div>
+                            </div><br>
                             <label for="fontSelect">Selecione o nivel:</label>
-                            <select id="fontSelect" name="nivel" required>
+                            <select style="width: 80%;"  id="fontSelect" name="nivel" required>
                             @foreach($nivel as $item)
                                 <option value="{{ $item->id }}" >{{ $item->nivel }}</option>
                             @endforeach
                         </select>
                         </div>
-                    </div>
+                    </div><br>
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3 text-center">
                             <button class="btn btn-primary">Cadastrar</button>
