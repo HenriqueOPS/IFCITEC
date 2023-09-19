@@ -14,8 +14,9 @@
                             <h2>Gerar Localização de Projetos</h2>
                         </div>
                     </div>
-                    <p>Projetos Nivel Médio : {{ $ProjetosMedio }}</p>
-                    <p>Projetos Nivel Fundamental : {{ $ProjetosFundamental }}</p>
+                    <p class="col-md-12 col-md-offset-1" class="col-xs-6">Projetos Nivel Médio : {{ $ProjetosMedio }}</p>
+                    <p class="col-md-12 col-md-offset-1" class="col-xs-6">Projetos Nivel Fundamental : {{ $ProjetosFundamental }}</p>
+                    <hr>
                     <form method="post" action="{{ route('geraLocalizacaoProjetos', $edicao) }}">
                         {{ csrf_field() }}
 
