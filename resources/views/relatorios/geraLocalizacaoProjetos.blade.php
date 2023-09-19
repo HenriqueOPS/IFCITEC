@@ -73,11 +73,11 @@
     <li>
 
     	<div class="content">
-	    	<div class="bloco"><b><h2 class="fonte" style="font-size: 18mm;">{{$cont++}}</h2></b></div>
+	    	<div class="bloco"><b><h2 class="fonte" style="font-size: 16mm;">{{$cont++}}</h2></b></div>
 
 	        <div class="dados">
-	        		<b><h1 style="margin-top: 10mm; font-size: 10mm;">PRÉDIO:{{$blocos[$bloco]}} - SALA {{$sala}}</h1></b>
-					<h1 style="margin-top: 10mm; font-size: 12mm;">{{$projeto->titulo}}</h1>
+	        		<b><h1 style="margin-top: 10mm; font-size: 8mm;">PRÉDIO:{{$blocos[$bloco]}} - SALA {{$sala}}</h1></b>
+					<h1 style="margin-top: 10mm; font-size: 10mm;">{{$projeto->titulo}}</h1>
 					<p style="margin-top: 10mm; font-size: 8mm;">{{$projeto->nome_curto}}</p>
 					<p style="margin-top: 7mm; font-size: 6mm;">{{$projeto->area_conhecimento}}</p>
 					<p style="margin-top: 5mm; font-size: 6mm;">{{$projeto->nivel}}</p>
