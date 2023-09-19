@@ -2105,7 +2105,18 @@ class RelatorioController extends Controller
                 $ids = array_merge($ids, array_column($projetos[$blockKey][$i], 'id'));
             }
         }
-    
+        $cont = 1;
+        foreach ($projetos as $bloco => $proj) {
+            foreach ($proj as $sala => $p) {
+                foreach ($p as $projeto) {
+                    DB::table('projeto')
+                    ->where('titulo', $projeto->titulo)
+                    ->update(['localizacao' => $blocos[$bloco].'-'.$sala.'-'.$cont]);
+                    $cont++;
+                }
+            }
+        }
+
         $cont = 1;
         if ($num == 1) {
             return PDF::loadView('relatorios.geraLocalizacaoProjetos', array('projetos' => $projetos, 'cont' => $cont,'blocos' => $blocos))->setPaper('A4', 'landscape')->download('projetos_identificacao.pdf');

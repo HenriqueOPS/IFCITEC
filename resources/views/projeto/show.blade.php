@@ -35,8 +35,11 @@
                             @endforeach
 
                             <hr>
-
-                            <?php
+                    @if(isset($projeto->localizacao))
+                        <p><b>Localizacao:</b> Prédio-Sala-Estande, {{ $projeto->localizacao }}</p>
+                        <hr>
+                    @endif
+                                                <?php
 						
 						$dataCitada = \Carbon\Carbon::parse($datahom);
 						$umDiaDepois = $dataCitada->copy()->addSecond();
