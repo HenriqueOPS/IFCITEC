@@ -15,7 +15,8 @@
 				<tr>
 					<th>Projeto</th>
 					<th>Escola</th>
-					<th>Localização</th>
+					<th>Prédio/Sala</th>
+					<th>Estande</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -25,7 +26,8 @@
 						<tr>
 						<td><a style="color: #000;">{{$projeto->titulo}}</a></td>
 						<td><a style="color: #000;">{{$projeto->nome_curto}}</a></td>
-						<td><a style="color: #000;">{{$bloco}}{{$sala}}</a></td>
+						<td><a style="color: #000;">{{$blocos[$bloco]}} - {{$sala}}</a></td>
+						<td >{{$cont++}}</td>
 						</tr>
 						@endforeach
 					@endforeach

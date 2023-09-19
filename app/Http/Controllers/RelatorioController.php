@@ -2064,14 +2064,13 @@ class RelatorioController extends Controller
         $num = $data['button'];
         $ids = array();
         $cont = 0;
-
-        foreach ($data['bloco'] as $key => $bloco) {
-            $numeroSalas = ($data['ate'][$key] - $data['de'][$key]) + 1;
-            $numeroProjetos = $data['num'][$key];
-
-            for ($i = $data['de'][$key]; $i <= $data['ate'][$key]; $i++) {
-
-                $projetos[$bloco][$i] = DB::table('projeto')
+        $blocos = $data['bloco'];
+        foreach ($data['bloco'] as $blockKey => $bloco) {
+            $numeroSalas = ($data['ate'][$blockKey] - $data['de'][$blockKey]) + 1;
+            $numeroProjetos = $data['num'][$blockKey];
+    
+            for ($i = $data['de'][$blockKey]; $i <= $data['ate'][$blockKey]; $i++) {
+                $projetos[$blockKey][$i] = DB::table('projeto')
                     ->select('projeto.id', 'projeto.titulo', 'area_conhecimento.area_conhecimento', 'nivel.nivel', 'escola.nome_curto')
                     ->join('area_conhecimento', 'projeto.area_id', '=', 'area_conhecimento.id')
                     ->join('nivel', 'projeto.nivel_id', '=', 'nivel.id')
@@ -2087,7 +2086,7 @@ class RelatorioController extends Controller
                         ]
                     )
                     ->where('projeto.presenca', true)
-                    ->where('nivel.id', $data['nivel'][$key])
+                    ->where('nivel.id', $data['nivel'][$blockKey])
                     ->whereNotIn('projeto.id', $ids)
                     ->distinct('projeto.id')
                     ->orderBy('area_conhecimento.area_conhecimento')
@@ -2096,21 +2095,21 @@ class RelatorioController extends Controller
                     ->limit($numeroProjetos)
                     ->get()
                     ->toArray();
-
-                $ids = array_merge($ids, array_column($projetos[$bloco][$i], 'id'));
+    
+                $ids = array_merge($ids, array_column($projetos[$blockKey][$i], 'id'));
             }
         }
-
+    
         $cont = 1;
         if ($num == 1) {
-            return PDF::loadView('relatorios.geraLocalizacaoProjetos', array('projetos' => $projetos, 'cont' => $cont))->setPaper('A4', 'landscape')->download('projetos_identificacao.pdf');
-            //return view('relatorios.geraLocalizacaoProjetos', array('projetos' => $projetos, 'cont' => $cont));
+            return PDF::loadView('relatorios.geraLocalizacaoProjetos', array('projetos' => $projetos, 'cont' => $cont,'blocos' => $blocos))->setPaper('A4', 'landscape')->download('projetos_identificacao.pdf');
         }
         if ($num == 2) {
-            //return PDF::loadView('relatorios.identificacaoProjetos', array('projetos' => $projetos, 'cont' => $cont))->setPaper('A4', 'landscape')->download('projetos_localizacao.pdf');
-            return view('relatorios.identificacaoProjetos', array('projetos' => $projetos, 'cont' => $cont));
+            return view('relatorios.identificacaoProjetos', array('projetos' => $projetos, 'cont' => $cont,'blocos' => $blocos));
         }
     }
+    
+    
 
     public function gerarValeLanche($edicao)
     {
