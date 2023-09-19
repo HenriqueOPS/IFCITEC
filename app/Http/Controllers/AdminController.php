@@ -157,7 +157,11 @@ class AdminController extends Controller
             ->where('edicao_id', Edicao::getEdicaoId())
             ->get()
             ->keyBy('id');
-        $numprojshomologados = $projetos->where('situacao_id', 3)->count();
+        $numprojshomologados = $projetos->whereIn('situacao_id', [
+            EnumSituacaoProjeto::getValue('Homologado'),
+            EnumSituacaoProjeto::getValue('NaoAvaliado'),
+            EnumSituacaoProjeto::getValue('Avaliado'),
+        ])->count();
         $periodoAvaliacao = Edicao::consultaPeriodo('Avaliação');
 
         return view('admin.projeto.home', compact('periodoAvaliacao','numprojshomologados'))->withProjetos($projetos);
