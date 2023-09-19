@@ -56,7 +56,7 @@ class ComissaoAvaliadoraController extends Controller
 
 			$idOk = array_column($idOk, 'projeto_id');
 
-			$projetos = Projeto::select('projeto.id', 'projeto.titulo', 'projeto.situacao_id')
+			$projetos = Projeto::select('projeto.id', 'projeto.titulo', 'projeto.situacao_id','projeto.localizacao')
 				->join('revisao', function ($query) {
 					$query->on('projeto.id', '=', 'revisao.projeto_id');
 					$query->where('revisao.pessoa_id', '=', Auth::user()->id);
@@ -80,7 +80,7 @@ class ComissaoAvaliadoraController extends Controller
 
 			$idOk = array_column($idOk, 'projeto_id');
 
-			$projetos = Projeto::select('projeto.id', 'projeto.titulo', 'projeto.situacao_id')
+			$projetos = Projeto::select('projeto.id', 'projeto.titulo', 'projeto.situacao_id','projeto.localizacao')
 				->join('avaliacao', function ($query) {
 					$query->on('projeto.id', '=', 'avaliacao.projeto_id');
 					$query->where('avaliacao.pessoa_id', '=', Auth::user()->id);
