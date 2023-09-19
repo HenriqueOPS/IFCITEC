@@ -751,6 +751,8 @@ class RelatorioController extends Controller
                 'projeto.situacao_id',
                 [
                     EnumSituacaoProjeto::getValue('Homologado'),
+                    EnumSituacaoProjeto::getValue('NaoAvaliado'),
+                    EnumSituacaoProjeto::getValue('Avaliado')
                 ]
             )
             ->where('funcao_pessoa.edicao_id', Edicao::getEdicaoId())
@@ -1430,7 +1432,7 @@ class RelatorioController extends Controller
 
         $cont = 0;
 
-        /*
+        /*ss
         return PDF::loadView(
             'relatorios.autoresPosHomologacao',
             [
