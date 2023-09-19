@@ -1573,6 +1573,7 @@ class RelatorioController extends Controller
                     EnumSituacaoProjeto::getValue('Avaliado'),
                 ]
             )
+            ->where('projeto.edicao_id', '=', $edicao)
             ->where('funcao_pessoa.edicao_id', $edicao)
             ->where('projeto.presenca', true)
             ->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Orientador'))
@@ -1600,6 +1601,7 @@ class RelatorioController extends Controller
                     EnumSituacaoProjeto::getValue('Avaliado'),
                 ]
             )
+            ->where('projeto.edicao_id', '=', $edicao)
             ->where('projeto.presenca', true)
             ->where('funcao_pessoa.edicao_id', $edicao)
             ->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Coorientador'))
