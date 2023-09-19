@@ -34,6 +34,8 @@
                 ?></b></h5>
                 <h5 class="nHomlogados" style="display:flex;
         justify-content: flex-end;"><b>Falta Confirmar: {{$numprojshomologados - $countPresencaTrue }}</b></h5>
+             <h5 class="nAvaliados" id="AvaliacaoParcial"><b>Avaliação Parcial:</b></h5>
+            <h5 class="nAvaliados" id="NãoAvaliado"><b>Não Avaliados:</b></h5>
                 <div>
                     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
                         <li class="active">
@@ -141,9 +143,9 @@
                                         @if($projeto->statusAvaliacao() == 2)
                                             <span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
                                             @elseif($projeto->statusAvaliacao() == 1)
-                                            <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;background-color: yellow;">&nbsp;</span>
+                                            <span class="label label-danger parcial" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;background-color: yellow;">&nbsp;</span>
                                             @else
-                                            <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+                                            <span class="label label-danger naoavaliados" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
                                         @endif
                                     @endif
 
@@ -367,6 +369,7 @@ $(document).ready(function () {
     $('#homologarTrabalhos').hide();
     $("#situacao").hide();
     $(".nHomlogados").hide();
+    $(".nAvaliados").hide();
     $('.tab-projetos').click(function (e) {
         var target = $(this)[0];
 
@@ -375,15 +378,18 @@ $(document).ready(function () {
         if (target.id==2){
             $('#homologarTrabalhos').show();
             $(".nHomlogados").hide();
+            $(".nAvaliados").hide();
         }
         if (target.id=='situacao') {
             $("#geral").hide();
             $("#situacao").show();
             showAll();
+            $(".nAvaliados").hide();
             $(".nHomlogados").hide();
         } 
       
         else {
+            $(".nAvaliados").hide();
             $("#situacao").hide();
             $("#geral").show();
             $("#nProjetos").html($('div.project.situacao-'+target.id).length);
@@ -394,7 +400,11 @@ $(document).ready(function () {
 			$('div[id='+target.id+']').show();
         }
         if(target.id==3){
+            $(".nAvaliados").hide();
             $(".nHomlogados").show();
+        }
+        if(target.id==4){
+            $(".nAvaliados").show();
         }
     });
 
@@ -481,6 +491,28 @@ $('.compareceu').click(function(){
     });
 
 });
+$(document).ready(function() {
+  // Contar elementos com a classe "parcial"
+  var elementosParciais = $('.parcial').length;
+
+  // Contar elementos com a classe "naoavaliado"
+  var elementosNaoAvaliados = $('.naoavaliados').length;
+  
+  // Selecionar o elemento <h5> com a classe "nAvaliados" e o ID "AvaliacaoParcial"
+  var h5ElementParcial = $('#AvaliacaoParcial');
+
+  // Selecionar o elemento <h5> com a classe "nAvaliados" e o ID "AvaliacaoNaoAvaliados"
+  var h5ElementNaoAvaliados = $('#NãoAvaliado');
+
+  // Verificar se existem elementos com a classe "parcial" antes de adicionar a contagem
+
+    h5ElementParcial.html(h5ElementParcial.html() + ' <b>' + elementosParciais + '</b>');
+
+  // Verificar se existem elementos com a classe "naoavaliado" antes de adicionar a contagem
+    h5ElementNaoAvaliados.html(h5ElementNaoAvaliados.html() + ' <b>' + elementosNaoAvaliados + '</b>');
+ 
+});
+
 </script>
 @endsection
 
