@@ -289,6 +289,7 @@ class CrachaController extends Controller {
 			->join('pessoa_tarefa', 'pessoa.id', '=', 'pessoa_tarefa.pessoa_id')
 			->join('tarefa', 'pessoa_tarefa.tarefa_id', '=', 'tarefa.id')
 			->where('funcao_pessoa.edicao_id', $edicao)
+			->where('funcao_pessoa.homologado', '=', true)
 			->where('pessoa_tarefa.edicao_id', $edicao)
 			->where('funcao_pessoa.funcao_id', EnumFuncaoPessoa::getValue('Voluntario'))
 			->orderBy('pessoa.nome')
