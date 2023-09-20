@@ -2739,6 +2739,7 @@ public  function generateCSVForEdition($edicao) {
         $homologadores = DB::table('funcao_pessoa')
         ->where('funcao_id',4)
         ->where('edicao_id',$id)
+        ->where('homologado',true)
         ->join('pessoa','pessoa.id','funcao_pessoa.pessoa_id')
         ->select('nome','id')
         ->get();
@@ -2761,6 +2762,7 @@ public  function generateCSVForEdition($edicao) {
         $homologadores = DB::table('funcao_pessoa')
         ->where('funcao_id',3)
         ->where('edicao_id',$id)
+        ->where('homologado',true)
         ->join('pessoa','pessoa.id','funcao_pessoa.pessoa_id')
         ->select('nome','id')
         ->get();
