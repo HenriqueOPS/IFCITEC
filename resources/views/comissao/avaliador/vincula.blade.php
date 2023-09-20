@@ -29,7 +29,7 @@
                                                    </div>
                                                    <div>
                                                        <b><i class="material-icons small">settings</i></b>
-                                                       {{$avaliador->num_projetos}} projetos
+                                                       {{  app('App\Http\Controllers\AdminController')->GetTotalAvaliacoes($avaliador->id)}} projetos
                                                    </div>
                                                    <div>
                                                     <b><i class="material-icons small">settings</i></b>
