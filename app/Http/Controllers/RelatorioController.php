@@ -2757,6 +2757,28 @@ public  function generateCSVForEdition($edicao) {
         return $this->returnsCSVStream($filename, $header, $rows);
     
     }
+    public function GetRevisoesPorAvaliadores($id){
+        $homologadores = DB::table('funcao_pessoa')
+        ->where('funcao_id',3)
+        ->where('edicao_id',$id)
+        ->join('pessoa','pessoa.id','funcao_pessoa.pessoa_id')
+        ->select('nome','id')
+        ->get();
+        $header = [
+            'Nome',
+            'Qtd de Projetos'
+        ];
+        $rows = [];
+        $filename = "ProjetosPorAvaliador.csv";
+        foreach($homologadores as $homologador){
+            array_push($rows,[
+                $homologador->nome,
+                app('App\Http\Controllers\AdminController')->GetTotalAvaliacoes($homologador->id)
+            ]);
+        }
+        return $this->returnsCSVStream($filename, $header, $rows);
+    
+    }
     public function gerarapresentacao($edicao){
         $areas = Edicao::find($edicao)->areas()->orderBy('nivel_id', 'desc')->get();
         $areasNivel2 = $areas->filter(function ($area) {

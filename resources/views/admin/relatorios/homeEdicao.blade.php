@@ -358,6 +358,15 @@
                                     </a>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>15</td>
+                                <td>Qtd de Projetos por avaliador</td>
+                                <td class="text-right">
+                                    <a href="{{ route('download.avaliador', $edicao) }}" target="_blank">
+                                    <i class="material-icons">arrow_downward</i>
+                                    </a>
+                                </td>
+                            </tr>
                         </tbody>
 
 
