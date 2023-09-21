@@ -339,7 +339,7 @@ class Pessoa extends Authenticatable
     public function EcontroladorDePresenca(){
         $idfuncao = DB::table('tarefa')
         ->select('id')
-        ->where('tarefa', 'Controlador de Presença')
+        ->where('tarefa', ' Controlador de Presença')
         ->first();
         $status = DB::table('pessoa_tarefa')
         ->where('pessoa_id',$this->id)
