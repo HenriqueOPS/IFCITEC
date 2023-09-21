@@ -359,9 +359,9 @@ class Pessoa extends Authenticatable
         $dataFechamento = strtotime($dataFechamento);
 
         $dataAtualTimestamp = strtotime(date('d-m-Y')); 
-        if($status != null && $dataAtualTimestamp >= $dataAbertura && $dataAtualTimestamp <= $dataFechamento ){
+        if($status != null  ){
             return true;
-        }
-        return false;
+        }else{
+        return false;}
     }
 }
