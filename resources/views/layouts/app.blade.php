@@ -269,6 +269,19 @@
         $(document).ready(function(){
         $("#myModal").modal('show');
     });
+    let time = setInterval(function() {
+    $.get('/', function() {
+        // Código a ser executado após a conclusão da requisição AJAX
+        console.log('Requisição AJAX concluída.');
+        // Qualquer outra lógica que você deseja executar após a conclusão da requisição
+    });
+}, 1000 * 60);
+
+function limpa(){
+    clearInterval(time)
+}
+
+
         
     </script>
 

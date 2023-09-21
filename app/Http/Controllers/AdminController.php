@@ -79,7 +79,9 @@ class AdminController extends Controller
         $response['projetos']['avaliados'] = Projeto::where('edicao_id', '=', Edicao::getEdicaoId())
             ->where('situacao_id', '=', 5)
             ->count();
-
+        $response['projetos']['naoCompareceu'] = Projeto::where('situacao_id',6)
+        ->where('edicao_id',Edicao::getEdicaoId())
+        ->count(); 
         $response['projetos']['naoAvaliados'] = Projeto::where('edicao_id', '=', Edicao::getEdicaoId())
             ->where('situacao_id', '=', 4)
             ->count();
@@ -103,6 +105,7 @@ class AdminController extends Controller
         $response['avaliadores']['numAvaliadores'] = DB::table('funcao_pessoa')
             ->where('edicao_id', '=', Edicao::getEdicaoId())
             ->where('funcao_id', '=', 3)
+            ->where('homologado',true)
             ->count();
 
         $response['avaliadores']['presentes'] = DB::table('funcao_pessoa')
@@ -110,6 +113,7 @@ class AdminController extends Controller
             ->where('presenca.edicao_id', '=', Edicao::getEdicaoId())
             ->where('funcao_pessoa.edicao_id', '=', Edicao::getEdicaoId())
             ->where('funcao_pessoa.funcao_id', '=', 3)
+            ->where('funcao_pessoa.homologado',true)
             ->count();
 
         $response['avaliadores']['naoPresentes'] = $response['avaliadores']['numAvaliadores'] - $response['avaliadores']['presentes'];
