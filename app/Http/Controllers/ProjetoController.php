@@ -300,7 +300,7 @@ foreach ($palavrasChaves as $palavra) {
 			->pluck('avaliacao_fechamento');
 		//Busca pelas observações dos Avaliadores
 		$avaliacao = DB::table('formulario')
-		->where('formulario.edicao_id',Edicao::getEdicaoId())
+		->where('formulario.edicao_id', 11)
 		->where('formulario.nivel_id',$projeto->nivel_id)
 		->where('tipo','avaliacao')
 		->join('formulario_categoria_avaliacao','formulario.idformulario','formulario_categoria_avaliacao.formulario_idformulario')

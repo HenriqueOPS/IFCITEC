@@ -53,7 +53,7 @@
 
                     <div class="col-md-4">
                         <h3>{naoAvaliados}</h3>
-                        <h4>Falta Avaliar</h4>
+                        <h4>Projetos com nenhuma avaliação</h4>
                     </div>
 
                     <div class="col-md-4">
@@ -261,7 +261,7 @@
                 templateDashboard = templateDashboard.replace(/{NCompareceram}/g, projetos.naoCompareceu);
                 templateDashboard = templateDashboard.replace(/{numProjetos}/g, projetos.numProjetos);
                 templateDashboard = templateDashboard.replace(/{avaliados}/g, projetos.avaliados);
-                templateDashboard = templateDashboard.replace(/{naoAvaliados}/g, projetos.naoAvaliados);
+                templateDashboard = templateDashboard.replace(/{naoAvaliados}/g, projetos.numProjetos - projetos.umaAvalicao -  projetos.avaliados );
                 templateDashboard = templateDashboard.replace(/{umaAvalicao}/g, projetos.umaAvalicao);
 
                 templateDashboard = templateDashboard.replace(/{presentes}/g, avaliadores.presentes);
