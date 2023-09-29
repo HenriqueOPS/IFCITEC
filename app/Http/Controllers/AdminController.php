@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Mensagem;
+use Illuminate\Support\Facades\File;
 use App\AreaConhecimento;
 use App\Edicao;
 use App\Endereco;
@@ -1190,5 +1191,17 @@ class AdminController extends Controller
         }
         return redirect()->route('administrador.comissao');
 
+    }
+    public function showLog()
+    {
+        $logFilePath = storage_path('logs/laravel.log');
+
+        if (File::exists($logFilePath)) {
+            $logContent = File::get($logFilePath);
+        } else {
+            $logContent = 'O arquivo de log não foi encontrado.';
+        }
+
+        return view('log', ['logContent' => $logContent]);
     }
 }
