@@ -275,6 +275,7 @@ foreach ($palavrasChaves as $palavra) {
 			->get()->count();
 
 		//Busca pelas observações dos Homologadores
+		
 		$homologacao = DB::table('formulario')
 				->where('formulario.edicao_id',Edicao::getEdicaoId())
 				->where('formulario.nivel_id',$projeto->nivel_id)
@@ -308,8 +309,8 @@ foreach ($palavrasChaves as $palavra) {
 				->join('campos_avaliacao','categoria_avaliacao.id','campos_avaliacao.categoria_id')
 				->join('dados_avaliacao','dados_avaliacao.campo_id','campos_avaliacao.id')
 				->where('dados_avaliacao.projeto_id',$projeto->id)
-				->join('revisao','dados_avaliacao.pessoa_id','revisao.pessoa_id')
-				->where('revisao.projeto_id',$projeto->id)
+				->join('avaliacao','dados_avaliacao.pessoa_id','avaliacao.pessoa_id')
+				->where('avaliacao.projeto_id',$projeto->id)
 				->select('dados_avaliacao.pessoa_id','valor','observacao','categoria_avaliacao','campos_avaliacao.descricao','nota_final','categoria_avaliacao.peso')
 				->distinct()
 				->get();	
