@@ -302,7 +302,7 @@ foreach ($palavrasChaves as $palavra) {
 		$avaliacao = DB::table('formulario')
 				->where('formulario.edicao_id',Edicao::getEdicaoId())
 				->where('formulario.nivel_id',$projeto->nivel_id)
-				->where('tipo','homologacao')
+				->where('tipo','avaliacao')
 				->join('formulario_categoria_avaliacao','formulario.idformulario','formulario_categoria_avaliacao.formulario_idformulario')
 				->join('categoria_avaliacao','formulario_categoria_avaliacao.categoria_avaliacao_id','categoria_avaliacao.id')
 				->join('campos_avaliacao','categoria_avaliacao.id','campos_avaliacao.categoria_id')
