@@ -126,8 +126,8 @@
 
                     <script>
                         // Vamos supor que você queira selecionar o primeiro elemento com um ID específico, por exemplo, "exemploId".
-                        var id = '{{ $id }}';
-
+        
+                        var id = '{{ $id }}'.trim();
                         // Seleciona todos os elementos com o mesmo ID
                         var elementos = document.querySelectorAll('#' + id);
 
@@ -190,8 +190,8 @@
 
                     <script>
                         // Vamos supor que você queira selecionar o primeiro elemento com um ID específico, por exemplo, "exemploId".
-                        var id = '{{ $id }}';
-
+                        var id = '{{ $id }}'.trim();
+                        console.log(id)
                         // Seleciona todos os elementos com o mesmo ID
                         var elementos = document.querySelectorAll('#' + id);
 
