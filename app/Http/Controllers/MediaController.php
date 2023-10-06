@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Media;
+use Illuminate\Support\Facades\Storage;
 class MediaController extends Controller
 {
     /**
@@ -46,4 +47,36 @@ class MediaController extends Controller
         }
         return redirect()->route('admin.configuracoes');
     }
+
+
+    public function show($nome)
+    {
+        $caminho =  'storage/app/public/'. $nome; // Caminho relativo ao disco de armazenamento 'public'
+
+     
+            // Obtenha o URL completo da imagem
+            return view('show', ['caminho' =>   $caminho ]);
+    
+        
+        
+    }
+    
+public function index()
+    {
+        return view('upload');
+    }
+
+    public function store(Request $request)
+{
+    if ($request->hasFile('arquivo')) {
+        $arquivo = $request->file('arquivo');
+        $nomeOriginal = $arquivo->getClientOriginalName();
+        $caminho = $arquivo->storeAs('public/storage/app/public/', $nomeOriginal); // Armazene o arquivo com o nome original
+        // Você pode personalizar o diretório de armazenamento conforme necessário
+
+        return redirect()->route('upload.form')->with('success', 'Arquivo carregado com sucesso.');
+    }
+
+    return redirect()->route('upload.form')->with('error', 'Falha no upload do arquivo.');
+}
 }

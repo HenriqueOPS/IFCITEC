@@ -124,6 +124,9 @@ Route::group(['middleware' => ['IsVerificado']], function () {
 /* Rotas Administrador */
 Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () {
 	Route::get('/log', 'AdminController@showLog');
+	Route::get('/media/{nome}', 'MediaController@show');
+	Route::get('/upload', 'MediaController@index')->name('upload.form');
+	Route::post('/upload', 'MediaController@store')->name('upload.store');
 	Route::get('/funcoes-ativas/{id}','AdminController@funcoesAtivas');
 	Route::post('/atualizar-funcao','AdminController@AtualizarFuncao')->name('AtualizarFuncao');
 	Route::get('/gerenciar', 'AdminController@administrarUsuarios');

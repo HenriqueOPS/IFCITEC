@@ -119,15 +119,16 @@
                         <div class="row">
                         <div class="col-md-12">
                         @php
-                            $id = $campo->categoria_avaliacao . 2;
+                        $id = str_replace(' ', '', $campo->categoria_avaliacao) . '2';
                         @endphp
-                        <div id="{{ $id }}" class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>-{{ $campo->descricao }}:<strong>{{ $campo->valor }}</strong>
+                       
+                        <div id=id class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>-{{ $campo->descricao }}:<strong>{{ $campo->valor }}</strong>
                     </div>
 
                     <script>
                         // Vamos supor que você queira selecionar o primeiro elemento com um ID específico, por exemplo, "exemploId".
         
-                        var id = '{{ $id }}'.trim();
+                        var id = '{{ $id }}';
                         // Seleciona todos os elementos com o mesmo ID
                         var elementos = document.querySelectorAll('#' + id);
 
@@ -183,15 +184,14 @@
 					<div class="row">
                     <div class="col-md-12">
                         @php
-                            $id = $campo->categoria_avaliacao . 3;
+                        $id = str_replace(' ', '', $campo->categoria_avaliacao) . '3';
                         @endphp
                         <div id="{{ $id }}" class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>-{{ $campo->descricao }}:<strong>{{ $campo->valor }}</strong>
                     </div>
 
                     <script>
                         // Vamos supor que você queira selecionar o primeiro elemento com um ID específico, por exemplo, "exemploId".
-                        var id = '{{ $id }}'.trim();
-                        console.log(id)
+                   
                         // Seleciona todos os elementos com o mesmo ID
                         var elementos = document.querySelectorAll('#' + id);
 
