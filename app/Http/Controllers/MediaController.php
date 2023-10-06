@@ -52,13 +52,8 @@ class MediaController extends Controller
     public function show($nome)
     {
         $caminho =  'storage/app/public/'. $nome; // Caminho relativo ao disco de armazenamento 'public'
-
-     
-            // Obtenha o URL completo da imagem
+        // Obtenha o URL completo da imagem
             return view('show', ['caminho' =>   $caminho ]);
-    
-        
-        
     }
     
 public function index()
@@ -71,7 +66,7 @@ public function index()
     if ($request->hasFile('arquivo')) {
         $arquivo = $request->file('arquivo');
         $nomeOriginal = $arquivo->getClientOriginalName();
-        $caminho = $arquivo->storeAs('public/storage/app/public/', $nomeOriginal); // Armazene o arquivo com o nome original
+        $caminho = $arquivo->storeAs('storage/app/public/', $nomeOriginal); // Armazene o arquivo com o nome original
         // Você pode personalizar o diretório de armazenamento conforme necessário
 
         return redirect()->route('upload.form')->with('success', 'Arquivo carregado com sucesso.');
