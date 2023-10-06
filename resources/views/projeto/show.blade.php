@@ -191,7 +191,7 @@
 
                     <script>
                         // Vamos supor que você queira selecionar o primeiro elemento com um ID específico, por exemplo, "exemploId".
-                   
+                        var id = '{{ $id }}';
                         // Seleciona todos os elementos com o mesmo ID
                         var elementos = document.querySelectorAll('#' + id);
 
@@ -229,7 +229,7 @@
 					<div class="row">
                     <div class="col-md-12">
                         @php
-                            $id = $campo->categoria_avaliacao . 4;
+                        $id = str_replace(' ', '', $campo->categoria_avaliacao) . '4';
                         @endphp
                         <div id="{{ $id }}" class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>-{{ $campo->descricao }}:<strong>{{ $campo->valor }}</strong>
                     </div>
