@@ -51,7 +51,7 @@ class MediaController extends Controller
 
     public function show($nome)
     {
-        $caminho =  'storage/app/public/'. $nome; // Caminho relativo ao disco de armazenamento 'public'
+        $caminho =  'storage/'. $nome; // Caminho relativo ao disco de armazenamento 'public'
         // Obtenha o URL completo da imagem
             return view('show', ['caminho' =>   $caminho ]);
     }
