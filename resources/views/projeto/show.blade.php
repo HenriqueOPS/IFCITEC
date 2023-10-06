@@ -180,6 +180,17 @@
                                 </div>
                     </div>
                     <br>
+
+                    @php
+                    // Defina a função de comparação para usar no usort
+                    function compararCampos($a, $b) {
+                        return strcmp($a->categoria_avaliacao, $b->categoria_avaliacao);
+                    }
+
+                    // Crie uma cópia do array $avaliacao[1] para ordenação
+          
+                    usort($avaliacao[0], 'compararCampos');
+                    @endphp
 					@foreach($avaliacao[0] as $campo)
 					<div class="row">
                     <div class="col-md-12">
@@ -225,7 +236,16 @@
 								
                     </div>
                     <br>
-                    
+                                        @php
+                    // Defina a função de comparação para usar no usort
+                    function compararCampos($a, $b) {
+                        return strcmp($a->categoria_avaliacao, $b->categoria_avaliacao);
+                    }
+
+                    // Crie uma cópia do array $avaliacao[1] para ordenação
+          
+                    usort($avaliacao[1], 'compararCampos');
+                    @endphp
 					@foreach($avaliacao[1] as $campo)
 					<div class="row">
                     <div class="col-md-12">
