@@ -122,7 +122,7 @@
                         $id = str_replace(' ', '', $campo->categoria_avaliacao) . '2';
                         @endphp
                        
-                        <div id=id class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>-{{ $campo->descricao }}:<strong>{{ $campo->valor }}</strong>
+                        <div id='{{ $id }}' class="campo"  ><b>{{ $campo->categoria_avaliacao }}</b></div>-{{ $campo->descricao }}:<strong>{{ $campo->valor }}</strong>
                     </div>
 
                     <script>
