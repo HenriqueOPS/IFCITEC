@@ -180,6 +180,9 @@
                                 </div>
                     </div>
                     <br>
+                    @php
+                    $avaliacao[0] = $avaliacao[0]->sortBy('categoria_avaliacao');
+                    @endphp
 					@foreach($avaliacao[0] as $campo)
 					<div class="row">
                     <div class="col-md-12">
@@ -225,6 +228,9 @@
 								
                     </div>
                     <br>
+                    @php
+                    $avaliacao[1] = $avaliacao[1]->sortBy('categoria_avaliacao');
+                    @endphp
 					@foreach($avaliacao[1] as $campo)
 					<div class="row">
                     <div class="col-md-12">
