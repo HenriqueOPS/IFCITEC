@@ -9,7 +9,6 @@ services:
     volumes:
       - ./:/var/www/html/
       - ./storage/app/public:/var/www/html/storage/app/public
-    command:  php artisan storage:link
     ports:
       - '8088:80'
     links:
