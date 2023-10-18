@@ -158,6 +158,7 @@ class RegisterController extends Controller
 			'oculto' => false,
 			'verificado' => true,
 			'genero' => isset($data['genero']) ? $data['genero'] : null,
+			'cor' => isset($data['cor']) ? $data['cor'] : null
 		]);
 	}
 

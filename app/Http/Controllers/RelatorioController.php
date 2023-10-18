@@ -468,14 +468,14 @@ class RelatorioController extends Controller
             $fileRows,
             ['Numero de homologadores', $countHomologadores],
         );
-        $garotas = $this->QtdGarotas($edicao);
+        $garotas = $this->QtdGenero($edicao,'F');
         array_push(
             $fileRows,
             ['',],
             ['Numero de Meninas Participantes', $garotas],
            
         );
-        $garotos = $this->QtdGarotos($edicao);
+        $garotos = $this->QtdGenero($edicao,'M');
         array_push(
             $fileRows,
             ['Numero de Meninos Participantes', $garotos],
@@ -2866,24 +2866,15 @@ public  function generateCSVForEdition($edicao) {
          }
          return $this->returnsCSVStream($filename, $header, $rows);
     }
-    public function QtdGarotas($edicao){
+    public function QtdGenero($edicao,$genero){
         $edicao = DB::table('edicao')
         ->where('id',$edicao)
         ->pluck('created_at');
-        $garotas = DB::table('pessoa')
+        $num = DB::table('pessoa')
         ->whereDate('updated_at','>',$edicao[0])
-        ->where('genero','F')
+        ->where('genero',$genero)
         ->count();
-        return $garotas;
+        return $num;
     }
-    public function QtdGarotos($edicao){
-        $edicao = DB::table('edicao')
-        ->where('id',$edicao)
-        ->pluck('created_at');
-        $garotos = DB::table('pessoa')
-        ->whereDate('updated_at','>',$edicao[0])
-        ->where('genero','M')
-        ->count();
-        return $garotos;
-    }
+   
 }

@@ -104,6 +104,28 @@
                                 </span>
                                 @endif
                             </div>
+
+                            <div class="input-group{{ $errors->has('cor') ? ' has-error' : '' }}">
+                            <span class="input-group-addon">
+                                <i class="material-icons">person</i>
+                            </span>
+                            <div class="form-group">
+                                <label class="control-label">Raça/Cor</label>
+                                <select id="cor-select" name="cor" value="{{ old('cor') }}" required>
+                                    <option value="Amarelo">Amarelo</option>
+                                    <option value="Branco">Branco</option>
+                                    <option value="Indigena">Indigena</option>
+                                    <option value="Pardo">Pardo</option>
+                                    <option value="Preto">Preto</option>
+                                </select>
+                                @if ($errors->has('cor'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('cor') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+
                             <div class="input-group{{ $errors->has('cpf') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">call_to_action</i>
@@ -259,6 +281,15 @@
 $(document).ready(function () {
     var oldCamisa = $('#camisa-select').attr("value");
     $('#camisa-select').selectize({
+        placeholder: 'Selecione o tamanho...',
+        onInitialize: function () {
+            this.setValue(oldCamisa, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
+    var oldCor = $('#cor-select').attr("value");
+    $('#cor-select').selectize({
         placeholder: 'Selecione o tamanho...',
         onInitialize: function () {
             this.setValue(oldCamisa, true);
