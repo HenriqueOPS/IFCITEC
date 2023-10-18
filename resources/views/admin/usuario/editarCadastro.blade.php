@@ -63,7 +63,7 @@
                             </span>
                             <div class="form-group">
                                 <label class="control-label">Raça/Cor</label>
-                                <select id="cor-select" name="cor" value="{{ old('cor') }}" required>
+                                <select id="cor-select" name="cor" value="{{ isset($dados->cor) ? $dados->cor : ''}}" required>
                                     <option value="Amarelo">Amarelo</option>
                                     <option value="Branco">Branco</option>
                                     <option value="Indigena">Indigena</option>
