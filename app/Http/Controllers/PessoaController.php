@@ -187,7 +187,7 @@ class PessoaController extends Controller {
         $dados->lgpddata=\Carbon\Carbon::now();
         $dados->save();
         if($dados->genero){
-        return redirect()->route('home');
+        return redirect()->route('editarCadastro');
         }
         return redirect()->route('editarCadastro');
     }

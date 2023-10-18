@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Mensagem;
+use App\Edicao;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
@@ -29,6 +30,12 @@ class AppServiceProvider extends ServiceProvider
         }
 
         if (!app()->runningInConsole() || app()->runningUnitTests()) {
+            $InicioEdicao = DB::table('edicao')
+            ->where('id',Edicao::getEdicaoId())
+            ->pluck('inscricao_abertura')
+            ->first();
+            view()->share('InicioEdicao', $InicioEdicao);
+
             // Set global variables
             $background = DB::table('media')->where('nome', '=', 'background')->value('conteudo');
             view()->share('background', $background);

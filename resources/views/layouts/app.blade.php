@@ -202,8 +202,13 @@
      
             
     </div>
+    @php
+    $UpdateUser = strtotime(Auth::user()->updated_at);
+    $InicioEdicao = strtotime($InicioEdicao);
+    @endphp
     @if (Auth::guest() || !Auth::user()->verificado)
-            @elseif(Auth::user()->lgpddata==null )
+  
+            @elseif( $InicioEdicao > $UpdateUser  )
                 <div id='myModal'class="modal" tabindex="-1" role="dialog" class="modal hide fade in" data-keyboard="false" data-backdrop="static">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
