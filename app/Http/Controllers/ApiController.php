@@ -33,7 +33,22 @@ class ApiController extends Controller {
 
 		return response()->json('erro', 400);
 	}
+	public function lanche(Request $req) {
+		$data = $req->all();
 
+		if(is_numeric($data['id'])){
+			
+			DB::table('lanche')->insert([
+				'pessoa_id' => $data['id'],
+				'edicao_id' => Edicao::getEdicaoId(),
+				'comeu' => true
+			]);
+
+			return response()->json('ok', 200);
+		}
+
+		return response()->json('erro', 400);
+	}
 	public function salvaAvaliacao(Request $req) {
 
 		if($req->header('authorization') == 'bmFvbWVqdWxndWU='){

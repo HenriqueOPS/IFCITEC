@@ -26,6 +26,7 @@ Route::get('/version', function () {
 });
 
 Route::get('/organizador/presenca', 'OrganizadorController@presenca')->name('organizacao.presenca');
+Route::get('/organizador/lanche', 'OrganizadorController@lanche')->name('organizacao.lanche');
 Route::get('/', function () {
 
 	if (Auth::check())
@@ -42,6 +43,7 @@ Route::get('/auth/enviar/email/{idPessoa}', 'Auth\\LoginController@enviarEmailVa
 Route::any('/api/registra-presenca', 'ApiController@registraPresenca');
 
 Route::post('/api/presenca', 'ApiController@presenca')->name('presenca-sistema');
+Route::post('/api/lanche', 'ApiController@lanche')->name('lanche-sistema');
 
 Route::post('/api/salva-homologacao/', 'ApiController@salvaHomologacao');
 Route::post('/api/salva-avaliacao/', 'ApiController@salvaAvaliacao');
@@ -312,6 +314,7 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
 
 	// Usuarios
 	Route::get('/organizador/usuarios', 'OrganizadorController@usuarios')->name('organizacao.usuarios');
+	
 });
 
 

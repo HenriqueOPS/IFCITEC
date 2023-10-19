@@ -58,5 +58,8 @@ class OrganizadorController extends Controller
     public function presenca() {
         return view('organizacao.presenca');
     }
+    public function lanche(){
+        return view('organizacao.lanche');
+    }
 
 }

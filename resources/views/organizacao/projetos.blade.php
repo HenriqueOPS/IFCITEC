@@ -34,6 +34,12 @@
 						Usuários
 					</a>
 				</li>
+                <li>
+						<a href="{{route('organizacao.lanche')}}">
+							<i class="material-icons">fastfood</i>
+							Lanche
+						</a>
+					</li>
 			</ul>
 		</div>
 	</div>
