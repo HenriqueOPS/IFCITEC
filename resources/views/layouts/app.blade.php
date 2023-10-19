@@ -202,10 +202,12 @@
      
             
     </div>
+    @if(!Auth::guest())
     @php
     $UpdateUser = strtotime(Auth::user()->updated_at);
     $InicioEdicao = strtotime($InicioEdicao);
     @endphp
+    @endif
     @if (Auth::guest() || !Auth::user()->verificado)
   
             @elseif( $InicioEdicao > $UpdateUser  )

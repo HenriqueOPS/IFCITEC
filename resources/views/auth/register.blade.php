@@ -125,6 +125,26 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="input-group {{ $errors->has('ehconcluinte') ? ' has-error' : '' }}">
+                           
+                           <span class="input-group-addon ">
+                                   <i class="material-icons">school</i>
+                               </span>
+                               <div class="form-group label-floating">
+                                   <label class="control-label">É concluinte do Ensino Fundamental ou Ensino Médio,Ensino Médio Técnico?</label>
+                               </div>
+                               <input type="radio" name="ehconcluinte" value="s" required>
+                               <label style="margin-top:5px; margin-right:15px;">sim</label>
+                                <input type="radio"  name="ehconcluinte" value="n">
+                                <label style="margin-left:0px;">não</label>
+                                @if($errors->has('ehconcluinte'))
+                               <span class="help-block">
+                                   <strong>{{ $errors->first('ehconcluinte') }}</strong>
+                               </span>
+                               @endif
+                           </div>
+
+                        
 
                             <div class="input-group{{ $errors->has('cpf') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
