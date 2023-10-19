@@ -66,7 +66,7 @@ public function index()
     if ($request->hasFile('arquivo')) {
         $arquivo = $request->file('arquivo');
         $nomeOriginal = $arquivo->getClientOriginalName();
-        $caminho = $arquivo->storeAs('storage/app/public/', $nomeOriginal); // Armazene o arquivo com o nome original
+        $caminho = $arquivo->storeAs('/public', $nomeOriginal); // Armazene o arquivo com o nome original
         // Você pode personalizar o diretório de armazenamento conforme necessário
 
         return redirect()->route('upload.form')->with('success', 'Arquivo carregado com sucesso.');
