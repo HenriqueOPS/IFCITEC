@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 //
 use App\Endereco;
 
@@ -111,7 +112,16 @@ class RegisterController extends Controller
 				'senha' => 'required|string|confirmed',
 				'dt_nascimento' => 'required|date_format:d/m/Y|before:today|after:01/01/1900',
 				'telefone' => 'required|string|min:13|max:13',
-				'cpf' => 'string|unique:pgsql.pessoa|min:11|max:14|validateCpf',
+				'cpf' => [
+					'string',
+					'min:11',
+					'max:14',
+					'validateCpf',
+					Rule::unique('pessoa','cpf')->where(function ($query) {
+						$query->where('oculto', false);
+					}),
+				]
+				,
 				'newletter' => 'boolean',
 				'genero' => 'required|in:M,F',
 				//COMECO do código que necessitará um refact issue #40
@@ -137,17 +147,19 @@ class RegisterController extends Controller
 		}
 
 		return Pessoa::create([
-			'nome' => $data['nome'],
+			'nome' => $data['nome_completo'],
 			'email' => $data['email'],
 			'senha' => bcrypt($data['senha']),
 			'dt_nascimento' => Carbon::createFromFormat('d/m/Y', $data['dt_nascimento']),
-			'cpf' => isset($data['cpf']) ? $data['cpf'] : null,
+			'cpf' => $data['cpf'],
 			'telefone' => $data['telefone'],
 			'camisa' => isset($data['camisa']) ? $data['camisa'] : null,
 			'newsletter' => isset($data['newsletter']) ? $data['newsletter'] : false,
 			'oculto' => false,
-			'verificado' => false,
+			'verificado' => true,
 			'genero' => isset($data['genero']) ? $data['genero'] : null,
+			'cor' => isset($data['cor']) ? $data['cor'] : null,
+			'ehconcluinte' => isset($data['ehconcluinte']) ? $data['ehconcluinte'] : null
 		]);
 	}
 

@@ -3,8 +3,6 @@
 namespace App;
 
 use App\Mods\Model;
-use App\Projeto;
-use App\Pessoa;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 

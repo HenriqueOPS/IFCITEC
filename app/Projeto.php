@@ -115,11 +115,7 @@ class Projeto extends Model {
             if($homologador->revisado)
                 $count++;
         }
-
-        if($count == count($homologadores) && count($homologadores) != 0)
-            return true;
-
-        return false;
+            return $count;
     }
 
 	/*
@@ -142,10 +138,7 @@ class Projeto extends Model {
                 $count++;
         }
 
-        if($count == count($avaliadores) && count($avaliadores) != 0)
-            return true;
-
-        return false;
+        return $count;
     }
 
     public function statusPresenca(){

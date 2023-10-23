@@ -21,7 +21,7 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        if(Auth::user()->lgpddata==null ||Auth::user()->genero!=null ){
+        if(Auth::user()->lgpddata==null || Auth::user()->genero!=null ){
         $instagram1 = Mensagem::where('nome', '=', 'PrimeiraColuna' )->get();
         $instagram2 = Mensagem::where('nome', '=', 'SegundaColuna' )->get();
         $instagram3 = Mensagem::where('nome', '=', 'TerceiraColuna' )->get();

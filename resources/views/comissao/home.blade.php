@@ -45,7 +45,9 @@
                         </div>
 
                         @if((\App\Edicao::consultaPeriodo('Avaliação')))
-
+                        @if(isset($projeto->localizacao))
+    <p><b>Localizacao:</b> Prédio-Sala-Estande, {{ $projeto->localizacao }}</p>
+@endif
                         <div class="project-info">
                             Integrantes:
                             @foreach($projeto->pessoas as $pessoa)

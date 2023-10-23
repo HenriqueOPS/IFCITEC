@@ -25,7 +25,10 @@ Route::get('/version', function () {
 	echo "Pipeline ID: " . $strData[1];
 });
 
+Route::get('/organizador/presenca', 'OrganizadorController@presenca')->name('organizacao.presenca');
+Route::get('/organizador/lanche', 'OrganizadorController@lanche')->name('organizacao.lanche');
 Route::get('/', function () {
+
 	if (Auth::check())
 		return redirect()->route('home');
 
@@ -40,6 +43,7 @@ Route::get('/auth/enviar/email/{idPessoa}', 'Auth\\LoginController@enviarEmailVa
 Route::any('/api/registra-presenca', 'ApiController@registraPresenca');
 
 Route::post('/api/presenca', 'ApiController@presenca')->name('presenca-sistema');
+Route::post('/api/lanche', 'ApiController@lanche')->name('lanche-sistema');
 
 Route::post('/api/salva-homologacao/', 'ApiController@salvaHomologacao');
 Route::post('/api/salva-avaliacao/', 'ApiController@salvaAvaliacao');
@@ -81,7 +85,7 @@ Route::group(['middleware' => ['IsVerificado']], function () {
 	Route::post('/lgpdaceito/{id}','PessoaController@lgpdaceito')->name('lgpdaceito');
 	// Autor
 	Route::get('/autor', 'AutorController@index')->name('autor');
-
+	Route::get('/autor/notarevisao/{id}','AutorController@nota')->name('notaProjeto');
 	//Comissao Avaliadora
 	Route::get('/comissao-avaliadora', 'ComissaoAvaliadoraController@index')->name('comissao');
 
@@ -121,7 +125,12 @@ Route::group(['middleware' => ['IsVerificado']], function () {
 
 /* Rotas Administrador */
 Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () {
-
+	Route::get('/log', 'AdminController@showLog');
+	Route::get('/media/{nome}', 'MediaController@show');
+	Route::get('/upload', 'MediaController@index')->name('upload.form');
+	Route::post('/upload', 'MediaController@store')->name('upload.store');
+	Route::get('/funcoes-ativas/{id}','AdminController@funcoesAtivas');
+	Route::post('/atualizar-funcao','AdminController@AtualizarFuncao')->name('AtualizarFuncao');
 	Route::get('/gerenciar', 'AdminController@administrarUsuarios');
 	Route::post('/gerenciar-usuario/{id}', 'AdminController@editaFuncaoUsuario')->name('editaFuncaoUsuario');
 	Route::get('/gerenciar/usuario/{id}', 'AdminController@editarFuncaoUsuario')->name('editarFuncaoUsuario');
@@ -193,35 +202,52 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::post('/projeto/vinculaAvaliador/', 'ProjetoController@vinculaAvaliador')->name('vinculaAvaliadorPost');
 
 	// Fichas de Avaliação/Homologação
+	Route::get('/gerar/apresentacao/{edicao}','RelatorioController@gerarapresentacao')->name('premiacao.apresentacao');
 	Route::get('/administrador/fichas', 'FichaController@index')->name('administrador.ficha');
 	Route::get('/administrador/fichas/cadastrar', 'FichaController@create')->name('adminstrador.cadastrarFicha');
 	Route::post('/administrador/fichas/cadastrar', 'FichaController@store')->name('adminstrador.salvarFicha');
 	Route::get('/administrador/fichas/copiar', 'FichaController@copiarFicha')->name('adminstrador.copiarFicha');
 	Route::post('/administrador/fichas/copiar', 'FichaController@copiaFicha')->name('adminstrador.copiaFicha');
-
+	Route::get('/ocultar-pessoa', 'AdminController@ocultarPessoa')->name('pessoa.ocultar');
 	Route::get('/administrador/fichas/{id}', 'FichaController@show')->name('administrador.showFicha');
 	Route::get('/administrador/fichas/{id}/editar', 'FichaController@edit')->name('administrador.edit');
 	Route::post('/administrador/fichas/editar', 'FichaController@update')->name('administrador.alteraFicha');
-
-
+	Route::post('/ocultarusuario-admin/{id}','AdminController@ocultar')->name('administrador.ocultar');
+	Route::get('/voluntario/info/{id}','VoluntarioController@info')->name('voluntario.info');
+	Route::post('/voluntario/homologar/{id}','VoluntarioController@homologar')->name('voluntario.homologar');
+	Route::get('/projeto/NaoComparecera/{id}','ProjetoController@projetoNaovai');
 	// Administrador
+	Route::get('/excluir-voluntario','AdminController@excluir_voluntario');
+	Route::get('/emails-enviados', 'GerenMsgController@tabela')->name('emails-enviados');
 	Route::post('/administrador/navbar',"AdminController@navbar")->name('admin.navbar');
-	Route::post('/administrador/upload','AdminController@background')->name('admin.background');
+	Route::post('/administrador/cor_botoes',"AdminController@corBotoes")->name('admin.botoes');
+	Route::post('/administrador/fontes',"AdminController@fontes")->name('admin.fontes');
+	Route::post('/administrador/cor_avisos',"AdminController@cordosavisos")->name('admin.avisos');
+	Route::post('/administrador/upload','MediaController@background')->name('admin.background');
 	Route::get('/administrador/configuracoes','AdminController@configuracoes')->name('admin.configuracoes');
 	Route::get('/administrador/empresas','AdminController@empresas')->name('admin.empresas');
 	Route::get('/administrador/empresas/nova','AdminController@NovaEmpresa')->name('admin.empresas.nova');
 	Route::post('/administrador/empresas/cadastrar','AdminController@cadastroEmpresa')->name('admin.empresas.cadastrar');
+	Route::get('/editar/empresa/{id}','AdminController@editarempresa')->name('admin.empresas.editar');
+	Route::post('/editar/empresa/editar','AdminController@editaEmpresa')->name('editaEmpresa');
+	Route::get('/administrador/brindes','AdminController@brindes')->name('admin.brindes');
+	Route::get('/administrador/brindes/novo','AdminController@NovoBrinde')->name('admin.brindes.novo');
+	Route::post('/admin/premiacao/aumento', 'AdminController@adicionarQuantidade')->name('admin.premiacao.aumento');
+	Route::post('/admin/premiacao/decremento', 'AdminController@decrementarQuantidade')->name('admin.premiacao.decremento');
+	Route::post('/administrador/brinde/cadastrar','AdminController@cadastroBrinde')->name('admin.brindes.cadastrar');
 	Route::get('/projetos/homologar-projetos', 'ProjetoController@homologarProjetos')->name('homologar-projetos');
 	Route::post('/projetos/homologa-projetos', 'ProjetoController@homologaProjetos')->name('homologa-projetos');
 	Route::get('/projeto/nao-compareceu/{id}/{s}', 'ProjetoController@projetoNaoCompareceu'); //
 	Route::get('/projeto/compareceu/avaliado/{id}/{s}', 'ProjetoController@projetoCompareceuAvaliado');
 	Route::get('/projeto/compareceu/nao-avaliado/{id}/{s}', 'ProjetoController@projetoCompareceuNaoAvaliado');
 	Route::get('/empresa/dados-empresa/{id}', 'AdminController@dadosEmpresa'); 
+	Route::get('/brinde/dados-brinde/{id}', 'AdminController@dadosBrinde')->name('brinde.dados');
+	Route::get('/admin/brindes/editar/{id}', 'AdminController@editarbrindes')->name('admin.brindes.editar');
+	Route::post('/edita-brinde', 'AdminController@editaBrinde')->name('editaBrinde');
 	Route::get('/administrador', 'AdminController@index')->name('administrador');
 	Route::get('/administrador/projetos', 'AdminController@projetos')->name('administrador.projetos');
 	Route::get('/administrador/escolas', 'AdminController@escolas')->name('administrador.escolas');
-	Route::get('/administrador/niveis', 'AdminController@niveis')->name('administrador.niveis');
-	Route::get('/administrador/areas', 'AdminController@areas')->name('administrador.areas');
+	Route::get('/administrador/areas', 'AdminController@areasPorNiveis')->name('administrador.areas');
 	Route::get('/administrador/areas/excluir/{id}', 'AdminController@excluiArea')->name('administrador.areas.excluir');
 	Route::get('/administrador/tarefas', 'AdminController@tarefas')->name('administrador.tarefas');
 	Route::get('/administrador/usuario', 'AdminController@usuarios')->name('administrador.usuarios');
@@ -231,6 +257,7 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::get('/administrador/relatorios/{edicao?}', 'AdminController@relatorios')->name('administrador.relatorios');
 	Route::get('/administrador/escolhe-edicao/relatorios', 'AdminController@relatoriosEdicao')->name('administrador.relatoriosEdicao');
 	Route::post('/administrador/escolhe-edicao/relatorios', 'AdminController@relatoriosEscolheEdicao')->name('administrador.escolheEdicao');
+	Route::get('/movimento-registros/{id}', 'AdminController@showRegistros')->name('movimento-registros.show');
 
 	// Dashboard
 	Route::get('/administrador/dashboard', 'AdminController@dashboardPage')->name('dashboard');
@@ -251,8 +278,14 @@ Route::group(['middleware' => ['IsAdministrador', 'IsVerificado']], function () 
 	Route::get('/administrador/nota-avaliacao/projeto/{projeto}', 'AdminController@notaAvaliacao')->name('notaAvaliacao');
 	Route::post('/administrador/muda/nota-revisao/projeto', 'AdminController@mudaNotaRevisao')->name('mudaNotaRevisao');
 	Route::post('/administrador/muda/nota-avaliacao/projeto', 'AdminController@mudaNotaAvaliacao')->name('mudaNotaAvaliacao');
-
-
+	
+	
+	/*cursos*/
+	Route::get('/administrador/cursos','AdminController@Cursos')->name('admin.cursos');
+	Route::post('/administrador/cursos/create','AdminController@CreateCurso')->name('admin.cursos.create');
+	Route::post('/administrador/cursos/delete','AdminController@DeleteCurso')->name('admin.cursos.delete');
+	Route::post('/administrador/cursos/update','AdminController@UpdateCurso')->name('admin.cursos.update');
+	Route::get('/administrador/cursos/{id}','AdminController@ReadCurso')->name('admin.cursos.read');
 
 	require_once "webRoutes/reportRoutes.php";
 
@@ -277,10 +310,11 @@ Route::group(['middleware' => ['IsOrganizacao']], function () {
 	Route::get('/projeto/{id}/status/', 'ProjetoController@statusProjeto')->name('statusProjeto'); //Ajax
 
 	// Presença
-	Route::get('/organizador/presenca', 'OrganizadorController@presenca')->name('organizacao.presenca');
+
 
 	// Usuarios
 	Route::get('/organizador/usuarios', 'OrganizadorController@usuarios')->name('organizacao.usuarios');
+	
 });
 
 

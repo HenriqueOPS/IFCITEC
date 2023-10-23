@@ -6,7 +6,7 @@
             <div class="col-md-8 col-md-offset-2 col-sm-12">
                 <div class="main main-raised">
                     <div class="row">
-                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
+                        <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
                             <h2>Cadastro de Comissão Avaliadora</h2>
                         </div>
                     </div>
@@ -24,21 +24,50 @@
                     <form method="post" id="formulario" action="{{route('cadastroAvaliador')}}">
 
                         {{ csrf_field() }}
+                        @if ($errors->any())
+                    <div class="col-md-10 col-md-offset-1 col-xs-11">
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @endif
 
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="alert alert-info text-center">
-                                    <div class="container-fluid">
-                                        <div class="alert-icon">
-                                            <i class="material-icons">info_outline</i>
-                                        </div>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true"><i class="material-icons">clear</i></span>
-                                        </button>
-                                        {!! $aviso !!}
-                                    </div>
-                                </div>
+                       
+                        <div class="col-md-12">
+                        <div style="background-color:{{ $coravisos }}">
+                            <div class="container-fluid">
+                            <br>
+                            <div>
+                                <i class="material-icons" style="color: white;">info_outline</i>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="fechar-alerta">
+                                <span aria-hidden="true"><i class="material-icons">clear</i></span>
+                            </button>
                             </div>
+                          
+                            <div class="text-center" style="color: white;">
+                                {!! $aviso !!}
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script>
+                        $(document).ready(function() {
+                            $('#fechar-alerta').click(function() {
+                            $(this).closest('.col-md-12').hide();
+                            });
+                        });
+                        </script>
+
+
+
+                            
                             <div class="col-md-10 col-md-offset-1 col-xs-11">
 
                                 <input type="hidden" name="inscricao" value="avaliacao">
@@ -123,7 +152,7 @@
                                                         <label>
                                                             <input type="checkbox"
                                                                    class="checkboxNivel{{$area->id}} checkboxArea"
-                                                                   value="{{$area->id}}" name='area_id[]'>
+                                                                   value="{{$area->id}}" name='area_id[]' >
                                                             {{$area->area_conhecimento}}
                                                         </label>
                                                     </div>
@@ -251,6 +280,7 @@
                             </div>
                         </div>
                     </form>
+                  
 
 					@endif
                 </div>
@@ -328,20 +358,20 @@
 
 
 
-        $('button[type="submit"]').attr('disabled', 'disabled');
+    var $submitBtn = $('button[type="submit"]');
+    var $funcaoCheckboxes = $('[name="funcao[]"]');
+    var $areaCheckboxes = $('[name="area_id[]"]');
 
-        $('[name="funcao[]"]').change(function () {
-            $('button[type="submit"]').attr('disabled', 'disabled');
+    $submitBtn.attr('disabled', 'disabled');
 
+    function updateSubmitButton() {
+        var funcaoSelected = $funcaoCheckboxes.is(':checked');
+        var areaSelected = $areaCheckboxes.is(':checked');
 
-            var formSerialized = $('#formulario').serializeArray();
-            formSerialized.forEach(function (field) {
-				if (field.name == 'funcao[]') {
-                    $('button[type="submit"]').removeAttr('disabled');
-                    console.log(field);
-                }
-            });
-        });
+        $submitBtn.prop('disabled', !(funcaoSelected && areaSelected));
+    }
+
+    $funcaoCheckboxes.add($areaCheckboxes).on('change', updateSubmitButton);
 
 	});
 

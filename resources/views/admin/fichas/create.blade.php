@@ -100,7 +100,7 @@
 				</div>
 			</div>
 
-			<input class="btn btn-success align-center" type="submit" value="Enviar" >
+			<input class="btn btn-success align-center" type="submit" value="Salvar" >
 
 			</form>
 
@@ -336,6 +336,7 @@ $('#formulario').submit(function (e) {
 	$.post('{{ route('adminstrador.salvarFicha') }}', formSerialized)
 		.done(function () {
 			$('.alert-success').show();
+			location.reload();
 		})
 		.fail(function (res) {
             $('#sendError').show();

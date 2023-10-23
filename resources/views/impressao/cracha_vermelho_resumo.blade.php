@@ -1,8 +1,10 @@
+
 <html lang="pt-br">
 <head>
 	<meta charset="utf-8">
 	
-<style>
+	
+	<style>
 
 @import "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700";
 
@@ -11,6 +13,8 @@
 	width: 21cm;
 	height: 29.7cm;
 	margin: 0;
+	margin-top: 0.9cm;
+	margin-left: 0.47cm;
 }
 
 @media all {
@@ -24,28 +28,23 @@
 	}
 
 	body{font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-		margin-left: 4.7mm;
-		margin-right: 4.7mm;
- 
+		margin: 0px; 
+		overflow: visible; 
 	}
     
 	.cracha{
-		width: calc(99mm);
-		height: 55mm;
+		width: 9.90cm;
+		height: 5.6cm;
 		display: inline-block;
 		padding:0;
 		margin: 0;
-		overflow: hidden;
-		margin-top: -1.5px;
+		
 		
 	}
-
-	.cracha:nth-child(10n){page-break-before: always; }
-
 	.cracha .content{
 		width: 100%;
 		margin: 0mm;
-	
+		
 	}
 
 	.cracha .dados{
@@ -58,28 +57,28 @@
 		width: 100%;
 		height: 5mm;
 		font-size: 5mm;
-		overflow: hidden;
+	
 		margin: 0;
 		color: #fff;
 	}
-
+	
 	.cracha .dados h2{
 		width: calc(100% - 12mm);
 		height: 8mm;
 		line-height: 8mm;
-		font-size: 23px;
-		overflow: hidden;
+	
 		padding: 2mm;
+		font-size: 20px;
 		background: red;
 		margin-left: 5mm;
 		margin-top: 0mm;
 		text-transform: uppercase;
 	}
 	.cracha .dados h3{
+		font-size: 20px;
 		margin-top: 2mm;
 		width: calc(100% - 12mm);
 		margin-left: 5mm;
-		font-size: 20px;
 		text-align: center;
 		color: #424a4e;
 	}
@@ -102,7 +101,7 @@
 		<div class="content">
 
 			<div class="dados">
-				<h2>{{$funcao}}</h2>
+				<h2>{{$pessoa->tarefa}}</h2>
 				<h3>{{$pessoa->nome}}</h3>
 			</div>
 

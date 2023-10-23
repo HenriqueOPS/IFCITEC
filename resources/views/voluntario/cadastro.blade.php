@@ -50,19 +50,132 @@
 							{{ csrf_field() }}
 
 							<div class="row">
-								<div class="col-md-12">
-									<div class="alert alert-info text-center">
-										<div class="container-fluid">
-											<div class="alert-icon">
-												<i class="material-icons">info_outline</i>
-											</div>
-											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-												<span aria-hidden="true"><i class="material-icons">clear</i></span>
-											</button>
-											<b>ATENÇÃO: </b>Você receberá mais informações em breve!
-										</div>
-									</div>
+							<div class="col-md-12">
+                        <div style="background-color:{{ $coravisos }}">
+                            <div class="container-fluid">
+                            <br>
+                            <div>
+                                <i class="material-icons" style="color: white;">info_outline</i>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="fechar-alerta">
+                                <span aria-hidden="true"><i class="material-icons">clear</i></span>
+                            </button>
+                            </div>
+                          
+                            <div class="text-center">
+                                {!! $aviso !!}
+                            </div>
+                            </div>
+                        </div>
+						<div class="row">
+
+									<div class="col-md-10 col-md-offset-1 col-xs-9 col-xs-offset-1">
+							<div class="col-md-12 text-center">
+								<h3>Meus Dados</h3>
+							</div>
+
+							<div class="input-group{{ $errors->has('nome') ? ' has-error' : '' }}">
+								<span class="input-group-addon">
+									<i class="material-icons">face</i>
+								</span>
+								<div class="form-group label-floating">
+									<label class="control-label">Nome</label>
+									<input style="text-transform: capitalize" type="text" class="form-control"
+										name="nome" value="{{ isset($pessoa->nome) ? $pessoa->nome : '' }}" required>
 								</div>
+								@if ($errors->has('nome'))
+									<span class="help-block">
+										<strong>{{ $errors->first('nome') }}</strong>
+									</span>
+								@endif
+								
+							</div>
+							<div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                    <span class="input-group-addon">
+                                        <i class="material-icons">email</i>
+                                    </span>
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">Email</label>
+                                        <input type="email" class="form-control" name="email"
+                                            value="{{ isset($pessoa->email) ? $pessoa->email : '' }}" required>
+                                    </div>
+                                    @if ($errors->has('email'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+								<div class="input-group{{ $errors->has('telefone') ? ' has-error' : '' }}">
+                                    <span class="input-group-addon">
+                                        <i class="material-icons">perm_phone_msg</i>
+                                    </span>
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">Whatsapp</label>
+                                        <input type="tel" OnKeyPress="formatar('## #####-####', this)"
+                                            class="form-control" name="telefone" maxlength="13"
+                                            value="{{ $pessoa->telefone ?? '' }}" required>
+                                    </div>
+                                    @if ($errors->has('telefone'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('telefone') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+							
+							<div class="input-group ">
+								
+									<span class="input-group-addon">
+										<i class="material-icons">school</i>
+									</span>
+									<label class="control-label">Curso</label>
+								<select class="form-control" name="curso" required>
+									@foreach($cursos as $curso)
+									<option value="{{$curso->nome}}">{{$curso->nome}}</option>
+									@endforeach
+								</select>
+							
+							</div>
+
+							<div class="input-group ">
+								
+								<span class="input-group-addon">
+									<i class="material-icons">date_range</i>
+								</span>
+								<label class="control-label">Ano ou Semestre</label>
+							<select class="form-control" name="ano" required>
+								<option value="" disabled selected>Escolha uma opção</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+							</select>
+						
+						</div>
+						<div class="input-group ">
+								
+									<span class="input-group-addon">
+										<i class="material-icons">school</i>
+									</span>
+								<label class="control-label">Turma</label>
+								<input type="text" class="form-control" name="turma" maxlength="5" required>
+							
+							</div>
+
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script>
+                        $(document).ready(function() {
+                            $('#fechar-alerta').click(function() {
+                            $(this).closest('.col-md-12').hide();
+                            });
+                        });
+                        </script>
 								<div class="row">
 									<div class="col-md-6 col-md-offset-3 text-center">
 										<button name="button" href="javascript:void(0);" class="btn btn-primary">Inscrever</button>

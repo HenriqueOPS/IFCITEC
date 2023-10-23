@@ -35,7 +35,8 @@ class Pessoa extends Authenticatable
      */
     protected $fillable = [
         'nome', 'email', 'senha', 'cpf', 'rg', 'dt_nascimento',
-        'camisa', 'lattes', 'telefone', 'newsletter', 'oculto', 'verificado','genero',
+        'camisa', 'lattes', 'telefone', 'newsletter', 'oculto', 'verificado','genero','cor',
+        'ehconcluinte',
 
         //Referentes a comição Avaliadora, necessário um estudo mais aprofundado
         //desta característica no sistema issue #40
@@ -282,16 +283,7 @@ class Pessoa extends Authenticatable
             ->where('funcao_pessoa.edicao_id', '=', Edicao::getEdicaoId());
     }
 
-    public function getTotalRevisoes()
-    {
-        $total = DB::table('revisao')
-            ->select(DB::raw('count(*) as total'))
-            ->join('public.pessoa', 'revisao.pessoa_id', '=', 'public.pessoa.id')
-            ->where('public.pessoa.id', '=', $this->id)
-            ->first();
-
-        return $total->total;
-    }
+   
 
     public function getTotalAvaliacoes()
     {
@@ -344,5 +336,33 @@ class Pessoa extends Authenticatable
             ->get();
 
         return $projetos;
+    }
+    public function EcontroladorDePresenca(){
+        $idfuncao = DB::table('tarefa')
+        ->select('id')
+        ->where('id', 17)
+        ->first();
+        $status = DB::table('pessoa_tarefa')
+        ->where('pessoa_id',$this->id)
+        ->where('tarefa_id',$idfuncao->id)
+        ->where('edicao_id',Edicao::getEdicaoId())
+        ->first();
+
+        $dataFeira = DB::table('edicao')
+        ->where('id',Edicao::getEdicaoId())
+        ->select('avaliacao_abertura','avaliacao_fechamento')
+        ->first();
+
+        $dataAbertura = $dataFeira->avaliacao_abertura;
+        $dataAbertura = strtotime($dataAbertura);
+
+        $dataFechamento = $dataFeira->avaliacao_fechamento;
+        $dataFechamento = strtotime($dataFechamento);
+
+        $dataAtualTimestamp = strtotime(date('d-m-Y')); 
+        if($status != null  ){
+            return true;
+        }else{
+        return false;}
     }
 }

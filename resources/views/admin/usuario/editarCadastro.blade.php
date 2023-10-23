@@ -41,20 +41,59 @@
                                     @endif
                                 </div>
                                 <div class="input-group {{ $errors->has('genero') ? ' has-error' : '' }}">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">wc</i>
+                                </span>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Gênero</label>
+                                </div>
+                                <input type="radio" id="masculino" name="genero" value="M" {{ isset($dados->genero) && $dados->genero === 'M' ? 'checked' : '' }} required>
+                                <label style="margin-top:5px; margin-right:15px;">Masculino</label>
+                                <input type="radio" id="feminino" name="genero" value="F" {{ isset($dados->genero) && $dados->genero === 'F' ? 'checked' : '' }} required>
+                                <label style="margin-left:0px;">Feminino</label>
+                                @if ($errors->has('genero'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('genero') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                            <div class="input-group{{ $errors->has('cor') ? ' has-error' : '' }}">
+                            <span class="input-group-addon">
+                                <i class="material-icons">person</i>
+                            </span>
+                            <div class="form-group">
+                                <label class="control-label">Raça/Cor</label>
+                                <select id="cor-select" name="cor" value="{{ isset($dados->cor) ? $dados->cor : ''}}" required>
+                                    <option value="Amarelo">Amarelo</option>
+                                    <option value="Branco">Branco</option>
+                                    <option value="Indigena">Indigena</option>
+                                    <option value="Pardo">Pardo</option>
+                                    <option value="Preto">Preto</option>
+                                </select>
+                                @if ($errors->has('cor'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('cor') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="input-group {{ $errors->has('ehconcluinte') ? 'has-error' : '' }}">
     <span class="input-group-addon">
-        <i class="material-icons">wc</i>
+        <i class="material-icons">school</i>
     </span>
-    <label style="margin-top:20px;">Masculino</label>
-    <input type="radio" id="masculino" name="genero" value="M" {{ isset($dados->genero) && $dados->genero === 'M' ? 'checked' : '' }} required>
-    <label style="margin-left:12px;">Feminino</label>
-    <input type="radio" id="feminino" name="genero" value="F" {{ isset($dados->genero) && $dados->genero === 'F' ? 'checked' : '' }} required>
-    @if ($errors->has('genero'))
-        <span class="help-block">
-            <strong>{{ $errors->first('genero') }}</strong>
-        </span>
+    <div class="form-group label-floating">
+        <label class="control-label">É concluinte do Ensino Fundamental ou Ensino Médio,Ensino Médio Técnico?</label>
+    </div>
+    <input type="radio" name="ehconcluinte" value="s" {{ isset($dados->ehconcluinte) && $dados->ehconcluinte === 's' ? 'checked' : '' }} required>
+    <label style="margin-top:5px; margin-right:15px;">sim</label>
+    <input type="radio" name="ehconcluinte" value="n" {{ isset($dados->ehconcluinte) && $dados->ehconcluinte === 'n' ? 'checked' : '' }}>
+    <label style="margin-left:0px;">não</label>
+    @if($errors->has('ehconcluinte'))
+    <span class="help-block">
+        <strong>{{ $errors->first('ehconcluinte') }}</strong>
+    </span>
     @endif
 </div>
-
 
 
                                 <div class="input-group{{ $errors->has('cpf') ? ' has-error' : '' }}">
@@ -261,6 +300,15 @@
                 placeholder: 'Selecione o tamanho da sua camisa...',
                 onInitialize: function() {
                     this.setValue(oldCamisa, true);
+                    //$('.selectize-control').addClass('form-group');
+                    $('.selectize-input').addClass('form-control');
+                },
+            });
+            var oldcor = $('#cor-select').attr("value");
+            $('#cor-select').selectize({
+                placeholder: 'Selecione o tamanho da sua camisa...',
+                onInitialize: function() {
+                    this.setValue(oldcor, true);
                     //$('.selectize-control').addClass('form-group');
                     $('.selectize-input').addClass('form-control');
                 },

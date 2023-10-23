@@ -8,6 +8,7 @@ services:
       dockerfile: ./Dockerfile
     volumes:
       - ./:/var/www/html/
+      - ./storage/app/public:/var/www/html/storage/app/public
     ports:
       - '8088:80'
     links:

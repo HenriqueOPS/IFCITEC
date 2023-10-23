@@ -31,11 +31,18 @@
             <div class="col-md-6">
 
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <h3>{numProjetos}</h3>
                         <h4>Projetos</h4>
+                     
+                    </div>
+                    <div class="col-md-6">
+                      <h3>{NCompareceram}</h3> 
+                       <h4> Não Compareceram</h4>
                     </div>
                 </div>
+
+               
 
                 <div class="row">
 
@@ -46,7 +53,7 @@
 
                     <div class="col-md-4">
                         <h3>{naoAvaliados}</h3>
-                        <h4>Falta Avaliar</h4>
+                        <h4>Projetos com nenhuma avaliação</h4>
                     </div>
 
                     <div class="col-md-4">
@@ -85,6 +92,8 @@
                             <div class="preenchido vermelho percenProjetosFaltaAvaliar"></div>
                         </div>
                     </li>
+
+                   
 
                 </ul>
 
@@ -247,12 +256,12 @@
 
                 var projetos = data.projetos;
                 var avaliadores = data.avaliadores;
-
                 var templateDashboard = $('#template-dashboard').html();
-
+              
+                templateDashboard = templateDashboard.replace(/{NCompareceram}/g, projetos.naoCompareceu);
                 templateDashboard = templateDashboard.replace(/{numProjetos}/g, projetos.numProjetos);
                 templateDashboard = templateDashboard.replace(/{avaliados}/g, projetos.avaliados);
-                templateDashboard = templateDashboard.replace(/{naoAvaliados}/g, projetos.naoAvaliados);
+                templateDashboard = templateDashboard.replace(/{naoAvaliados}/g, projetos.numProjetos - projetos.umaAvalicao -  projetos.avaliados );
                 templateDashboard = templateDashboard.replace(/{umaAvalicao}/g, projetos.umaAvalicao);
 
                 templateDashboard = templateDashboard.replace(/{presentes}/g, avaliadores.presentes);

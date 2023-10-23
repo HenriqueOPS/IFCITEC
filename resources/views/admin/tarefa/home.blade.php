@@ -66,9 +66,3 @@
     @include('partials.modalTarefa')
 
 @endsection
-
-@section('js')
-<script>
-	document.getElementById('nav-tarefas').classList.add('active');
-</script>
-@endsection

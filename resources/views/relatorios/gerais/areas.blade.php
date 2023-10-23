@@ -1,9 +1,13 @@
 @extends('relatorios.relatorioPaisagem')
 
 @section('content')
+<header>
+	<img src="{{ asset('img/ifcitecheader.png')  }}"/>
+        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE ÁREAS DO CONHECIMENTO</h2>
+</header>
 <div class="container">
     <div class="row">
-        <h2 style="text-align: center; font-size: 25px;">RELATÓRIO DE ÁREAS DO CONHECIMENTO</h2>
+
 
         <table class="bordered striped centered" style="width: 100%">
         	<thead>

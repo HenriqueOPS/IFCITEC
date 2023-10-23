@@ -43,7 +43,7 @@ RUN apt-get update && \
     rm -rf /var/lib/{apt,dpkg,cache,log}/ && \
     rm -rf /tmp/*
 
-RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
+RUN docker-php-ext-configure pgsql --with-pgsql=/usr/local/pgsql && docker-php-ext-configure gd --with-jpeg
 RUN docker-php-ext-install zip pdo_pgsql pgsql gd
 
 RUN a2dissite * && a2enmod rewrite

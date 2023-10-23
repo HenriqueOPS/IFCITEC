@@ -79,5 +79,6 @@ class Escola extends Model {
     public function enderecos() {
         return $this->hasOne('App\Endereco', 'id', 'endereco_id');
     }
+    
 
 }

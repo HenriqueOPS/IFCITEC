@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
+use App\Mail\HomologacaoEmail;
+use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 use App\Endereco;
 use App\Funcao;
 use App\Pessoa;
@@ -52,7 +56,7 @@ class ComissaoAvaliadoraController extends Controller
 
 			$idOk = array_column($idOk, 'projeto_id');
 
-			$projetos = Projeto::select('projeto.id', 'projeto.titulo', 'projeto.situacao_id')
+			$projetos = Projeto::select('projeto.id', 'projeto.titulo', 'projeto.situacao_id','projeto.localizacao')
 				->join('revisao', function ($query) {
 					$query->on('projeto.id', '=', 'revisao.projeto_id');
 					$query->where('revisao.pessoa_id', '=', Auth::user()->id);
@@ -76,7 +80,7 @@ class ComissaoAvaliadoraController extends Controller
 
 			$idOk = array_column($idOk, 'projeto_id');
 
-			$projetos = Projeto::select('projeto.id', 'projeto.titulo', 'projeto.situacao_id')
+			$projetos = Projeto::select('projeto.id', 'projeto.titulo', 'projeto.situacao_id','projeto.localizacao')
 				->join('avaliacao', function ($query) {
 					$query->on('projeto.id', '=', 'avaliacao.projeto_id');
 					$query->where('avaliacao.pessoa_id', '=', Auth::user()->id);
@@ -177,13 +181,43 @@ class ComissaoAvaliadoraController extends Controller
 	}
 
 	public function cadastraComissao(Request $req)
-	{
-		$data = $req->all();
-
-		if (Pessoa::find(Auth::id())->endereco_id != null) { // altera o endereço do caboclo
-			$idEndereco = DB::table('endereco')
-				->where('id', '=', Pessoa::find(Auth::id())->endereco_id)
-				->update([
+	{ 
+		
+		try {
+            $data = $req->all();
+            $val = Validator::make($data,[
+                'cep' => 'required|',
+                'endereco' => 'required|string',
+                'bairro' => 'required|string',
+                'municipio' => 'required|string',
+                'uf' => 'required|string|max:2',
+                'numero' => 'required|string',
+                'titulacao' => 'required|string',
+				'lattes' => 'required|active_url|max:190',
+                'profissao' => 'required|string',
+                'instituicao' => 'required|string',
+                'area_id' => 'required|array',
+                'area_id.*' => 'required|numeric',
+                'funcao' => 'required|array',
+            ]);
+			if ($val->fails()) {
+                return redirect()->back()->withErrors($val->errors())->withInput();
+            }
+			DB::beginTransaction();
+			if (Pessoa::find(Auth::id())->endereco_id != null) { // altera o endereço do caboclo
+				$idEndereco = DB::table('endereco')
+					->where('id', '=', Pessoa::find(Auth::id())->endereco_id)
+					->update([
+						'cep' => $data['cep'],
+						'endereco' => $data['endereco'],
+						'bairro' => $data['bairro'],
+						'municipio' => $data['municipio'],
+						'uf' => $data['uf'],
+						'numero' => $data['numero']
+					]);
+			} else { // cria um registro de endereço
+	
+				$idEndereco = Endereco::create([
 					'cep' => $data['cep'],
 					'endereco' => $data['endereco'],
 					'bairro' => $data['bairro'],
@@ -191,125 +225,135 @@ class ComissaoAvaliadoraController extends Controller
 					'uf' => $data['uf'],
 					'numero' => $data['numero']
 				]);
-		} else { // cria um registro de endereço
-
-			$idEndereco = Endereco::create([
-				'cep' => $data['cep'],
-				'endereco' => $data['endereco'],
-				'bairro' => $data['bairro'],
-				'municipio' => $data['municipio'],
-				'uf' => $data['uf'],
-				'numero' => $data['numero']
-			]);
-
-			$idEndereco = $idEndereco['original']['id'];
-		}
-
-		DB::table('pessoa')
-			->where('id', '=', Auth::id())
-			->update([
-				'titulacao' => $data['titulacao'],
-				'lattes' => $data['lattes'],
-				'profissao' => $data['profissao'],
-				'instituicao' => $data['instituicao'],
-				'endereco_id' => $idEndereco,
-			]);
-
-		$comissaoEdicao = DB::table('comissao_edicao')
-			->where('edicao_id', '=', Edicao::getEdicaoId())
-			->where('pessoa_id', '=', Auth::id())
-			->get();
-
-		if ($comissaoEdicao->count()) {
-			$comissaoEdicaoId = $comissaoEdicao->first()->id;
-		} else {
-			$comissaoEdicaoId = DB::table('comissao_edicao')
-				->insertGetId([
-					'edicao_id' => Edicao::getEdicaoId(),
-					'pessoa_id' => Auth::id()
+	
+				$idEndereco = $idEndereco['original']['id'];
+			}
+	
+			DB::table('pessoa')
+				->where('id', '=', Auth::id())
+				->update([
+					'titulacao' => $data['titulacao'],
+					'lattes' => $data['lattes'],
+					'profissao' => $data['profissao'],
+					'instituicao' => $data['instituicao'],
+					'endereco_id' => $idEndereco,
 				]);
-		}
-
-		// remove as áreas da comissão caso esteja tentando cadastrar dnv
-		DB::table('areas_comissao')
-			->where('comissao_edicao_id', '=', $comissaoEdicaoId)
-			->delete();
-
-		$areas = $data['area_id'];
-		foreach ($areas as $areaId) {
+	
+			$comissaoEdicao = DB::table('comissao_edicao')
+				->where('edicao_id', '=', Edicao::getEdicaoId())
+				->where('pessoa_id', '=', Auth::id())
+				->get();
+	
+			if ($comissaoEdicao->count()) {
+				$comissaoEdicaoId = $comissaoEdicao->first()->id;
+			} else {
+				$comissaoEdicaoId = DB::table('comissao_edicao')
+					->insertGetId([
+						'edicao_id' => Edicao::getEdicaoId(),
+						'pessoa_id' => Auth::id()
+					]);
+			}
+	
+			// remove as áreas da comissão caso esteja tentando cadastrar dnv
 			DB::table('areas_comissao')
-				->insert([
-					'area_id' => $areaId,
-					'comissao_edicao_id' => $comissaoEdicaoId,
-					'homologado' => false
-				]);
-		}
-
-		// Avaliador
-		if (in_array("1", $data['funcao'])) {
-			$idFuncaoAvaliador = DB::table('funcao')
-				->where('funcao', 'Avaliador')
-				->get();
-
-			$idFuncaoAvaliador = $idFuncaoAvaliador->first()->id;
-
-			$isAvaliador = DB::table('funcao_pessoa')
-				->where('edicao_id', '=', Edicao::getEdicaoId())
-				->where('funcao_id', '=', $idFuncaoAvaliador)
-				->where('pessoa_id', '=', Auth::id())
-				->get();
-
-			if (!$isAvaliador->count()) {
-				DB::table('funcao_pessoa')
+				->where('comissao_edicao_id', '=', $comissaoEdicaoId)
+				->delete();
+	
+			$areas = $data['area_id'];
+			foreach ($areas as $areaId) {
+				DB::table('areas_comissao')
 					->insert([
-						'edicao_id' => Edicao::getEdicaoId(),
-						'funcao_id' => $idFuncaoAvaliador,
-						'pessoa_id' => Auth::id(),
-						'homologado' => false
+						'area_id' => $areaId,
+						'comissao_edicao_id' => $comissaoEdicaoId,
+						'homologado' => null
 					]);
 			}
-		}
-
-		// Homologador
-		if (in_array("2", $data['funcao'])) {
-
-			$idFuncaoHomologador = DB::table('funcao')
-				->where('funcao', 'Homologador')
-				->get();
-
-			$idFuncaoHomologador = $idFuncaoHomologador->first()->id;
-
-			$isHomologador = DB::table('funcao_pessoa')
-				->where('edicao_id', '=', Edicao::getEdicaoId())
-				->where('funcao_id', '=', $idFuncaoHomologador)
-				->where('pessoa_id', '=', Auth::id())
-				->get();
-
-			if (!$isHomologador->count()) {
-				DB::table('funcao_pessoa')
-					->insert([
-						'edicao_id' => Edicao::getEdicaoId(),
-						'funcao_id' => $idFuncaoHomologador,
-						'pessoa_id' => Auth::id(),
-						'homologado' => false
-					]);
+	
+			// Avaliador
+			if (in_array("1", $data['funcao'])) {
+				$idFuncaoAvaliador = DB::table('funcao')
+					->where('funcao', 'Avaliador')
+					->get();
+	
+				$idFuncaoAvaliador = $idFuncaoAvaliador->first()->id;
+	
+				$isAvaliador = DB::table('funcao_pessoa')
+					->where('edicao_id', '=', Edicao::getEdicaoId())
+					->where('funcao_id', '=', $idFuncaoAvaliador)
+					->where('pessoa_id', '=', Auth::id())
+					->get();
+	
+				if (!$isAvaliador->count()) {
+					DB::table('funcao_pessoa')
+						->insert([
+							'edicao_id' => Edicao::getEdicaoId(),
+							'funcao_id' => $idFuncaoAvaliador,
+							'pessoa_id' => Auth::id(),
+							'homologado' => null
+						]);
+				}
+			}
+	
+			// Homologador
+			if (in_array("2", $data['funcao'])) {
+	
+				$idFuncaoHomologador = DB::table('funcao')
+					->where('funcao', 'Homologador')
+					->get();
+	
+				$idFuncaoHomologador = $idFuncaoHomologador->first()->id;
+	
+				$isHomologador = DB::table('funcao_pessoa')
+					->where('edicao_id', '=', Edicao::getEdicaoId())
+					->where('funcao_id', '=', $idFuncaoHomologador)
+					->where('pessoa_id', '=', Auth::id())
+					->get();
+	
+				if (!$isHomologador->count()) {
+					DB::table('funcao_pessoa')
+						->insert([
+							'edicao_id' => Edicao::getEdicaoId(),
+							'funcao_id' => $idFuncaoHomologador,
+							'pessoa_id' => Auth::id(),
+							'homologado' => null
+						]);
+				}
+			}
+	
+			$emailJob = (new \App\Jobs\MailBaseJob(Auth::user()->email, 'Comissao Avaliadora', ['nome' => Auth::user()->nome])
+			)->delay(\Carbon\Carbon::now()->addSeconds(3));
+	
+			dispatch($emailJob);
+			DB::commit();
+	
+			return redirect()->route('autor');
+			}
+			catch (ValidationException $e) {
+				// Redirecionar de volta com os erros de validação e os dados de entrada
+				return redirect()->back()->withErrors($e->errors())->withInput();
+			}catch (\Exception $e) {
+				DB::rollback();
+	
+				// Lidar com a exceção de forma adequada
+				return response()->json(['error' => 'Ocorreu um erro: ' . $e->getMessage()], 500);
 			}
 		}
-
-		$emailJob = (new \App\Jobs\MailBaseJob(Auth::user()->email, 'Comissao Avaliadora', ['nome' => Auth::user()->nome])
-		)->delay(\Carbon\Carbon::now()->addSeconds(3));
-
-		dispatch($emailJob);
-
-		return redirect()->route('autor');
-	}
+		
+	
 
 	public function homologarComissao($id)
 	{
 
 		$comissaoEdicao = DB::table('comissao_edicao')->find($id);
 		$pessoa = Pessoa::find($comissaoEdicao->pessoa_id);
-
+		$funcaodesejada = DB::table('funcao_pessoa')
+		->where('edicao_id',Edicao::getEdicaoId())
+		->where('pessoa_id', $comissaoEdicao->pessoa_id)
+		->get()
+		->pluck('funcao_id')
+		->toArray();
+	
+	
 		$areasComissao = DB::table('areas_comissao')
 			->select('area_id')
 			->where('comissao_edicao_id', '=', $id)
@@ -373,52 +417,50 @@ class ComissaoAvaliadoraController extends Controller
 		if ($projetosAreas == null)
 			$areasConhecimento = $areas;
 
-		return view('admin.comissao.homologar', compact('id', 'pessoa', 'idsAreas', 'areas', 'nivel', 'areasConhecimento'));
+			$comissaoEdicao->data_criacao = Carbon::parse($comissaoEdicao->data_criacao)->format('d/m/Y H:i:s');
+		return view('admin.comissao.homologar', compact('id', 'pessoa', 'idsAreas', 'areas', 'nivel', 'areasConhecimento','comissaoEdicao','funcaodesejada'));
 	}
 
 	public function homologaComissao(Request $req)
 	{
 
 		$data = $req->all();
+		$funcoesHomologadas = '';
+		$funcoesNãoHomoladas = '';
+		$pessoa = Pessoa::find($data['pessoa_id']);	
 
-		$pessoa = Pessoa::find($data['pessoa_id']);
 
-		// homologa o avaliador
-		if (isset($data['avaliador']) && !$pessoa->temFuncao('Avaliador', true)) {
+	
+		if (!isset($data['homologador']) && $pessoa->temFuncao('Homologador', TRUE)) {
+			// Set avaliador and homologador functions to false
 			DB::table('funcao_pessoa')
-				->insert([
-					'pessoa_id' => $data['pessoa_id'],
-					'funcao_id' => EnumFuncaoPessoa::getValue('Avaliador'),
-					'edicao_id' => Edicao::getEdicaoId(),
-					'homologado' => true
+				->where('pessoa_id', '=', $data['pessoa_id'])
+				->where('edicao_id', '=', Edicao::getEdicaoId())
+				->whereIn('funcao_id', [
+					EnumFuncaoPessoa::getValue('Homologador'),
+				])
+				->update([
+					'homologado' => false
 				]);
-		}
-
-		// homologa o homologador
-		if (isset($data['homologador']) && !$pessoa->temFuncao('Homologador', true)) {
+			$funcoesNãoHomoladas = 'Homologador';
+		} 
+		if (!isset($data['avaliador']) && $pessoa->temFuncao('Avaliador', TRUE)) {
+			// Set avaliador and homologador functions to false
 			DB::table('funcao_pessoa')
-				->insert([
-					'pessoa_id' => $data['pessoa_id'],
-					'funcao_id' => EnumFuncaoPessoa::getValue('Homologador'),
-					'edicao_id' => Edicao::getEdicaoId(),
-					'homologado' => true
+				->where('pessoa_id', '=', $data['pessoa_id'])
+				->where('edicao_id', '=', Edicao::getEdicaoId())
+				->whereIn('funcao_id', [
+					EnumFuncaoPessoa::getValue('Avaliador'),
+				])
+				->update([
+					'homologado' => false
 				]);
-		}
+			$funcoesNãoHomoladas = $funcoesNãoHomoladas . 'Avaliador';
+		} 
+
 
 		// seta homologado como false para função de avaliador/homologador
-		DB::table('funcao_pessoa')
-			->where('pessoa_id', '=', $data['pessoa_id'])
-			->where('edicao_id', '=', Edicao::getEdicaoId())
-			->whereIn(
-				'funcao_id',
-				[
-					EnumFuncaoPessoa::getValue('Homologador'),
-					EnumFuncaoPessoa::getValue('Avaliador'),
-				]
-			)
-			->update([
-				'homologado' => false
-			]);
+
 
 		$areasComissao = DB::table('areas_comissao')
 			->select('area_id')
@@ -464,30 +506,69 @@ class ComissaoAvaliadoraController extends Controller
 				]);
 
 			// Avaliador
-			if (isset($data['avaliador'])) {
-				DB::table('funcao_pessoa')
-					->where([
-						'pessoa_id' => $data['pessoa_id'],
-						'edicao_id' => Edicao::getEdicaoId(),
-						'funcao_id' => EnumFuncaoPessoa::getValue('Avaliador')
-					])
-					->update([
-						'homologado' => true
-					]);
-			}
+			$funcoesHomologadas = '';
 
-			// Homologador
-			if (isset($data['homologador'])) {
-				DB::table('funcao_pessoa')
-					->where([
+				if (isset($data['avaliador'])) {
+					$avaliadorData = [
 						'pessoa_id' => $data['pessoa_id'],
 						'edicao_id' => Edicao::getEdicaoId(),
-						'funcao_id' => EnumFuncaoPessoa::getValue('Homologador')
-					])
-					->update([
+						'funcao_id' => EnumFuncaoPessoa::getValue('Avaliador'),
 						'homologado' => true
-					]);
-			}
+					];
+
+					$existingAvaliador = DB::table('funcao_pessoa')
+						->where( 'pessoa_id',$data['pessoa_id'])
+						->where('edicao_id', '=', Edicao::getEdicaoId())
+						->where('funcao_id',EnumFuncaoPessoa::getValue('Avaliador'))
+						->first();
+
+					if ($existingAvaliador === null) {
+						DB::table('funcao_pessoa')->insert($avaliadorData);
+					}else{
+						DB::table('funcao_pessoa')
+						->where('pessoa_id', '=', $data['pessoa_id'])
+						->where('edicao_id', '=', Edicao::getEdicaoId())
+						->whereIn('funcao_id', [
+							EnumFuncaoPessoa::getValue('Avaliador'),
+						])
+						->update([
+							'homologado' => true
+						]);
+					}
+
+					$funcoesHomologadas = 'Avaliador';
+				}
+
+				if (isset($data['homologador'])) {
+					$homologadorData = [
+						'pessoa_id' => $data['pessoa_id'],
+						'edicao_id' => Edicao::getEdicaoId(),
+						'funcao_id' => EnumFuncaoPessoa::getValue('Homologador'),
+						'homologado' => true
+					];
+
+					$existingHomologador = DB::table('funcao_pessoa')
+					->where( 'pessoa_id',$data['pessoa_id'])
+					->where('edicao_id', '=', Edicao::getEdicaoId())
+					->where('funcao_id',EnumFuncaoPessoa::getValue('Homologador'))
+					->first();
+
+					if ($existingHomologador === null) {
+						DB::table('funcao_pessoa')->insert($homologadorData);
+					}else{
+						DB::table('funcao_pessoa')
+						->where('pessoa_id', '=', $data['pessoa_id'])
+						->where('edicao_id', '=', Edicao::getEdicaoId())
+						->whereIn('funcao_id', [
+							EnumFuncaoPessoa::getValue('Homologador'),
+						])
+						->update([
+							'homologado' => true
+						]);
+					}
+
+					$funcoesHomologadas .= ' Homologador';
+				}
 		} else { // Não existem áreas então NÃO HOMOLOGA
 
 			// Deleta os campos das areas
@@ -517,7 +598,22 @@ class ComissaoAvaliadoraController extends Controller
 					'homologado' => false
 				]);
 		}
-
+		if($funcoesHomologadas == 'Avaliador Homologador'){
+			$funcoesHomologadas = 'Avaliador/Homologador';
+		}
+		if($funcoesHomologadas != ''){
+			$funcoesHomologadas = 'Você está Homologado no nosso sistema como ' . $funcoesHomologadas . '.';
+		}
+		#comentarios
+		if($funcoesNãoHomoladas != ''){
+			if($funcoesNãoHomoladas == 'HomologadorAvaliador'){
+				$funcoesNãoHomoladas = 'Avaliador/Homologador';
+			}
+			$funcoesNãoHomoladas = 'Você não é um ' . $funcoesNãoHomoladas . ' no nosso sistema.';
+		}
+		$emailJob = (new \App\Jobs\MailBaseJob($pessoa->email, 'HomologacaoEmail', ['nome' =>$pessoa->nome,'funcoes' => $funcoesHomologadas,'naohomologadas' => $funcoesNãoHomoladas])
+		)->delay(\Carbon\Carbon::now()->addSeconds(3));
+		dispatch($emailJob);
 		return redirect()->route('administrador.comissao');
 	}
 

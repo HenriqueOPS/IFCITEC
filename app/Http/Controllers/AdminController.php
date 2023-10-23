@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 use App\Mensagem;
+use Illuminate\Support\Facades\File;
 use App\AreaConhecimento;
 use App\Edicao;
 use App\Endereco;
 use App\Enums\EnumFuncaoPessoa;
 use App\Enums\EnumSituacaoProjeto;
 use App\Escola;
+use App\Brindes;
 use App\Empresa;
 use App\Funcao;
 use App\Http\Requests\AreaRequest;
@@ -22,6 +24,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\JsonResponse;
+
 
 
 class AdminController extends Controller
@@ -77,7 +80,9 @@ class AdminController extends Controller
         $response['projetos']['avaliados'] = Projeto::where('edicao_id', '=', Edicao::getEdicaoId())
             ->where('situacao_id', '=', 5)
             ->count();
-
+        $response['projetos']['naoCompareceu'] = Projeto::where('situacao_id',6)
+        ->where('edicao_id',Edicao::getEdicaoId())
+        ->count(); 
         $response['projetos']['naoAvaliados'] = Projeto::where('edicao_id', '=', Edicao::getEdicaoId())
             ->where('situacao_id', '=', 4)
             ->count();
@@ -101,6 +106,7 @@ class AdminController extends Controller
         $response['avaliadores']['numAvaliadores'] = DB::table('funcao_pessoa')
             ->where('edicao_id', '=', Edicao::getEdicaoId())
             ->where('funcao_id', '=', 3)
+            ->where('homologado',true)
             ->count();
 
         $response['avaliadores']['presentes'] = DB::table('funcao_pessoa')
@@ -108,6 +114,7 @@ class AdminController extends Controller
             ->where('presenca.edicao_id', '=', Edicao::getEdicaoId())
             ->where('funcao_pessoa.edicao_id', '=', Edicao::getEdicaoId())
             ->where('funcao_pessoa.funcao_id', '=', 3)
+            ->where('funcao_pessoa.homologado',true)
             ->count();
 
         $response['avaliadores']['naoPresentes'] = $response['avaliadores']['numAvaliadores'] - $response['avaliadores']['presentes'];
@@ -150,15 +157,19 @@ class AdminController extends Controller
     public function projetos()
     {
 
-        $projetos = Projeto::select('titulo', 'id', 'situacao_id')
+        $projetos = Projeto::select('titulo', 'id', 'situacao_id','presenca')
             ->orderBy('titulo')
             ->where('edicao_id', Edicao::getEdicaoId())
             ->get()
             ->keyBy('id');
-
+        $numprojshomologados = $projetos->whereIn('situacao_id', [
+            EnumSituacaoProjeto::getValue('Homologado'),
+            EnumSituacaoProjeto::getValue('NaoAvaliado'),
+            EnumSituacaoProjeto::getValue('Avaliado'),
+        ])->count();
         $periodoAvaliacao = Edicao::consultaPeriodo('Avaliação');
 
-        return view('admin.projeto.home', compact('periodoAvaliacao'))->withProjetos($projetos);
+        return view('admin.projeto.home', compact('periodoAvaliacao','numprojshomologados'))->withProjetos($projetos);
     }
 
     public function escolas()
@@ -168,21 +179,15 @@ class AdminController extends Controller
         return view('admin.escola.home', collect(['escolas' => $escolas]));
     }
 
-    public function niveis()
-    {
-        $niveis = Nivel::orderBy('nivel')->get();
-
-        return view('admin.nivel.home', collect(['niveis' => $niveis]));
-    }
-
-    public function areas()
+    public function areasPorNiveis()
     {
         $areas = AreaConhecimento::all(['id', 'area_conhecimento', 'descricao', 'nivel_id'])
         ->groupBy('nivel_id');
         $medio = $areas[2];
         $fundamental = $areas[3];
+        $niveis = Nivel::orderBy('nivel')->get();
 
-        return view('admin.area.home')->withMedio($medio)->withFundamental($fundamental);
+        return view('admin.area.home')->withMedio($medio)->withFundamental($fundamental)->withNiveis($niveis);
     }
 
     public function tarefas()
@@ -194,9 +199,7 @@ class AdminController extends Controller
 
     public function usuarios()
     {
-        $usuarios = Pessoa::orderBy('nome')
-            ->where('oculto', false)
-            ->get();
+        $usuarios = Pessoa::orderBy('nome')->get();
 
         return view('admin.usuario.home')->withUsuarios($usuarios);
     }
@@ -316,13 +319,24 @@ class AdminController extends Controller
             ->whereRaw('(funcao_pessoa.funcao_id = 3 or funcao_pessoa.funcao_id = 4)')
             ->select('comissao_edicao.id', 'funcao_pessoa.homologado', 'funcao_pessoa.funcao_id',
                 'pessoa.nome', 'pessoa.instituicao', 'pessoa.titulacao')
-            ->orderBy('funcao_pessoa.homologado')
+            ->orderByDesc('funcao_pessoa.homologado')
             ->orderBy('pessoa.nome', 'asc')
             ->get()
             ->toArray();
+        $voluntarios = DB::table('funcao_pessoa')
+        ->where('funcao_id',9)
+        ->where('funcao_pessoa.edicao_id',Edicao::getEdicaoId())
+        ->join('pessoa','pessoa.id','funcao_pessoa.pessoa_id')
+        ->join('voluntarios','voluntarios.id','funcao_pessoa.pessoa_id')
+        ->where('voluntarios.edicao_id',Edicao::getEdicaoId())
+        ->select('nome','homologado','ano','turma','curso','pessoa_id')
+        ->orderBy('homologado', 'desc')
+        ->orderBy('nome')
+        ->get();
+        $funcoesvoluntarios = DB::table('tarefa')->get();
 
-        return view('admin.comissao.home', collect(['comissao' => $comissao]));
-    }
+        return view('admin.comissao.home', compact('comissao', 'voluntarios', 'funcoesvoluntarios'));
+        }
 
     public function relatorios($edicao)
     {
@@ -395,7 +409,7 @@ class AdminController extends Controller
                 'palavras' => $data['palavras'],
             ]);
 
-        return redirect()->route('administrador.niveis');
+        return redirect()->route('administrador.areas');
     }
 
     public function excluiNivel($id, $s)
@@ -788,16 +802,7 @@ class AdminController extends Controller
     public function configuracoes(){
         return view('admin.configuracoes.configuracoes');
     }
-    public function background(Request $request){
-        $nome = $request->imagem;
-        $requestImage = $request->image;
-        $extension = $requestImage->extension();
-        $imageName = $nome . "." . $extension;
-        $request->image->move(public_path('img'),$imageName);
-      
-        return redirect()->route('admin.configuracoes');
-        
-    }
+   
     public function navbar(Request $request){
         $cor = Mensagem::where('nome','=','cor_navbar')->get();
         $cor[0]->conteudo = $request->cor;
@@ -847,6 +852,356 @@ class AdminController extends Controller
     
         return abort(404);
     }
+    public function editarempresa($id)
+    {
 
+        $data = '';
+        $dados = Empresa::find($id);
 
+        if ($dados['endereco_id']) {
+            $data = Endereco::find($dados['endereco_id']);
+        }
+
+        return view('admin.empresas.edit', compact('dados', 'data'));
+
+    }
+    public function editaEmpresa(Request $req)
+    {
+
+        $data = $req->all();
+
+        $id_empresa = $data['id_empresa'];
+        $id_endereco = $data['id_endereco'];
+
+        if ($id_endereco != 0) {
+
+            Endereco::where('id', $id_endereco)
+                ->update(['cep' => $data['cep'],
+                    'endereco' => $data['endereco'],
+                    'bairro' => $data['bairro'],
+                    'municipio' => $data['municipio'],
+                    'uf' => $data['uf'],
+                    'numero' => $data['numero'],
+                ]);
+
+        } else {
+
+            $id_endereco = Endereco::create(['cep' => $data['cep'],
+                'endereco' => $data['endereco'],
+                'bairro' => $data['bairro'],
+                'municipio' => $data['municipio'],
+                'uf' => $data['uf'],
+                'numero' => $data['numero'],
+            ]);
+
+            $id_endereco = $id_endereco['id'];
+
+        }
+
+        Empresa::where('id', $id_empresa)
+            ->update(['nome_completo' => $data['nome_completo'],
+                'nome_curto' => $data['nome_curto'],
+                'email' => $data['email'],
+                'telefone' => $data['telefone'],
+                'endereco_id' => $id_endereco,
+            ]);
+
+        return redirect()->route('admin.empresas');
+    }
+    public function cordosavisos(Request $req){
+        $cor = Mensagem::where('nome','=','cor_avisos')->get();
+        $cor[0]->conteudo = $req->cor;
+        $cor[0]->timestamps = false;
+        $cor[0]->save();
+        return redirect()->route('admin.configuracoes');
+
+    }
+    public function corBotoes(Request $req){
+        $cor = Mensagem::where('nome', '=', 'cor_botoes')->get();
+        $cor[0]->conteudo = $req->cor;
+        $cor[0]->timestamps = false;
+        $cor[0]->save();
+    
+        return redirect()->route('admin.configuracoes');
+    }
+    public function brindes(){
+        $brindes = Brindes::orderBy('nome')->get();
+        return view('admin.premiacao.home',['brindes' => $brindes]);
+    }
+    public function NovoBrinde(){
+        return view('admin.premiacao.create');
+    }
+    public function cadastroBrinde(Request $req) {
+        $data = $req->all();
+        $brinde = Brindes::create([
+            'nome' => $data['nome'],
+            'quantidade' => $data['quantidade'],
+            'descricao' => $data['descricao'],
+            'tamanho' => $data['tamanho'],
+        ]);
+    
+        DB::table('movimentacao_registros')->insert([
+            'origem_destino' => $data['origem_destino'], // Update this based on your requirement
+            'quantidade_movimentada' => $data['quantidade'],
+            'data_movimentacao' => \Carbon\Carbon::now(),
+            'brinde_id' => $brinde->id,
+            'tipo_movimentacao' => true, // Assuming true represents "Adição"
+        ]);
+    
+        return redirect()->route('admin.brindes');
+    }
+    
+    public function dadosBrinde($id){
+    $brinde = Brindes::find($id);
+
+    return response()->json(['dados' => $brinde]);
+    }
+    public function editarbrindes($id){
+        $brinde = Brindes::find($id);
+        return view('admin.premiacao.edit', compact('brinde'));
+    }
+    public function editaBrinde(Request $request){
+        $idBrinde = $request->input('id_brinde');
+        $brinde = Brindes::find($idBrinde);
+        
+        // Faça as alterações necessárias no brinde com base nos dados enviados pelo formulário
+        $brinde->descricao = $request->input('descricao');
+        $brinde->tamanho = $request->input('tamanho');
+        $brinde->save();
+        
+        return redirect()->route('admin.brindes')->with('success', 'Premiação atualizado com sucesso!');
+    }
+      public function adicionarQuantidade(Request $request)
+    {
+        // Valide os dados recebidos na requisição
+        $this->validate($request, [
+            'brinde_id' => 'required|integer',
+            'quantidade' => 'required|integer|min:1',
+            'origem_destino' => 'required|',
+        ]);
+        DB::table('movimentacao_registros')->insert([
+            'origem_destino' => $request->origem_destino, // Update this based on your requirement
+            'quantidade_movimentada' => $request->quantidade,
+            'data_movimentacao' => \Carbon\Carbon::now(),
+            'brinde_id' => $request->brinde_id,
+            'tipo_movimentacao' => true, // Assuming true represents "Adição"
+        ]);
+        // Encontre o brinde pelo ID
+        $brinde = Brindes::findOrFail($request->brinde_id);
+
+        // Incremente a quantidade do brinde
+        $brinde->quantidade += $request->quantidade;
+
+        // Salve as mudanças no banco de dados
+        $brinde->save();
+
+        // Redirecione de volta à página anterior com uma mensagem de sucesso
+        return back()->with('success', 'Quantidade adicionada com sucesso!');
+    }
+    public function decrementarQuantidade(Request $request)
+    {
+        // Valide os dados recebidos na requisição
+        $this->validate($request, [
+            'brinde_id' => 'required|integer',
+            'quantidade' => 'required|integer|min:1',
+        ]);
+        DB::table('movimentacao_registros')->insert([
+            'origem_destino' => $request->origem_destino, // Update this based on your requirement
+            'quantidade_movimentada' => $request->quantidade,
+            'data_movimentacao' => \Carbon\Carbon::now(),
+            'brinde_id' => $request->brinde_id,
+            'tipo_movimentacao' => false, // Assuming true represents "Adição"
+        ]);
+
+        // Encontre o brinde pelo ID
+        $brinde = Brindes::findOrFail($request->brinde_id);
+
+        // Verifique se a quantidade a decrementar é maior que a quantidade atual
+        if ($request->quantidade > $brinde->quantidade) {
+            return back()->with('error', 'A quantidade a decrementar é maior que a quantidade disponível!');
+        }
+
+        // Decremente a quantidade do brinde
+        $brinde->quantidade -= $request->quantidade;
+
+        // Salve as mudanças no banco de dados
+        $brinde->save();
+
+        // Redirecione de volta à página anterior com uma mensagem de sucesso
+        return back()->with('success', 'Quantidade decrementada com sucesso!');
+    }
+    public function ocultarPessoa()
+    {
+        $pessoa = Auth::user();
+
+        if (!$pessoa) {
+            return response()->json(['message' => 'Pessoa não encontrada.'], 404);
+        }
+
+        $pessoa->update(['oculto' => true]);
+
+        return view('auth.oculto');
+    }
+    public function ocultar($id, Request $request){
+        $novoEstado = $request->input('estado');
+        $pessoa = Pessoa::where('id',$id)->first();
+
+        if (!$pessoa) {
+            return response()->json(['message' => 'Pessoa não encontrada.'], 404);
+        }
+
+        $pessoa->oculto = $novoEstado;
+        $pessoa->save();
+
+        return response()->json(['message' => 'Pessoa Atualizada com sucesso.']);
+
+    }
+
+    public function fontes(Request $req){
+        $fonte = Mensagem::where('nome', '=', 'fontes')->get();
+        $fonte[0]->conteudo = $req->fonte;
+        $fonte[0]->timestamps = false;
+        $fonte[0]->save();
+    
+        return redirect()->route('admin.configuracoes');
+    }
+    public function showRegistros($id)
+{
+    // Fetch the data of the movement record with the provided ID
+    $movimentoRegistro = DB::table('movimentacao_registros')->where('brinde_id', $id)->get();
+    // You can return the data in a format that suits your needs, such as JSON or a view
+    return response()->json($movimentoRegistro); // Or return a view with the data
+}
+    public  function getTotalRevisoes($id)
+{
+    $total = DB::table('revisao')
+        ->select(DB::raw('count(*) as total'))
+        ->join('public.pessoa', 'revisao.pessoa_id', '=', 'public.pessoa.id')
+        ->join('projeto','revisao.projeto_id','projeto.id')
+        ->where('projeto.edicao_id',Edicao::getEdicaoId())
+        ->where('public.pessoa.id', '=', $id)
+        ->first();
+
+    return $total->total;
+}
+    public function Cursos(){
+        $cursos = DB::table('cursos')->get();
+        $nivel = DB::table('nivel')->get();
+        return view('admin.cursos.home', compact('cursos','nivel'));
+    }
+    public function CreateCurso(Request $req){
+       
+        DB::table('cursos')->insert([
+            'nome' => $req->input('nome'),
+            'nivel_id'=> $req->input('nivel')
+        ]);
+      return redirect()->route('admin.cursos');
+    }
+    public function DeleteCurso(Request $req){
+        DB::table('cursos')->where('id', $req->input('id'))->delete();
+        return redirect()->route('admin.cursos');
+    }
+    public function UpdateCurso(Request $req){
+        $curso = DB::table('cursos')->where('id', $req->input('id'))->first();
+        $curso->nome = $req->input('nome');
+        $curso->nivel_id = $req->input('nivel');
+        $curso->timestamp = false;
+        $curso->save();
+        return redirect()->route('admin.cursos');
+    }
+    public function ReadCurso($id){
+        $curso = DB::table('cursos')->where('id',$id)->first();
+        if ($curso) {
+            return response()->json($curso);
+        } else {
+            return response()->json(['error' => 'Curso não encontrado'], 404);
+        }
+    }
+    public function GetTotalAvaliacoes($id){
+        $total = DB::table('avaliacao')
+        ->select(DB::raw('count(*) as total'))
+        ->join('public.pessoa', 'avaliacao.pessoa_id', '=', 'public.pessoa.id')
+        ->join('projeto','avaliacao.projeto_id','projeto.id')
+        ->where('projeto.edicao_id',Edicao::getEdicaoId())
+        ->where('public.pessoa.id', '=', $id)
+        ->first();
+
+    return $total->total;
+    }
+ 
+    public function excluir_voluntario(Request $req)
+    {
+        // Verifique se o usuário atual está autenticado como administrador
+
+            $senhaAdmin = $req->input('senha');
+            $idVoluntario = $req->input('id');
+
+            // Verifique a senha do administrador
+            if (password_verify($senhaAdmin, Auth::user()['attributes']['senha'])) {
+                // Excluir relacionamentos de funções de pessoa (caso existam)
+                DB::table('funcao_pessoa')
+                    ->where('pessoa_id', $idVoluntario)
+                    ->where('funcao_id', 9)
+                    ->where('edicao_id', Edicao::getEdicaoId())
+                    ->delete();
+
+                // Excluir o voluntário
+                DB::table('voluntarios')
+                    ->where('id', $idVoluntario)
+                    ->where('edicao_id', Edicao::getEdicaoId())
+                    ->delete();
+
+                return response()->json(['message' => 'Voluntário excluído com sucesso' ]);
+            } else {
+                return response()->json(['message' => 'Senha incorreta'], 401);
+            }
+        }
+    public function funcoesAtivas($id){
+        $funcoesAtivas = DB::table('pessoa_tarefa')
+        ->where('edicao_id', Edicao::getEdicaoId())
+        ->where('pessoa_id',$id)
+        ->first();
+        return response()->json($funcoesAtivas);
+    }
+    public function AtualizarFuncao(Request $request){
+        $pessoa_id = $request->input('pessoa_id');
+        $tarefa_id = $request->input('funcao'); 
+        $funcoesAtivas = DB::table('pessoa_tarefa')
+        ->where('edicao_id', Edicao::getEdicaoId())
+        ->where('pessoa_id',$pessoa_id)
+        ->first();
+        if( $funcoesAtivas ==  null){
+            DB::table('pessoa_tarefa')->insert([
+                'pessoa_id' => $pessoa_id,
+                'tarefa_id' => $tarefa_id,
+                'edicao_id' => Edicao::getEdicaoId(),
+            ]);
+        }
+        else{
+            DB::table('pessoa_tarefa')
+            ->where('pessoa_id', $pessoa_id)
+            ->where('edicao_id', Edicao::getEdicaoId())
+            ->update([
+                'pessoa_id' => $pessoa_id,
+                'tarefa_id' => $tarefa_id,
+                'edicao_id' => Edicao::getEdicaoId(),
+            ]);
+        
+            
+        }
+        return redirect()->route('administrador.comissao');
+
+    }
+    public function showLog()
+    {
+        $logFilePath = storage_path('logs/laravel.log');
+
+        if (File::exists($logFilePath)) {
+            $logContent = File::get($logFilePath);
+        } else {
+            $logContent = 'O arquivo de log não foi encontrado.';
+        }
+
+        return view('log', ['logContent' => $logContent]);
+    }
 }

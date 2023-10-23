@@ -16,6 +16,7 @@
     <!-- Fonts and icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 
     <!-- Icons -->
     <link rel="icon" href="{{ asset('img/icons/32x32.png') }}" sizes="32x32" />
@@ -80,8 +81,28 @@
         background-position:center;
         background-attachment: fixed;   
     }
+    .nav-pills > li.active > a{
+                background-color:  {{$corbotoes}}!important;
+            }
+            .btn {
+                background-color: {{$corbotoes}} !important; 
+            }
+            body{
+                font-family: {{$fonte}} !important;
+            }
+
+    @media (max-width: 778px){
+        #barrinha{
+            display:flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+        }
+    
+    }   
+
 </style>
-<body class="masthead" style="background-image: url(https://inscricao-ifcitec.canoas.ifrs.edu.br/img/background.png);">
+
+<body class="masthead" style="background-image: url(data:image/png;base64,{{ $background }});">
     
     @if (!env('APP_DEBUG'))
         <!-- Google Tag Manager (noscript) -->
@@ -100,7 +121,7 @@
 
                     <div class="navbar-header">
                         <a class="navbar-brand" href="{{ route('home') }}">
-                            <img src="https://inscricao-ifcitec.canoas.ifrs.edu.br/img/logo.png" width="100" alt="IFCITEC">
+                            <img src="data:image/png;base64,{{ $logonormal }}" width="100" alt="IFCITEC">
                         </a>
 
                         <button type="button" class="navbar-toggle" data-toggle="collapse">
@@ -181,8 +202,15 @@
      
             
     </div>
+    @if(!Auth::guest())
+    @php
+    $UpdateUser = strtotime(Auth::user()->updated_at);
+    $InicioEdicao = strtotime($InicioEdicao);
+    @endphp
+    @endif
     @if (Auth::guest() || !Auth::user()->verificado)
-            @elseif(Auth::user()->lgpddata==null )
+  
+            @elseif( $InicioEdicao > $UpdateUser  )
                 <div id='myModal'class="modal" tabindex="-1" role="dialog" class="modal hide fade in" data-keyboard="false" data-backdrop="static">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -194,7 +222,7 @@
                         .modal-body > p {
                             text-indent:2em ;
                         }
-                    </style>
+                        </style>
                         <div class="modal-body">
                             <p>Em cumprimento ao nosso compromisso de transparência, conforme estabelecido na Lei de Política de Privacidade e Proteção de Dados Pessoais - LGPT, disponível no link de nossa plataforma. Solicitamos sua autorização para que a feira de ciências e inovação tecnológica - IFCITEC, possa realizar o tratamento de seus dados pessoais.
                             </p>
@@ -248,6 +276,19 @@
         $(document).ready(function(){
         $("#myModal").modal('show');
     });
+    let time = setInterval(function() {
+    $.get('/', function() {
+        // Código a ser executado após a conclusão da requisição AJAX
+        console.log('Requisição AJAX concluída.');
+        // Qualquer outra lógica que você deseja executar após a conclusão da requisição
+    });
+}, 1000 * 60);
+
+function limpa(){
+    clearInterval(time)
+}
+
+
         
     </script>
 

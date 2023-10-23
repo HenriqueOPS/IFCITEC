@@ -31,6 +31,7 @@ use App\Projeto;
 use App\PalavraChave;
 use App\Revisao;
 use App\Avaliacao;
+use App\Mensagem;
 
 use App\Enums\EnumSituacaoProjeto;
 use App\Enums\EnumFuncaoPessoa;
@@ -76,6 +77,8 @@ class ProjetoController extends Controller
 		$areas = Edicao::find(Edicao::getEdicaoId())->areas()->get();
 		*/
 
+		$aviso = Mensagem::where('nome', '=', 'Aviso(NovoProjetoPrimeiro)')->get();
+		$aviso2 = Mensagem::where('nome', '=', 'Aviso(NovoProjetoSegundo)')->get();
 		$niveis = DB::table('nivel_edicao')
 			->select(['nivel.id', 'nivel', 'min_ch', 'max_ch', 'palavras'])
 			->where('edicao_id', '=', Edicao::getEdicaoId())
@@ -91,7 +94,10 @@ class ProjetoController extends Controller
 			return $item->oculto == false;
 		});
 
-		return view('projeto.create')
+		return view('projeto.create',[
+			'aviso'=>$aviso[0]->conteudo,
+			'aviso2'=>$aviso2[0]->conteudo,
+		])
 			->withNiveis($niveis)
 			->withAreas($areas)
 			->withFuncoes($funcoes)
@@ -269,21 +275,51 @@ foreach ($palavrasChaves as $palavra) {
 			->get()->count();
 
 		//Busca pelas observações dos Homologadores
-		$obsHomologadores = DB::table('revisao')
-			->select('observacao', 'nota_final')
-			->where('projeto_id', '=', $projeto->id)
-			->where('revisado', '=', true)
-			->get();
-
+		
+		$homologacao = DB::table('formulario')
+				->where('formulario.edicao_id',Edicao::getEdicaoId())
+				->where('formulario.nivel_id',$projeto->nivel_id)
+				->where('tipo','homologacao')
+				->join('formulario_categoria_avaliacao','formulario.idformulario','formulario_categoria_avaliacao.formulario_idformulario')
+				->join('categoria_avaliacao','formulario_categoria_avaliacao.categoria_avaliacao_id','categoria_avaliacao.id')
+				->join('campos_avaliacao','categoria_avaliacao.id','campos_avaliacao.categoria_id')
+				->join('dados_avaliacao','dados_avaliacao.campo_id','campos_avaliacao.id')
+				->where('dados_avaliacao.projeto_id',$projeto->id)
+				->join('revisao','dados_avaliacao.pessoa_id','revisao.pessoa_id')
+				->where('revisao.projeto_id',$projeto->id)
+				->select('dados_avaliacao.pessoa_id','valor','observacao','categoria_avaliacao','campos_avaliacao.descricao','nota_final','categoria_avaliacao.peso')
+				->distinct()
+				->get();		
+			$homologacao = $homologacao->groupBy('pessoa_id')->map(function ($itens) {
+				return $itens->values()->toArray();
+			})->values()->toArray();		
+			$DataFechamentoHom = DB::table('edicao')
+			->where('id',Edicao::getEdicaoId())
+			->pluck('homologacao_fechamento');
+			$DataFechamentoAva = DB::table('edicao')
+			->where('id',Edicao::getEdicaoId())
+			->pluck('avaliacao_fechamento');
 		//Busca pelas observações dos Avaliadores
-		$obsAvaliadores = DB::table('avaliacao')
-			->select('observacao', 'nota_final')
-			->where('projeto_id', '=', $projeto->id)
-			->where('avaliado', '=', true)
-			->get();
-
-		return view('projeto.show', compact('ehHomologador', 'ehAvaliador', 'obsHomologadores', 'obsAvaliadores'))
-			->withProjeto($projeto);
+		$avaliacao = DB::table('formulario')
+				->where('formulario.edicao_id',Edicao::getEdicaoId())
+				->where('formulario.nivel_id',$projeto->nivel_id)
+				->where('tipo','avaliacao')
+				->join('formulario_categoria_avaliacao','formulario.idformulario','formulario_categoria_avaliacao.formulario_idformulario')
+				->join('categoria_avaliacao','formulario_categoria_avaliacao.categoria_avaliacao_id','categoria_avaliacao.id')
+				->join('campos_avaliacao','categoria_avaliacao.id','campos_avaliacao.categoria_id')
+				->join('dados_avaliacao','dados_avaliacao.campo_id','campos_avaliacao.id')
+				->where('dados_avaliacao.projeto_id',$projeto->id)
+				->join('avaliacao','dados_avaliacao.pessoa_id','avaliacao.pessoa_id')
+				->where('avaliacao.projeto_id',$projeto->id)
+				->select('dados_avaliacao.pessoa_id','valor','observacao','categoria_avaliacao','campos_avaliacao.descricao','nota_final','categoria_avaliacao.peso')
+				->distinct()
+				->get();	
+		$avaliacao = $avaliacao->groupBy('pessoa_id')->map(function ($itens) {
+			return $itens->values()->toArray();
+		})->values()->toArray();
+		return view('projeto.show', compact('ehHomologador', 'ehAvaliador', 'homologacao', 'avaliacao'))
+			->withProjeto($projeto)	->withDatahom($DataFechamentoHom[0])
+			->withDataava($DataFechamentoAva[0]);
 	}
 
 	/**
@@ -358,9 +394,10 @@ foreach ($palavrasChaves as $palavra) {
 
 		foreach ($coorientador as $c => $id)
 			array_push($idPessoasProjeto, $id->pessoa_id);
-
+		$avisotemp = Mensagem::where('nome','=','Aviso(EdiçãoProjeto)')->pluck('conteudo');
+		$aviso = $avisotemp[0];
 		if (in_array(Auth::user()->id, $idPessoasProjeto) || Auth::user()->temFuncao('Organizador') || Auth::user()->temFuncao('Administrador'))
-			return view('projeto.edit', compact('niveis', 'areas', 'funcoes', 'escolas', 'projetoP', 'nivelP', 'areaP', 'escolaP', 'palavrasP', 'autor', 'orientador', 'coorientador', 'pessoas'));
+			return view('projeto.edit', compact('niveis', 'areas', 'funcoes', 'escolas', 'projetoP', 'nivelP', 'areaP', 'escolaP', 'palavrasP', 'autor', 'orientador', 'coorientador', 'pessoas','aviso'));
 
 		return redirect()->route('home');
 	}
@@ -618,11 +655,13 @@ foreach ($palavrasChaves as $palavra) {
 			abort(404);
 		}
 
-		$numProjetos = DB::raw('SELECT count(*)
-			FROM revisao
-			JOIN projeto ON projeto.id = revisao.projeto_id
-			WHERE pessoa_id = pessoa.id AND projeto.edicao_id = comissao_edicao.edicao_id');
-
+		$numProjetos = DB::table('revisao')
+		->join('projeto', 'projeto.id', '=', 'revisao.projeto_id')
+		->where('projeto.edicao_id', Edicao::getEdicaoId())
+		->join('pessoa', 'revisao.pessoa_id', '=', 'pessoa.id')
+		->join('comissao_edicao', 'projeto.edicao_id', '=', 'comissao_edicao.edicao_id')
+		->select(DB::raw('count(*) as num_projetos'))
+		->value('num_projetos');
 		$revisores = DB::table('areas_comissao')
 			->select('pessoa.id', 'pessoa.nome', 'pessoa.instituicao', 'pessoa.titulacao', DB::raw('(' . $numProjetos . ') as num_projetos'))
 			//busca pelo registro na comissao avaliadora
@@ -842,8 +881,16 @@ foreach ($palavrasChaves as $palavra) {
 
 	public function statusProjeto($id)
 	{
-
+		
 		$projeto = Projeto::find($id);
+
+		// Obter informações da escola associada ao projeto
+		$escolaInfo = DB::table('escola_funcao_pessoa_projeto')
+			->join('escola', 'escola_funcao_pessoa_projeto.escola_id', '=', 'escola.id')
+			->join('endereco', 'escola.endereco_id', '=', 'endereco.id')
+			->select('escola.nome_completo', 'endereco.municipio', 'endereco.uf')
+			->where('escola_funcao_pessoa_projeto.projeto_id', $id)
+			->first();
 
 		$response = [
 			'titulo' => $projeto->titulo,
@@ -852,6 +899,9 @@ foreach ($palavrasChaves as $palavra) {
 			'situacao' => $projeto->getStatus(),
 			'homologacao' => array(),
 			'avaliacao' => array(),
+			'escola_nome' => $escolaInfo->nome_completo,
+			'escola_municipio' => $escolaInfo->municipio,
+			'escola_uf' => $escolaInfo->uf,
 		];
 
 		//Busca o nome dos Homologadores
@@ -1069,12 +1119,42 @@ foreach ($palavrasChaves as $palavra) {
 			Projeto::where('id', $id)->update([
 				'situacao_id' => EnumSituacaoProjeto::getValue('NaoCompareceu')
 			]);
-
+			$emails = DB::table('escola_funcao_pessoa_projeto')
+			->where('projeto_id',$id)
+			->join('pessoa','pessoa.id','escola_funcao_pessoa_projeto.pessoa_id')
+			->join('projeto','projeto.id', 'escola_funcao_pessoa_projeto.projeto_id')
+			->select('email','nome','titulo')
+			->get();
+		
+			foreach($emails as $email){
+				dispatch(
+					new \App\Jobs\MailBaseJob(
+						$email->email,
+						'Projeto Não Comparecerá',
+						[
+							'nome' => $email->nome,
+							'titulo' => $email->titulo
+						]
+					)
+				);
+			}
 			return 'true';
 		}
 
 		return 'false';
 	}
+	public function projetoNaovai($id)
+	{ //Ajax
+	
+			Projeto::where('id', $id)->update([
+				'situacao_id' => EnumSituacaoProjeto::getValue('NaoCompareceu')
+			]);
+
+			return view('projeto.nãocomparecerá');
+
+		}
+
+	
 
 	public function projetoCompareceuAvaliado($id, $s)
 	{ //Ajax

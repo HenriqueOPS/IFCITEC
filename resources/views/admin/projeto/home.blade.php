@@ -24,7 +24,18 @@
             <div class="list-projects">
                 <h5><b id="geral">Número de projetos: <span id="nProjetos">{{ count($projetos) }}</span> </b></h5>
                 <h5><b id="situacao">Número de projetos: <span>{{ count($projetos) }}</span> </b></h5>
+               <h5 class="nHomlogados" style="display:flex;
+        justify-content: flex-end;"> <b><?php
+                $countPresencaTrue = $projetos->filter(function ($projeto) {
+                    return $projeto->presenca === true;
+                })->count();
 
+                echo "Total Projetos com presença confirmada: " . $countPresencaTrue;
+                ?></b></h5>
+                <h5 class="nHomlogados" style="display:flex;
+        justify-content: flex-end;"><b>Falta Confirmar: {{$numprojshomologados - $countPresencaTrue }}</b></h5>
+             <h5 class="nAvaliados" id="AvaliacaoParcial"><b>Avaliação Parcial:</b></h5>
+            <h5 class="nAvaliados" id="NãoAvaliado"><b>Não Avaliados:</b></h5>
                 <div>
                     <ul class="nav nav-pills nav-pills-primary" role="tablist" style="margin-bottom: 30px">
                         <li class="active">
@@ -75,7 +86,8 @@
                 <div>
 
                     <a href="{{ route('homologar-projetos') }}" id="homologarTrabalhos" class="btn btn-sm btn-primary">Homologar Trabalhos</a>
-
+          
+                    
                     @foreach($projetos as $projeto)
 
                         <div class="row project situacao-{{ $projeto->situacao_id }}">
@@ -92,7 +104,9 @@
                                 </div>
                             </div>
                             <div class="col-md-2 actions text-center">
+                                
                                 <div class="status">
+                                    
                                     @if($projeto->getStatus() == "Não Homologado" || $projeto->getStatus() == "Não Avaliado")
                                         <span class="label label-info">{{$projeto->getStatus()}}</span>
                                     @elseif ($projeto->getStatus() == "Homologado" || $projeto->getStatus() == "Avaliado")
@@ -104,24 +118,34 @@
                                     @endif
 
                                     @if($projeto->getStatus() == "Homologado")
+                                    <!-- COnfirmou Presença -->
                                         @if($projeto->statusPresenca())
-                                            <span class="label label-warning" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+                                        <span class="material-symbols-outlined" style="color: green;display: inline-flex; width: 20px; ">
+                                            check_box
+                                        </span>
+
                                         @else
-                                            <span class="label label-default" style="display: inline-flex; width: 20px; padding: 5px;">&nbsp;</span>
+                                        <span class="material-symbols-outlined" style="color: red;display: inline-flex; width: 20px; padding: 5px;">
+                                        check_box_outline_blank
+                                        </span>
                                         @endif
                                     @endif
 
                                     @if($projeto->getStatus() == "Não Homologado")
-                                        @if($projeto->statusHomologacao())
+                                        @if($projeto->statusHomologacao() == 2)
                                             <span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
-                                        @else
-                                            <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
-                                        @endif
+                                        @elseif($projeto->statusHomologacao() == 1)
+                                            <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;background-color: yellow;">&nbsp;</span>
+                                       @else
+                                       <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+                                            @endif
                                     @elseif($projeto->getStatus() == "Não Avaliado")
-                                        @if($projeto->statusAvaliacao())
+                                        @if($projeto->statusAvaliacao() == 2)
                                             <span class="label label-success" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
-                                        @else
-                                            <span class="label label-danger" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
+                                            @elseif($projeto->statusAvaliacao() == 1)
+                                            <span class="label label-danger parcial" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;background-color: yellow;">&nbsp;</span>
+                                            @else
+                                            <span class="label label-danger naoavaliados" style="display: inline-flex; width: 20px; padding: 5px; margin-left: 5px;">&nbsp;</span>
                                         @endif
                                     @endif
 
@@ -138,7 +162,10 @@
                                 @if($projeto->getStatus() == "Não Homologado" || $projeto->getStatus() == "Homologado")
                                      <a href="{{route('notaRevisao',$projeto->id)}}"><i class="material-icons blue-icon">looks_one</i></a>
                                 @endif
-
+                                
+                               <a href="javascript:void(0);"class="naoCompareceu" data-id={{$projeto->id}} ><span class="material-icons">
+                                                    delete
+                                                    </span></a> 
                             </div>
                         </div>
 
@@ -158,7 +185,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="nomeProjeto"></h5>
+                <h5 class="modal-title" id="nomeProjeto" style="font-weight: bold;"></h5>
 
                 <div id="projetoStatus" style="margin-top: 10px;"></div>
             </div>
@@ -183,14 +210,32 @@
                     </div>
                 </div>
 
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons">school</i>
+                    </span>
+                    <div class="form-group label-floating">
+                        <span class="modal-projeto escola"></span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-symbols-outlined" style="margin-top: 10px;">location_on</i>
+                    </span>
+                    <div class="form-group label-floating">
+                        <span class="modal-projeto municipio"></span>-<span class="modal-projeto uf"></span>
+                    </div>
+                </div>
+
                 <div>
-                    <h5>Homologação</h5>
+                    <h5><strong>Homologação</strong></h5>
 
                     <div id="homologadores"></div>
                 </div>
 
                 <div>
-                    <h5>Avaliação</h5>
+                    <h5><strong>Avaliação</strong></h5>
 
                     <div id="avaliadores"></div>
                 </div>
@@ -254,8 +299,6 @@
 </div>
 
 <script type="application/javascript">
-document.getElementById('nav-projetos').classList.add('active');
-
 $('.dados-projeto').click(function() {
 
     //recupera o id do projeto
@@ -279,6 +322,9 @@ $('.dados-projeto').click(function() {
 
         $(".modal-projeto.nivel").html(res.nivel);
         $(".modal-projeto.area").html(res.area);
+        $(".modal-projeto.escola").html(res.escola_nome);
+        $(".modal-projeto.municipio").html(res.escola_municipio);
+        $(".modal-projeto.uf").html(res.escola_uf);
 
         var homologadores = res.homologacao;
         if(homologadores.length){
@@ -322,30 +368,44 @@ $('.dados-projeto').click(function() {
 $(document).ready(function () {
     $('#homologarTrabalhos').hide();
     $("#situacao").hide();
-
+    $(".nHomlogados").hide();
+    $(".nAvaliados").hide();
     $('.tab-projetos').click(function (e) {
         var target = $(this)[0];
 
 		$('#homologarTrabalhos').hide();
 
-        if (target.id==2)
+        if (target.id==2){
             $('#homologarTrabalhos').show();
-
+            $(".nHomlogados").hide();
+            $(".nAvaliados").hide();
+        }
         if (target.id=='situacao') {
             $("#geral").hide();
             $("#situacao").show();
             showAll();
-        } else {
+            $(".nAvaliados").hide();
+            $(".nHomlogados").hide();
+        } 
+      
+        else {
+            $(".nAvaliados").hide();
             $("#situacao").hide();
             $("#geral").show();
             $("#nProjetos").html($('div.project.situacao-'+target.id).length);
-
+            $(".nHomlogados").hide();
             hideAll();
 
             $('div.project.situacao-'+target.id).show();
 			$('div[id='+target.id+']').show();
         }
-
+        if(target.id==3){
+            $(".nAvaliados").hide();
+            $(".nHomlogados").show();
+        }
+        if(target.id==4){
+            $(".nAvaliados").show();
+        }
     });
 
 });
@@ -378,12 +438,14 @@ function showAll(){
 
 <script type="application/javascript">
 $('.naoCompareceu').click(function(){
-    var idProjeto= $(this).attr('id-projeto');
+    var idProjeto= $(this).attr('data-id');
 
     $("#ModalNaoCompareceu").modal();
-
+ 
     $('.confirma').click(function(){
         var urlConsulta = '.././projeto/nao-compareceu/'+idProjeto+'/'+$('#passwordNaoCompareceu').val();
+     
+ 
         $.get(urlConsulta, function (res){
             if(res == 'true'){
                 bootbox.alert("O projeto mudou de situação com sucesso!");
@@ -429,6 +491,28 @@ $('.compareceu').click(function(){
     });
 
 });
+$(document).ready(function() {
+  // Contar elementos com a classe "parcial"
+  var elementosParciais = $('.parcial').length;
+
+  // Contar elementos com a classe "naoavaliado"
+  var elementosNaoAvaliados = $('.naoavaliados').length;
+  
+  // Selecionar o elemento <h5> com a classe "nAvaliados" e o ID "AvaliacaoParcial"
+  var h5ElementParcial = $('#AvaliacaoParcial');
+
+  // Selecionar o elemento <h5> com a classe "nAvaliados" e o ID "AvaliacaoNaoAvaliados"
+  var h5ElementNaoAvaliados = $('#NãoAvaliado');
+
+  // Verificar se existem elementos com a classe "parcial" antes de adicionar a contagem
+
+    h5ElementParcial.html(h5ElementParcial.html() + ' <b>' + elementosParciais + '</b>');
+
+  // Verificar se existem elementos com a classe "naoavaliado" antes de adicionar a contagem
+    h5ElementNaoAvaliados.html(h5ElementNaoAvaliados.html() + ' <b>' + elementosNaoAvaliados + '</b>');
+ 
+});
+
 </script>
 @endsection
 

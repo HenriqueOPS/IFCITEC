@@ -105,51 +105,7 @@
                             @endif
                             @endforeach
                             </td>
-                            @if($usuario->temFuncao('Voluntário'))
-                            <td>
-                                @foreach($tarefas as $tarefa)
 
-                                    <div class="col-md-10 col-md-offset-2 col-xs-9 col-xs-offset-1">
-                                            @if($usuario->tarefas->first() != null)
-                                                @if($usuario->tarefas->first()->id == $tarefa->id)
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio"
-                                                               class="tarefa"
-                                                                name="tarefa"
-                                                                value="{{$tarefa->id}}"
-                                                                checked>
-                                                        {{$tarefa->tarefa}}
-                                                    </label>
-                                                </div>
-                                                @else
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio"
-                                                               class="tarefa"
-                                                                name="tarefa"
-                                                                value="{{$tarefa->id}}"
-                                                                >
-                                                        {{$tarefa->tarefa}}
-                                                    </label>
-                                                </div>
-                                                @endif
-                                            @else
-                                            <div class="radio">
-                                                    <label>
-                                                        <input type="radio"
-                                                               class="tarefa"
-                                                                name="tarefa"
-                                                                value="{{$tarefa->id}}"
-                                                                >
-                                                        {{$tarefa->tarefa}}
-                                                    </label>
-                                            </div>
-                                            @endif
-                                    </div>
-                                @endforeach
-                            </td>
-                        @endif
                         </tr>
                     </tbody>
                 </table>

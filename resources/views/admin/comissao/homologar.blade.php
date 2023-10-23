@@ -6,7 +6,7 @@
 			<div class="col-md-8 col-md-offset-2 col-sm-12">
 				<ul class="main main-raised">
 					<div class="row">
-						<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
+						<div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 text-center">
 							<h2>Homologação de Comissão Avaliadora</h2>
 						</div>
 					</div>
@@ -39,6 +39,9 @@
 					</div>
 
 					<div class="row">
+					<strong class="col-md-5 col-md-offset-1">Data de Inscrição</strong>
+						<span class="col-md-5 col-md-offset-1">{{ $comissaoEdicao->data_criacao }}</span>
+
 						<strong class="col-md-5 col-md-offset-1">Instituição</strong>
 						<span class="col-md-5 col-md-offset-1">{{ $pessoa->instituicao }}</span>
 
@@ -93,41 +96,26 @@
 						<div class="row">
 							<div class="col-md-10 col-md-offset-1 col-xs-offset-1">
 								<p>Você pode escolher varios:</p>
-								@if($pessoa->temFuncao('Avaliador', TRUE))
+							
 								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="avaliador" checked>
-										<span style="color: black">Quero ser Avaliador</span>
-									</label>
-								</div>
-								@else
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="avaliador">
-										<span style="color: black">Quero ser Avaliador</span>
-									</label>
-								</div>
-								@endif
-								@if($pessoa->temFuncao('Homologador', TRUE))
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="homologador"  checked>
-										<span style="color: black">Quero ser Homologador</span>
-									</label>
-								</div>
-								@else
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="homologador" >
-										<span style="color: black">Quero ser Homologador</span>
-									</label>
-								</div>
-								@endif
+								<label>
+									<input type="checkbox" name="avaliador" {{ in_array(3, $funcaodesejada) ? 'checked' : '' }}>
+									<span style="color: black">Quero ser Avaliador</span>
+								</label>
+							</div>
+
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="homologador" {{ in_array(4, $funcaodesejada) ? 'checked' : '' }}>
+									<span style="color: black">Quero ser Homologador</span>
+								</label>
+							</div>
+			
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-6 col-md-offset-3 text-center">
-								<button type="submit" class="btn btn-primary">Homologar</button>
+								<button type="submit" class="btn btn-primary">Submeter</button>
 							</div>
 						</div>
 					</form>

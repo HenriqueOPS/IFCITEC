@@ -23,7 +23,7 @@
                         {{ csrf_field() }}
 
                         <input type="hidden" name="id_projeto" value="{{ $projetoP->id }}">
-
+                        
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="alert alert-info text-center">
@@ -34,12 +34,33 @@
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true"><i class="material-icons">clear</i></span>
                                         </button>
-                                        <b>ATENÇÃO: </b>É obrigatória a leitura do edital.
+                                        {!! $aviso !!}
                                     </div>
                                 </div>
                             </div>
-
+                        
                             <div class="col-md-10 col-md-offset-1 col-xs-11">
+                            <div class="input-group{{ $errors->has('escola') ? ' has-error' : '' }}">
+                                    <span class="input-group-addon">
+                                        <i class="material-icons">school</i>
+                                    </span>
+                                    <div class="form-group">
+                                        <label class="control-label">Escola</label>
+                                        <select id="escola-select" name="escola"
+                                            value="{{ isset($escolaP->first()->escola_id) ? $escolaP->first()->escola_id : '' }}"
+                                            required>
+                                            <option></option>
+                                            @foreach ($escolas as $escola)
+                                                <option value="{{ $escola->id }}">{{ $escola->nome_curto }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('escola'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('escola') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
                                 <div class="input-group{{ $errors->has('titulo') ? ' has-error' : '' }}">
                                     <span class="input-group-addon">
                                         <i class="material-icons">title</i>
@@ -152,27 +173,7 @@
                                     @endif
                                 </div>
 
-                                <div class="input-group{{ $errors->has('escola') ? ' has-error' : '' }}">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">school</i>
-                                    </span>
-                                    <div class="form-group">
-                                        <label class="control-label">Escola</label>
-                                        <select id="escola-select" name="escola"
-                                            value="{{ isset($escolaP->first()->escola_id) ? $escolaP->first()->escola_id : '' }}"
-                                            required>
-                                            <option></option>
-                                            @foreach ($escolas as $escola)
-                                                <option value="{{ $escola->id }}">{{ $escola->nome_curto }}</option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('escola'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('escola') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
+                          
                             </div>
                         </div>
 
@@ -504,9 +505,15 @@
                 $("#ModalInfo").modal();
             });
 
+                    $(document).ready(function() {
+            // Atualizar contagem de caracteres ao carregar a página
+            $('#total-char').html($('#resumo').val().length);
+
+            // Atualizar contagem de caracteres durante a digitação
             $('#resumo').keyup(function() {
-                $('#total-char').html($('#resumo').val().length);
+                $('#total-char').html($(this).val().length);
             });
+        });
 
             var oldEscola = $('#escola-select').attr("value");
             $('#escola-select').selectize({

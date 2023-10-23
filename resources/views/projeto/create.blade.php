@@ -13,11 +13,12 @@
             <div class="col-md-8 col-md-offset-2 col-sm-12">
                 <div class="main main-raised">
 
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1 col-xs-offset-1 col-xs-10">
-                            <h2>Novo Projeto</h2>
-                        </div>
-                    </div>
+                <div class="row">
+                <div class="col-md-10 col-md-offset-1 col-xs-offset-1 col-xs-10 text-center">
+                    <h2>Novo Projeto</h2>
+                </div>
+            </div>
+
 
                     <div class="row hide" id="loadCadastro">
 
@@ -46,21 +47,62 @@
 
                         <div class="row">
 
-                            <div class="col-md-12">
-                                <div class="alert alert-info text-center">
-                                    <div class="container-fluid">
-                                        <div class="alert-icon">
-                                            <i class="material-icons">info_outline</i>
-                                        </div>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true"><i class="material-icons">clear</i></span>
-                                        </button>
-                                        <b>ATENÇÃO: </b>É obrigatória a leitura do edital.
-                                    </div>
-                                </div>
+                        <div class="col-md-12">
+                        <div style="background-color:{{ $coravisos }}">
+                            <div class="container-fluid">
+                            <br>
+                            <div>
+                                <i class="material-icons" style="color: white;">info_outline</i>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="fechar-alerta">
+                                <span aria-hidden="true"><i class="material-icons">clear</i></span>
+                            </button>
                             </div>
+                          
+                            <div class="text-center">
+                                {!! $aviso !!}
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script>
+                        $(document).ready(function() {
+                            $('#fechar-alerta').click(function() {
+                            $(this).closest('.col-md-12').hide();
+                            });
+                        });
+                        </script>
+
 
                             <div class="col-md-10 col-md-offset-1 col-xs-11">
+                            <div class="input-group{{ $errors->has('escola') ? ' has-error' : '' }}">
+                                    <span class="input-group-addon">
+                                        <i class="material-icons">school</i>
+                                    </span>
+                                    <div class="form-group">
+                                        <label class="control-label">Escola</label>
+                                        <select id="escola-select" name="escola"
+                                            value="{{ old('escola') ? old('escola') : '' }}" required>
+                                            <option></option>
+                                            @foreach ($escolas as $escola)
+                                                @if (old('escola') == $escola->id)
+                                                    <option value="{{ $escola->id }}" selected>
+                                                        {{ $escola->nome_curto }}</option>
+                                                @else
+                                                    <option value="{{ $escola->id }}">{{ $escola->nome_curto }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+
+                                        @if ($errors->has('escola'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('escola') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
                                 <div class="input-group{{ $errors->has('titulo') ? ' has-error' : '' }}">
                                     <span class="input-group-addon">
                                         <i class="material-icons">title</i>
@@ -157,16 +199,15 @@
                                     <span class="input-group-addon">
                                         <i class="material-icons">format_quote</i>
                                     </span>
-                                    <div class="alert alert-info text-center">
+                                    <div class="alert  text-center" style="background-color:{{ $coravisos }}">
                                         <div class="container-fluid">
-                                            <b>ATENÇÃO:</b> Para inserir as palavras-chave, tecle enter ao final de cada
-                                            palavra!
+                                            {!!$aviso2!!}
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Palavras Chaves</label>
-                                        <input type="text" id="palavras-chaves" name="palavras_chaves"
-                                            value="{{ old('palavras_chaves') }}" required>
+                                        <input  type="text" id="palavras-chaves" name="palavras_chaves"
+                                            value="{{ old('palavras_chaves') }}"  >
                                     </div>
                                     @if ($errors->has('palavras_chaves'))
                                         <span class="help-block">
@@ -175,33 +216,7 @@
                                     @endif
                                 </div>
 
-                                <div class="input-group{{ $errors->has('escola') ? ' has-error' : '' }}">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">school</i>
-                                    </span>
-                                    <div class="form-group">
-                                        <label class="control-label">Escola</label>
-                                        <select id="escola-select" name="escola"
-                                            value="{{ old('escola') ? old('escola') : '' }}" required>
-                                            <option></option>
-                                            @foreach ($escolas as $escola)
-                                                @if (old('escola') == $escola->id)
-                                                    <option value="{{ $escola->id }}" selected>
-                                                        {{ $escola->nome_curto }}</option>
-                                                @else
-                                                    <option value="{{ $escola->id }}">{{ $escola->nome_curto }}
-                                                    </option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-
-                                        @if ($errors->has('escola'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('escola') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
+                               
                             </div>
                         </div>
 
@@ -232,15 +247,15 @@
                                         <div class="form-group">
                                             <label class="control-label">Autor 1</label>
                                             <select id="pessoa-1-select" name="autor[]" value="{{ old('autor.0', '') }}" required>
-    <option></option>
-    @foreach ($pessoas as $pessoa)
-        @if (old('autor.0') == $pessoa->id)
-            <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
-        @else
-            <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
-        @endif
-    @endforeach
-</select>
+                                            <option></option>
+                                            @foreach ($pessoas as $pessoa)
+                                                @if (old('autor.0') == $pessoa->id)
+                                                    <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+                                                @else
+                                                    <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
 
                                             <div class="checkbox">
                                                 <label>
@@ -274,15 +289,15 @@
                                         <div class="form-group">
                                             <label class="control-label">Autor 2</label>
                                             <select id="pessoa-2-select" name="autor[]" value="{{ old('autor.1', '') }}">
-    <option></option>
-    @foreach ($pessoas as $pessoa)
-        @if (old('autor.1') == $pessoa->id)
-            <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
-        @else
-            <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
-        @endif
-    @endforeach
-</select>
+                                            <option></option>
+                                            @foreach ($pessoas as $pessoa)
+                                                @if (old('autor.1') == $pessoa->id)
+                                                    <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+                                                @else
+                                                    <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
 
                                             <div class="checkbox">
                                                 <label>
@@ -314,15 +329,15 @@
                                         <div class="form-group">
                                             <label class="control-label">Autor 3</label>
                                             <select id="pessoa-3-select" name="autor[]" value="{{ old('autor.2', '') }}">
-    <option></option>
-    @foreach ($pessoas as $pessoa)
-        @if (old('autor.2') == $pessoa->id)
-            <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
-        @else
-            <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
-        @endif
-    @endforeach
-</select>
+                                            <option></option>
+                                            @foreach ($pessoas as $pessoa)
+                                                @if (old('autor.2') == $pessoa->id)
+                                                    <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+                                                @else
+                                                    <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
 
                                             <div class="checkbox">
                                                 <label>
@@ -403,15 +418,15 @@
                                         <div class="form-group">
                                             <label class="control-label">Coorientador 1</label>
                                             <select id="pessoa-5-select" name="coorientador[]" value="{{ old('coorientador.0', '') }}">
-    <option></option>
-    @foreach ($pessoas as $pessoa)
-        @if (old('coorientador.0') == $pessoa->id)
-            <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
-        @else
-            <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
-        @endif
-    @endforeach
-</select>
+                                            <option></option>
+                                            @foreach ($pessoas as $pessoa)
+                                                @if (old('coorientador.0') == $pessoa->id)
+                                                    <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+                                                @else
+                                                    <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
 
                                         </div>
                                         @if ($errors->has('coorientador[]'))
@@ -435,15 +450,15 @@
                                         <div class="form-group">
                                             <label class="control-label">Coorientador 2</label>
                                             <select id="pessoa-6-select" name="coorientador[]" value="{{ old('coorientador.1', '') }}">
-    <option></option>
-    @foreach ($pessoas as $pessoa)
-        @if (old('coorientador.1') == $pessoa->id)
-            <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
-        @else
-            <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
-        @endif
-    @endforeach
-</select>
+                                            <option></option>
+                                            @foreach ($pessoas as $pessoa)
+                                                @if (old('coorientador.1') == $pessoa->id)
+                                                    <option value="{{ $pessoa->id }}" selected>{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+                                                @else
+                                                    <option value="{{ $pessoa->id }}">{{ $pessoa->nome }} < {{ $pessoa->email }}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
 
                                         </div>
                                         @if ($errors->has('coorientador[]'))
@@ -554,17 +569,20 @@
             $('#resumo').keyup(function() {
                 $('#total-char').html($('#resumo').val().length);
             });
-$('#palavras-chaves').selectize({
+            $('#palavras-chaves').selectize({
     delimiter: ',',
     persist: false,
     create: function(input) {
+        // Capitalize a primeira letra da entrada e converta o restante em minúsculas
+        var capitalizedInput = input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
+
         return {
-            value: input,
-            text: input
+            value: capitalizedInput, // Usar a versão capitalizada como valor
+            text: capitalizedInput // Usar a versão capitalizada como texto exibido
         };
     },
     onInitialize: function() {
-        //$('.selectize-control').addClass('form-group');
+        // Adicione a classe 'form-control' para aprimorar a aparência da entrada
         $('.selectize-input').addClass('form-control');
     },
     render: {

@@ -28,22 +28,35 @@
                     <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="alert alert-info text-center">
-                                <div class="container-fluid">
-                                    <div class="alert-icon">
-                                        <i class="material-icons">info_outline</i>
-                                    </div>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true"><i class="material-icons">clear</i></span>
-                                    </button>
+                    <div class="col-md-12">
+                        <div style="background-color:{{ $coravisos }}">
+                            <div class="container-fluid">
+                            <br>
+                            <div>
+                                <i class="material-icons" style="color: white;">info_outline</i>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="fechar-alerta">
+                                <span aria-hidden="true"><i class="material-icons">clear</i></span>
+                            </button>
+                            </div>
+                          
+                            <div class="text-center">
                                 {!! $aviso1 !!}
-                                </div>
+                            </div>
                             </div>
                         </div>
+                        </div>
+
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script>
+                        $(document).ready(function() {
+                            $('#fechar-alerta').click(function() {
+                            $(this).closest('.col-md-12').hide();
+                            });
+                        });
+                        </script>
                         <div class="col-md-12 text-center">
-                            <div class="social-line">
-                                <a class="btn btn-simple btn-just-icon">
+                            <div class="social-line" style="margin-top: 25px">
+                                <a>
                                     <img src="{{ asset('img/logo.png') }}" title="IFCITEC" height="75" />
                                 </a>
                             </div>
@@ -54,11 +67,19 @@
                                 <span class="input-group-addon">
                                     <i class="material-icons">face</i>
                                 </span>
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Nome</label>
-                                    <input style="text-transform: capitalize" type="text" class="form-control" name="nome" value="{{ old('nome') }}" required>
-                                </div>
-                                @if ($errors->has('nome'))
+                            <div class="form-group label-floating">
+                                <label class="control-label">Nome</label>
+                                <input type="text" class="form-control" name="nome" value="{{ old('nome') }}" required oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);updateFullName();" required> 
+                                 </div>
+
+                            <div class="form-group label-floating">
+                                <label class="control-label">Sobrenome</label>
+                                <input type="text" class="form-control" name="sobrenome" value="{{ old('sobrenome') }}" required oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);updateFullName();" required>
+                            </div>
+
+                            <input type="hidden" name="nome_completo" id="nome_completo" value="">
+    
+                               @if ($errors->has('nome'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('nome') }}</strong>
                                 </span>
@@ -70,16 +91,61 @@
                             <span class="input-group-addon ">
                                     <i class="material-icons">wc</i>
                                 </span>
-                                <label style="margin-top:20px;">Masculino</label>
-                                 <input type="radio" id="masculino" name="genero" value="M" required>
-                                 <label style="margin-left:12px;">Feminino</label>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Gênero</label>
+                                </div>
+                                <input type="radio" id="masculino" name="genero" value="M" required>
+                                <label style="margin-top:5px; margin-right:15px;">Masculino</label>
                                  <input type="radio" id="feminino" name="genero" value="F">
+                                 <label style="margin-left:0px;">Feminino</label>
                                  @if($errors->has('genero'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('genero') }}</strong>
                                 </span>
                                 @endif
                             </div>
+
+                            <div class="input-group{{ $errors->has('cor') ? ' has-error' : '' }}">
+                            <span class="input-group-addon">
+                                <i class="material-icons">person</i>
+                            </span>
+                            <div class="form-group">
+                                <label class="control-label">Raça/Cor</label>
+                                <select id="cor-select" name="cor" value="{{ old('cor') }}" required>
+                                    <option value="Amarelo">Amarelo</option>
+                                    <option value="Branco">Branco</option>
+                                    <option value="Indigena">Indigena</option>
+                                    <option value="Pardo">Pardo</option>
+                                    <option value="Preto">Preto</option>
+                                </select>
+                                @if ($errors->has('cor'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('cor') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="input-group {{ $errors->has('ehconcluinte') ? ' has-error' : '' }}">
+                           
+                           <span class="input-group-addon ">
+                                   <i class="material-icons">school</i>
+                               </span>
+                               <div class="form-group label-floating">
+                                   <label class="control-label">É concluinte do Ensino Fundamental ou Ensino Médio,Ensino Médio Técnico?</label>
+                               </div>
+                               <input type="radio" name="ehconcluinte" value="s" required>
+                               <label style="margin-top:5px; margin-right:15px;">sim</label>
+                                <input type="radio"  name="ehconcluinte" value="n">
+                                <label style="margin-left:0px;">não</label>
+                                @if($errors->has('ehconcluinte'))
+                               <span class="help-block">
+                                   <strong>{{ $errors->first('ehconcluinte') }}</strong>
+                               </span>
+                               @endif
+                           </div>
+
+                        
+
                             <div class="input-group{{ $errors->has('cpf') ? ' has-error' : '' }}">
                                 <span class="input-group-addon">
                                     <i class="material-icons">call_to_action</i>
@@ -142,6 +208,8 @@
                                 <div class="form-group label-floating">
                                     <label class="control-label">Whatssap</label>
                                     <input type="tel" OnKeyPress="formatar('## #####-####', this)" class="form-control" name="telefone" maxlength="13" value="{{ old('telefone') }}" required>
+                                    <small class="form-text text-muted">Informe o número com DDD e utilize o formato: 99 99999-9999</small>
+
                                 </div>
                                 @if ($errors->has('telefone'))
                                 <span class="help-block">
@@ -240,6 +308,15 @@ $(document).ready(function () {
             $('.selectize-input').addClass('form-control');
         },
     });
+    var oldCor = $('#cor-select').attr("value");
+    $('#cor-select').selectize({
+        placeholder: 'Selecione o tamanho...',
+        onInitialize: function () {
+            this.setValue(oldCamisa, true);
+            //$('.selectize-control').addClass('form-group');
+            $('.selectize-input').addClass('form-control');
+        },
+    });
 });
 
 $('.datepicker').datepicker({
@@ -261,6 +338,11 @@ function formatar(mascara, documento) {
         documento.value += texto.substring(0, 1);
     }
 }
+function updateFullName() {
+        const nome = document.getElementsByName('nome')[0].value;
+        const sobrenome = document.getElementsByName('sobrenome')[0].value;
+        document.getElementById('nome_completo').value = nome + ' ' + sobrenome;
+    }
 
 </script>
 @endsection

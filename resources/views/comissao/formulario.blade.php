@@ -33,9 +33,14 @@
 		<div class="row">
 			<div class="col-md-12">
 				<h4>Resumo</h4>
+				@php
+				$resumoLength = strlen($projeto->resumo);
+			@endphp
 				<p class="resumo">{{ $projeto->resumo }}</p>
 
 				<hr>
+				<p><b>Contagem de caracteres do resumo:</b> {{ $resumoLength }}</p>
+
 
 				<b>Palavras-Chaves:</b>
 				@foreach($projeto->palavrasChaves as $palavra)
